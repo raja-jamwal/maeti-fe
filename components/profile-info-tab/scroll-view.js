@@ -82,7 +82,10 @@ export default class ProfileInfoTab extends React.Component {
 				style={[GlobalStyles.expand, styles.scrollViewContainer]}
 			>
 				<View>
-					<ConnectedProfile hideSelfDescription={true} />
+					<ConnectedProfile
+						accountId="c0bb90b3-d4ac-4007-b48c-3a70db934381"
+						hideSelfDescription={true}
+					/>
 					<View style={GlobalStyles.row}>
 						<View style={[GlobalStyles.expand, GlobalStyles.alignCenter]}>
 							<Image

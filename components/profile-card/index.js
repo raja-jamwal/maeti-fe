@@ -10,8 +10,9 @@ import Text, { Value } from '../text';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency } from '../../utils';
 import Divider from '../divider';
+import PropTypes from 'prop-types';
 
-export default class ProfileCard extends React.Component {
+class ProfileCard extends React.Component {
 	fullWidth() {
 		const screenWidth = Dimensions.get('window').width;
 		const screenHeight = Dimensions.get('window').height;
@@ -83,6 +84,12 @@ export default class ProfileCard extends React.Component {
 		);
 	}
 }
+
+ProfileCard.propTypes = {
+	accountId: PropTypes.string.isRequired
+};
+
+export default ProfileCard;
 
 const styles = StyleSheet.create({
 	profileCard: {

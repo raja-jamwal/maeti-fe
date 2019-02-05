@@ -18,7 +18,7 @@ const ProfileListComponent = props => {
 				return (
 					<TouchableNativeFeedback key={i} onPress={openProfileScreen}>
 						<View style={styles.profileCardContainer}>
-							<ConnectedProfile />
+							<ConnectedProfile accountId="c0bb90b3-d4ac-4007-b48c-3a70db934381" />
 						</View>
 					</TouchableNativeFeedback>
 				);

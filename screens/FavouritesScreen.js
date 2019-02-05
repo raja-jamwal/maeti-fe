@@ -26,7 +26,7 @@ export default class FavouritesScreen extends React.Component {
 					{_.range(5).map(i => (
 						<TouchableNativeFeedback key={i} onPress={this.openProfileScreen}>
 							<View style={styles.profileCardContainer}>
-								<ConnectedProfile />
+								<ConnectedProfile accountId="c0bb90b3-d4ac-4007-b48c-3a70db934381" />
 							</View>
 						</TouchableNativeFeedback>
 					))}
