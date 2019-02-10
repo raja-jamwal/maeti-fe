@@ -6,6 +6,9 @@ import Text from './components/text';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
+// import { hello } from './TsTest';
+// hello();
+
 export default class App extends React.Component {
 	state = {
 		isLoadingComplete: false
