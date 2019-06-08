@@ -2,7 +2,6 @@ import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
 import Text from '../text';
 import GlobalStyles from '../../styles/global';
-import { withNavigation } from 'react-navigation';
 
 class MessageInInbox extends React.Component {
 	render() {

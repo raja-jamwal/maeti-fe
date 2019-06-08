@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Text from '../components/text';
 import Colors from '../constants/Colors';
-import HomeScreen from './HomeScreen';
 import GlobalStyles from '../styles/global';
 import _ from 'lodash';
 import ConnectedProfile from '../components/profile-card/connected-profile';

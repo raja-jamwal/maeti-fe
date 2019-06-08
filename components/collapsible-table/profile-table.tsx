@@ -1,14 +1,28 @@
-import React from 'react';
+import * as React from 'react';
 import CollapsibleTable from '../collapsible-table';
-import AccountFixture from '../../fixtures/account.json';
+import { IRootState } from '../../store';
+import { connect } from 'react-redux';
+import { UserProfile } from '../../store/reducers/account-defination';
+import { bindActionCreators, Dispatch } from 'redux';
+import { updateUserProfile } from '../../store/reducers/user-profile-reducer';
 
-export default class ProfileTable extends React.Component {
+interface IProfileTableProps {
+	userProfileId: number;
+	userProfile: UserProfile;
+	updateUserProfile: () => any;
+}
+
+class ProfileTable extends React.Component<IProfileTableProps> {
 	mappings = {
 		gender: {
 			label: 'Gender',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Male',
 						value: 'male'
@@ -22,13 +36,17 @@ export default class ProfileTable extends React.Component {
 		},
 		about: {
 			label: 'About',
-			type: 'about'
+			type: 'string'
 		},
-		createdBy: {
+		created_by: {
 			label: 'Profile created by',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Self',
 						value: 'self'
@@ -58,9 +76,13 @@ export default class ProfileTable extends React.Component {
 		},
 		salutation: {
 			label: 'Salutation',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Mr.',
 						value: 'mr'
@@ -84,7 +106,7 @@ export default class ProfileTable extends React.Component {
 				]
 			}
 		},
-		fullName: {
+		full_name: {
 			label: 'Full Name',
 			type: 'string'
 		},
@@ -92,15 +114,35 @@ export default class ProfileTable extends React.Component {
 			label: 'Date of Birth',
 			type: 'date'
 		},
-		maritalStatus: {
+		marital_status: {
 			label: 'Marital Status',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Never Married',
+						value: 'never-married'
+					},
+					{
+						label: 'Divorcee',
+						value: 'divorcee'
+					}
+				]
+			}
 		},
 		height: {
 			label: 'Height(in Feet)',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Below 4.1',
 						value: '<4.1'
@@ -260,11 +302,15 @@ export default class ProfileTable extends React.Component {
 			label: 'Weight(in KG)',
 			type: 'number'
 		},
-		bodyType: {
+		body_type: {
 			label: 'Body Type',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Average',
 						value: 'average'
@@ -284,11 +330,15 @@ export default class ProfileTable extends React.Component {
 				]
 			}
 		},
-		bodyComplexion: {
+		body_complexion: {
 			label: 'Body Complexion',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Fair',
 						value: 'fair'
@@ -312,11 +362,15 @@ export default class ProfileTable extends React.Component {
 				]
 			}
 		},
-		bloodGroup: {
+		blood_group: {
 			label: 'Blood Group',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'A +ve',
 						value: 'a+ve'
@@ -360,11 +414,15 @@ export default class ProfileTable extends React.Component {
 				]
 			}
 		},
-		motherTongue: {
+		mother_tongue: {
 			label: 'Mother Tongue',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Marathi',
 						value: 'marathi'
@@ -464,23 +522,45 @@ export default class ProfileTable extends React.Component {
 				]
 			}
 		},
-		specialCases: {
+		special_cases: {
 			label: 'Special Cases',
+			tagType: 'case',
 			type: 'tag-array'
 		},
-		describeMyself: {
+		describe_myself: {
 			label: 'I describe myself as',
+			tagType: 'description',
 			type: 'tag-array'
 		}
 	};
 
 	render() {
+		const { userProfile, userProfileId, updateUserProfile } = this.props;
 		return (
 			<CollapsibleTable
 				title="Basic Information"
-				object={AccountFixture.profile}
+				object={userProfile}
 				mapping={this.mappings}
+				updateAction={updateUserProfile}
+				userProfileId={userProfileId}
 			/>
 		);
 	}
 }
+
+const mapStateToProps = (state: IRootState, props: IProfileTableProps) => {
+	const profileId = props.userProfileId;
+	const userProfile = state.userProfiles[profileId];
+	return { userProfile };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+	return {
+		updateUserProfile: bindActionCreators(updateUserProfile, dispatch)
+	};
+};
+
+export default connect<any, any>(
+	mapStateToProps,
+	mapDispatchToProps
+)(ProfileTable);

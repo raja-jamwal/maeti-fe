@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import Text, { Value } from '../text';
 import { View, StyleSheet } from 'react-native';
 import GlobalStyles from '../../styles/global';
+import { map } from 'lodash';
 
 export default class Table extends React.Component {
 	renderValue(value, mapping) {
@@ -10,7 +11,11 @@ export default class Table extends React.Component {
 			return value;
 		}
 		if (_.isBoolean(value)) {
-			return value ? 'yes' : 'no';
+			return value ? 'Yes' : 'No';
+		}
+
+		if (mapping.type === 'tag-array') {
+			return map(value, 'value').join(', ');
 		}
 		return null;
 	}
@@ -54,7 +59,7 @@ export default class Table extends React.Component {
 								</Value>
 								<Value>:</Value>
 								<Value style={styles.tableValue}>
-									{this.renderValue(object[key])}
+									{this.renderValue(object[key], mappings[key])}
 								</Value>
 							</View>
 						);

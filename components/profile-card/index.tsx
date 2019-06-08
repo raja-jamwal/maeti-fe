@@ -1,4 +1,12 @@
-import React from 'react';
+//
+//	TODO: Add possible field values for other fields
+//  Add update login,
+// 		edit form receives a {}
+// 			add store function to be called on `update information`
+//
+//
+
+import * as React from 'react';
 import {
 	View,
 	// Text,
@@ -10,26 +18,31 @@ import Text, { Value } from '../text';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency } from '../../utils';
 import Divider from '../divider';
-import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
+import { UserProfile } from '../../store/reducers/account-defination';
 
-class ProfileCard extends React.Component {
+interface IProfileProps {
+	user_profile: UserProfile;
+	hideSelfDescription: boolean;
+}
+
+class ProfileCard extends React.Component<IProfileProps, any> {
+	constructor(props: IProfileProps) {
+		super(props);
+	}
+
 	fullWidth() {
 		const screenWidth = Dimensions.get('window').width;
-		const screenHeight = Dimensions.get('window').height;
+		// const screenHeight = Dimensions.get('window').height;
 		return {
 			width: screenWidth
 		};
 	}
 
 	render() {
-		const {
-			hideSelfDescription,
-			profile,
-			horoscope,
-			profession,
-			education,
-			family
-		} = this.props;
+		const { user_profile, hideSelfDescription } = this.props;
+		if (isEmpty(user_profile)) return null;
+		const { horoscope, education, profession, family } = { ...user_profile };
 		return (
 			<View style={styles.profileCard}>
 				<Image
@@ -39,41 +52,43 @@ class ProfileCard extends React.Component {
 				<View style={styles.profileSummaryContainer}>
 					<View>
 						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
-							{profile.fullName}
+							{user_profile.full_name || 'unknown name'}
 						</Text>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
-						<Value>Age {calculateAge(profile.dob)}</Value>
+						<Value>Age {calculateAge(user_profile.dob || 0)}</Value>
 						<Divider />
-						<Value>{profile.height} Ft</Value>
+						<Value>{user_profile.height || 0} Ft</Value>
 						<Divider />
-						<Value>{horoscope.caste}</Value>
-						<Value>, {horoscope.subCaste}</Value>
+						<Value>{horoscope.caste || 'unknown caste'}</Value>
+						<Value>, {horoscope.sub_caste || 'unknown sub caste'}</Value>
 					</View>
 					<View style={GlobalStyles.row}>
-						<Value>{education.education}</Value>
+						<Value>{education.education || 'unknown education'}</Value>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
-						<Value style={GlobalStyles.bold}>{profession.designation}</Value>
-						<Value>@ {profession.company}</Value>
+						<Value style={GlobalStyles.bold}>
+							{profession.designation || 'unknown designation'}
+						</Value>
+						<Value>@ {profession.company || 'unknown company'}</Value>
 						<Divider />
 						<Value style={GlobalStyles.bold}>
-							{humanizeCurrency(profession.annualIncome)}
+							{humanizeCurrency(profession.annual_income || '0')}
 							/Year
 						</Value>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 						<Value style={GlobalStyles.bold}>Home</Value>
-						<Value>- {family.familyLocation}</Value>
+						<Value>- {family.family_location || 'unknown location'}</Value>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 						<Value style={GlobalStyles.bold}>Work</Value>
-						<Value>- {profession.workCity}</Value>
+						<Value>- {profession.work_city || 'unknown work city'}</Value>
 					</View>
-					{profile.describeMyself && !hideSelfDescription && (
+					{user_profile.describe_myself && !hideSelfDescription && (
 						<View style={[GlobalStyles.row, styles.describeSelfContainer]}>
-							{profile.describeMyself.map(description => (
-								<Text style={styles.selfDescriptionChip} key={description.tagId}>
+							{user_profile.describe_myself.map(description => (
+								<Text style={styles.selfDescriptionChip} key={description.id}>
 									{description.value}
 								</Text>
 							))}
@@ -84,10 +99,6 @@ class ProfileCard extends React.Component {
 		);
 	}
 }
-
-ProfileCard.propTypes = {
-	accountId: PropTypes.string.isRequired
-};
 
 export default ProfileCard;
 

@@ -1,21 +1,35 @@
-import React from 'react';
+import * as React from 'react';
 import Collapsible from 'react-native-collapsible';
-import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import Text from '../text';
 import GlobalStyles from '../../styles/global';
 import Table from '../table';
 import { Icon } from 'expo';
 import Colors from '../../constants/Colors';
-import { Ionicons } from '@expo/samples/ExpoLinksView';
 import { withNavigation } from 'react-navigation';
 
-class CollapsibleTable extends React.Component {
-	constructor(props) {
+interface ICollapsibleTableProps {
+	title: string;
+	object: any;
+	navigation: any;
+	mapping: any;
+	router: any;
+	userProfileId: number;
+	updateAction: (a: any) => any;
+}
+
+interface ICollapsibleTableState {
+	expanded: boolean;
+}
+
+class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsibleTableState> {
+	constructor(props: ICollapsibleTableProps) {
 		super(props);
+
 		this.state = {
 			expanded: true
 		};
+
 		this.toggleExpand = this.toggleExpand.bind(this);
 		this.editTable = this.editTable.bind(this);
 	}
@@ -28,13 +42,20 @@ class CollapsibleTable extends React.Component {
 	}
 
 	editTable() {
-		const { navigation, object, mapping, title } = this.props;
-		navigation.push('EditProfileScreen', { title, object, mapping });
+		const { navigation, object, mapping, title, updateAction, userProfileId } = this.props;
+		navigation.push('EditProfileScreen', {
+			title,
+			object,
+			mapping,
+			updateAction,
+			userProfileId
+		});
 	}
 
 	render() {
-		const { title, object, mapping, router } = this.props;
+		const { title, object, mapping, router, updateAction } = this.props;
 		// console.warn(router);
+		console.log('updateAction', updateAction);
 		const { expanded } = this.state;
 		const caretIconName = expanded ? 'md-arrow-dropup' : 'md-arrow-dropdown';
 		return (
@@ -98,10 +119,5 @@ const styles = StyleSheet.create({
 		padding: 10
 	}
 });
-
-CollapsibleTable.propTypes = {
-	title: PropTypes.string.isRequired,
-	object: PropTypes.object.isRequired
-};
 
 export default withNavigation(CollapsibleTable);

@@ -6,7 +6,6 @@
   "lastLogin": 1548179981,
 
   "payment": {
-      "paymentId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
       "package": "basic",
       "registrationDate": 1548179981,
       "expiryDate": 1548179981,
@@ -14,14 +13,12 @@
    },
 
   "verification": {
-    "verificationId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "address":  true,
     "identity": true,
     "income": true
   },
 
   "profile": {
-    "profileId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "gender": "female",
     "about": "I have graduated in Software Engineering and currently working with an MNC in Pune. I am a family oriented individual. I am blessed to be a part of a happy loving family with liberal values,integrity and freedom to make choices in life. I am simple, loving and a spiritual individual with a unique personality blend of being introvert and extrovert. I am known for being Extremely patient in critical circumstances, humble ,soft spoken and generous to every individual I cross my path. Future Aspirations:Alligning my career aspirations I wish to grow in personally. I have a Simple living with high aspirations to fly and reach heights personally and professionally along with my partner. I enjoy reading books in spare time. Forgot to mention that I am a big time Foodie. I am looking for someone who can match my wavelength and opens the horizons of the way I think,be thoughtful and uplift me numerously. I wish to make a happy loving and a caring family of my own with my partner and his family and expect the same in return",
     "createdBy": "mother",
@@ -72,7 +69,6 @@
   },
 
   "education": {
-    "educationId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "mediumOfPrimaryEducation": "English",
     "highestEducationLevel": "Graduate",
     "educationField": "Engineering",
@@ -82,7 +78,6 @@
   },
 
   "profession": {
-    "professionId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "occupation": "employee",
     "workingField": "MNC",
     "lengthOfEmployment": 3,
@@ -103,7 +98,6 @@
   },
 
   "horoscope": {
-    "horoscopeId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "caste": "Mali",
     "subCaste": "Fulmali",
     "birthPlace": "Mumbai",
@@ -168,7 +162,6 @@
   },
 
   "otherDetails": {
-    "otherDetailsId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "medicalHistory": "some note here",
     "currentMedications": "some note here",
     "passport": false,
@@ -176,7 +169,6 @@
   },
 
   "contactInformation": {
-    "contactInformationId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "address": "Thorat heights,bhusari colony,paud road,kothrud",
     "pinCode": "411038",
     "residentialCity": "Pune, India",
@@ -194,7 +186,6 @@
   },
 
   "references": {
-    "referenceId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "relativeName": "Rupraj Chavan",
     "relationWithMember": "mama",
     "contactNumber": "999",
@@ -202,7 +193,6 @@
   },
 
   "family": {
-    "familyId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "fatherName": "Milind Raskar",
     "father": "Alive",
     "fatherOccupation": "business",
@@ -224,7 +214,6 @@
     "parentsLivingSeperately": true,
 
     "otherInformation": {
-      "otherInformationId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
       "familyValues": "moderate",
       "familyFinancialBackground": "middle class",
       "familyAnnualIncome": "5 Lac to 10 Lac",
@@ -265,20 +254,17 @@
   },
 
   "preference": {
-    "preferenceId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
     "maritalStatus": "never married",
     "caste": {
       "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
       "value": "Agarwal",
       "tagType": "caste"
     },
-    "subCaste": [
-      {
+    "subCaste": {
         "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
         "value": "Agri",
         "tagType": "subcaste"
-      }
-    ],
+    },
     "differenceHeight": "any",
     "differenceAge": "any",
     "educationLevel": [
@@ -330,7 +316,6 @@
 
   "photos": [
     {
-      "photoId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
       "url": "https://www.google.com"
     }
   ]

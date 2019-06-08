@@ -2,17 +2,29 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-import Text from './components/text';
-import { Provider } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import { store } from './store';
+import { fetchAccount } from './store/reducers/account-reducer';
+import { bindActionCreators } from 'redux';
 
-// import { hello } from './TsTest';
-// hello();
+const styles = StyleSheet.create({
+	container: {
+		flex: 1
+		// backgroundColor: '#fff'
+	}
+});
 
-export default class App extends React.Component {
+class App extends React.Component {
 	state = {
 		isLoadingComplete: false
 	};
+
+	componentDidMount() {
+		// check for local token
+		// if token is there
+		// pull account from BE
+		// others set to
+	}
 
 	render() {
 		if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -25,15 +37,21 @@ export default class App extends React.Component {
 			);
 		} else {
 			return (
-				<Provider store={store}>
-					<View style={styles.container}>
-						{Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-						<AppNavigator />
-					</View>
-				</Provider>
+				<View style={styles.container}>
+					{Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+					<AppNavigator />
+				</View>
 			);
 		}
 	}
+
+	_loadAccount = function() {
+		console.log('loading account');
+		return new Promise((resolve, reject) => {
+			this.props.fetchAccount();
+			resolve('yeahd');
+		});
+	};
 
 	_loadResourcesAsync = async () => {
 		return Promise.all([
@@ -50,7 +68,8 @@ export default class App extends React.Component {
 				'comfortaa-bold': require('./assets/fonts/Comfortaa-Bold.ttf'),
 				'comfortaa-light': require('./assets/fonts/Comfortaa-Light.ttf'),
 				'comfortaa-regular': require('./assets/fonts/Comfortaa-Regular.ttf')
-			})
+			}),
+			this._loadAccount()
 		]);
 	};
 
@@ -65,9 +84,23 @@ export default class App extends React.Component {
 	};
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-		// backgroundColor: '#fff'
+const mapDispatchToProps = function(dispatch) {
+	return {
+		fetchAccount: bindActionCreators(fetchAccount, dispatch)
+	};
+};
+
+const ConnectedApp = connect(
+	null,
+	mapDispatchToProps
+)(App);
+
+export default class AppContainer extends React.Component {
+	render() {
+		return (
+			<Provider store={store}>
+				<ConnectedApp {...this.props} />
+			</Provider>
+		);
 	}
-});
+}

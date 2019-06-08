@@ -1,73 +1,86 @@
-import React from 'react';
+import * as React from 'react';
 import { View, StyleSheet, Image, ScrollView, TouchableNativeFeedback } from 'react-native';
 import Text from '../text';
 import ConnectedProfile from '../profile-card/connected-profile';
 import GlobalStyles from '../../styles/global';
 import ProfileTable from '../collapsible-table/profile-table';
 import EducationTable from '../collapsible-table/education-table';
-import ProfessionTable from '../collapsible-table/profesional-table';
+import ProfessionTable from '../collapsible-table/profession-table';
 import HoroscopeTable from '../collapsible-table/horoscope-table';
 import InvestmentTable from '../collapsible-table/investment-table';
 import LifestyleTable from '../collapsible-table/lifestyle-table';
 import ContactTable from '../collapsible-table/contact-table';
 import ReferenceTable from '../collapsible-table/reference-table';
 import FamilyTable from '../collapsible-table/family-table';
-import ExpectationsTable from '../collapsible-table/expectations-table';
 import Colors from '../../constants/Colors';
 import VerificationTable from '../collapsible-table/verification-table';
+import PreferenceTable from '../collapsible-table/preference-table';
 
-export default class ProfileInfoTab extends React.Component {
-	constructor(props) {
+interface IProfileInfoTabProps {
+	userProfileId: number;
+}
+
+interface IProfileInfoTabState {
+	route: string;
+}
+
+export default class ProfileInfoTab extends React.Component<
+	IProfileInfoTabProps,
+	IProfileInfoTabState
+> {
+	constructor(props: IProfileInfoTabProps) {
 		super(props);
 		this.state = {
 			route: 'personal'
 		};
 		this._handleRouteChange = this._handleRouteChange.bind(this);
+		this._renderScene = this._renderScene.bind(this);
 	}
 
-	_handleRouteChange(route) {
+	_handleRouteChange(route: string) {
 		this.setState({ route });
 	}
 
-	_renderScene = props => {
-		const { route } = props;
+	_renderScene() {
+		const { route } = this.state;
+		const { userProfileId } = this.props;
 		let tab = null;
 		switch (route) {
 			case 'personal':
 				tab = (
 					<View style={styles.scene}>
-						<VerificationTable />
-						<ProfileTable />
-						<EducationTable />
-						<ProfessionTable />
-						<HoroscopeTable />
-						<InvestmentTable />
-						<LifestyleTable />
-						<ContactTable />
-						<ReferenceTable />
+						<VerificationTable userProfileId={userProfileId} />
+						<ProfileTable userProfileId={userProfileId} />
+						<EducationTable userProfileId={userProfileId} />
+						<ProfessionTable userProfileId={userProfileId} />
+						<HoroscopeTable userProfileId={userProfileId} />
+						<InvestmentTable userProfileId={userProfileId} />
+						<LifestyleTable userProfileId={userProfileId} />
+						<ContactTable userProfileId={userProfileId} />
+						<ReferenceTable userProfileId={userProfileId} />
 					</View>
 				);
 				break;
 			case 'family':
 				tab = (
 					<View>
-						<FamilyTable />
+						<FamilyTable userProfileId={userProfileId} />
 					</View>
 				);
 				break;
 			case 'expectations':
 				tab = (
 					<View>
-						<ExpectationsTable />
+						<PreferenceTable userProfileId={userProfileId} />
 					</View>
 				);
 				break;
 		}
 
 		return <View>{tab}</View>;
-	};
+	}
 
-	activeRoute(current) {
+	activeRoute(current: string) {
 		const { route } = this.state;
 		if (route === current) {
 			return styles.focusedTab;
@@ -76,6 +89,8 @@ export default class ProfileInfoTab extends React.Component {
 	}
 
 	render() {
+		const { userProfileId } = this.props;
+		if (!userProfileId) return null;
 		return (
 			<ScrollView
 				stickyHeaderIndices={[1]}
@@ -142,7 +157,7 @@ export default class ProfileInfoTab extends React.Component {
 						</TouchableNativeFeedback>
 					</View>
 				</View>
-				<View>{this._renderScene({ route: this.state.route })}</View>
+				<View>{this._renderScene()}</View>
 			</ScrollView>
 		);
 	}

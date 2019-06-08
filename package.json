@@ -12,17 +12,23 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "@types/react-redux": "^7.0.9",
+    "@types/redux-actions": "^2.6.1",
+    "@types/redux-thunk": "^2.1.0",
     "expo": "^32.0.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-check-box": "^2.1.7",
     "react-native-gifted-chat": "^0.7.2",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.5",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@types/expo": "^32.0.0",
-    "@types/react": "^16.8.2",
+    "@types/react": "^16.8.19",
     "babel-preset-expo": "^5.0.0",
     "eslint": "^5.12.1",
     "eslint-config-airbnb": "^17.1.0",

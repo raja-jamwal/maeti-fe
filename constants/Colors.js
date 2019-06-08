@@ -18,3 +18,5 @@ export default {
 	noticeText: '#fff',
 	pink: 'rgb(212, 20, 90)'
 };
+
+export const text = '123';

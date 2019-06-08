@@ -1,14 +1,28 @@
-import React from 'react';
+import * as React from 'react';
 import CollapsibleTable from '../collapsible-table';
-import AccountFixture from '../../fixtures/account.json';
+import { IRootState } from '../../store';
+import { connect } from 'react-redux';
+import { Profession } from '../../store/reducers/account-defination';
+import { bindActionCreators, Dispatch } from 'redux';
+import { updateProfession } from '../../store/reducers/user-profile-reducer';
 
-export default class ProfessionTable extends React.Component {
+interface IProfessionTableProps {
+	userProfileId: number;
+	profession: Profession;
+	updateProfession: () => any;
+}
+
+class ProfessionTable extends React.Component<IProfessionTableProps> {
 	mappings = {
 		occupation: {
 			label: 'Occupation',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Business',
 						value: 'business'
@@ -84,11 +98,15 @@ export default class ProfessionTable extends React.Component {
 				]
 			}
 		},
-		workingField: {
+		working_field: {
 			label: 'Working Field',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Research',
 						value: 'research'
@@ -140,7 +158,7 @@ export default class ProfessionTable extends React.Component {
 				]
 			}
 		},
-		lengthOfEmployment: {
+		length_of_employment: {
 			label: 'Length of Employment(in Month)',
 			type: 'number'
 		},
@@ -154,9 +172,13 @@ export default class ProfessionTable extends React.Component {
 		},
 		currency: {
 			label: 'Currency',
-			type: 'string',
+			type: 'choice',
 			choice: {
 				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
 					{
 						label: 'Rupees',
 						value: 'rupees'
@@ -256,35 +278,63 @@ export default class ProfessionTable extends React.Component {
 				]
 			}
 		},
-		monthlyIncome: {
+		monthly_income: {
 			label: 'Monthly Income',
-			type: 'currency'
+			type: 'number'
 		},
-		annualIncome: {
+		annual_income: {
 			label: 'Annual Income',
-			type: 'currency'
+			type: 'number'
 		},
 		loans: {
 			label: 'Loans / Financial Liabilities',
+			tagType: 'loan',
 			type: 'tag-array'
 		},
-		otherLoans: {
+		other_loans: {
 			label: 'Other loans',
 			type: 'string'
 		},
-		workCity: {
+		work_city: {
 			label: 'Work City',
 			type: 'string'
 		}
 	};
 
 	render() {
+		const { profession, userProfileId, updateProfession } = this.props;
+		if (!profession) return null;
 		return (
 			<CollapsibleTable
 				title="Professional Information"
-				object={AccountFixture.profession}
+				object={profession}
 				mapping={this.mappings}
+				updateAction={updateProfession}
+				userProfileId={userProfileId}
 			/>
 		);
 	}
 }
+
+const mapStateToProps = (state: IRootState, props: IProfessionTableProps) => {
+	const profileId = props.userProfileId;
+	const profile = state.userProfiles[profileId];
+	if (profile) {
+		const profession = profile.profession;
+		return {
+			profession
+		};
+	}
+	return {};
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+	return {
+		updateProfession: bindActionCreators(updateProfession, dispatch)
+	};
+};
+
+export default connect<any, any>(
+	mapStateToProps,
+	mapDispatchToProps
+)(ProfessionTable);

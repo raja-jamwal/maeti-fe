@@ -18,6 +18,9 @@ export default StyleSheet.create({
 		fontFamily: 'comfortaa-regular',
 		fontSize: 14
 	},
+	justifyCenter: {
+		justifyContent: 'center'
+	},
 	alignCenter: {
 		alignItems: 'center'
 	},
