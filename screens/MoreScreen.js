@@ -10,11 +10,10 @@ export default class MoreScreen extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text style={[styles.title]}>Sindhi Jeevan Sathi</Text>
-				<Text style={styles.offWhite}>سيٺي ميچ ٺاهيندڙ</Text>
+				<Text style={[styles.title]}>Jeevan Sathi</Text>
 				<Text style={styles.offWhite}>v0.1</Text>
 				<Text style={styles.offWhite}>For support & help contact</Text>
-				<Text style={styles.offWhite}>feedback@sidhisathi.com</Text>
+				<Text style={styles.offWhite}>feedback@domain.com</Text>
 			</View>
 		);
 	}

@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f27ee64d-3191-47b5-a7d4-85e4d810389a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
+    <list default="true" id="f27ee64d-3191-47b5-a7d4-85e4d810389a" name="Default Changelist" comment="VSC support">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/contact-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/contact-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/education-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/education-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/family-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/family-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/horoscope-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/horoscope-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/investment-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/investment-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/lifestyle-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/lifestyle-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/preference-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/preference-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/profession-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/profession-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/profile-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/profile-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/reference-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/reference-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/collapsible-table/verification-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/collapsible-table/verification-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/edit-form/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/edit-form/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/profile-card/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/profile-card/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/profile-info-tab/scroll-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/profile-info-tab/scroll-view.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/tag-selector/tag-selector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/tag-selector/tag-selector.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/reducers/tag-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/store/reducers/tag-reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/MoreScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/MoreScreen.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -43,7 +26,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="editorconfig" value="1" />
-          <entry key="js" value="195" />
+          <entry key="js" value="196" />
           <entry key="json" value="14" />
           <entry key="md" value="1" />
           <entry key="png" value="18" />
@@ -56,7 +39,7 @@
         <counts>
           <entry key="Image" value="18" />
           <entry key="JSON" value="15" />
-          <entry key="JavaScript" value="195" />
+          <entry key="JavaScript" value="196" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="TypeScript" value="30" />
           <entry key="TypeScript JSX" value="64" />
@@ -65,20 +48,20 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="editorconfig" value="3" />
-          <entry key="js" value="30411" />
+          <entry key="js" value="30422" />
           <entry key="json" value="4989" />
           <entry key="md" value="168" />
           <entry key="prettierrc" value="14" />
           <entry key="ts" value="7880" />
           <entry key="tsx" value="11016" />
-          <entry key="txt" value="331" />
+          <entry key="txt" value="355" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="5003" />
-          <entry key="JavaScript" value="30411" />
-          <entry key="PLAIN_TEXT" value="502" />
+          <entry key="JavaScript" value="30422" />
+          <entry key="PLAIN_TEXT" value="526" />
           <entry key="TypeScript" value="7880" />
           <entry key="TypeScript JSX" value="11016" />
         </counts>
@@ -96,22 +79,10 @@
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/components/interests-tab/index.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="420">
-                  <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-                  <folding>
-                    <element signature="e#0#31#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/components/message-in-inbox/index.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="435">
-                  <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+                  <caret line="29" selection-start-line="29" selection-end-line="29" />
                   <folding>
                     <element signature="e#0#26#0" expanded="true" />
                   </folding>
@@ -135,7 +106,7 @@
             <entry file="file://$PROJECT_DIR$/components/profile-info-tab/scroll-view.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="270">
-                  <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+                  <caret line="18" selection-start-line="18" selection-end-line="18" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -171,7 +142,7 @@
             <entry file="file://$PROJECT_DIR$/components/tag-selector/tag-selector.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1800">
-                  <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
+                  <caret line="120" selection-start-line="120" selection-end-line="120" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -179,7 +150,7 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/components/text/index.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="225">
@@ -191,11 +162,20 @@
               </provider>
             </entry>
           </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/screens/MoreScreen.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="150">
+                  <caret line="13" column="57" lean-forward="true" selection-start-line="13" selection-start-column="57" selection-end-line="13" selection-end-column="57" />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/components/profile-card/index.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="345">
-                  <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+                  <caret line="23" selection-start-line="23" selection-end-line="23" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                     <element signature="e#175#206#0" expanded="true" />
@@ -233,7 +213,7 @@
             <entry file="file://$PROJECT_DIR$/components/collapsible-table/reference-table.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="240">
-                  <caret line="51" column="24" lean-forward="true" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
+                  <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -244,8 +224,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/screens/EditProfileScreen.tsx">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="375">
-                  <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+                <state relative-caret-position="7">
+                  <caret line="25" selection-start-line="25" selection-end-line="25" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -257,7 +237,7 @@
             <entry file="file://$PROJECT_DIR$/components/collapsible-table/verification-table.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="495">
-                  <caret line="64" column="20" lean-forward="true" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
+                  <caret line="64" column="20" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -281,7 +261,7 @@
             <entry file="file://$PROJECT_DIR$/components/collapsible-table/index.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="255">
-                  <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+                  <caret line="24" selection-start-line="24" selection-end-line="24" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -293,7 +273,7 @@
             <entry file="file://$PROJECT_DIR$/components/collapsible-table/investment-table.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="210">
-                  <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+                  <caret line="14" selection-start-line="14" selection-end-line="14" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -317,7 +297,7 @@
             <entry file="file://$PROJECT_DIR$/components/collapsible-table/preference-table.tsx">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="195">
-                  <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+                  <caret line="13" selection-start-line="13" selection-end-line="13" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -400,7 +380,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/navigation/AppNavigator.js" />
         <option value="$PROJECT_DIR$/App.js" />
         <option value="$PROJECT_DIR$/components/profile-card/index.js" />
         <option value="$PROJECT_DIR$/screens/ExploreScreen.js" />
@@ -451,6 +430,7 @@
         <option value="$PROJECT_DIR$/components/table/index.js" />
         <option value="$PROJECT_DIR$/components/tag-selector/tag-selector.tsx" />
         <option value="$PROJECT_DIR$/components/collapsible-table/reference-table.tsx" />
+        <option value="$PROJECT_DIR$/screens/MoreScreen.js" />
       </list>
     </option>
   </component>
@@ -497,7 +477,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="global.d&#9;FILE&#9;file:///Users/test/datagrids/expo-test/global.d.ts&#10;global&#9;FILE&#9;file:///Users/test/datagrids/expo-test/styles/global.ts&#10;user-pr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;tag-&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/tag-reducer.ts&#10;tagR&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/tag-reducer.ts&#10;fixtures/&#9;FILE&#9;file:///Users/test/datagrids/expo-test/fixtures&#10;API&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/API.ts&#10;user&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;config&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/config.json&#10;userPr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;colla&#9;null&#9;null&#10;profi&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;editpr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;color&#9;FILE&#9;file:///Users/test/datagrids/expo-test/constants/Colors.js&#10;editpro&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;editP&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;edit&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;coll&#9;null&#9;null&#10;verifica&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/collapsible-table/verification-table.tsx&#10;verifi&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/collapsible-table/verification-table.tsx&#10;collap&#9;null&#9;null&#10;Editp&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.js&#10;scroll-v&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-info-tab/scroll-view.tsx&#10;user-&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;profile&#9;null&#9;null&#10;store&#9;null&#9;null&#10;profile-ca&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;explore&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;profile-c&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;account&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/account-reducer.ts&#10;fav&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;accoun&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/account-reducer.js&#10;explo&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;store/in&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/index.js&#10;ex&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;hom&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/HomeScreen.js&#10;expl&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;more&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MoreScreen.js&#10;inter&#9;null&#9;null&#10;main&#9;FILE&#9;file:///Users/test/datagrids/expo-test/navigation/MainTabNavigator.js&#10;explor&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;fa&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;favou&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;glo&#9;FILE&#9;file:///Users/test/datagrids/expo-test/styles/global.js&#10;chat&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ChatScreen.js&#10;mess&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MessagesScreen.js&#10;messa&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MessagesScreen.js&#10;message&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MessagesScreen.js&#10;inbox&#9;null&#9;null&#10;me&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MessagesScreen.js" />
+    <property name="SearchEverywhereHistoryKey" value="more&#9;null&#9;null&#10;global.d&#9;FILE&#9;file:///Users/test/datagrids/expo-test/global.d.ts&#10;global&#9;FILE&#9;file:///Users/test/datagrids/expo-test/styles/global.ts&#10;user-pr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;tag-&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/tag-reducer.ts&#10;tagR&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/tag-reducer.ts&#10;fixtures/&#9;FILE&#9;file:///Users/test/datagrids/expo-test/fixtures&#10;API&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/API.ts&#10;user&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;config&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/config.json&#10;userPr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;colla&#9;null&#9;null&#10;profi&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;editpr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;color&#9;FILE&#9;file:///Users/test/datagrids/expo-test/constants/Colors.js&#10;editpro&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;editP&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;edit&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;coll&#9;null&#9;null&#10;verifica&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/collapsible-table/verification-table.tsx&#10;verifi&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/collapsible-table/verification-table.tsx&#10;collap&#9;null&#9;null&#10;Editp&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.js&#10;scroll-v&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-info-tab/scroll-view.tsx&#10;user-&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;profile&#9;null&#9;null&#10;store&#9;null&#9;null&#10;profile-ca&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;explore&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;profile-c&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;account&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/account-reducer.ts&#10;fav&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;accoun&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/account-reducer.js&#10;explo&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;store/in&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/index.js&#10;ex&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;hom&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/HomeScreen.js&#10;expl&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;inter&#9;null&#9;null&#10;main&#9;FILE&#9;file:///Users/test/datagrids/expo-test/navigation/MainTabNavigator.js&#10;explor&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;fa&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;favou&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;glo&#9;FILE&#9;file:///Users/test/datagrids/expo-test/styles/global.js&#10;chat&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ChatScreen.js&#10;mess&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MessagesScreen.js&#10;messa&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MessagesScreen.js&#10;message&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MessagesScreen.js&#10;inbox&#9;null&#9;null&#10;me&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/MessagesScreen.js" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -639,17 +619,31 @@
       <option name="project" value="LOCAL" />
       <updated>1560001724538</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="code cleanup">
+      <created>1560002661909</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1560002661909</updated>
+    </task>
+    <task id="LOCAL-00015" summary="VSC support">
+      <created>1560002970170</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1560002970170</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="144125000" />
+    <option name="totallyTimeSpent" value="144574000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="-125" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.108478144" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.108478144" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -664,7 +658,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32970297" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.36435643" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -703,7 +697,6 @@
     <MESSAGE value="DAO and basic fetch Account" />
     <MESSAGE value="integration with server" />
     <MESSAGE value="Todos for next iter" />
-    <MESSAGE value="code cleanup" />
     <MESSAGE value="user profile reducer and linked up profile tab to store &amp; converted profile tab to ts" />
     <MESSAGE value="ability to update profile data" />
     <MESSAGE value="basic tagging support" />
@@ -711,16 +704,11 @@
     <MESSAGE value="form fields all working" />
     <MESSAGE value="form fields" />
     <MESSAGE value="readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="readme" />
+    <MESSAGE value="code cleanup" />
+    <MESSAGE value="VSC support" />
+    <option name="LAST_COMMIT_MESSAGE" value="VSC support" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/@types/react-native/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="955">
-          <caret line="4933" column="13" selection-start-line="4933" selection-start-column="13" selection-end-line="4933" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/screens/ChatScreen.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -946,7 +934,7 @@
     <entry file="file://$PROJECT_DIR$/components/collapsible-table/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -956,7 +944,7 @@
     <entry file="file://$PROJECT_DIR$/components/collapsible-table/investment-table.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -976,7 +964,7 @@
     <entry file="file://$PROJECT_DIR$/components/collapsible-table/preference-table.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -1013,7 +1001,7 @@
     <entry file="file://$PROJECT_DIR$/components/interests-tab/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -1023,7 +1011,7 @@
     <entry file="file://$PROJECT_DIR$/components/message-in-inbox/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
-          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
@@ -1043,7 +1031,7 @@
     <entry file="file://$PROJECT_DIR$/components/profile-card/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#175#206#0" expanded="true" />
@@ -1061,7 +1049,7 @@
     <entry file="file://$PROJECT_DIR$/components/profile-info-tab/scroll-view.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -1091,7 +1079,7 @@
     <entry file="file://$PROJECT_DIR$/components/tag-selector/tag-selector.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1800">
-          <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
+          <caret line="120" selection-start-line="120" selection-end-line="120" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -1121,7 +1109,7 @@
     <entry file="file://$PROJECT_DIR$/components/collapsible-table/verification-table.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
-          <caret line="64" column="20" lean-forward="true" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
+          <caret line="64" column="20" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -1131,7 +1119,7 @@
     <entry file="file://$PROJECT_DIR$/components/collapsible-table/reference-table.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
-          <caret line="51" column="24" lean-forward="true" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
+          <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -1140,8 +1128,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/screens/EditProfileScreen.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="7">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -1155,6 +1143,13 @@
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/MoreScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="13" column="57" lean-forward="true" selection-start-line="13" selection-start-column="57" selection-end-line="13" selection-end-column="57" />
         </state>
       </provider>
     </entry>
