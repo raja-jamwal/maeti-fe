@@ -18,7 +18,7 @@ class InvestmentTable extends React.Component<IInvestmentTableProps> {
 			label: 'Home',
 			type: 'string'
 		},
-		real_estate: {
+		realEstate: {
 			label: 'Real Estate',
 			type: 'string'
 		},

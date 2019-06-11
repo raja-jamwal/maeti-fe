@@ -1,12 +1,16 @@
 import {
 	ContactInformation,
 	DAO,
-	Education, Family, FamilyOtherInformation,
+	Education,
+	Family,
+	FamilyOtherInformation,
 	Horoscope,
 	Investments,
-	Lifestyle, Preference,
+	Lifestyle,
+	Preference,
 	Profession,
-	UserProfile, UserReference,
+	UserProfile,
+	UserReference,
 	Verification
 } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
@@ -36,17 +40,18 @@ interface IUpdateEnityPayload {
 	object: any;
 }
 
-const patchEntity = (entityUrl: string, object: any, entityId?: number ) => {
-	const url = entityId ? `${entityUrl}/${entityId}`: entityUrl;
+const patchEntity = (entityUrl: string, object: any, entityId?: number) => {
+	const url = entityId ? `${entityUrl}/${entityId}` : entityUrl;
 	const method = entityId ? 'PATCH' : 'POST';
 	return fetch(url, {
 		method: method,
 		headers: {
-			'Accept': 'application/json',
+			Accept: 'application/json',
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(object)
-	}).then(response => {
+	})
+		.then(response => {
 			if (response.status !== 200) {
 				throw response.json();
 			}
@@ -56,16 +61,22 @@ const patchEntity = (entityUrl: string, object: any, entityId?: number ) => {
 		.catch(err => console.log('err ', err));
 };
 
-const updateLocalAndServer = function<T extends DAO>(userProfileId: number, entity: T, entityUrl: string, getUpdatedProfile: (userProfile: UserProfile, entity: T) => UserProfile, direct?: boolean) {
+const updateLocalAndServer = function<T extends DAO>(
+	userProfileId: number,
+	entity: T,
+	entityUrl: string,
+	getUpdatedProfile: (userProfile: UserProfile, entity: T) => UserProfile,
+	direct?: boolean
+) {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		if (!userProfileId) return null;
 		const entityId = direct ? undefined : entity.id;
 		return patchEntity(entityUrl, entity, entityId)
 			.then((updatedServerEntity: T) => {
 				const userProfile = getState().userProfiles[userProfileId];
-				const clonedProfile = {...userProfile};
+				const clonedProfile = { ...userProfile };
 				const updatedUserProfile = getUpdatedProfile(clonedProfile, updatedServerEntity);
-				dispatch(addProfile({...updatedUserProfile}));
+				dispatch(addProfile({ ...updatedUserProfile }));
 				return updatedUserProfile;
 			})
 			.catch(err => console.log('err ', err));
@@ -82,7 +93,13 @@ export const updateVerification = function({ userProfileId, object }: IUpdateEni
 
 export const updateUserProfile = function({ userProfileId, object }: IUpdateEnityPayload) {
 	const updateFunc = (userProfile: UserProfile, newUserProfile: UserProfile) => newUserProfile;
-	return updateLocalAndServer<UserProfile>(userProfileId, object, API.USER_PROFILE_SAVE, updateFunc, true);
+	return updateLocalAndServer<UserProfile>(
+		userProfileId,
+		object,
+		API.USER_PROFILE_SAVE,
+		updateFunc,
+		true
+	);
 
 	/*return (dispatch: Dispatch<any>) => {
 		return fetch(API.USER_PROFILE_SAVE, {
@@ -119,7 +136,13 @@ export const updateProfession = function({ userProfileId, object }: IUpdateEnity
 		userProfile.profession = profession;
 		return userProfile;
 	};
-	return updateLocalAndServer<Profession>(userProfileId, object, API.PROFESSION_SAVE, updateFunc, true);
+	return updateLocalAndServer<Profession>(
+		userProfileId,
+		object,
+		API.PROFESSION_SAVE,
+		updateFunc,
+		true
+	);
 };
 
 export const updateHoroscope = function({ userProfileId, object }: IUpdateEnityPayload) {
@@ -135,7 +158,13 @@ export const updateInvestment = function({ userProfileId, object }: IUpdateEnity
 		userProfile.investments = investments;
 		return userProfile;
 	};
-	return updateLocalAndServer<Investments>(userProfileId, object, API.INVESTMENT_SAVE, updateFunc, true);
+	return updateLocalAndServer<Investments>(
+		userProfileId,
+		object,
+		API.INVESTMENT_SAVE,
+		updateFunc,
+		true
+	);
 };
 
 export const updateLifestyle = function({ userProfileId, object }: IUpdateEnityPayload) {
@@ -143,24 +172,40 @@ export const updateLifestyle = function({ userProfileId, object }: IUpdateEnityP
 		userProfile.lifestyle = lifestyle;
 		return userProfile;
 	};
-	return updateLocalAndServer<Lifestyle>(userProfileId, object, API.LIFESTYLE_SAVE, updateFunc, true);
+	return updateLocalAndServer<Lifestyle>(
+		userProfileId,
+		object,
+		API.LIFESTYLE_SAVE,
+		updateFunc,
+		true
+	);
 };
 
 export const updateContactInformation = function({ userProfileId, object }: IUpdateEnityPayload) {
 	const updateFunc = (userProfile: UserProfile, contactInformation: ContactInformation) => {
 		console.log('contactInfo ', contactInformation);
-		userProfile.contact_information = contactInformation;
+		userProfile.contactInformation = contactInformation;
 		return userProfile;
 	};
-	return updateLocalAndServer<ContactInformation>(userProfileId, object, API.CONTACT_INFORMATIONS, updateFunc);
+	return updateLocalAndServer<ContactInformation>(
+		userProfileId,
+		object,
+		API.CONTACT_INFORMATIONS,
+		updateFunc
+	);
 };
 
 export const updateUserReference = function({ userProfileId, object }: IUpdateEnityPayload) {
 	const updateFunc = (userProfile: UserProfile, userReference: UserReference) => {
-		userProfile.user_reference = userReference;
+		userProfile.userReference = userReference;
 		return userProfile;
 	};
-	return updateLocalAndServer<UserReference>(userProfileId, object, API.USER_REFERENCES, updateFunc);
+	return updateLocalAndServer<UserReference>(
+		userProfileId,
+		object,
+		API.USER_REFERENCES,
+		updateFunc
+	);
 };
 
 export const updateFamily = function({ userProfileId, object }: IUpdateEnityPayload) {
@@ -171,13 +216,25 @@ export const updateFamily = function({ userProfileId, object }: IUpdateEnityPayl
 	return updateLocalAndServer<Family>(userProfileId, object, API.FAMILIES, updateFunc);
 };
 
-export const updateFamilyOtherInformation = function({ userProfileId, object }: IUpdateEnityPayload) {
-	const updateFunc = (userProfile: UserProfile, familyOtherInformation: FamilyOtherInformation) => {
-		userProfile.family = {...userProfile.family};
+export const updateFamilyOtherInformation = function({
+	userProfileId,
+	object
+}: IUpdateEnityPayload) {
+	const updateFunc = (
+		userProfile: UserProfile,
+		familyOtherInformation: FamilyOtherInformation
+	) => {
+		userProfile.family = { ...userProfile.family };
 		userProfile.family.family_other_information = familyOtherInformation;
 		return userProfile;
 	};
-	return updateLocalAndServer<FamilyOtherInformation>(userProfileId, object, API.FAMILY_OTHER_INFORMATION_SAVE, updateFunc, true);
+	return updateLocalAndServer<FamilyOtherInformation>(
+		userProfileId,
+		object,
+		API.FAMILY_OTHER_INFORMATION_SAVE,
+		updateFunc,
+		true
+	);
 };
 
 export const updatePreference = function({ userProfileId, object }: IUpdateEnityPayload) {
@@ -185,15 +242,23 @@ export const updatePreference = function({ userProfileId, object }: IUpdateEnity
 		userProfile.preference = preference;
 		return userProfile;
 	};
-	return updateLocalAndServer<Preference>(userProfileId, object, API.PREFERENCE_SAVE, updateFunc, true);
+	return updateLocalAndServer<Preference>(
+		userProfileId,
+		object,
+		API.PREFERENCE_SAVE,
+		updateFunc,
+		true
+	);
 };
 
-
-export const userProfileReducer = handleActions<IUserProfileState>({
-	[ADD_PROFILE]: (state, { payload }) => {
-		const profile = (payload as any) as UserProfile;
-		// console.log('adding or updating new profile', profile);
-		return {...state, [profile.id]: profile };
+export const userProfileReducer = handleActions<IUserProfileState>(
+	{
+		[ADD_PROFILE]: (state, { payload }) => {
+			const profile = (payload as any) as UserProfile;
+			console.log('adding or updating new profile', profile);
+			return { ...state, [profile.id]: profile };
+		}
+		// [UPDATE_VERIFICATION]: (state, { payload }) => state
 	},
-	// [UPDATE_VERIFICATION]: (state, { payload }) => state
-}, defaultProfileState);
+	defaultProfileState
+);

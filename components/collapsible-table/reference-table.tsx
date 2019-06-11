@@ -14,15 +14,15 @@ interface IReferenceTableProps {
 
 class ReferenceTable extends React.Component<IReferenceTableProps> {
 	mappings = {
-		relative_name: {
+		relativeName: {
 			label: 'Relative Name',
 			type: 'string'
 		},
-		relation_with_member: {
+		relationWithMember: {
 			label: 'Relation with the member',
 			type: 'string'
 		},
-		contact_number: {
+		contactNumber: {
 			label: 'Contact Number',
 			type: 'string'
 		},
@@ -51,7 +51,7 @@ const mapStateToProps = (state: IRootState, props: IReferenceTableProps) => {
 	const profileId = props.userProfileId;
 	const profile = state.userProfiles[profileId];
 	if (profile) {
-		const userReference = profile.user_reference;
+		const userReference = profile.userReference;
 		return {
 			userReference
 		};

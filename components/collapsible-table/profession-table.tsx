@@ -98,7 +98,7 @@ class ProfessionTable extends React.Component<IProfessionTableProps> {
 				]
 			}
 		},
-		working_field: {
+		workingField: {
 			label: 'Working Field',
 			type: 'choice',
 			choice: {
@@ -158,7 +158,7 @@ class ProfessionTable extends React.Component<IProfessionTableProps> {
 				]
 			}
 		},
-		length_of_employment: {
+		lengthOfEmployment: {
 			label: 'Length of Employment(in Month)',
 			type: 'number'
 		},
@@ -278,11 +278,11 @@ class ProfessionTable extends React.Component<IProfessionTableProps> {
 				]
 			}
 		},
-		monthly_income: {
+		monthlyIncome: {
 			label: 'Monthly Income',
 			type: 'number'
 		},
-		annual_income: {
+		annualIncome: {
 			label: 'Annual Income',
 			type: 'number'
 		},
@@ -291,11 +291,11 @@ class ProfessionTable extends React.Component<IProfessionTableProps> {
 			tagType: 'loan',
 			type: 'tag-array'
 		},
-		other_loans: {
+		otherLoans: {
 			label: 'Other loans',
 			type: 'string'
 		},
-		work_city: {
+		workCity: {
 			label: 'Work City',
 			type: 'string'
 		}

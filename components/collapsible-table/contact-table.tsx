@@ -18,55 +18,55 @@ class ContactTable extends React.Component<IContactTableProps> {
 			label: 'Address',
 			type: 'string'
 		},
-		pin_code: {
+		pinCode: {
 			label: 'Pin Code',
 			type: 'string'
 		},
-		residential_city: {
+		residentialCity: {
 			label: 'Residential City',
 			type: 'string'
 		},
-		mobile_number_1: {
+		mobileNumber1: {
 			label: 'Mobile Number 1',
 			type: 'string'
 		},
-		mobile_number_of_1: {
+		mobileNumberOf1: {
 			label: 'Mobile Number 1 Of',
 			type: 'string'
 		},
-		mobile_number_2: {
+		mobileNumber2: {
 			label: 'Mobile Number 2',
 			type: 'string'
 		},
-		mobile_number_of_2: {
+		mobileNumberOf2: {
 			label: 'Mobile Number 2 Of',
 			type: 'string'
 		},
-		landline_number: {
+		landlineNumber: {
 			label: 'Landline Number',
 			type: 'string'
 		},
-		email_id: {
+		emailId: {
 			label: 'Email ID',
 			type: 'string'
 		},
-		email_id_of: {
+		emailIdOf: {
 			label: 'Email ID Of',
 			type: 'string'
 		},
-		alternate_email_id: {
+		alternateEmailId: {
 			label: 'Alternate Email ID',
 			type: 'string'
 		},
-		alternate_email_id_of: {
+		alternateEmailIdOf: {
 			label: 'Alternate Email ID Of',
 			type: 'string'
 		},
-		facebook_link: {
+		facebookLink: {
 			label: 'Facebook Link',
 			type: 'string'
 		},
-		linkedin_link: {
+		linkedinLink: {
 			label: 'LinkedIn Link',
 			type: 'string'
 		}
@@ -91,7 +91,7 @@ const mapStateToProps = (state: IRootState, props: IContactTableProps) => {
 	const profileId = props.userProfileId;
 	const profile = state.userProfiles[profileId];
 	if (profile) {
-		const contactInformation = profile.contact_information;
+		const contactInformation = profile.contactInformation;
 		return {
 			contactInformation
 		};

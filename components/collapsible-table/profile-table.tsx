@@ -38,7 +38,7 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 			label: 'About',
 			type: 'string'
 		},
-		created_by: {
+		createdBy: {
 			label: 'Profile created by',
 			type: 'choice',
 			choice: {
@@ -106,7 +106,7 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 				]
 			}
 		},
-		full_name: {
+		fullName: {
 			label: 'Full Name',
 			type: 'string'
 		},
@@ -114,7 +114,7 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 			label: 'Date of Birth',
 			type: 'date'
 		},
-		marital_status: {
+		maritalStatus: {
 			label: 'Marital Status',
 			type: 'choice',
 			choice: {
@@ -302,7 +302,7 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 			label: 'Weight(in KG)',
 			type: 'number'
 		},
-		body_type: {
+		bodyType: {
 			label: 'Body Type',
 			type: 'choice',
 			choice: {
@@ -330,7 +330,7 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 				]
 			}
 		},
-		body_complexion: {
+		bodyComplexion: {
 			label: 'Body Complexion',
 			type: 'choice',
 			choice: {
@@ -362,7 +362,7 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 				]
 			}
 		},
-		blood_group: {
+		bloodGroup: {
 			label: 'Blood Group',
 			type: 'choice',
 			choice: {
@@ -414,7 +414,7 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 				]
 			}
 		},
-		mother_tongue: {
+		motherTongue: {
 			label: 'Mother Tongue',
 			type: 'choice',
 			choice: {
@@ -522,12 +522,12 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 				]
 			}
 		},
-		special_cases: {
+		specialCases: {
 			label: 'Special Cases',
 			tagType: 'case',
 			type: 'tag-array'
 		},
-		describe_myself: {
+		describeMyself: {
 			label: 'I describe myself as',
 			tagType: 'description',
 			type: 'tag-array'

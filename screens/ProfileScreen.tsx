@@ -31,7 +31,7 @@ class ProfileScreen extends React.Component<IProfileScreenProps> {
 
 const mapStateToProps = (state: IRootState) => {
 	// later userProfileId will come from nav param
-	const userProfileId = state.account && state.account.user_profile.id;
+	const userProfileId = state.account && state.account.userProfile.id;
 	return {
 		userProfileId
 	};

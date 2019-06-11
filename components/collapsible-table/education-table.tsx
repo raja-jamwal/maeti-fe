@@ -14,7 +14,7 @@ interface IEducationTableProps {
 
 class EducationTable extends React.Component<IEducationTableProps> {
 	mappings = {
-		medium_of_primary_education: {
+		mediumOfPrimaryEducation: {
 			label: 'Medium of Primary Education',
 			type: 'choice',
 			choice: {
@@ -54,7 +54,7 @@ class EducationTable extends React.Component<IEducationTableProps> {
 				]
 			}
 		},
-		highest_education_level: {
+		highestEducationLevel: {
 			label: 'Highest Education Level',
 			type: 'choice',
 			choice: {
@@ -90,7 +90,7 @@ class EducationTable extends React.Component<IEducationTableProps> {
 				]
 			}
 		},
-		education_field: {
+		educationField: {
 			label: 'Education Field',
 			type: 'choice',
 			choice: {
@@ -146,7 +146,7 @@ class EducationTable extends React.Component<IEducationTableProps> {
 			label: 'Education',
 			type: 'string'
 		},
-		additional_education: {
+		additionalEducation: {
 			label: 'Additional Education',
 			type: 'string'
 		},

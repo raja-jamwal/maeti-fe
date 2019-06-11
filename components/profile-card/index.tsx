@@ -22,7 +22,7 @@ import { isEmpty } from 'lodash';
 import { UserProfile } from '../../store/reducers/account-defination';
 
 interface IProfileProps {
-	user_profile: UserProfile;
+	userProfile: UserProfile;
 	hideSelfDescription: boolean;
 }
 
@@ -40,9 +40,10 @@ class ProfileCard extends React.Component<IProfileProps, any> {
 	}
 
 	render() {
-		const { user_profile, hideSelfDescription } = this.props;
-		if (isEmpty(user_profile)) return null;
-		const { horoscope, education, profession, family } = { ...user_profile };
+		const { userProfile, hideSelfDescription } = this.props;
+		console.log('userProfile ', userProfile);
+		if (isEmpty(userProfile)) return null;
+		const { horoscope, education, profession, family } = { ...userProfile };
 		return (
 			<View style={styles.profileCard}>
 				<Image
@@ -52,16 +53,16 @@ class ProfileCard extends React.Component<IProfileProps, any> {
 				<View style={styles.profileSummaryContainer}>
 					<View>
 						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
-							{user_profile.full_name || 'unknown name'}
+							{userProfile.fullName || 'unknown name'}
 						</Text>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
-						<Value>Age {calculateAge(user_profile.dob || 0)}</Value>
+						<Value>Age {calculateAge(userProfile.dob || 0)}</Value>
 						<Divider />
-						<Value>{user_profile.height || 0} Ft</Value>
+						<Value>{userProfile.height || 0} Ft</Value>
 						<Divider />
 						<Value>{horoscope.caste || 'unknown caste'}</Value>
-						<Value>, {horoscope.sub_caste || 'unknown sub caste'}</Value>
+						<Value>, {horoscope.subCaste || 'unknown sub caste'}</Value>
 					</View>
 					<View style={GlobalStyles.row}>
 						<Value>{education.education || 'unknown education'}</Value>
@@ -73,21 +74,21 @@ class ProfileCard extends React.Component<IProfileProps, any> {
 						<Value>@ {profession.company || 'unknown company'}</Value>
 						<Divider />
 						<Value style={GlobalStyles.bold}>
-							{humanizeCurrency(profession.annual_income || '0')}
+							{humanizeCurrency(profession.annualIncome || '0')}
 							/Year
 						</Value>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 						<Value style={GlobalStyles.bold}>Home</Value>
-						<Value>- {family.family_location || 'unknown location'}</Value>
+						<Value>- {family.familyLocation || 'unknown location'}</Value>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 						<Value style={GlobalStyles.bold}>Work</Value>
-						<Value>- {profession.work_city || 'unknown work city'}</Value>
+						<Value>- {profession.workCity || 'unknown work city'}</Value>
 					</View>
-					{user_profile.describe_myself && !hideSelfDescription && (
+					{userProfile.describeMyself && !hideSelfDescription && (
 						<View style={[GlobalStyles.row, styles.describeSelfContainer]}>
-							{user_profile.describe_myself.map(description => (
+							{userProfile.describeMyself.map(description => (
 								<Text style={styles.selfDescriptionChip} key={description.id}>
 									{description.value}
 								</Text>

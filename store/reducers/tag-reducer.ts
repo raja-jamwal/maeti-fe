@@ -19,7 +19,7 @@ export const fetchTags = () => {
 			.then(response => response.json())
 			.then(embedded => {
 				const tags = embedded._embedded.tags;
-				const groupByType = groupBy(tags, 'tag_type');
+				const groupByType = groupBy(tags, 'tagType');
 				dispatch(addTags(groupByType));
 			})
 			.catch(err => console.log(err));

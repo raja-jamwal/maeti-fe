@@ -14,7 +14,7 @@ interface IPreferenceTableProps {
 
 class PreferenceTable extends React.Component<IPreferenceTableProps> {
 	mappings = {
-		marital_status: {
+		maritalStatus: {
 			label: 'Marital Status',
 			type: 'string'
 		},
@@ -23,20 +23,20 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 			tagType: 'caste',
 			type: 'tag-array'
 		},
-		sub_caste: {
+		subCaste: {
 			label: 'Sub Caste',
 			tagType: 'sub_caste',
 			type: 'tag-array'
 		},
-		difference_height: {
+		differenceHeight: {
 			label: 'Height',
 			type: 'string'
 		},
-		difference_age: {
+		differenceAge: {
 			label: 'Difference in Age',
 			type: 'string'
 		},
-		education_level: {
+		educationLevel: {
 			label: 'Education Level',
 			tagType: 'education_level',
 			type: 'tag-array'
@@ -45,11 +45,11 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 			label: 'Education',
 			type: 'string'
 		},
-		medium_of_education: {
+		mediumOfEducation: {
 			label: 'Medium of Primary Education',
 			type: 'string'
 		},
-		working_partner: {
+		workingPartner: {
 			label: 'Do you want a working partner',
 			type: 'string'
 		},
@@ -57,23 +57,23 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 			label: 'Occupation',
 			type: 'string'
 		},
-		work_country: {
+		workCountry: {
 			label: 'Work Location Country',
 			type: 'string'
 		},
-		work_state: {
+		workState: {
 			label: 'Work Location State',
 			type: 'string'
 		},
-		work_city: {
+		workCity: {
 			label: 'Work Location City',
 			type: 'string'
 		},
-		parent_county: {
+		parentCounty: {
 			label: 'Parent State Location',
 			type: 'string'
 		},
-		parent_city: {
+		parentCity: {
 			label: 'Parent City Location',
 			type: 'string'
 		},
@@ -101,27 +101,27 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 			label: 'Cooking',
 			type: 'string'
 		},
-		family_financial_background: {
+		familyFinancialBackground: {
 			label: 'Family Financial Background',
 			tagType: 'financial_background',
 			type: 'tag-array'
 		},
-		family_values: {
+		familyValues: {
 			label: 'Family Values',
 			tagType: 'family_value',
 			type: 'tag-array'
 		},
-		special_case: {
+		specialCase: {
 			label: 'Special Case',
 			tagType: 'case',
 			type: 'tag-array'
 		},
-		other_expectations: {
+		otherExpectations: {
 			label: 'Other Expectations',
 			type: 'string'
 		},
 		// we need to visit this again
-		hide_profile_from: {
+		hideProfileFrom: {
 			label: 'Do not Show Profile to',
 			type: 'string'
 		}

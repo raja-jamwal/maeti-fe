@@ -58,7 +58,7 @@ class HoroscopeTable extends React.Component<IHoroscopeTableProps> {
 			label: 'Gotra',
 			type: 'string'
 		},
-		want_to_see_patrika: {
+		wantToSeePatrika: {
 			label: 'Want to see patrika',
 			type: 'bool'
 		}

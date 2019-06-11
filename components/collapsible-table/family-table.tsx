@@ -19,7 +19,7 @@ interface IFamilyTableProps {
 
 class FamilyTable extends React.Component<IFamilyTableProps> {
 	mapping = {
-		father_name: {
+		fatherName: {
 			label: "Father's Name",
 			type: 'string'
 		},
@@ -27,19 +27,19 @@ class FamilyTable extends React.Component<IFamilyTableProps> {
 			label: 'Father',
 			type: 'string'
 		},
-		father_occupation: {
+		fatherOccupation: {
 			label: "Father's Occupation",
 			type: 'string'
 		},
-		father_designation: {
+		fatherDesignation: {
 			label: "Father's Designation(Present/Last)",
 			type: 'string'
 		},
-		father_native_place: {
+		fatherNativePlace: {
 			label: "Father's Native Place",
 			type: 'string'
 		},
-		mother_name: {
+		motherName: {
 			label: "Mother's Name",
 			type: 'string'
 		},
@@ -47,66 +47,66 @@ class FamilyTable extends React.Component<IFamilyTableProps> {
 			label: 'Mother',
 			type: 'string'
 		},
-		mother_occupation: {
+		motherOccupation: {
 			label: "Mothers's Occupation",
 			type: 'string'
 		},
-		mother_designation: {
+		motherDesignation: {
 			label: "Mothers's Designation(Present/Last)",
 			type: 'string'
 		},
-		mother_maternal_surname: {
+		motherMaternalSurname: {
 			label: "Mother's Maternal Surname",
 			type: 'string'
 		},
-		mother_native_place: {
+		motherNativePlace: {
 			label: "Mother's Native Place",
 			type: 'string'
 		},
-		no_of_brothers: {
+		noOfBrothers: {
 			label: 'No. of Brother(s)',
 			type: 'number'
 		},
-		brothers_married: {
+		brothersMarried: {
 			label: 'Of which married',
 			type: 'number'
 		},
-		no_of_sisters: {
+		noOfSisters: {
 			label: 'No. of Sister(s)',
 			type: 'number'
 		},
-		sisters_married: {
+		sistersMarried: {
 			label: 'Of which married',
 			type: 'number'
 		},
-		about_family: {
+		aboutFamily: {
 			label: 'About Family',
 			type: 'string'
 		},
-		family_location: {
+		familyLocation: {
 			label: 'Families current location',
 			type: 'string'
 		},
-		inter_caste_parents: {
+		interCasteParents: {
 			label: 'Inter caste marriage of Parents?',
 			type: 'bool'
 		},
-		parents_living_seperately: {
+		parentsLivingSeperately: {
 			label: 'Parents living separately?',
 			type: 'bool'
 		}
 	};
 
 	otherInfoMapping = {
-		family_values: {
+		familyValues: {
 			label: 'Family Values',
 			type: 'string'
 		},
-		family_financial_background: {
+		familyFinancialBackground: {
 			label: 'Family Financial Background',
 			type: 'string'
 		},
-		family_annual_income: {
+		familyAnnualIncome: {
 			label: "Family's Annual Income",
 			type: 'string'
 		},
@@ -114,17 +114,17 @@ class FamilyTable extends React.Component<IFamilyTableProps> {
 			label: 'Home',
 			type: 'string'
 		},
-		home_type: {
+		homeType: {
 			label: 'Home Type',
 			tagType: 'home_type',
 			type: 'tag-array'
 		},
-		other_home_type: {
+		otherHomeType: {
 			label: 'Other Home Type',
 			tagType: 'home_type',
 			type: 'tag-array'
 		},
-		real_estate: {
+		realEstate: {
 			label: 'Real Estate',
 			tagType: 'real_estate',
 			type: 'tag-array'
@@ -133,7 +133,7 @@ class FamilyTable extends React.Component<IFamilyTableProps> {
 			label: 'Vehicle',
 			type: 'bool'
 		},
-		vehicle_type: {
+		vehicleType: {
 			label: 'Vehicle Type',
 			tagType: 'vehicle_type',
 			type: 'tag-array'
@@ -143,11 +143,11 @@ class FamilyTable extends React.Component<IFamilyTableProps> {
 			tagType: 'loan',
 			type: 'tag-array'
 		},
-		other_loans: {
+		otherLoans: {
 			label: 'Loans / Financial Liabilities',
 			type: 'string'
 		},
-		family_medial_history: {
+		familyMedicalHistory: {
 			label: "Family's Medical History",
 			type: 'string'
 		}
@@ -167,7 +167,7 @@ class FamilyTable extends React.Component<IFamilyTableProps> {
 				/>
 				<CollapsibleTable
 					title="Other Information"
-					object={family.family_other_information}
+					object={family.familyOtherInformation}
 					mapping={this.otherInfoMapping}
 					updateAction={updateFamilyOtherInformation}
 					userProfileId={userProfileId}
