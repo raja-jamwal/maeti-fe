@@ -41,7 +41,6 @@ class ProfileCard extends React.Component<IProfileProps, any> {
 
 	render() {
 		const { userProfile, hideSelfDescription } = this.props;
-		console.log('userProfile ', userProfile);
 		if (isEmpty(userProfile)) return null;
 		const { horoscope, education, profession, family } = { ...userProfile };
 		return (

@@ -54,8 +54,6 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 
 	render() {
 		const { title, object, mapping, router, updateAction } = this.props;
-		// console.warn(router);
-		console.log('updateAction', updateAction);
 		const { expanded } = this.state;
 		const caretIconName = expanded ? 'md-arrow-dropup' : 'md-arrow-dropdown';
 		return (

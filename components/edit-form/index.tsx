@@ -69,8 +69,7 @@ export default class EditForm extends React.Component<IEditFormProps, IEditFormS
 		const { mapping } = this.props;
 		const object = this.state['form'];
 		if (!object) return null;
-		console.log(object);
-		console.log(mapping);
+
 		const fields = Object.keys(mapping).map(field => {
 			const fieldDefinition = mapping[field];
 			const value = object[field];

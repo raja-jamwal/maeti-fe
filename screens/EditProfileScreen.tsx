@@ -5,7 +5,9 @@ import {
 	StyleSheet,
 	ScrollView,
 	View,
-	Picker, Modal, ActivityIndicator
+	Picker,
+	Modal,
+	ActivityIndicator
 } from 'react-native';
 import GlobalStyles from '../styles/global';
 import Text from '../components/text';
@@ -15,7 +17,14 @@ import { Tag } from '../store/reducers/account-defination';
 
 const CustomProgressBar = ({ visible }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
-		<View style={{ flex: 1, backgroundColor: '#dcdcdc', alignItems: 'center', justifyContent: 'center' }}>
+		<View
+			style={{
+				flex: 1,
+				backgroundColor: '#dcdcdc',
+				alignItems: 'center',
+				justifyContent: 'center'
+			}}
+		>
 			<View style={{ borderRadius: 10, backgroundColor: 'white', padding: 25 }}>
 				<Text style={{ fontSize: 20, fontWeight: '200' }}>Loading</Text>
 				<ActivityIndicator size="large" />
@@ -46,7 +55,6 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			showProgress: false,
 			mapping: mapping
 		};
-		console.log('EditProfileScreen const');
 	}
 
 	// componentWillReceiveProps(props: IEditProfileScreenState) {
@@ -68,7 +76,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			const { object } = this.state;
 			object[field] = value;
 			this.setState({
-				object: {...object}
+				object: { ...object }
 			});
 		}
 	}
@@ -114,42 +122,50 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			return (
 				<View key={field}>
 					<Text style={styles.fieldLabel}>{fieldDefinition.label}</Text>
-					{
-						isStringField && <View style={styles.textField}>
-							<TextInput onChangeText={(text) => this.updateFieldValue(field, text)} placeholder={fieldDefinition.label} value={renderString} style={styles.fieldText} />
+					{isStringField && (
+						<View style={styles.textField}>
+							<TextInput
+								onChangeText={text => this.updateFieldValue(field, text)}
+								placeholder={fieldDefinition.label}
+								value={renderString}
+								style={styles.fieldText}
+							/>
 						</View>
-					}
-					{
-						isNumberField && <View style={styles.textField}>
-							<TextInput keyboardType='numeric' onChangeText={(text) => this.updateFieldValue(field, text)} placeholder={fieldDefinition.label} value={value && value.toString()} style={styles.fieldText} />
+					)}
+					{isNumberField && (
+						<View style={styles.textField}>
+							<TextInput
+								keyboardType="numeric"
+								onChangeText={text => this.updateFieldValue(field, text)}
+								placeholder={fieldDefinition.label}
+								value={value && value.toString()}
+								style={styles.fieldText}
+							/>
 						</View>
-					}
-					{
-						isTagArray && <View>
-							<TagSelector tagType={tagType} currentTags={value} updateTags={(tags: Array<Tag>) => {
-								this.updateFieldValue(field, [].concat(tags));
-							}} title={fieldDefinition.label} />
+					)}
+					{isTagArray && (
+						<View>
+							<TagSelector
+								tagType={tagType}
+								currentTags={value}
+								updateTags={(tags: Array<Tag>) => {
+									this.updateFieldValue(field, [].concat(tags));
+								}}
+								title={fieldDefinition.label}
+							/>
 						</View>
-					}
-					{
-						isBooleanField && <View style={styles.choiceField}>
+					)}
+					{isBooleanField && (
+						<View style={styles.choiceField}>
 							<Picker
 								selectedValue={!!value}
-								onValueChange={(itemValue) => this.updateFieldValue(field, itemValue)}
+								onValueChange={itemValue => this.updateFieldValue(field, itemValue)}
 							>
-								<Picker.Item
-									key='no'
-									label='No'
-									value={false}
-								/>
-								<Picker.Item
-									key='yes'
-									label='Yes'
-									value={true}
-								/>
+								<Picker.Item key="no" label="No" value={false} />
+								<Picker.Item key="yes" label="Yes" value={true} />
 							</Picker>
 						</View>
-					}
+					)}
 					{/*{!isChoiceField && (
 						<View style={styles.textField}>
 							<TextInput style={styles.fieldText} value={stringValue} />
@@ -159,7 +175,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 						<View style={styles.choiceField}>
 							<Picker
 								selectedValue={value}
-								onValueChange={(itemValue) =>  this.updateFieldValue(field, itemValue)}
+								onValueChange={itemValue => this.updateFieldValue(field, itemValue)}
 							>
 								{choiceOptions.map(option => (
 									<Picker.Item
@@ -189,7 +205,6 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		const userProfileId = navigation.getParam('userProfileId', null);
 
 		if (userProfileId && updateAction) {
-
 		}
 
 		/*this.setState({
@@ -209,7 +224,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 				<ScrollView style={[GlobalStyles.expand, styles.formContainer]}>
 					{this.renderFields()}
 				</ScrollView>
-				{showProgress && <CustomProgressBar visible={true}/>}
+				{showProgress && <CustomProgressBar visible={true} />}
 				<View style={styles.submissionFooter}>
 					<TouchableNativeFeedback onPress={() => this.updateInformation()}>
 						<Text style={styles.submissionBtn}>Update Information</Text>
