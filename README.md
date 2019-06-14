@@ -21,4 +21,15 @@ Add following to workspace settings for auto-formatting on saving file
 }
 ```
 
+# Creating PRs
+
+For every issue assigned, you should create a branch of the of the name `I{issue_number}-some_name`.
+
+Also provide the issue number in the commit as `#{issue_number} some description` i.e
+
+`#23 fixed this and that`
+
+Once you're ready, you should raise a PR & add peers to review.
+
+
 
