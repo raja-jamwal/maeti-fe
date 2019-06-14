@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f27ee64d-3191-47b5-a7d4-85e4d810389a" name="Default Changelist" comment="">
+    <list default="true" id="f27ee64d-3191-47b5-a7d4-85e4d810389a" name="Default Changelist" comment="updated README.md">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,7 +28,7 @@
           <entry key="editorconfig" value="1" />
           <entry key="js" value="196" />
           <entry key="json" value="15" />
-          <entry key="md" value="1" />
+          <entry key="md" value="2" />
           <entry key="png" value="18" />
           <entry key="prettierrc" value="1" />
           <entry key="ts" value="35" />
@@ -40,7 +40,7 @@
           <entry key="Image" value="18" />
           <entry key="JSON" value="16" />
           <entry key="JavaScript" value="196" />
-          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="PLAIN_TEXT" value="3" />
           <entry key="TypeScript" value="35" />
           <entry key="TypeScript JSX" value="73" />
         </counts>
@@ -50,18 +50,18 @@
           <entry key="editorconfig" value="3" />
           <entry key="js" value="30422" />
           <entry key="json" value="4997" />
-          <entry key="md" value="168" />
+          <entry key="md" value="889" />
           <entry key="prettierrc" value="14" />
           <entry key="ts" value="8108" />
           <entry key="tsx" value="11249" />
-          <entry key="txt" value="395" />
+          <entry key="txt" value="422" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="5011" />
           <entry key="JavaScript" value="30422" />
-          <entry key="PLAIN_TEXT" value="566" />
+          <entry key="PLAIN_TEXT" value="1314" />
           <entry key="TypeScript" value="8108" />
           <entry key="TypeScript JSX" value="11249" />
         </counts>
@@ -79,18 +79,6 @@
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/components/tabbed-filters/index.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="90">
-                  <caret line="6" selection-start-line="6" selection-end-line="6" />
-                  <folding>
-                    <element signature="e#0#26#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/components/table/index.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="300">
@@ -102,7 +90,7 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/config/config.json">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="30">
@@ -147,8 +135,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/components/profile-card/index.tsx">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="237">
-                  <caret line="84" column="27" lean-forward="true" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
+                <state relative-caret-position="315">
+                  <caret line="21" column="70" lean-forward="true" selection-start-line="21" selection-start-column="70" selection-end-line="21" selection-end-column="70" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                     <element signature="e#175#206#0" expanded="true" />
@@ -158,22 +146,28 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/components/tag-selector/tag-selector.tsx">
+            <entry file="file://$PROJECT_DIR$/.gitignore">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="265">
-                  <caret line="151" column="18" lean-forward="true" selection-start-line="151" selection-start-column="18" selection-end-line="151" selection-end-column="18" />
-                  <folding>
-                    <element signature="e#0#31#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="120">
+                  <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/README.md">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="570">
+                  <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/components/text/index.tsx">
+            <entry file="file://$PROJECT_DIR$/components/tag-selector/tag-selector.tsx">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="225">
-                  <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+                <state relative-caret-position="265">
+                  <caret line="151" column="18" lean-forward="true" selection-start-line="151" selection-start-column="18" selection-end-line="151" selection-end-column="18" />
                   <folding>
                     <element signature="e#0#31#0" expanded="true" />
                   </folding>
@@ -345,8 +339,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/store/reducers/tag-reducer.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="345">
-                  <caret line="23" column="14" lean-forward="true" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
+                <state relative-caret-position="360">
+                  <caret line="24" column="26" lean-forward="true" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
                   <folding>
                     <element signature="e#0#43#0" expanded="true" />
                   </folding>
@@ -501,7 +495,6 @@
         <option value="$PROJECT_DIR$/navigation/MainTabNavigator.js" />
         <option value="$PROJECT_DIR$/screens/Auth.tsx" />
         <option value="$PROJECT_DIR$/screens/EditProfileScreen.tsx" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/components/collapsible-table/index.tsx" />
         <option value="$PROJECT_DIR$/components/collapsible-table/lifestyle-table.tsx" />
         <option value="$PROJECT_DIR$/components/collapsible-table/verification-table.tsx" />
@@ -532,6 +525,7 @@
         <option value="$PROJECT_DIR$/components/collapsible-table/contact-table.tsx" />
         <option value="$PROJECT_DIR$/store/reducers/tag-reducer.ts" />
         <option value="$PROJECT_DIR$/config/config.json" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -570,34 +564,6 @@
               <item name="expo-test" type="b2602c69:ProjectViewProjectNode" />
               <item name="expo-test" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="expo-test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="expo-test" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="expo-test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="expo-test" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="collapsible-table" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="expo-test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="expo-test" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="profile-card" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="expo-test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="expo-test" type="462c0819:PsiDirectoryNode" />
-              <item name="store" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="expo-test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="expo-test" type="462c0819:PsiDirectoryNode" />
-              <item name="store" type="462c0819:PsiDirectoryNode" />
-              <item name="reducers" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -606,7 +572,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="config.js&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/config.json&#10;tag&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/tag-reducer.ts&#10;tag-&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/tag-selector/tag-selector.tsx&#10;profileScr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ProfileScreen.tsx&#10;profile-car&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;account&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/account-reducer.ts&#10;conf&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/config.json&#10;more&#9;null&#9;null&#10;global.d&#9;FILE&#9;file:///Users/test/datagrids/expo-test/global.d.ts&#10;global&#9;FILE&#9;file:///Users/test/datagrids/expo-test/styles/global.ts&#10;user-pr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;tagR&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/tag-reducer.ts&#10;fixtures/&#9;FILE&#9;file:///Users/test/datagrids/expo-test/fixtures&#10;API&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/API.ts&#10;user&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;config&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/config.json&#10;userPr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;colla&#9;null&#9;null&#10;profi&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;editpr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;color&#9;FILE&#9;file:///Users/test/datagrids/expo-test/constants/Colors.js&#10;editpro&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;editP&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;edit&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;coll&#9;null&#9;null&#10;verifica&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/collapsible-table/verification-table.tsx&#10;verifi&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/collapsible-table/verification-table.tsx&#10;collap&#9;null&#9;null&#10;Editp&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.js&#10;scroll-v&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-info-tab/scroll-view.tsx&#10;user-&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;profile&#9;null&#9;null&#10;store&#9;null&#9;null&#10;profile-ca&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;explore&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;profile-c&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;fav&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;accoun&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/account-reducer.js&#10;explo&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;store/in&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/index.js&#10;ex&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;hom&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/HomeScreen.js&#10;expl&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;inter&#9;null&#9;null&#10;main&#9;FILE&#9;file:///Users/test/datagrids/expo-test/navigation/MainTabNavigator.js&#10;explor&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;fa&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;favou&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;glo&#9;FILE&#9;file:///Users/test/datagrids/expo-test/styles/global.js&#10;chat&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ChatScreen.js" />
+    <property name="SearchEverywhereHistoryKey" value="readme&#9;FILE&#9;file:///Users/test/datagrids/expo-test/README.md&#10;config.js&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/config.json&#10;tag&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/tag-reducer.ts&#10;tag-&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/tag-selector/tag-selector.tsx&#10;profileScr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ProfileScreen.tsx&#10;profile-car&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;account&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/account-reducer.ts&#10;conf&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/config.json&#10;more&#9;null&#9;null&#10;global.d&#9;FILE&#9;file:///Users/test/datagrids/expo-test/global.d.ts&#10;global&#9;FILE&#9;file:///Users/test/datagrids/expo-test/styles/global.ts&#10;user-pr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;tagR&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/tag-reducer.ts&#10;fixtures/&#9;FILE&#9;file:///Users/test/datagrids/expo-test/fixtures&#10;API&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/API.ts&#10;user&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;config&#9;FILE&#9;file:///Users/test/datagrids/expo-test/config/config.json&#10;userPr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;colla&#9;null&#9;null&#10;profi&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;editpr&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;color&#9;FILE&#9;file:///Users/test/datagrids/expo-test/constants/Colors.js&#10;editpro&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;editP&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;edit&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.tsx&#10;coll&#9;null&#9;null&#10;verifica&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/collapsible-table/verification-table.tsx&#10;verifi&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/collapsible-table/verification-table.tsx&#10;collap&#9;null&#9;null&#10;Editp&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/EditProfileScreen.js&#10;scroll-v&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-info-tab/scroll-view.tsx&#10;user-&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/user-profile-reducer.ts&#10;profile&#9;null&#9;null&#10;store&#9;null&#9;null&#10;profile-ca&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;explore&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;profile-c&#9;FILE&#9;file:///Users/test/datagrids/expo-test/components/profile-card&#10;fav&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;accoun&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/reducers/account-reducer.js&#10;explo&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;store/in&#9;FILE&#9;file:///Users/test/datagrids/expo-test/store/index.js&#10;ex&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;hom&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/HomeScreen.js&#10;expl&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;inter&#9;null&#9;null&#10;main&#9;FILE&#9;file:///Users/test/datagrids/expo-test/navigation/MainTabNavigator.js&#10;explor&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/ExploreScreen.js&#10;fa&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;favou&#9;FILE&#9;file:///Users/test/datagrids/expo-test/screens/FavouritesScreen.js&#10;glo&#9;FILE&#9;file:///Users/test/datagrids/expo-test/styles/global.js" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -776,11 +742,25 @@
       <option name="project" value="LOCAL" />
       <updated>1560263836375</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="updated README.md">
+      <created>1560533558671</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1560533558671</updated>
+    </task>
+    <task id="LOCAL-00019" summary="updated README.md">
+      <created>1560535342927</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1560535342927</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="147805000" />
+    <option name="totallyTimeSpent" value="148847000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="-125" width="1920" height="1080" extended-state="0" />
@@ -801,7 +781,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.36435643" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.25049505" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -851,19 +831,10 @@
     <MESSAGE value="VSC support" />
     <MESSAGE value="generic note" />
     <MESSAGE value="move to camelCasing" />
-    <option name="LAST_COMMIT_MESSAGE" value="move to camelCasing" />
+    <MESSAGE value="updated README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated README.md" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/screens/ChatScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/App.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-385">
@@ -909,13 +880,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/constants/Colors.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/constants/Colors.d.ts" />
     <entry file="file://$PROJECT_DIR$/global.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -941,9 +906,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/containers/with-router.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/containers/with-router.js" />
     <entry file="file://$PROJECT_DIR$/constants/Layout.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -982,13 +945,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="27" column="23" lean-forward="true" selection-start-line="27" selection-start-column="23" selection-end-line="27" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
@@ -1122,8 +1078,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/components/profile-card/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="84" column="27" lean-forward="true" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
+        <state relative-caret-position="315">
+          <caret line="21" column="70" lean-forward="true" selection-start-line="21" selection-start-column="70" selection-end-line="21" selection-end-column="70" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#175#206#0" expanded="true" />
@@ -1389,8 +1345,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/store/reducers/tag-reducer.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="14" lean-forward="true" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
+        <state relative-caret-position="360">
+          <caret line="24" column="26" lean-forward="true" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
           <folding>
             <element signature="e#0#43#0" expanded="true" />
           </folding>
@@ -1411,6 +1367,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>

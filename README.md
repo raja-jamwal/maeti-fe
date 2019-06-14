@@ -31,5 +31,9 @@ Also provide the issue number in the commit as `#{issue_number} some description
 
 Once you're ready, you should raise a PR & add peers to review.
 
+# Typescript
 
+We use typescript moving forward, to familarize yourself with typescript,
+
+https://basarat.gitbooks.io/typescript/content/docs/getting-started.html
 
