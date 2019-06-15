@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: 20,
 		flexDirection: 'row',
-		backgroundColor: Colors.primaryDarkColor,
+		backgroundColor: Colors.pink,
 		borderTopRightRadius: 20,
 		borderBottomRightRadius: 20,
 		padding: 10
