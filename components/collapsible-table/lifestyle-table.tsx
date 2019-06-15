@@ -20,7 +20,31 @@ class LifestyleTable extends React.Component<ILifestyleTableProps> {
 		},
 		smoking: {
 			label: 'Smoking',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		drinking: {
 			label: 'Drinking',
