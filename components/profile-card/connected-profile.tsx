@@ -1,12 +1,26 @@
-import ProfileCard from './index';
+import ProfileCard, { IProfileProps } from './index';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { IRootState } from '../../store';
 
-const mapStateToProps = (state: IRootState) => {
+const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 	const accountData = state.account;
+
 	if (isEmpty(accountData)) return {};
-	return { ...accountData };
+
+	const fallbackUserProfile = accountData.userProfile;
+
+	const userProfile =
+		(ownProps.userProfileId &&
+			state.userProfiles &&
+			state.userProfiles[ownProps.userProfileId]) ||
+		fallbackUserProfile;
+
+	console.log('connected-profile', userProfile.id);
+
+	return {
+		userProfile
+	};
 };
 export default connect(
 	mapStateToProps,

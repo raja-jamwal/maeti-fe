@@ -183,7 +183,7 @@ export const updateLifestyle = function({ userProfileId, object }: IUpdateEnityP
 
 export const updateContactInformation = function({ userProfileId, object }: IUpdateEnityPayload) {
 	const updateFunc = (userProfile: UserProfile, contactInformation: ContactInformation) => {
-		console.log('contactInfo ', contactInformation);
+		// console.log('contactInfo ', contactInformation);
 		userProfile.contactInformation = contactInformation;
 		return userProfile;
 	};
@@ -255,7 +255,7 @@ export const userProfileReducer = handleActions<IUserProfileState>(
 	{
 		[ADD_PROFILE]: (state, { payload }) => {
 			const profile = (payload as any) as UserProfile;
-			console.log('adding or updating new profile', profile);
+			// console.log('adding or updating new profile', profile);
 			return { ...state, [profile.id]: profile };
 		}
 		// [UPDATE_VERIFICATION]: (state, { payload }) => state

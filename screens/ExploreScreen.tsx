@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
 	Image,
 	ScrollView,
@@ -14,9 +14,19 @@ import _ from 'lodash';
 import ConnectedProfile from '../components/profile-card/connected-profile';
 import { Icon } from 'expo';
 import TabbedFilters from '../components/tabbed-filters';
+import { connect } from 'react-redux';
+import { Throbber } from '../components/throbber/throbber';
+import { NavigationInjectedProps } from 'react-navigation';
+import { IUserProfileState } from '../store/reducers/user-profile-reducer';
+import { IRootState } from '../store';
+import { UserProfile } from '../store/reducers/account-defination';
 
-const CustomHeader = props => {
-	const navigateToProfile = () => props.navigation.push('ProfileScreen');
+interface IExploreScreenProps {
+	userProfiles?: IUserProfileState;
+}
+
+const CustomHeader = (props: any) => {
+	const navigateToProfile = () => null; // props.navigation.push('ProfileScreen');
 	return (
 		<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.header]}>
 			<TouchableNativeFeedback onPress={() => navigateToProfile()}>
@@ -39,23 +49,24 @@ const CustomHeader = props => {
 	);
 };
 
-export default class ExploreScreen extends React.Component {
+class ExploreScreen extends React.Component<NavigationInjectedProps & IExploreScreenProps> {
 	static navigationOptions = {
 		title: 'Explore',
 		header: CustomHeader
 	};
 
-	constructor(props) {
+	constructor(props: any) {
 		super(props);
 		this.openProfileScreen = this.openProfileScreen.bind(this);
 	}
 
-	openProfileScreen() {
+	openProfileScreen(userProfileId: number) {
 		const { navigation } = this.props;
-		navigation.push('ProfileScreen');
+		navigation.push('ProfileScreen', { userProfileId });
 	}
 
 	render() {
+		const { userProfiles } = this.props;
 		return (
 			<ScrollView style={GlobalStyles.expand}>
 				<View>
@@ -65,13 +76,19 @@ export default class ExploreScreen extends React.Component {
 				<View>
 					<Text style={styles.headline}>Discover</Text>
 				</View>
-				{_.range(5).map(i => (
-					<TouchableNativeFeedback key={i} onPress={this.openProfileScreen}>
-						<View style={styles.profileCardContainer}>
-							<ConnectedProfile accountId="c0bb90b3-d4ac-4007-b48c-3a70db934381" />
-						</View>
-					</TouchableNativeFeedback>
-				))}
+				{_.isEmpty(userProfiles) && <Throbber />}
+				{_.map(userProfiles, (userProfile: UserProfile) => {
+					return (
+						<TouchableNativeFeedback
+							key={userProfile.id}
+							onPress={() => this.openProfileScreen(userProfile.id)}
+						>
+							<View style={styles.profileCardContainer}>
+								<ConnectedProfile userProfileId={userProfile.id} />
+							</View>
+						</TouchableNativeFeedback>
+					);
+				})}
 			</ScrollView>
 		);
 	}
@@ -113,3 +130,17 @@ const styles = StyleSheet.create({
 		borderColor: 'black'
 	}
 });
+
+const mapStateToProps = (state: IRootState) => {
+	// later we will have explore reducer which
+	// will get us profileIds
+	const userProfiles = state.userProfiles;
+	return {
+		userProfiles
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	null
+)(ExploreScreen);

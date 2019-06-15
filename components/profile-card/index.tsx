@@ -21,7 +21,8 @@ import Divider from '../divider';
 import { isEmpty } from 'lodash';
 import { UserProfile } from '../../store/reducers/account-defination';
 
-interface IProfileProps {
+export interface IProfileProps {
+	userProfileId: number;
 	userProfile: UserProfile;
 	hideSelfDescription: boolean;
 }

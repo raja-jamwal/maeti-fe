@@ -3,6 +3,7 @@ import { ScrollView, View, StyleSheet, TouchableNativeFeedback } from 'react-nat
 import GlobalStyles from '../styles/global';
 import ConnectedProfile from '../components/profile-card/connected-profile';
 import _ from 'lodash';
+import FavouritesContainer from '../components/favourites/favourites-container';
 
 export default class FavouritesScreen extends React.Component {
 	static navigationOptions = {
@@ -22,15 +23,7 @@ export default class FavouritesScreen extends React.Component {
 	render() {
 		return (
 			<View style={GlobalStyles.expand}>
-				<ScrollView>
-					{_.range(5).map(i => (
-						<TouchableNativeFeedback key={i} onPress={this.openProfileScreen}>
-							<View style={styles.profileCardContainer}>
-								<ConnectedProfile accountId="c0bb90b3-d4ac-4007-b48c-3a70db934381" />
-							</View>
-						</TouchableNativeFeedback>
-					))}
-				</ScrollView>
+				<FavouritesContainer />
 			</View>
 		);
 	}

@@ -16,9 +16,13 @@ export const API = {
 	CONTACT_INFORMATIONS: `${config.server}/api/contactInformations`,
 	USER_REFERENCES: `${config.server}/api/userReferences`,
 	FAMILIES: `${config.server}/api/families`,
-	FAMILY_OTHER_INFORMATIONS : `${config.server}/api/familyOtherInformations`,
-	FAMILY_OTHER_INFORMATION_SAVE : `${config.server}/api/familyOtherInformation.save`,
-	PREFERENCES : `${config.server}/api/preferences`,
-	PREFERENCE_SAVE : `${config.server}/api/preference.save`,
-	TAGS : `${config.server}/api/tags`
+	FAMILY_OTHER_INFORMATIONS: `${config.server}/api/familyOtherInformations`,
+	FAMILY_OTHER_INFORMATION_SAVE: `${config.server}/api/familyOtherInformation.save`,
+	PREFERENCES: `${config.server}/api/preferences`,
+	PREFERENCE_SAVE: `${config.server}/api/preference.save`,
+	TAGS: `${config.server}/api/tags`,
+
+	FAVOURITE: {
+		GET: `${config.server}/api/favourite.get`
+	}
 };

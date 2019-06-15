@@ -2,24 +2,24 @@ import * as React from 'react';
 import { View } from 'react-native';
 import ProfileInfoTab from '../components/profile-info-tab';
 import GlobalStyles from '../styles/global';
-import { connect } from 'react-redux';
-import { IRootState } from '../store';
+import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 
 interface IProfileScreenProps {
 	userProfileId: number;
 }
 
-class ProfileScreen extends React.Component<IProfileScreenProps> {
+class ProfileScreen extends React.Component<NavigationInjectedProps & IProfileScreenProps> {
 	static navigationOptions = {
 		title: 'My Profile'
 	};
 
-	constructor(props: IProfileScreenProps) {
+	constructor(props: NavigationInjectedProps & IProfileScreenProps) {
 		super(props);
 	}
 
 	render() {
-		const { userProfileId } = this.props;
+		const { navigation } = this.props;
+		const userProfileId = navigation.getParam('userProfileId');
 		if (!userProfileId) return null;
 		return (
 			<View style={GlobalStyles.expand}>
@@ -29,15 +29,4 @@ class ProfileScreen extends React.Component<IProfileScreenProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState) => {
-	// later userProfileId will come from nav param
-	const userProfileId = state.account && state.account.userProfile.id;
-	return {
-		userProfileId
-	};
-};
-
-export default connect(
-	mapStateToProps,
-	null
-)(ProfileScreen);
+export default withNavigation(ProfileScreen);

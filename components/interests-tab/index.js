@@ -9,7 +9,7 @@ import { withNavigation } from 'react-navigation';
 const ProfileListComponent = props => {
 	const openProfileScreen = () => {
 		const { navigation } = props;
-		navigation.push('ProfileScreen');
+		// navigation.push('ProfileScreen');
 	};
 
 	return (

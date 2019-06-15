@@ -231,3 +231,14 @@ export interface Preference extends DAO {
 export interface PhotosEntity extends DAO {
 	url: string;
 }
+
+export interface FavouriteIdentity {
+	id: number;
+	favouriteOfUser: number;
+}
+
+export interface Favourite extends DAO {
+	favouriteIdentity: FavouriteIdentity;
+	favouriteOfUserProfile: UserProfile;
+	favouriteProfile: UserProfile;
+}
