@@ -50,7 +50,7 @@ export interface UserProfile extends DAO {
 	fullName: string;
 	dob: number;
 	maritalStatus: string;
-	height: number;
+	height: string;
 	weight: number;
 	bodyType: string;
 	bodyComplexion: string;
