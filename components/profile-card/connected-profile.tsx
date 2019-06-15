@@ -16,8 +16,6 @@ const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 			state.userProfiles[ownProps.userProfileId]) ||
 		fallbackUserProfile;
 
-	console.log('connected-profile', userProfile.id);
-
 	return {
 		userProfile
 	};
