@@ -216,7 +216,7 @@ export interface Preference extends DAO {
 	parentCounty: string;
 	parentCity: string;
 	diet: string;
-	smoke: Array<Tag>;
+	smoke: string;
 	drink: string;
 	hoteling: string;
 	partying: string;
