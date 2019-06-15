@@ -16,7 +16,39 @@ class LifestyleTable extends React.Component<ILifestyleTableProps> {
 	mappings = {
 		diet: {
 			label: 'Diet',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Veg',
+						value: 'veg'
+					},
+					{
+						label: 'Non-Veg Frequently',
+						value: 'non-veg-freq'
+					},
+					{
+						label: 'Eggetarian',
+						value: 'eggetarian'
+					},
+					{
+						label: 'Non-Veg Occasionally',
+						value: 'non-veg-occa'
+					},
+					{
+						label: 'Others (Jain, Vegan)',
+						value: 'others'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		smoking: {
 			label: 'Smoking',
@@ -48,15 +80,87 @@ class LifestyleTable extends React.Component<ILifestyleTableProps> {
 		},
 		drinking: {
 			label: 'Drinking',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		hoteling: {
 			label: 'Hoteling',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		partying: {
 			label: 'Partying',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		socialNetworking: {
 			label: 'Social Networking',

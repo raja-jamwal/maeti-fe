@@ -47,11 +47,75 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 		},
 		mediumOfEducation: {
 			label: 'Medium of Primary Education',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					},
+					{
+						label: 'English',
+						value: 'english'
+					},
+					{
+						label: 'Gujrati',
+						value: 'gujrati'
+					},
+					{
+						label: 'Hindi',
+						value: 'hindi'
+					},
+					{
+						label: 'Kannada',
+						value: 'kannada'
+					},
+					{
+						label: 'Marathi',
+						value: 'marathi'
+					},
+					{
+						label: 'Marathi+English',
+						value: 'mara_eng'
+					},
+					{
+						label: 'Other',
+						value: 'other'
+					}
+				]
+			}
 		},
 		workingPartner: {
 			label: 'Do you want a working partner',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Must',
+						value: 'must'
+					},
+					{
+						label: 'Preferred',
+						value: 'preferred'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		occupation: {
 			label: 'Occupation',
@@ -79,7 +143,39 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 		},
 		diet: {
 			label: 'Diet',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Veg',
+						value: 'veg'
+					},
+					{
+						label: 'Non-Veg Frequently',
+						value: 'non-veg-freq'
+					},
+					{
+						label: 'Eggetarian',
+						value: 'eggetarian'
+					},
+					{
+						label: 'Non-Veg Occasionally',
+						value: 'non-veg-occa'
+					},
+					{
+						label: 'Others (Jain, Vegan)',
+						value: 'others'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		smoke: {
 			label: 'Smoke',
@@ -111,19 +207,115 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 		},
 		drink: {
 			label: 'Drink',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		hoteling: {
 			label: 'Hoteling',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		partying: {
 			label: 'Partying / Pubbing',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		cooking: {
 			label: 'Cooking',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		familyFinancialBackground: {
 			label: 'Family Financial Background',
