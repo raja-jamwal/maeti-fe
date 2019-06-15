@@ -34,6 +34,14 @@ class LifestyleTable extends React.Component<ILifestyleTableProps> {
 					{
 						label: 'No',
 						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
 					}
 				]
 			}

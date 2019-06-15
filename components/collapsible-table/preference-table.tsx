@@ -83,7 +83,31 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 		},
 		smoke: {
 			label: 'Smoke',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Not Set',
+						value: null
+					},
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					},
+					{
+						label: 'Occasionally',
+						value: 'occasionally'
+					},
+					{
+						label: 'Any',
+						value: 'any'
+					}
+				]
+			}
 		},
 		drink: {
 			label: 'Drink',
