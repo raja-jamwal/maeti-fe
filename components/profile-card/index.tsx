@@ -7,19 +7,15 @@
 //
 
 import * as React from 'react';
-import {
-	View,
-	// Text,
-	Image,
-	StyleSheet,
-	Dimensions
-} from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableNativeFeedback } from 'react-native';
 import Text, { Value } from '../text';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency } from '../../utils';
 import Divider from '../divider';
 import { isEmpty } from 'lodash';
 import { UserProfile } from '../../store/reducers/account-defination';
+import { Icon } from 'expo';
+import Colors from '../../constants/Colors';
 
 export interface IProfileProps {
 	userProfileId: number;
@@ -34,9 +30,15 @@ class ProfileCard extends React.Component<IProfileProps, any> {
 
 	fullWidth() {
 		const screenWidth = Dimensions.get('window').width;
-		// const screenHeight = Dimensions.get('window').height;
 		return {
 			width: screenWidth
+		};
+	}
+
+	premiumProfileWidth() {
+		const screenWidth = Dimensions.get('window').width;
+		return {
+			width: screenWidth * 0.6
 		};
 	}
 
@@ -46,10 +48,25 @@ class ProfileCard extends React.Component<IProfileProps, any> {
 		const { horoscope, education, profession, family } = { ...userProfile };
 		return (
 			<View style={styles.profileCard}>
-				<Image
-					source={require('../../assets/images/doctor-placeholder.jpg')}
-					style={[styles.profileImage, this.fullWidth()]}
-				/>
+				<View style={styles.profileImageContainer}>
+					<View style={styles.likeContainer}>
+						<TouchableNativeFeedback onPress={() => null}>
+							<Icon.Ionicons
+								name="md-heart-empty"
+								size={30}
+								color={Colors.primaryDarkColor}
+							/>
+						</TouchableNativeFeedback>
+					</View>
+					<Image
+						source={require('../../assets/images/doctor-placeholder.jpg')}
+						style={[styles.profileImage, this.fullWidth()]}
+					/>
+					<View style={[styles.premiumProfile, this.premiumProfileWidth()]}>
+						<Icon.Ionicons name="md-star-outline" size={20} color="white" />
+						<Text style={styles.premiumProfileText}>Premium Profile</Text>
+					</View>
+				</View>
 				<View style={styles.profileSummaryContainer}>
 					<View>
 						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
@@ -124,5 +141,28 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 		marginRight: 8,
 		borderRadius: 5
+	},
+	profileImageContainer: {
+		position: 'relative'
+	},
+	likeContainer: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		margin: 15,
+		zIndex: 1
+	},
+	premiumProfile: {
+		position: 'absolute',
+		bottom: 20,
+		flexDirection: 'row',
+		backgroundColor: Colors.primaryDarkColor,
+		borderTopRightRadius: 20,
+		borderBottomRightRadius: 20,
+		padding: 10
+	},
+	premiumProfileText: {
+		color: 'white',
+		marginLeft: 10
 	}
 });
