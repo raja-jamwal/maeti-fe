@@ -3,16 +3,25 @@ import CollapsibleTable from '../collapsible-table';
 import { ContactInformation } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateContactInformation } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface IContactTableProps {
 	userProfileId: number;
-	contactInformation: ContactInformation;
+}
+
+interface IContactTableMapStateToProps {
+	contactInformation?: ContactInformation;
+}
+
+interface IContactTableMapDispatchToProps {
 	updateContactInformation: () => any;
 }
 
-class ContactTable extends React.Component<IContactTableProps> {
+class ContactTable extends React.Component<
+	IContactTableProps & IContactTableMapDispatchToProps & IContactTableMapStateToProps
+> {
 	mappings = {
 		address: {
 			label: 'Address',
@@ -87,25 +96,34 @@ class ContactTable extends React.Component<IContactTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IContactTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (initialState: IRootState, ownProps: IContactTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const contactInformation = profile.contactInformation;
 		return {
 			contactInformation
 		};
 	}
+
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateContactInformation: bindActionCreators(updateContactInformation, dispatch)
+		updateContactInformation: bindActionCreators<Action<any>, any>(
+			updateContactInformation,
+			dispatch
+		)
 	};
 };
 
-export default connect<any, any>(
+export default connect<
+	IContactTableMapStateToProps,
+	IContactTableMapDispatchToProps,
+	IContactTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(ContactTable);

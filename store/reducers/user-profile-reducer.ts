@@ -225,7 +225,7 @@ export const updateFamilyOtherInformation = function({
 		familyOtherInformation: FamilyOtherInformation
 	) => {
 		userProfile.family = { ...userProfile.family };
-		userProfile.family.family_other_information = familyOtherInformation;
+		userProfile.family.familyOtherInformation = familyOtherInformation;
 		return userProfile;
 	};
 	return updateLocalAndServer<FamilyOtherInformation>(
