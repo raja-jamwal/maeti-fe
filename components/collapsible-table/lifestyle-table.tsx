@@ -225,10 +225,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	ILifestyleTableMapDispatchToProps &
-		ILifestyleTableMapStateToProps &
-		ILifestyleTableProps &
-		IRootState
+	ILifestyleTableMapStateToProps,
+	ILifestyleTableMapDispatchToProps,
+	ILifestyleTableProps,
+	IRootState
 >(
 	mapStateToProps,
 	mapDispatchToProps

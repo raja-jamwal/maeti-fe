@@ -107,8 +107,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IHoroscopeTableMapDispatchToProps,
 	IHoroscopeTableMapStateToProps,
+	IHoroscopeTableMapDispatchToProps,
 	IHoroscopeTableProps,
 	IRootState
 >(

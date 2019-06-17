@@ -76,8 +76,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IInvestmentMapDispatchToProps,
 	IInvestmentTableMapStateToProps,
+	IInvestmentMapDispatchToProps,
 	IInvestmentTableProps,
 	IRootState
 >(

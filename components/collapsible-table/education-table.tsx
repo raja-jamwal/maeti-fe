@@ -199,8 +199,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IEducationTableMapDispatchToProps,
 	IEducationTableMapStateToProps,
+	IEducationTableMapDispatchToProps,
 	IEducationTableProps,
 	IRootState
 >(

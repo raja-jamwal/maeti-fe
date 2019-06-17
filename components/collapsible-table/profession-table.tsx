@@ -344,8 +344,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IProfessionTableMapDispatchToProps,
 	IProfessionTableMapStateToProps,
+	IProfessionTableMapDispatchToProps,
 	IProfessionTableProps,
 	IRootState
 >(

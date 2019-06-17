@@ -73,8 +73,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IReferenceTableMapDispatchToProps,
 	IReferenceTableMapStateToProps,
+	IReferenceTableMapDispatchToProps,
 	IReferenceTableProps,
 	IRootState
 >(

@@ -386,8 +386,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IPreferenceTableMapDispatchToProps,
 	IPreferenceTableStateToProps,
+	IPreferenceTableMapDispatchToProps,
 	IPreferenceTableProps,
 	IRootState
 >(

@@ -568,8 +568,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IProfileTableMapDispatchToProps,
 	IProfileTableMapStateToProps,
+	IProfileTableMapDispatchToProps,
 	IProfileTableProps,
 	IRootState
 >(

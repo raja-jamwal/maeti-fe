@@ -5,7 +5,7 @@ import { IRootState } from '../../store';
 import { connect } from 'react-redux';
 import { updateVerification } from '../../store/reducers/user-profile-reducer';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
-import { Action } from 'redux';
+import { Action } from 'redux-actions';
 
 interface IVerificationTableProps {
 	userProfileId: number;
@@ -72,8 +72,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IVerificationTableMapDispatchToProps,
 	IVerificationTableMapStateToProps,
+	IVerificationTableMapDispatchToProps,
 	IVerificationTableProps,
 	IRootState
 >(
