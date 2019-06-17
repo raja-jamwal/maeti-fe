@@ -88,9 +88,9 @@ class HoroscopeTable extends React.Component<
 	}
 }
 
-const mapStateToProps = (intialState: IRootState, ownProps: IHoroscopeTableProps) => {
+const mapStateToProps = (initialState: IRootState, ownProps: IHoroscopeTableProps) => {
 	const profileId = ownProps.userProfileId;
-	const profile = intialState.userProfiles[profileId];
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const horoscope = profile.horoscope;
 		return {

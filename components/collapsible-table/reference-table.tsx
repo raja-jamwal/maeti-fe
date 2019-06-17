@@ -54,9 +54,9 @@ class ReferenceTable extends React.Component<
 	}
 }
 
-const mapStateToProps = (intialState: IRootState, ownProps: IReferenceTableProps) => {
+const mapStateToProps = (initialState: IRootState, ownProps: IReferenceTableProps) => {
 	const profileId = ownProps.userProfileId;
-	const profile = intialState.userProfiles[profileId];
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const userReference = profile.userReference;
 		return {

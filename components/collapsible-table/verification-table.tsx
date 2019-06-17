@@ -53,9 +53,9 @@ class VerificationTable extends React.Component<
 	}
 }
 
-const mapStateToProps = (intialState: IRootState, ownProps: IVerificationTableProps) => {
+const mapStateToProps = (initialState: IRootState, ownProps: IVerificationTableProps) => {
 	const profileId = ownProps.userProfileId;
-	const profile = intialState.userProfiles[profileId];
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const verification = profile.verification;
 		return {

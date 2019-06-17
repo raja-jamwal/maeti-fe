@@ -206,9 +206,9 @@ class LifestyleTable extends React.Component<
 	}
 }
 
-const mapStateToProps = (intialState: IRootState, ownProps: ILifestyleTableProps) => {
+const mapStateToProps = (initialState: IRootState, ownProps: ILifestyleTableProps) => {
 	const profileId = ownProps.userProfileId;
-	const profile = intialState.userProfiles[profileId];
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const lifestyle = profile.lifestyle;
 		return {

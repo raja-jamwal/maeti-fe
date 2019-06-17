@@ -18,9 +18,7 @@ interface IPreferenceTableMapDispatchToProps {
 }
 
 class PreferenceTable extends React.Component<
-	IPreferenceTableProps,
-	IPreferenceTableMapDispatchToProps,
-	IPreferenceTableStateToProps
+	IPreferenceTableProps & IPreferenceTableMapDispatchToProps & IPreferenceTableStateToProps
 > {
 	mappings = {
 		maritalStatus: {
@@ -367,9 +365,9 @@ class PreferenceTable extends React.Component<
 	}
 }
 
-const mapStateToProps = (intialState: IRootState, ownProps: IPreferenceTableProps) => {
+const mapStateToProps = (initialState: IRootState, ownProps: IPreferenceTableProps) => {
 	const profileId = ownProps.userProfileId;
-	const profile = intialState.userProfiles[profileId];
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const preference = profile.preference;
 		return {

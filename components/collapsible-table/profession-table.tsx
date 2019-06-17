@@ -18,9 +18,7 @@ interface IProfessionTableMapDispatchToProps {
 }
 
 class ProfessionTable extends React.Component<
-	IProfessionTableProps,
-	IProfessionTableMapDispatchToProps,
-	IProfessionTableMapStateToProps
+	IProfessionTableProps & IProfessionTableMapDispatchToProps & IProfessionTableMapStateToProps
 > {
 	mappings = {
 		occupation: {
@@ -325,9 +323,9 @@ class ProfessionTable extends React.Component<
 	}
 }
 
-const mapStateToProps = (intialState: IRootState, ownProps: IProfessionTableProps) => {
+const mapStateToProps = (initialState: IRootState, ownProps: IProfessionTableProps) => {
 	const profileId = ownProps.userProfileId;
-	const profile = intialState.userProfiles[profileId];
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const profession = profile.profession;
 		return {

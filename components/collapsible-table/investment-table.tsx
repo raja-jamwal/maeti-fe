@@ -57,9 +57,9 @@ class InvestmentTable extends React.Component<
 	}
 }
 
-const mapStateToProps = (intialState: IRootState, ownProps: IInvestmentTableProps) => {
+const mapStateToProps = (initialState: IRootState, ownProps: IInvestmentTableProps) => {
 	const profileId = ownProps.userProfileId;
-	const profile = intialState.userProfiles[profileId];
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const investments = profile.investments;
 		return {

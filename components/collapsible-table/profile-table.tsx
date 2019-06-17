@@ -555,9 +555,9 @@ class ProfileTable extends React.Component<
 	}
 }
 
-const mapStateToProps = (intialState: IRootState, ownProps: IProfileTableProps) => {
+const mapStateToProps = (initialState: IRootState, ownProps: IProfileTableProps) => {
 	const profileId = ownProps.userProfileId;
-	const userProfile = intialState.userProfiles[profileId];
+	const userProfile = initialState.userProfiles[profileId];
 	return { userProfile };
 };
 
