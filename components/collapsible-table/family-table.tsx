@@ -4,7 +4,8 @@ import { View } from 'react-native';
 import { Family } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { Action } from 'redux-actions';
 import {
 	updateFamily,
 	updateFamilyOtherInformation
@@ -12,12 +13,20 @@ import {
 
 interface IFamilyTableProps {
 	userProfileId: number;
-	family: Family;
+}
+
+interface IFamilyTableMapStateToProps {
+	family?: Family;
+}
+
+interface IFamilyTableMapDispatchToProps {
 	updateFamily: () => any;
 	updateFamilyOtherInformation: () => any;
 }
 
-class FamilyTable extends React.Component<IFamilyTableProps> {
+class FamilyTable extends React.Component<
+	IFamilyTableProps & IFamilyTableMapStateToProps & IFamilyTableMapDispatchToProps
+> {
 	mapping = {
 		fatherName: {
 			label: "Father's Name",
@@ -177,9 +186,9 @@ class FamilyTable extends React.Component<IFamilyTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IFamilyTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (initialState: IRootState, ownProps: IFamilyTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const family = profile.family;
 		return {
@@ -189,14 +198,22 @@ const mapStateToProps = (state: IRootState, props: IFamilyTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateFamily: bindActionCreators(updateFamily, dispatch),
-		updateFamilyOtherInformation: bindActionCreators(updateFamilyOtherInformation, dispatch)
+		updateFamily: bindActionCreators<Action<any>, any>(updateFamily, dispatch),
+		updateFamilyOtherInformation: bindActionCreators<Action<any>, any>(
+			updateFamilyOtherInformation,
+			dispatch
+		)
 	};
 };
 
-export default connect(
+export default connect<
+	IFamilyTableMapStateToProps,
+	IFamilyTableMapDispatchToProps,
+	IFamilyTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(FamilyTable);
