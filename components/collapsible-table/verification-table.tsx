@@ -4,15 +4,25 @@ import { Verification } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
 import { updateVerification } from '../../store/reducers/user-profile-reducer';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { Action } from 'redux';
 
 interface IVerificationTableProps {
 	userProfileId: number;
+}
+
+interface IVerificationTableMapStateToProps {
 	verification: Verification;
+}
+interface IVerificationTableMapDispatchToProps {
 	updateVerification: () => any;
 }
 
-class VerificationTable extends React.Component<IVerificationTableProps> {
+class VerificationTable extends React.Component<
+	IVerificationTableProps &
+		IVerificationTableMapDispatchToProps &
+		IVerificationTableMapStateToProps
+> {
 	mappings = {
 		address: {
 			label: 'Address Verified',
@@ -43,9 +53,9 @@ class VerificationTable extends React.Component<IVerificationTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IVerificationTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (intialState: IRootState, ownProps: IVerificationTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = intialState.userProfiles[profileId];
 	if (profile) {
 		const verification = profile.verification;
 		return {
@@ -55,13 +65,18 @@ const mapStateToProps = (state: IRootState, props: IVerificationTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateVerification: bindActionCreators(updateVerification, dispatch)
+		updateVerification: bindActionCreators<Action<any>, any>(updateVerification, dispatch)
 	};
 };
 
-export default connect<any, any>(
+export default connect<
+	IVerificationTableMapDispatchToProps,
+	IVerificationTableMapStateToProps,
+	IVerificationTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(VerificationTable);

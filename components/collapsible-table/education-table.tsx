@@ -3,16 +3,25 @@ import CollapsibleTable from '../collapsible-table';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
 import { Education } from '../../store/reducers/account-defination';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateEducation } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface IEducationTableProps {
 	userProfileId: number;
-	education: Education;
+}
+
+interface IEducationTableMapStateToProps {
+	education?: Education;
+}
+
+interface IEducationTableMapDispatchToProps {
 	updateEducation: () => any;
 }
 
-class EducationTable extends React.Component<IEducationTableProps> {
+class EducationTable extends React.Component<
+	IEducationTableProps & IEducationTableMapDispatchToProps & IEducationTableMapStateToProps
+> {
 	mappings = {
 		mediumOfPrimaryEducation: {
 			label: 'Medium of Primary Education',
@@ -171,9 +180,9 @@ class EducationTable extends React.Component<IEducationTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IEducationTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (initialState: IRootState, ownProps: IEducationTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const education = profile.education;
 		return {
@@ -183,13 +192,18 @@ const mapStateToProps = (state: IRootState, props: IEducationTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateEducation: bindActionCreators(updateEducation, dispatch)
+		updateEducation: bindActionCreators<Action<any>, any>(updateEducation, dispatch)
 	};
 };
 
-export default connect<any, any>(
+export default connect<
+	IEducationTableMapDispatchToProps,
+	IEducationTableMapStateToProps,
+	IEducationTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(EducationTable);

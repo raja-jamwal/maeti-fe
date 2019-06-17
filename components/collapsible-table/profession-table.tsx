@@ -3,16 +3,25 @@ import CollapsibleTable from '../collapsible-table';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
 import { Profession } from '../../store/reducers/account-defination';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateProfession } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface IProfessionTableProps {
 	userProfileId: number;
+}
+interface IProfessionTableMapStateToProps {
 	profession: Profession;
+}
+interface IProfessionTableMapDispatchToProps {
 	updateProfession: () => any;
 }
 
-class ProfessionTable extends React.Component<IProfessionTableProps> {
+class ProfessionTable extends React.Component<
+	IProfessionTableProps,
+	IProfessionTableMapDispatchToProps,
+	IProfessionTableMapStateToProps
+> {
 	mappings = {
 		occupation: {
 			label: 'Occupation',
@@ -316,9 +325,9 @@ class ProfessionTable extends React.Component<IProfessionTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IProfessionTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (intialState: IRootState, ownProps: IProfessionTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = intialState.userProfiles[profileId];
 	if (profile) {
 		const profession = profile.profession;
 		return {
@@ -328,13 +337,18 @@ const mapStateToProps = (state: IRootState, props: IProfessionTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateProfession: bindActionCreators(updateProfession, dispatch)
+		updateProfession: bindActionCreators<Action<any>, any>(updateProfession, dispatch)
 	};
 };
 
-export default connect<any, any>(
+export default connect<
+	IProfessionTableMapDispatchToProps,
+	IProfessionTableMapStateToProps,
+	IProfessionTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(ProfessionTable);

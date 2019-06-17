@@ -3,16 +3,25 @@ import CollapsibleTable from '../collapsible-table';
 import { Horoscope } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateHoroscope } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface IHoroscopeTableProps {
 	userProfileId: number;
+}
+
+interface IHoroscopeTableMapStateToProps {
 	horoscope: Horoscope;
+}
+
+interface IHoroscopeTableMapDispatchToProps {
 	updateHoroscope: () => any;
 }
 
-class HoroscopeTable extends React.Component<IHoroscopeTableProps> {
+class HoroscopeTable extends React.Component<
+	IHoroscopeTableProps & IHoroscopeTableMapDispatchToProps & IHoroscopeTableMapStateToProps
+> {
 	mappings = {
 		caste: {
 			label: 'Caste',
@@ -79,9 +88,9 @@ class HoroscopeTable extends React.Component<IHoroscopeTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IHoroscopeTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (intialState: IRootState, ownProps: IHoroscopeTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = intialState.userProfiles[profileId];
 	if (profile) {
 		const horoscope = profile.horoscope;
 		return {
@@ -91,13 +100,18 @@ const mapStateToProps = (state: IRootState, props: IHoroscopeTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateHoroscope: bindActionCreators(updateHoroscope, dispatch)
+		updateHoroscope: bindActionCreators<Action<any>, any>(updateHoroscope, dispatch)
 	};
 };
 
-export default connect<any, any>(
+export default connect<
+	IHoroscopeTableMapDispatchToProps,
+	IHoroscopeTableMapStateToProps,
+	IHoroscopeTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(HoroscopeTable);
