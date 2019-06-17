@@ -12,7 +12,7 @@ interface IInvestmentTableProps {
 }
 
 interface IInvestmentTableMapStateToProps {
-	investments: Investments;
+	investments?: Investments;
 }
 
 interface IInvestmentMapDispatchToProps {

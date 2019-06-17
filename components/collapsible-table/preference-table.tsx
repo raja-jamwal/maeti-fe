@@ -11,7 +11,7 @@ interface IPreferenceTableProps {
 	userProfileId: number;
 }
 interface IPreferenceTableStateToProps {
-	preference: Preference;
+	preference?: Preference;
 }
 interface IPreferenceTableMapDispatchToProps {
 	updatePreference: () => any;

@@ -12,7 +12,7 @@ interface IVerificationTableProps {
 }
 
 interface IVerificationTableMapStateToProps {
-	verification: Verification;
+	verification?: Verification;
 }
 interface IVerificationTableMapDispatchToProps {
 	updateVerification: () => any;

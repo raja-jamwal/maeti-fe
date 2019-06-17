@@ -11,7 +11,7 @@ interface IReferenceTableProps {
 	userProfileId: number;
 }
 interface IReferenceTableMapStateToProps {
-	userReference: UserReference;
+	userReference?: UserReference;
 }
 interface IReferenceTableMapDispatchToProps {
 	updateUserReference: () => any;

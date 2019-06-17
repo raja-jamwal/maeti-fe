@@ -11,7 +11,7 @@ interface ILifestyleTableProps {
 	userProfileId: number;
 }
 interface ILifestyleTableMapStateToProps {
-	lifestyle: Lifestyle;
+	lifestyle?: Lifestyle;
 }
 interface ILifestyleTableMapDispatchToProps {
 	updateLifestyle: () => any;

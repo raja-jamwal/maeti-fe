@@ -11,7 +11,7 @@ interface IProfessionTableProps {
 	userProfileId: number;
 }
 interface IProfessionTableMapStateToProps {
-	profession: Profession;
+	profession?: Profession;
 }
 interface IProfessionTableMapDispatchToProps {
 	updateProfession: () => any;

@@ -11,7 +11,7 @@ interface IProfileTableProps {
 	userProfileId: number;
 }
 interface IProfileTableMapStateToProps {
-	userProfile: UserProfile;
+	userProfile?: UserProfile;
 }
 interface IProfileTableMapDispatchToProps {
 	updateUserProfile: () => any;

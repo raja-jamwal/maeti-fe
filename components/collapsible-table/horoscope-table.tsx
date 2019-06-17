@@ -12,7 +12,7 @@ interface IHoroscopeTableProps {
 }
 
 interface IHoroscopeTableMapStateToProps {
-	horoscope: Horoscope;
+	horoscope?: Horoscope;
 }
 
 interface IHoroscopeTableMapDispatchToProps {
