@@ -11,16 +11,16 @@ interface IHoroscopeTableProps {
 	userProfileId: number;
 }
 
-interface IHoroscopeMapStateToProps {
+interface IHoroscopeTableMapStateToProps {
 	horoscope?: Horoscope;
 }
 
-interface IHoroscopeMapDispatchToProps {
+interface IHoroscopeTableMapDispatchToProps {
 	updateHoroscope: () => any;
 }
 
 class HoroscopeTable extends React.Component<
-	IHoroscopeTableProps & IHoroscopeMapDispatchToProps & IHoroscopeMapStateToProps
+	IHoroscopeTableProps & IHoroscopeTableMapDispatchToProps & IHoroscopeTableMapStateToProps
 > {
 	mappings = {
 		caste: {
@@ -107,8 +107,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 };
 
 export default connect<
-	IHoroscopeMapStateToProps,
-	IHoroscopeMapDispatchToProps,
+	IHoroscopeTableMapStateToProps,
+	IHoroscopeTableMapDispatchToProps,
 	IHoroscopeTableProps,
 	IRootState
 >(

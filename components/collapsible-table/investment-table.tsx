@@ -3,16 +3,25 @@ import CollapsibleTable from '../collapsible-table';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
 import { Investments } from '../../store/reducers/account-defination';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateInvestment } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface IInvestmentTableProps {
 	userProfileId: number;
-	investments: Investments;
+}
+
+interface IInvestmentTableMapStateToProps {
+	investments?: Investments;
+}
+
+interface IInvestmentMapDispatchToProps {
 	updateInvestment: () => any;
 }
 
-class InvestmentTable extends React.Component<IInvestmentTableProps> {
+class InvestmentTable extends React.Component<
+	IInvestmentTableProps & IInvestmentMapDispatchToProps & IInvestmentTableMapStateToProps
+> {
 	mappings = {
 		home: {
 			label: 'Home',
@@ -48,9 +57,9 @@ class InvestmentTable extends React.Component<IInvestmentTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IInvestmentTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (initialState: IRootState, ownProps: IInvestmentTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const investments = profile.investments;
 		return {
@@ -60,13 +69,18 @@ const mapStateToProps = (state: IRootState, props: IInvestmentTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateInvestment: bindActionCreators(updateInvestment, dispatch)
+		updateInvestment: bindActionCreators<Action<any>, any>(updateInvestment, dispatch)
 	};
 };
 
-export default connect(
+export default connect<
+	IInvestmentTableMapStateToProps,
+	IInvestmentMapDispatchToProps,
+	IInvestmentTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(InvestmentTable);

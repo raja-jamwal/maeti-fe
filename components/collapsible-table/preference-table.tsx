@@ -3,16 +3,23 @@ import CollapsibleTable from '../collapsible-table';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
 import { Preference } from '../../store/reducers/account-defination';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updatePreference } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface IPreferenceTableProps {
 	userProfileId: number;
-	preference: Preference;
+}
+interface IPreferenceTableStateToProps {
+	preference?: Preference;
+}
+interface IPreferenceTableMapDispatchToProps {
 	updatePreference: () => any;
 }
 
-class PreferenceTable extends React.Component<IPreferenceTableProps> {
+class PreferenceTable extends React.Component<
+	IPreferenceTableProps & IPreferenceTableMapDispatchToProps & IPreferenceTableStateToProps
+> {
 	mappings = {
 		maritalStatus: {
 			label: 'Marital Status',
@@ -358,9 +365,9 @@ class PreferenceTable extends React.Component<IPreferenceTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IPreferenceTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (initialState: IRootState, ownProps: IPreferenceTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const preference = profile.preference;
 		return {
@@ -370,13 +377,18 @@ const mapStateToProps = (state: IRootState, props: IPreferenceTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updatePreference: bindActionCreators(updatePreference, dispatch)
+		updatePreference: bindActionCreators<Action<any>, any>(updatePreference, dispatch)
 	};
 };
 
-export default connect(
+export default connect<
+	IPreferenceTableStateToProps,
+	IPreferenceTableMapDispatchToProps,
+	IPreferenceTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(PreferenceTable);

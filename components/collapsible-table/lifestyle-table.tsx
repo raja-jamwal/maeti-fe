@@ -3,16 +3,23 @@ import CollapsibleTable from '../collapsible-table';
 import { Lifestyle } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateLifestyle } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface ILifestyleTableProps {
 	userProfileId: number;
-	lifestyle: Lifestyle;
+}
+interface ILifestyleTableMapStateToProps {
+	lifestyle?: Lifestyle;
+}
+interface ILifestyleTableMapDispatchToProps {
 	updateLifestyle: () => any;
 }
 
-class LifestyleTable extends React.Component<ILifestyleTableProps> {
+class LifestyleTable extends React.Component<
+	ILifestyleTableProps & ILifestyleTableMapDispatchToProps & ILifestyleTableMapStateToProps
+> {
 	mappings = {
 		diet: {
 			label: 'Diet',
@@ -199,9 +206,9 @@ class LifestyleTable extends React.Component<ILifestyleTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: ILifestyleTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (initialState: IRootState, ownProps: ILifestyleTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const lifestyle = profile.lifestyle;
 		return {
@@ -211,13 +218,18 @@ const mapStateToProps = (state: IRootState, props: ILifestyleTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateLifestyle: bindActionCreators(updateLifestyle, dispatch)
+		updateLifestyle: bindActionCreators<Action<any>, any>(updateLifestyle, dispatch)
 	};
 };
 
-export default connect<any, any>(
+export default connect<
+	ILifestyleTableMapStateToProps,
+	ILifestyleTableMapDispatchToProps,
+	ILifestyleTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(LifestyleTable);

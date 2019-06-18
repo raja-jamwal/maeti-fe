@@ -3,16 +3,23 @@ import CollapsibleTable from '../collapsible-table';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
 import { UserProfile } from '../../store/reducers/account-defination';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateUserProfile } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface IProfileTableProps {
 	userProfileId: number;
-	userProfile: UserProfile;
+}
+interface IProfileTableMapStateToProps {
+	userProfile?: UserProfile;
+}
+interface IProfileTableMapDispatchToProps {
 	updateUserProfile: () => any;
 }
 
-class ProfileTable extends React.Component<IProfileTableProps> {
+class ProfileTable extends React.Component<
+	IProfileTableProps & IProfileTableMapDispatchToProps & IProfileTableMapStateToProps
+> {
 	mappings = {
 		gender: {
 			label: 'Gender',
@@ -548,19 +555,24 @@ class ProfileTable extends React.Component<IProfileTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IProfileTableProps) => {
-	const profileId = props.userProfileId;
-	const userProfile = state.userProfiles[profileId];
+const mapStateToProps = (initialState: IRootState, ownProps: IProfileTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const userProfile = initialState.userProfiles[profileId];
 	return { userProfile };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateUserProfile: bindActionCreators(updateUserProfile, dispatch)
+		updateUserProfile: bindActionCreators<Action<any>, any>(updateUserProfile, dispatch)
 	};
 };
 
-export default connect<any, any>(
+export default connect<
+	IProfileTableMapStateToProps,
+	IProfileTableMapDispatchToProps,
+	IProfileTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(ProfileTable);

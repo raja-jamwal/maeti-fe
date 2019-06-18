@@ -3,16 +3,23 @@ import CollapsibleTable from '../collapsible-table';
 import { IRootState } from '../../store';
 import { connect } from 'react-redux';
 import { UserReference } from '../../store/reducers/account-defination';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateUserReference } from '../../store/reducers/user-profile-reducer';
+import { Action } from 'redux-actions';
 
 interface IReferenceTableProps {
 	userProfileId: number;
-	userReference: UserReference;
+}
+interface IReferenceTableMapStateToProps {
+	userReference?: UserReference;
+}
+interface IReferenceTableMapDispatchToProps {
 	updateUserReference: () => any;
 }
 
-class ReferenceTable extends React.Component<IReferenceTableProps> {
+class ReferenceTable extends React.Component<
+	IReferenceTableProps & IReferenceTableMapDispatchToProps & IReferenceTableMapStateToProps
+> {
 	mappings = {
 		relativeName: {
 			label: 'Relative Name',
@@ -47,9 +54,9 @@ class ReferenceTable extends React.Component<IReferenceTableProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState, props: IReferenceTableProps) => {
-	const profileId = props.userProfileId;
-	const profile = state.userProfiles[profileId];
+const mapStateToProps = (initialState: IRootState, ownProps: IReferenceTableProps) => {
+	const profileId = ownProps.userProfileId;
+	const profile = initialState.userProfiles[profileId];
 	if (profile) {
 		const userReference = profile.userReference;
 		return {
@@ -59,13 +66,18 @@ const mapStateToProps = (state: IRootState, props: IReferenceTableProps) => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
 	return {
-		updateUserReference: bindActionCreators(updateUserReference, dispatch)
+		updateUserReference: bindActionCreators<Action<any>, any>(updateUserReference, dispatch)
 	};
 };
 
-export default connect<any, any>(
+export default connect<
+	IReferenceTableMapStateToProps,
+	IReferenceTableMapDispatchToProps,
+	IReferenceTableProps,
+	IRootState
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(ReferenceTable);
