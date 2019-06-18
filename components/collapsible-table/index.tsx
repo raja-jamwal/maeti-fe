@@ -13,7 +13,6 @@ interface ICollapsibleTableProps {
 	object: any;
 	navigation: any;
 	mapping: any;
-	router: any;
 	userProfileId: number;
 	updateAction: (a: any) => any;
 }
@@ -53,7 +52,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 	}
 
 	render() {
-		const { title, object, mapping, router, updateAction } = this.props;
+		const { title, object, mapping } = this.props;
 		const { expanded } = this.state;
 		const caretIconName = expanded ? 'md-arrow-dropup' : 'md-arrow-dropdown';
 		return (
