@@ -5,6 +5,7 @@ import { API } from '../../config/API';
 import { addProfile } from './user-profile-reducer';
 import { ApiRequest } from '../../utils';
 import { IRootState } from '../index';
+import { extractPageableResponse } from '../../utils/extract-pageable-response';
 
 export interface IFavouriteState {
 	favourites: {
@@ -48,21 +49,15 @@ export const fetchFavouriteProfile = function(id: number) {
 			page: pageToRequest
 		})
 			.then((response: any) => {
-				const favourites = response.content as Array<Favourite>;
+				const { items, page } = extractPageableResponse<Favourite>(response);
 
-				const pageable = {} as Pageable;
-				pageable.last = response.last;
-				pageable.totalPages = response.totalPages;
-				pageable.totalElements = response.totalElements;
-				pageable.number = response.number;
-
-				favourites.forEach(favourite => {
+				items.forEach(favourite => {
 					dispatch(addFavourite(favourite));
 					const favouriteProfile = favourite.favouriteUserProfile;
 					dispatch(addProfile(favouriteProfile));
 				});
 
-				dispatch(addFavouritePage(pageable));
+				dispatch(addFavouritePage(page));
 				dispatch(setFavouriteFetching(false));
 			})
 			.catch(err => {

@@ -28,9 +28,21 @@ export const API = {
 		SAVE: `${config.server}/api/favourite.save`
 	},
 
+	INTEREST: {
+		GET: `${config.server}/api/interest.get`,
+		LIST: `${config.server}/api/interest.list`,
+		SAVE: `${config.server}/api/interest.save`
+	},
+
 	USER_PROFILE: {
 		GET: `${config.server}/api/userProfile.get`,
 		LIST: `${config.server}/api/userProfile.list`,
 		SAVE: `${config.server}/api/userProfile.save`
+	},
+
+	CHANNEL: {
+		GET: `${config.server}/api/channel.get`,
+		LIST: `${config.server}/api/channel.list`,
+		SAVE: `${config.server}/api/channel.save`
 	}
 };

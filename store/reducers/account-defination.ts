@@ -3,6 +3,7 @@
  *
  * TODO: harden string types to enums as and when needed
  */
+import { User } from 'react-native-gifted-chat';
 
 export interface DAO {
 	// TODO: need to revisit this sometime
@@ -244,6 +245,43 @@ export interface Favourite extends DAO {
 	favouriteIdentity: FavouriteIdentity;
 	favouriteOfUserProfile: UserProfile;
 	favouriteUserProfile: UserProfile;
+}
+
+export interface InterestIdentity {
+	fromUserId: number;
+	toUserId: number;
+}
+
+export interface Interest extends DAO {
+	interestIdentity: InterestIdentity;
+	fromUser: UserProfile;
+	toUser: UserProfile;
+	status: string;
+}
+
+export interface MessageIdentity {
+	channelId: number;
+	id: number;
+}
+
+export interface Message extends DAO {
+	fromUser: UserProfile;
+	toUser: UserProfile;
+	message: string;
+	messageIdentity: MessageIdentity;
+}
+
+export interface ChannelIdentity {
+	fromUserId: number;
+	id: number;
+	toUserId: number;
+}
+
+export interface Channel extends DAO {
+	channelIdentity: ChannelIdentity;
+	fromUser: UserProfile;
+	toUser: UserProfile;
+	latestMessage: any;
 }
 
 export interface Pageable {

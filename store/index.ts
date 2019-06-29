@@ -5,6 +5,8 @@ import { IUserProfileState, userProfileReducer } from './reducers/user-profile-r
 import { ITagsState, tagsReducer } from './reducers/tag-reducer';
 import { favouriteReducer, IFavouriteState } from './reducers/favourite-reducer';
 import { ISelfProfileState, selfProfileReducer } from './reducers/self-profile-reducer';
+import { IInterestState, interestReducer } from './reducers/interest-reducer';
+import { channelReducer, IChannelState } from './reducers/channel-reducer';
 
 export interface IRootState {
 	account: IAccountState;
@@ -12,6 +14,8 @@ export interface IRootState {
 	selfProfile: ISelfProfileState;
 	tags: ITagsState;
 	favourites: IFavouriteState;
+	interests: IInterestState;
+	channels: IChannelState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -19,7 +23,9 @@ const rootReducer = combineReducers<IRootState>({
 	userProfiles: userProfileReducer,
 	selfProfile: selfProfileReducer,
 	tags: tagsReducer,
-	favourites: favouriteReducer
+	favourites: favouriteReducer,
+	interests: interestReducer,
+	channels: channelReducer
 });
 
 const store = createStore<IRootState, any, any, any>(rootReducer, applyMiddleware(thunk));

@@ -1,6 +1,4 @@
-import React from 'react';
-import { View } from 'react-native';
-import Text from '../components/text';
+import * as React from 'react';
 import Colors from '../constants/Colors';
 import InterestsTab from '../components/interests-tab';
 

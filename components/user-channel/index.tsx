@@ -1,10 +1,18 @@
-import React from 'react';
+import * as React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
 import Text from '../text';
 import GlobalStyles from '../../styles/global';
+import { Message, UserProfile } from '../../store/reducers/account-defination';
 
-class MessageInInbox extends React.Component {
+interface IUserChannelProps {
+	userProfile: UserProfile;
+	latestMessage: Message;
+}
+
+class UserChannel extends React.Component<IUserChannelProps> {
 	render() {
+		const { userProfile, latestMessage } = this.props;
+
 		return (
 			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.container]}>
 				<View style={GlobalStyles.paddedRight}>
@@ -15,12 +23,14 @@ class MessageInInbox extends React.Component {
 				</View>
 				<View style={GlobalStyles.expand}>
 					<View style={GlobalStyles.row}>
-						<Text style={[GlobalStyles.bold, GlobalStyles.expand]}>Vishnu Raut</Text>
-						<Text>1</Text>
+						<Text style={[GlobalStyles.bold, GlobalStyles.expand]}>
+							{userProfile.fullName}
+						</Text>
+						{/*<Text>1</Text>*/}
 					</View>
 					<View style={GlobalStyles.row}>
-						<Text style={GlobalStyles.expand}>Hello</Text>
-						<Text>31 Jan, 9:59 PM</Text>
+						<Text style={GlobalStyles.expand}>{latestMessage.message}</Text>
+						<Text>{latestMessage.createdOn}</Text>
 					</View>
 				</View>
 			</View>
@@ -39,5 +49,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default MessageInInbox;
-// export default withNavigation(MessageInInbox);
+export default UserChannel;

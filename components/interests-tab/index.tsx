@@ -1,33 +1,10 @@
 import * as React from 'react';
-import { View, ScrollView, StyleSheet, Dimensions, TouchableNativeFeedback } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import Colors from '../../constants/Colors';
-import _ from 'lodash';
-import ConnectedProfile from '../profile-card/connected-profile';
-import { withNavigation } from 'react-navigation';
-
-const ProfileListComponent = props => {
-	const openProfileScreen = () => {
-		const { navigation } = props;
-		// navigation.push('ProfileScreen');
-	};
-
-	return (
-		<ScrollView>
-			{_.range(5).map(i => {
-				return (
-					<TouchableNativeFeedback key={i} onPress={openProfileScreen}>
-						<View style={styles.profileCardContainer}>
-							<ConnectedProfile accountId="c0bb90b3-d4ac-4007-b48c-3a70db934381" />
-						</View>
-					</TouchableNativeFeedback>
-				);
-			})}
-		</ScrollView>
-	);
-};
-
-const ProfileList = withNavigation(ProfileListComponent);
+import IncomingTab from './tabs/IncomingTab';
+import AcceptedTab from './tabs/AcceptedTab';
+import SentTab from './tabs/SentTab';
 
 export default class InterestsTab extends React.Component {
 	state = {
@@ -52,9 +29,9 @@ export default class InterestsTab extends React.Component {
 			<TabView
 				navigationState={this.state}
 				renderScene={SceneMap({
-					incoming: ProfileList,
-					accepted: ProfileList,
-					sent: ProfileList
+					incoming: IncomingTab,
+					accepted: AcceptedTab,
+					sent: SentTab
 				})}
 				renderTabBar={this._renderHeader}
 				onIndexChange={index => this.setState({ index })}
