@@ -46,13 +46,14 @@ class ProfileCard extends React.Component<IProfileProps, any> {
 		const { userProfile, hideSelfDescription } = this.props;
 		if (isEmpty(userProfile)) return null;
 		const { horoscope, education, profession, family } = { ...userProfile };
+		const heartIcon = userProfile.isFavourite ? 'md-heart' : 'md-heart-empty';
 		return (
 			<View style={styles.profileCard}>
 				<View style={styles.profileImageContainer}>
 					<View style={styles.likeContainer}>
 						<TouchableNativeFeedback onPress={() => null}>
 							<Icon.Ionicons
-								name="md-heart-empty"
+								name={heartIcon}
 								size={30}
 								color={Colors.primaryDarkColor}
 							/>

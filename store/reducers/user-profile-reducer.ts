@@ -17,6 +17,8 @@ import { createAction, handleActions } from 'redux-actions';
 import { IRootState } from '../index';
 import { API } from '../../config/API';
 import { Dispatch } from 'redux';
+import { ApiRequest } from '../../utils';
+import { getSelfProfileId } from './self-profile-reducer';
 
 export interface IUserProfileState {
 	[id: number]: UserProfile;
@@ -26,14 +28,6 @@ const defaultProfileState: IUserProfileState = {};
 
 const ADD_PROFILE = 'ADD_PROFILE';
 export const addProfile = createAction<UserProfile>(ADD_PROFILE);
-
-/*const UPDATE_VERIFICATION = 'UPDATE_VERIFICATION';
-interface IUpdateVerificationPayload {
-	userProfileId: number;
-	object: Verification;
-}
-
-export const updateVerification = createAction<IUpdateVerificationPayload>(UPDATE_VERIFICATION);*/
 
 interface IUpdateEnityPayload {
 	userProfileId: number;
@@ -100,27 +94,6 @@ export const updateUserProfile = function({ userProfileId, object }: IUpdateEnit
 		updateFunc,
 		true
 	);
-
-	/*return (dispatch: Dispatch<any>) => {
-		return fetch(API.USER_PROFILE_SAVE, {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(object)
-		}).then(response => {
-			if (response.status !== 200) {
-				throw response.json();
-			}
-			return response;
-		})
-			.then(response => response.json())
-			.then(userProfile => {
-				dispatch(addProfile({...object}))
-			})
-			.catch(err => console.log('err ', err))
-	};*/
 };
 
 export const updateEducation = function({ userProfileId, object }: IUpdateEnityPayload) {
@@ -251,11 +224,25 @@ export const updatePreference = function({ userProfileId, object }: IUpdateEnity
 	);
 };
 
+export const fetchUserProfiles = function() {
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		console.log('userProfile.list');
+		const selfProfileId = getSelfProfileId(getState());
+		return ApiRequest(API.USER_PROFILE.LIST, {
+			id: selfProfileId
+		}).then((response: any) => {
+			const userProfiles = response.content as Array<UserProfile>;
+			userProfiles.forEach(profile => {
+				dispatch(addProfile(profile));
+			});
+		});
+	};
+};
+
 export const userProfileReducer = handleActions<IUserProfileState>(
 	{
 		[ADD_PROFILE]: (state, { payload }) => {
 			const profile = (payload as any) as UserProfile;
-			// console.log('adding or updating new profile', profile);
 			return { ...state, [profile.id]: profile };
 		}
 		// [UPDATE_VERIFICATION]: (state, { payload }) => state

@@ -1,51 +1,68 @@
-import { Favourite } from './account-defination';
+import { Favourite, Pageable } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { Dispatch } from 'redux';
 import { API } from '../../config/API';
 import { addProfile } from './user-profile-reducer';
-import { StyleSheet } from 'react-native';
+import { ApiRequest } from '../../utils';
+import { IRootState } from '../index';
 
 export interface IFavouriteState {
 	favourites: {
-		[id: number]: Favourite;
+		[favouriteProfileId: number]: Favourite;
 	};
 	fetching: boolean;
+	pageable: Pageable;
 }
 
 const defaultFavouriteState: IFavouriteState = {
 	favourites: {},
-	fetching: false
+	fetching: false,
+	pageable: {
+		last: false,
+		totalPages: 0,
+		number: -1,
+		totalElements: 0
+	}
 };
 
 const ADD_FAVOURITE = 'ADD_FAVOURITE';
 export const addFavourite = createAction<Favourite>(ADD_FAVOURITE);
 
+const ADD_FAVOURITE_PAGE = 'ADD_FAVOURITE_PAGE';
+export const addFavouritePage = createAction<Pageable>(ADD_FAVOURITE_PAGE);
+
 const SET_FAVOURITE_FETCHING = 'SET_FAVOURITE_FETCHING';
 export const setFavouriteFetching = createAction<boolean>(SET_FAVOURITE_FETCHING);
 
 export const fetchFavouriteProfile = function(id: number) {
-	return (dispatch: Dispatch<any>) => {
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		const currentPage = getState().favourites.pageable;
+		if (currentPage.last) return;
+
 		console.log('fetching favourite');
 		dispatch(setFavouriteFetching(true));
-		return fetch(`${API.FAVOURITE.GET}?id=${id}`)
-			.then(response => {
-				if (response.status !== 200) {
-					const error = [
-						'favourite profile fetch failed for ',
-						id,
-						JSON.stringify(response.json())
-					].join(' ');
-					throw error;
-				}
-				return response.json();
-			})
-			.then(response => {
+
+		const pageToRequest = currentPage.number + 1;
+		return ApiRequest(API.FAVOURITE.LIST, {
+			favouriteOfUserId: id,
+			page: pageToRequest
+		})
+			.then((response: any) => {
 				const favourites = response.content as Array<Favourite>;
+
+				const pageable = {} as Pageable;
+				pageable.last = response.last;
+				pageable.totalPages = response.totalPages;
+				pageable.totalElements = response.totalElements;
+				pageable.number = response.number;
+
 				favourites.forEach(favourite => {
 					dispatch(addFavourite(favourite));
-					const favouriteProfile = favourite.favouriteProfile;
+					const favouriteProfile = favourite.favouriteUserProfile;
 					dispatch(addProfile(favouriteProfile));
 				});
+
+				dispatch(addFavouritePage(pageable));
 				dispatch(setFavouriteFetching(false));
 			})
 			.catch(err => {
@@ -64,7 +81,16 @@ export const favouriteReducer = handleActions<IFavouriteState>(
 				...state,
 				favourites: {
 					...existingFavs,
-					[favourite.favouriteIdentity.id]: favourite
+					[favourite.favouriteIdentity.favouriteProfileId]: favourite
+				}
+			};
+		},
+		[ADD_FAVOURITE_PAGE]: (state, { payload }) => {
+			const page = (payload as any) as Pageable;
+			return {
+				...state,
+				pageable: {
+					...page
 				}
 			};
 		},

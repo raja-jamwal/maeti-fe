@@ -5,6 +5,8 @@
  */
 
 export interface DAO {
+	// TODO: need to revisit this sometime
+	// all DAOs don't have id field
 	id: number;
 	createdOn: number;
 	updatedOn: number;
@@ -56,6 +58,7 @@ export interface UserProfile extends DAO {
 	bodyComplexion: string;
 	bloodGroup: string;
 	motherTongue: string;
+	isFavourite: boolean;
 	specialCases: Array<Tag>;
 	describeMyself: Array<Tag>;
 
@@ -233,12 +236,19 @@ export interface PhotosEntity extends DAO {
 }
 
 export interface FavouriteIdentity {
-	id: number;
-	favouriteOfUser: number;
+	favouriteProfileId: number;
+	favouriteOfUserId: number;
 }
 
 export interface Favourite extends DAO {
 	favouriteIdentity: FavouriteIdentity;
 	favouriteOfUserProfile: UserProfile;
-	favouriteProfile: UserProfile;
+	favouriteUserProfile: UserProfile;
+}
+
+export interface Pageable {
+	last: boolean;
+	totalPages: number;
+	number: number;
+	totalElements: number;
 }

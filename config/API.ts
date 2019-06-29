@@ -23,6 +23,14 @@ export const API = {
 	TAGS: `${config.server}/api/tags`,
 
 	FAVOURITE: {
-		GET: `${config.server}/api/favourite.get`
+		GET: `${config.server}/api/favourite.get`,
+		LIST: `${config.server}/api/favourite.list`,
+		SAVE: `${config.server}/api/favourite.save`
+	},
+
+	USER_PROFILE: {
+		GET: `${config.server}/api/userProfile.get`,
+		LIST: `${config.server}/api/userProfile.list`,
+		SAVE: `${config.server}/api/userProfile.save`
 	}
 };

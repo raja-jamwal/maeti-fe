@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { View, ScrollView, TouchableNativeFeedback, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { fetchFavouriteProfile, IFavouriteState } from '../../store/reducers/favourite-reducer';
 import { connect } from 'react-redux';
 import { IRootState } from '../../store';
-import { map } from 'lodash';
+import { toArray, sortBy } from 'lodash';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { Favourite } from '../../store/reducers/account-defination';
-import ConnectedProfileCard from '../profile-card/connected-profile';
-import { Throbber } from '../throbber/throbber';
+import VirtualProfileList from '../virtual-profile-list';
 
 interface IFavouriteContainerProps {}
 
@@ -16,21 +15,27 @@ interface IFavouriteContainerMapStateToProps {
 	userProfileId?: number;
 	favouriteProfiles?: IFavouriteState;
 	fetching?: boolean;
+	totalFavourites: number;
 }
 
 interface IFavouriteContainerMapDispatchToProps {
 	fetchFavouriteProfile: (id: number) => any;
 }
 
+interface IFavouriteContainerState {
+	isFetchingMore: boolean;
+}
+
 class FavouritesContainer extends React.Component<
 	NavigationInjectedProps &
 		IFavouriteContainerProps &
 		IFavouriteContainerMapStateToProps &
-		IFavouriteContainerMapDispatchToProps
+		IFavouriteContainerMapDispatchToProps,
+	IFavouriteContainerState
 > {
 	constructor(props: any) {
 		super(props);
-		this.openProfileScreen = this.openProfileScreen.bind(this);
+		this._handleMore = this._handleMore.bind(this);
 	}
 
 	componentDidMount() {
@@ -45,55 +50,51 @@ class FavouritesContainer extends React.Component<
 		}
 	}
 
-	openProfileScreen(userProfileId: number) {
-		console.log('openProfileScreen');
-		const { navigation } = this.props;
-		navigation.push('ProfileScreen', { userProfileId });
+	getFavouriteProfiles(): Array<Favourite> {
+		const { favouriteProfiles } = this.props;
+		return sortBy(toArray(favouriteProfiles), 'updatedOn');
+	}
+
+	profileIdExtractor(favourite: Favourite) {
+		return favourite.favouriteUserProfile.id;
+	}
+
+	_handleMore() {
+		const { userProfileId, fetchFavouriteProfile } = this.props;
+		if (userProfileId) {
+			fetchFavouriteProfile(userProfileId);
+		}
+	}
+
+	totalCount() {
+		const { fetching, totalFavourites } = this.props;
+		if (fetching) return null;
+		return (
+			<View style={styles.totalCountContainer}>
+				<Text>{totalFavourites} Favourites</Text>
+			</View>
+		);
 	}
 
 	render() {
-		const { favouriteProfiles, fetching } = this.props;
+		const { fetching } = this.props;
 		return (
-			<View>
-				{!!fetching && (
-					<View style={styles.loading}>
-						<Throbber />
-					</View>
-				)}
-				<ScrollView>
-					{map(favouriteProfiles, (favourite: Favourite) => {
-						return (
-							<TouchableNativeFeedback
-								key={favourite.favouriteProfile.id}
-								onPress={() =>
-									this.openProfileScreen(favourite.favouriteProfile.id)
-								}
-							>
-								<View>
-									<ConnectedProfileCard
-										key={favourite.favouriteProfile.id}
-										userProfileId={favourite.favouriteProfile.id}
-									/>
-								</View>
-							</TouchableNativeFeedback>
-						);
-					})}
-				</ScrollView>
-			</View>
+			<VirtualProfileList
+				fetching={fetching}
+				profileIdExtractor={this.profileIdExtractor}
+				data={this.getFavouriteProfiles()}
+				headerComponent={this.totalCount()}
+				handleMore={this._handleMore}
+			/>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	loading: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		top: 0,
-		zIndex: 1,
-		bottom: 0,
+	totalCountContainer: {
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		margin: 15
 	}
 });
 
@@ -102,10 +103,13 @@ const mapStateToProps = (state: IRootState) => {
 		state.account && state.account.userProfile && state.account.userProfile.id;
 	const favouriteProfiles = state.favourites.favourites;
 	const fetching = state.favourites.fetching;
+	const totalFavourites = state.favourites.pageable.totalElements;
+
 	return {
 		userProfileId,
 		favouriteProfiles,
-		fetching
+		fetching,
+		totalFavourites
 	};
 };
 

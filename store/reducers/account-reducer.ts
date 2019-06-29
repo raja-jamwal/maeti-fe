@@ -6,6 +6,7 @@ import { API } from '../../config/API';
 import { head } from 'lodash';
 import { addProfile } from './user-profile-reducer';
 import { fetchTags } from './tag-reducer';
+import { addSelfProfile } from './self-profile-reducer';
 
 export interface IAccountState extends ILocalAccount {}
 
@@ -26,6 +27,7 @@ export const fetchAccount = function() {
 				const account: ILocalAccount = head(accounts) as ILocalAccount;
 				const profile = account.userProfile;
 				dispatch(addAccount(account));
+				dispatch(addSelfProfile(profile));
 				dispatch(addProfile(profile));
 				// console.log(accounts);
 				console.log('addProfile dispatched');
@@ -45,7 +47,7 @@ export function createAccount() {
 
 export const accountReducer = handleActions<IAccountState>(
 	{
-		[ADD_ACCOUNT]: (state, { payload }) => {
+		[ADD_ACCOUNT]: (_state, { payload }) => {
 			// console.debug('add account called ', payload);
 			const account = (payload as any) as ILocalAccount;
 			return { ...account };
