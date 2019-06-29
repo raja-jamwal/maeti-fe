@@ -44,5 +44,11 @@ export const API = {
 		GET: `${config.server}/api/channel.get`,
 		LIST: `${config.server}/api/channel.list`,
 		SAVE: `${config.server}/api/channel.save`
+	},
+
+	MESSAGE: {
+		GET: `${config.server}/api/message.get`,
+		LIST: `${config.server}/api/message.list`,
+		SAVE: `${config.server}/api/message.save`
 	}
 };

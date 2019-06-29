@@ -55,9 +55,9 @@ class MessagesScreen extends React.PureComponent<
 		}
 	}
 
-	openChatView() {
+	openChatView(channelId: number) {
 		const { navigation } = this.props;
-		navigation.push('ChatScreen');
+		navigation.push('ChatScreen', { channelId });
 	}
 
 	keyExtractor(channel: Channel) {
@@ -71,7 +71,10 @@ class MessagesScreen extends React.PureComponent<
 
 	renderChannel(channel: Channel) {
 		return (
-			<TouchableNativeFeedback onPress={this.openChatView} key={channel.channelIdentity.id}>
+			<TouchableNativeFeedback
+				onPress={() => this.openChatView(channel.channelIdentity.id)}
+				key={channel.channelIdentity.id}
+			>
 				<View>
 					<UserChannel
 						userProfile={channel.toUser}
