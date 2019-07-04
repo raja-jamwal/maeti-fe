@@ -21,6 +21,11 @@ interface IIncomingTabMapDispatchToProps {
 class IncomingTab extends React.PureComponent<
 	IIncomingTabMapStateToProps & IIncomingTabMapDispatchToProps
 > {
+	constructor(props: any) {
+		super(props);
+		this._handleMore = this._handleMore.bind(this);
+	}
+
 	componentWillMount() {
 		const { fetchIncomingInterests } = this.props;
 		fetchIncomingInterests();

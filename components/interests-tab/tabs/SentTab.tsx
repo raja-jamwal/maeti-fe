@@ -19,8 +19,15 @@ interface ISentTabMapDispatchToProps {
 }
 
 class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispatchToProps> {
+	constructor(props: any) {
+		super(props);
+		this._handleMore = this._handleMore.bind(this);
+	}
+
 	componentWillMount() {
+		const { fetchSentInterests } = this.props;
 		console.log('sent tab will mount');
+		fetchSentInterests();
 	}
 
 	getSentInterests(): Array<Interest> {

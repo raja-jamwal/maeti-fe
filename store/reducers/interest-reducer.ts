@@ -122,7 +122,38 @@ export const fetchIncomingInterests = function() {
 };
 
 export const fetchAcceptedInterests = function() {
-	return (dispatch: Dispatch<any>, getState: () => IRootState) => {};
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		const currentUserId = getState().selfProfile.id;
+		const currentPage = getState().interests.accepted.pageable;
+
+		if (!currentUserId || currentPage.last) return;
+
+		console.log('fetching accepted');
+		dispatch(setAcceptedInterestFetching(true));
+
+		const pageToRequest = currentPage.number + 1;
+		return ApiRequest(API.INTEREST.LIST, {
+			fromUserId: currentUserId,
+			status: 'accepted',
+			page: pageToRequest
+		})
+			.then((response: any) => {
+				const { items, page } = extractPageableResponse<Interest>(response);
+
+				items.forEach(interest => {
+					dispatch(addAcceptedInterest(interest));
+					const profile = interest.toUser;
+					dispatch(addProfile(profile));
+				});
+
+				dispatch(addAcceptedInterestPage(page));
+				dispatch(setAcceptedInterestFetching(false));
+			})
+			.catch(err => {
+				console.log('err fetching accepted ', err);
+				dispatch(setAcceptedInterestFetching(false));
+			});
+	};
 };
 
 export const fetchSentInterests = function() {
@@ -204,7 +235,7 @@ export const interestReducer = handleActions<IInterestState>(
 					...state.accepted,
 					profiles: {
 						...state.accepted.profiles,
-						[interest.interestIdentity.fromUserId]: interest
+						[interest.interestIdentity.toUserId]: interest
 					}
 				}
 			};
@@ -239,7 +270,7 @@ export const interestReducer = handleActions<IInterestState>(
 					...state.sent,
 					profiles: {
 						...state.sent.profiles,
-						[interest.interestIdentity.fromUserId]: interest
+						[interest.interestIdentity.toUserId]: interest
 					}
 				}
 			};

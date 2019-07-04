@@ -33,12 +33,12 @@ const CustomHeader = (props: any) => {
 				<Image source={require('../assets/images/robot-dev.png')} style={styles.avatar} />
 			</TouchableNativeFeedback>
 			<TextInput style={[GlobalStyles.expand, styles.searchInput]} />
-			<Icon.Ionicons
+			{/*<Icon.Ionicons
 				style={styles.navBarIcon}
 				color={Colors.white}
 				name="md-save"
 				size={26}
-			/>
+			/>*/}
 			<Icon.Ionicons
 				style={styles.navBarIcon}
 				color={Colors.white}

@@ -21,8 +21,14 @@ interface IAcceptedTabDispatchToProps {
 class AcceptedTab extends React.Component<
 	IAcceptedTabMapStateToProps & IAcceptedTabDispatchToProps
 > {
+	constructor(props: any) {
+		super(props);
+		this._handleMore = this._handleMore.bind(this);
+	}
+
 	componentWillMount() {
 		const { fetchAcceptedInterests } = this.props;
+		console.log('fetching accepted interests');
 		fetchAcceptedInterests();
 	}
 
@@ -32,7 +38,7 @@ class AcceptedTab extends React.Component<
 	}
 
 	profileIdExtractor(interest: Interest) {
-		return interest.fromUser.id;
+		return interest.toUser.id;
 	}
 
 	totalCount() {

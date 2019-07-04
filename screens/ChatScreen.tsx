@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { GiftedChat, IChatMessage, User } from 'react-native-gifted-chat';
+import {
+	GiftedChat,
+	IChatMessage,
+	MessageProps,
+	User,
+	Avatar,
+	Day,
+	utils,
+	MessageTextProps
+} from 'react-native-gifted-chat';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -7,6 +16,12 @@ import { connect } from 'react-redux';
 import { Channel, Message, UserProfile } from '../store/reducers/account-defination';
 import { fetchMessages, postMessage } from '../store/reducers/message-reducer';
 import { toArray, map, keys, sortBy } from 'lodash';
+import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import GlobalStyle from '../styles/global';
+import Colors from '../constants/Colors';
+import { Throbber } from '../components/throbber/throbber';
+
+const { isSameUser, isSameDay } = utils;
 
 const messageToChatMessage = (message: Message): IChatMessage => {
 	return {
@@ -47,6 +62,14 @@ class ChatScreen extends React.Component<
 	static navigationOptions = ({ navigation }) => ({
 		title: navigation.getParam('title', '')
 	});
+
+	constructor(props: any) {
+		super(props);
+		this.renderMessage = this.renderMessage.bind(this);
+		this.renderMessageText = this.renderMessageText.bind(this);
+		this._hasMore = this._hasMore.bind(this);
+		this.renderLoader = this.renderLoader.bind(this);
+	}
 
 	mayBeLoadMessage() {
 		const { navigation, fetchMessages } = this.props;
@@ -101,18 +124,123 @@ class ChatScreen extends React.Component<
 		}));
 	}
 
+	getScreenWidth() {
+		return Dimensions.get('window').width;
+	}
+
+	getWidthStyle() {
+		return {
+			width: this.getScreenWidth() * 0.5
+		};
+	}
+
+	renderMessage(message: MessageProps<IChatMessage>): React.ReactNode {
+		const text = message.currentMessage && message.currentMessage.text;
+		const messageStyle = message.position === 'left' ? styles.leftMessage : styles.rightMessage;
+		return (
+			<View style={[GlobalStyle.row, GlobalStyle.expand, styles.messageView]}>
+				<View style={[GlobalStyle.row, messageStyle, GlobalStyle.expand]}>
+					{message.showUserAvatar && (
+						<Avatar
+							{...message}
+							imageStyle={{
+								left: styles.avatarContainerStyle,
+								right: styles.avatarContainerStyle
+							}}
+						/>
+					)}
+
+					<View style={styles.messageContainer}>
+						<Text>{text}</Text>
+					</View>
+				</View>
+			</View>
+		);
+	}
+
+	renderMessageText(messageText: MessageTextProps<IChatMessage>): React.ReactNode {
+		const text = messageText.currentMessage && messageText.currentMessage.text;
+		return (
+			<View>
+				<Text>{text}</Text>
+			</View>
+		);
+	}
+
+	_hasMore() {
+		const { channel, fetchMessages } = this.props;
+		if (!channel) return;
+		console.log('loading earlier');
+		fetchMessages(channel.channelIdentity.id);
+		return true;
+	}
+
+	renderLoader() {
+		const { fetching } = this.props;
+		if (!fetching) return null;
+		return (
+			!!fetching && (
+				<View style={styles.loader}>
+					<Throbber />
+				</View>
+			)
+		);
+	}
+
 	render() {
-		const { currentUserProfile } = this.props;
+		const { currentUserProfile, fetching } = this.props;
 		if (!currentUserProfile) return;
 		return (
 			<GiftedChat
 				messages={this.state.messages}
 				onSend={messages => this.onSend(messages)}
 				user={userProfileToUser(currentUserProfile)}
+				renderMessage={this.renderMessage}
+				alwaysShowSend={true}
+				// loadEarlier={true}
+				// isLoadingEarlier={fetching}
+				onLoadEarlier={this._hasMore}
+				renderLoading={this.renderLoader}
+				listViewProps={{
+					onEndReached: this._hasMore,
+					onEndReachedThreshold: 50
+				}}
+				// renderMessageText={this.renderMessageText}
 			/>
 		);
 	}
 }
+
+const styles = StyleSheet.create({
+	loader: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		zIndex: 1
+	},
+	messageView: {
+		marginTop: 5,
+		marginBottom: 5,
+		marginRight: 10
+	},
+	messageContainer: {
+		borderWidth: 1,
+		borderColor: '#eee',
+		padding: 10,
+		borderRadius: 10
+	},
+	avatarContainerStyle: {
+		backgroundColor: Colors.primaryDarkColor
+	},
+	leftMessage: {
+		padding: 10
+		// backgroundColor: Colors.offWhite
+	},
+	rightMessage: {
+		flexDirection: 'row-reverse'
+		// backgroundColor: Colors.primaryDarkColor
+	}
+});
 
 const mapStateToProps = (state: IRootState, ownProps: any) => {
 	const currentUserProfile = state.selfProfile;

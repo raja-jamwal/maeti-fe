@@ -57,7 +57,7 @@ const MessagesStack = createStackNavigator(
 	{ defaultNavigationOptions }
 );
 
-MessagesStack.navigationOptions = {
+MessagesStack.navigationOptions = ({ navigation }) => ({
 	tabBarLabel: 'Messages',
 	tabBarIcon: ({ focused }) => (
 		<TabBarIcon
@@ -68,8 +68,9 @@ MessagesStack.navigationOptions = {
 					: 'md-chatboxes'
 			}
 		/>
-	)
-};
+	),
+	tabBarVisible: navigation.state.index === 0
+});
 
 const FavouritesStack = createStackNavigator(
 	{
