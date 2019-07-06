@@ -7,6 +7,9 @@ export default StyleSheet.create({
 	row: {
 		flexDirection: 'row'
 	},
+	column: {
+		flexDirection: 'column'
+	},
 	large: {
 		fontSize: 18
 	},

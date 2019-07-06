@@ -27,24 +27,29 @@ interface IExploreScreenProps {
 
 const CustomHeader = (props: any) => {
 	const navigateToProfile = () => null; // props.navigation.push('ProfileScreen');
+	const openFilterScreen = () => props.navigation.push('FilterScreen');
 	return (
 		<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.header]}>
 			<TouchableNativeFeedback onPress={() => navigateToProfile()}>
 				<Image source={require('../assets/images/robot-dev.png')} style={styles.avatar} />
 			</TouchableNativeFeedback>
 			<TextInput style={[GlobalStyles.expand, styles.searchInput]} />
-			{/*<Icon.Ionicons
-				style={styles.navBarIcon}
-				color={Colors.white}
-				name="md-save"
-				size={26}
-			/>*/}
-			<Icon.Ionicons
-				style={styles.navBarIcon}
-				color={Colors.white}
-				name="md-funnel"
-				size={26}
-			/>
+			<TouchableNativeFeedback>
+				<Icon.Ionicons
+					style={styles.navBarIcon}
+					color={Colors.white}
+					name="md-save"
+					size={26}
+				/>
+			</TouchableNativeFeedback>
+			<TouchableNativeFeedback onPress={() => openFilterScreen()}>
+				<Icon.Ionicons
+					style={styles.navBarIcon}
+					color={Colors.white}
+					name="md-funnel"
+					size={26}
+				/>
+			</TouchableNativeFeedback>
 		</View>
 	);
 };

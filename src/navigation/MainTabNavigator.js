@@ -11,6 +11,7 @@ import MoreScreen from '../screens/MoreScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import ChatScreen from '../screens/ChatScreen';
+import FilterScreen from '../screens/FilterScreen';
 
 const defaultNavigationOptions = {
 	headerStyle: {
@@ -27,10 +28,11 @@ const ExploreStack = createStackNavigator(
 	{
 		Explore: ExploreScreen,
 		ProfileScreen: ProfileScreen,
-		EditProfileScreen: EditProfileScreen
+		EditProfileScreen: EditProfileScreen,
+		FilterScreen: FilterScreen
 	},
 	{
-		// initialRouteName: 'ProfileScreen',
+		// initialRouteName: 'FilterScreen',
 		defaultNavigationOptions
 	}
 );
