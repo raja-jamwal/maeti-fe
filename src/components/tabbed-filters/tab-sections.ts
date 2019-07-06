@@ -1,10 +1,4 @@
-import React from 'react';
-import { Image, TouchableNativeFeedback, View, StyleSheet, ScrollView } from 'react-native';
-import GlobalStyles from '../../styles/global';
-import Text from '../text/index';
-import Colors from '../../constants/Colors';
-
-const TAB_SECTIONS = [
+export const TAB_SECTIONS = [
 	{
 		name: 'search',
 		icon: require('../../assets/images/icons/filter_tab.png'),
@@ -46,58 +40,18 @@ const TAB_SECTIONS = [
 		label: 'Location Matches'
 	},
 	{
-		name: 'added_me_favourites',
+		name: 'added_me',
 		icon: require('../../assets/images/icons/who_added_favoutites.png'),
 		label: 'Who Added Me To Favourites'
 	},
 	{
-		name: 'viewed_my_contact',
+		name: 'viewed_contact',
 		icon: require('../../assets/images/icons/who_viewed_my_contact.png'),
 		label: 'Who Viewed My Contact'
 	},
 	{
-		name: 'viewed_my_profile',
+		name: 'viewed_profile',
 		icon: require('../../assets/images/icons/who_viewed_my_profile.png'),
 		label: 'Who Viewed My Profile'
 	}
 ];
-
-export default class TabbedFilters extends React.Component {
-	render() {
-		return (
-			<ScrollView
-				horizontal={true}
-				showsHorizontalScrollIndicator={false}
-				style={GlobalStyles.row}
-			>
-				{TAB_SECTIONS.map(tab => {
-					return (
-						<TouchableNativeFeedback key={tab.name}>
-							<View style={styles.tile}>
-								<Image style={styles.icon} source={tab.icon} />
-								<Text style={styles.label}>{tab.label}</Text>
-							</View>
-						</TouchableNativeFeedback>
-					);
-				})}
-			</ScrollView>
-		);
-	}
-}
-
-const styles = StyleSheet.create({
-	tile: {
-		flexDirection: 'column',
-		alignItems: 'center',
-		width: 120
-	},
-	label: {
-		color: Colors.offWhite,
-		textAlign: 'center'
-	},
-	icon: {
-		width: 80,
-		height: 80,
-		resizeMode: 'contain'
-	}
-});

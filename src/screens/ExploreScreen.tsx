@@ -1,16 +1,14 @@
 import * as React from 'react';
 import {
 	Image,
-	ScrollView,
 	StyleSheet,
 	TextInput,
 	View,
-	TouchableNativeFeedback
+	TouchableNativeFeedback,
+	FlatList
 } from 'react-native';
-import Text from '../components/text/index';
 import Colors from '../constants/Colors';
 import GlobalStyles from '../styles/global';
-import _ from 'lodash';
 import ConnectedProfile from '../components/profile-card/connected-profile';
 import { Icon } from 'expo';
 import TabbedFilters from '../components/tabbed-filters/index';
@@ -19,10 +17,10 @@ import { Throbber } from '../components/throbber/throbber';
 import { NavigationInjectedProps } from 'react-navigation';
 import { IUserProfileState } from '../store/reducers/user-profile-reducer';
 import { IRootState } from '../store/index';
-import { UserProfile } from '../store/reducers/account-defination';
 
 interface IExploreScreenProps {
-	userProfiles?: IUserProfileState;
+	userProfiles: IUserProfileState;
+	fetching: boolean;
 }
 
 const CustomHeader = (props: any) => {
@@ -70,41 +68,74 @@ class ExploreScreen extends React.Component<NavigationInjectedProps & IExploreSc
 		navigation.push('ProfileScreen', { userProfileId });
 	}
 
-	render() {
-		const { userProfiles } = this.props;
+	getItems() {
+		const { userProfiles, fetching } = this.props;
+		const items: any = [
+			{
+				type: 'filter-tab',
+				key: 'filter-tab'
+			}
+		];
+
+		Object.keys(userProfiles).forEach(userProfileId => {
+			items.push({
+				type: 'user-profile',
+				key: `profile-${userProfileId}`,
+				profileId: userProfileId
+			});
+		});
+
+		if (fetching) {
+			items.push({
+				type: 'loader',
+				key: 'loader'
+			});
+		}
+
+		return items;
+	}
+
+	renderProfileCard(userProfileId: number) {
 		return (
-			<ScrollView style={GlobalStyles.expand}>
-				<View>
-					<Text style={styles.headline}>Choose a type of match</Text>
+			<TouchableNativeFeedback
+				key={userProfileId}
+				onPress={() => this.openProfileScreen(userProfileId)}
+			>
+				<View style={styles.profileCardContainer}>
+					<ConnectedProfile userProfileId={userProfileId} />
 				</View>
-				<TabbedFilters />
-				<View>
-					<Text style={styles.headline}>Discover</Text>
-				</View>
-				{_.isEmpty(userProfiles) && <Throbber />}
-				{_.map(userProfiles, (userProfile: UserProfile) => {
-					return (
-						<TouchableNativeFeedback
-							key={userProfile.id}
-							onPress={() => this.openProfileScreen(userProfile.id)}
-						>
-							<View style={styles.profileCardContainer}>
-								<ConnectedProfile userProfileId={userProfile.id} />
-							</View>
-						</TouchableNativeFeedback>
-					);
-				})}
-			</ScrollView>
+			</TouchableNativeFeedback>
+		);
+	}
+
+	renderItem(item: any) {
+		switch (item.key) {
+			case 'filter-tab':
+				return <TabbedFilters />;
+			case 'user-profile':
+				return this.renderProfileCard(item.profileId);
+			case 'loader': {
+				return <Throbber />;
+			}
+			default:
+				return null;
+		}
+	}
+
+	render() {
+		return (
+			<FlatList
+				keyExtractor={(item: any) => item.key}
+				data={this.getItems()}
+				renderItem={({ item }) => this.renderItem(item)}
+				// onEndReached={this._handleMore}
+				// onEndReachedThreshold={100}
+			/>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	headline: {
-		fontSize: 25,
-		fontWeight: '500',
-		padding: 20
-	},
 	navBarIcon: {
 		paddingRight: 10
 	},
@@ -139,9 +170,13 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: IRootState) => {
 	// later we will have explore reducer which
 	// will get us profileIds
-	const userProfiles = state.userProfiles;
+	const selected_screen = state.explore.selected_screen;
+	const screen = state.explore[selected_screen];
+	const userProfiles = screen.profiles;
+	const fetching = screen.fetching;
 	return {
-		userProfiles
+		userProfiles,
+		fetching
 	};
 };
 

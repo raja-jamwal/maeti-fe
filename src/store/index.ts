@@ -8,9 +8,11 @@ import { ISelfProfileState, selfProfileReducer } from './reducers/self-profile-r
 import { IInterestState, interestReducer } from './reducers/interest-reducer';
 import { channelReducer, IChannelState } from './reducers/channel-reducer';
 import { IMessageState, messageReducer } from './reducers/message-reducer';
+import { exploreReducer, IExploreState } from './reducers/explore-reducer';
 
 export interface IRootState {
 	account: IAccountState;
+	explore: IExploreState;
 	userProfiles: IUserProfileState;
 	selfProfile: ISelfProfileState;
 	tags: ITagsState;
@@ -22,6 +24,7 @@ export interface IRootState {
 
 const rootReducer = combineReducers<IRootState>({
 	account: accountReducer,
+	explore: exploreReducer,
 	userProfiles: userProfileReducer,
 	selfProfile: selfProfileReducer,
 	tags: tagsReducer,
