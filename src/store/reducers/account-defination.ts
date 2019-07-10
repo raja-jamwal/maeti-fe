@@ -60,6 +60,8 @@ export interface UserProfile extends DAO {
 	bloodGroup: string;
 	motherTongue: string;
 	isFavourite: boolean;
+	pushToken: string;
+
 	specialCases: Array<Tag>;
 	describeMyself: Array<Tag>;
 

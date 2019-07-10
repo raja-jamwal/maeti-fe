@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "70507161694",
+    "firebase_url": "https://matrimony-datagrids.firebaseio.com",
+    "project_id": "matrimony-datagrids",
+    "storage_bucket": "matrimony-datagrids.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70507161694:android:1a545f4fd85e3ccc",
+        "android_client_info": {
+          "package_name": "matrimony.datagrids.in"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70507161694-214o0va0sn8o3lm9jf9i5bim6aa882s6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6qo08gkKW9PCOiJLoM_l1XWU6ZVA607I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70507161694-214o0va0sn8o3lm9jf9i5bim6aa882s6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

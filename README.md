@@ -45,3 +45,16 @@ https://basarat.gitbooks.io/typescript/content/docs/getting-started.html
 **Q:** How do I edit the workspace settings?
 
 **A:** Go to the '.vscode' folder and add the entries to the 'settings.json' file.
+
+
+# FCM server key
+
+Keeping note here
+
+```
+AIzaSyD8Ef7mfMg9kynLcNLR-LWM2KKdVYCOTLY
+```
+
+```
+expo push:android:upload --api-key <your-token-here>
+```

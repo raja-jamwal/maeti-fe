@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Asset, Font, Icon, Permissions, Notifications } from 'expo';
 import AppNavigator from './src/navigation/AppNavigator';
 import { connect, Provider } from 'react-redux';
 import { store } from './src/store';
@@ -53,6 +53,8 @@ class App extends React.Component {
 		});
 	};
 
+	_getNotificationPerm = async function() {};
+
 	_loadResourcesAsync = async () => {
 		return Promise.all([
 			Asset.loadAsync([
@@ -69,7 +71,8 @@ class App extends React.Component {
 				'comfortaa-light': require('./src/assets/fonts/Comfortaa-Light.ttf'),
 				'comfortaa-regular': require('./src/assets/fonts/Comfortaa-Regular.ttf')
 			}),
-			this._loadAccount()
+			this._loadAccount(),
+			this._getNotificationPerm()
 		]);
 	};
 

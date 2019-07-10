@@ -50,5 +50,9 @@ export const API = {
 		GET: `${config.server}/api/message.get`,
 		LIST: `${config.server}/api/message.list`,
 		SAVE: `${config.server}/api/message.save`
+	},
+
+	TOKEN: {
+		SAVE: `${config.server}/api/userProfile.token.save`
 	}
 };
