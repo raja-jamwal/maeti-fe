@@ -32,6 +32,8 @@ export const fetchMessages = function(channelId: number) {
 		const channel = getState().messages[channelId];
 
 		if (channel && channel.page.last) {
+			console.log('this is last message');
+			dispatch(setMessageFetching({ channelId, fetching: false }));
 			return;
 		}
 

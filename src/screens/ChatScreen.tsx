@@ -1,14 +1,5 @@
 import * as React from 'react';
-import {
-	GiftedChat,
-	IChatMessage,
-	MessageProps,
-	User,
-	Avatar,
-	Day,
-	utils,
-	MessageTextProps
-} from 'react-native-gifted-chat';
+import { GiftedChat, IChatMessage, MessageProps, User, Avatar } from 'react-native-gifted-chat';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IRootState } from '../store/index';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -19,9 +10,6 @@ import { toArray, map, keys, sortBy } from 'lodash';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import GlobalStyle from '../styles/global';
 import Colors from '../constants/Colors';
-import { Throbber } from '../components/throbber/throbber';
-
-const { isSameUser, isSameDay } = utils;
 
 const messageToChatMessage = (message: Message): IChatMessage => {
 	return {
@@ -44,6 +32,7 @@ interface IChatScreenMapStateToProps {
 	currentUserProfile: UserProfile;
 	fetching: boolean;
 	messages: Array<Message>;
+	isLastPage: boolean;
 }
 
 interface IChatScreenMapDispatchToProps {
@@ -66,16 +55,13 @@ class ChatScreen extends React.Component<
 	constructor(props: any) {
 		super(props);
 		this.renderMessage = this.renderMessage.bind(this);
-		this.renderMessageText = this.renderMessageText.bind(this);
 		this._hasMore = this._hasMore.bind(this);
-		this.renderLoader = this.renderLoader.bind(this);
 	}
 
 	mayBeLoadMessage() {
 		const { navigation, fetchMessages } = this.props;
 		const channelId = navigation.getParam('channelId');
 		if (channelId && this.state.channelId !== channelId) {
-			// fetch message for channel here
 			fetchMessages(channelId);
 			this.setState({
 				channelId
@@ -105,8 +91,7 @@ class ChatScreen extends React.Component<
 		this.props.navigation.setParams({ title: channel.toUser.fullName });
 	}
 
-	componentWillReceiveProps() {
-		console.log('chat-screen will recv props');
+	componentWillReceiveProps(nextProps: any) {
 		this.mayBeUpdateMessages();
 	}
 
@@ -158,38 +143,16 @@ class ChatScreen extends React.Component<
 		);
 	}
 
-	renderMessageText(messageText: MessageTextProps<IChatMessage>): React.ReactNode {
-		const text = messageText.currentMessage && messageText.currentMessage.text;
-		return (
-			<View>
-				<Text>{text}</Text>
-			</View>
-		);
-	}
-
 	_hasMore() {
 		const { channel, fetchMessages } = this.props;
 		if (!channel) return;
-		console.log('loading earlier');
 		fetchMessages(channel.channelIdentity.id);
-		return true;
-	}
-
-	renderLoader() {
-		const { fetching } = this.props;
-		if (!fetching) return null;
-		return (
-			!!fetching && (
-				<View style={styles.loader}>
-					<Throbber />
-				</View>
-			)
-		);
 	}
 
 	render() {
-		const { currentUserProfile, fetching } = this.props;
+		const { currentUserProfile, fetching, isLastPage } = this.props;
 		if (!currentUserProfile) return;
+
 		return (
 			<GiftedChat
 				messages={this.state.messages}
@@ -197,15 +160,14 @@ class ChatScreen extends React.Component<
 				user={userProfileToUser(currentUserProfile)}
 				renderMessage={this.renderMessage}
 				alwaysShowSend={true}
-				// loadEarlier={true}
-				// isLoadingEarlier={fetching}
+				loadEarlier={!isLastPage}
+				isLoadingEarlier={fetching}
 				onLoadEarlier={this._hasMore}
-				renderLoading={this.renderLoader}
 				listViewProps={{
 					onEndReached: this._hasMore,
 					onEndReachedThreshold: 50
 				}}
-				// renderMessageText={this.renderMessageText}
+				extraData={this.props}
 			/>
 		);
 	}
@@ -248,14 +210,15 @@ const mapStateToProps = (state: IRootState, ownProps: any) => {
 	const channel = channelId && state.channels.channels[channelId];
 	console.log('channelId ', channelId);
 	const messageState = channelId && state.messages[channelId];
-	// console.log('messageState ', messageState && messageState.messages);
 	const fetching = (messageState && messageState.fetching) || false;
 	const messages = (messageState && messageState.messages) || {};
+	const isLastPage = (messageState && messageState.page && messageState.page.last) || false;
 	return {
 		channel,
 		currentUserProfile,
 		fetching,
-		messages
+		messages,
+		isLastPage
 	};
 };
 
