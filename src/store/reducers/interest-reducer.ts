@@ -5,7 +5,7 @@ import { ApiRequest } from '../../utils/index';
 import { IRootState } from '../index';
 import { API } from '../../config/API';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
-import { addProfile } from './user-profile-reducer';
+import { addProfile, bulkAddProfile } from './user-profile-reducer';
 
 export interface IInterestState {
 	incoming: {
@@ -65,6 +65,7 @@ const defaultInterestState: IInterestState = {
 };
 
 const ADD_INCOMING_INTEREST = 'ADD_INCOMING_INTEREST';
+const BULK_ADD_INCOMING_INTEREST = 'BULK_ADD_INCOMING_INTEREST';
 const ADD_INCOMING_INTEREST_PAGE = 'ADD_INCOMING_INTEREST_PAGE';
 const SET_INCOMING_INTEREST_FETCHING = 'SET_INCOMING_INTEREST_FETCHING';
 
@@ -77,6 +78,7 @@ const ADD_SENT_INTEREST_PAGE = 'ADD_SENT_INTEREST_PAGE';
 const SET_SENT_INTEREST_FETCHING = 'SET_SENT_INTEREST_FETCHING';
 
 export const addIncomingInterest = createAction<Interest>(ADD_INCOMING_INTEREST);
+export const bulkAddIncomingInterest = createAction<Array<Interest>>(BULK_ADD_INCOMING_INTEREST);
 export const addIncomingInterestPage = createAction<Pageable>(ADD_INCOMING_INTEREST_PAGE);
 export const setIncomingInterestFetching = createAction<boolean>(SET_INCOMING_INTEREST_FETCHING);
 
@@ -105,11 +107,10 @@ export const fetchIncomingInterests = function() {
 		})
 			.then((response: any) => {
 				const { items, page } = extractPageableResponse<Interest>(response);
-				items.forEach(interest => {
-					dispatch(addIncomingInterest(interest));
-					const profile = interest.fromUser;
-					dispatch(addProfile(profile));
-				});
+
+				dispatch(bulkAddIncomingInterest(items));
+				const fromUserProfiles = items.map(item => item.fromUser);
+				dispatch(bulkAddProfile(fromUserProfiles));
 
 				dispatch(addIncomingInterestPage(page));
 				dispatch(setIncomingInterestFetching(false));
@@ -192,6 +193,23 @@ export const fetchSentInterests = function() {
 
 export const interestReducer = handleActions<IInterestState>(
 	{
+		[BULK_ADD_INCOMING_INTEREST]: (state, { payload }) => {
+			const interests = (payload as any) as Array<Interest>;
+			const interestByKey: any = {};
+			interests.forEach(interest => {
+				interestByKey[interest.interestIdentity.fromUserId] = interest;
+			});
+			return {
+				...state,
+				incoming: {
+					...state.incoming,
+					profiles: {
+						...state.incoming.profiles,
+						...interestByKey
+					}
+				}
+			};
+		},
 		[ADD_INCOMING_INTEREST]: (state, { payload }) => {
 			const interest = (payload as any) as Interest;
 			return {

@@ -53,7 +53,7 @@ export const savePushToken = function(id: number) {
 			token
 		})
 			.then((response: any) => {
-				console.log('savePushToken ', response);
+				console.log('savePushToken');
 			})
 			.catch(err => {
 				console.log('err happened while saving token ', err);

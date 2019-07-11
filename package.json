@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "@types/react-native-tab-view": "^1.0.6",
     "@types/react-navigation": "^3.0.7",
     "@types/react-redux": "^7.0.9",
     "@types/redux-actions": "^2.6.1",

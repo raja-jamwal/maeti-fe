@@ -27,7 +27,9 @@ export interface IUserProfileState {
 const defaultProfileState: IUserProfileState = {};
 
 const ADD_PROFILE = 'ADD_PROFILE';
+const BULK_ADD_PROFILE = 'BULK_ADD_PROFILE';
 export const addProfile = createAction<UserProfile>(ADD_PROFILE);
+export const bulkAddProfile = createAction<Array<UserProfile>>(BULK_ADD_PROFILE);
 
 interface IUpdateEnityPayload {
 	userProfileId: number;
@@ -241,6 +243,17 @@ export const fetchUserProfiles = function() {
 
 export const userProfileReducer = handleActions<IUserProfileState>(
 	{
+		[BULK_ADD_PROFILE]: (state, { payload }) => {
+			const profiles = (payload as any) as Array<UserProfile>;
+			const profilesByKey: any = {};
+			profiles.forEach(profile => {
+				profilesByKey[profile.id] = profile;
+			});
+			return {
+				...state,
+				...profilesByKey
+			};
+		},
 		[ADD_PROFILE]: (state, { payload }) => {
 			const profile = (payload as any) as UserProfile;
 			return { ...state, [profile.id]: profile };

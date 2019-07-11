@@ -16,6 +16,11 @@ export default class InterestsTab extends React.Component {
 		]
 	};
 
+	constructor(props: any) {
+		super(props);
+		this.onIndexChange = this.onIndexChange.bind(this);
+	}
+
 	_renderHeader = props => {
 		return (
 			<View>
@@ -23,6 +28,11 @@ export default class InterestsTab extends React.Component {
 			</View>
 		);
 	};
+
+	onIndexChange(index: number) {
+		console.log('shoud set index ', index);
+		this.setState({ index });
+	}
 
 	render() {
 		return (
@@ -34,8 +44,12 @@ export default class InterestsTab extends React.Component {
 					sent: SentTab
 				})}
 				renderTabBar={this._renderHeader}
-				onIndexChange={index => this.setState({ index })}
-				initialLayout={{ width: Dimensions.get('window').width, height: 0 }}
+				onIndexChange={this.onIndexChange}
+				initialLayout={{
+					width: Dimensions.get('window').width,
+					height: Dimensions.get('window').height
+				}}
+				lazy={true}
 			/>
 		);
 	}
