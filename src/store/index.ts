@@ -9,6 +9,7 @@ import { IInterestState, interestReducer } from './reducers/interest-reducer';
 import { channelReducer, IChannelState } from './reducers/channel-reducer';
 import { IMessageState, messageReducer } from './reducers/message-reducer';
 import { exploreReducer, IExploreState } from './reducers/explore-reducer';
+import { filterReducer, IFilterState } from './reducers/filter-reducer';
 
 export interface IRootState {
 	account: IAccountState;
@@ -20,6 +21,7 @@ export interface IRootState {
 	interests: IInterestState;
 	channels: IChannelState;
 	messages: IMessageState;
+	filter: IFilterState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -31,7 +33,8 @@ const rootReducer = combineReducers<IRootState>({
 	favourites: favouriteReducer,
 	interests: interestReducer,
 	channels: channelReducer,
-	messages: messageReducer
+	messages: messageReducer,
+	filter: filterReducer
 });
 
 const store = createStore<IRootState, any, any, any>(rootReducer, applyMiddleware(thunk));

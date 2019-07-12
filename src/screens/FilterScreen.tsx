@@ -11,27 +11,42 @@ import GlobalStyles from '../styles/global';
 import Colors from '../constants/Colors';
 import { FilterOption, TypesOfFilter } from '../components/search-filters';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { IRootState } from '../store';
+import { applyFilter, getSearchFilter } from '../store/reducers/filter-reducer';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
-class FilterScreen extends React.Component<NavigationInjectedProps, any> {
+interface IMapStateToProps {
+	filters: any;
+}
+
+interface IMapDispatchToProps {
+	applyFilter: (filter: any) => any;
+}
+
+type IFilterScreenProps = NavigationInjectedProps & IMapStateToProps & IMapDispatchToProps;
+
+class FilterScreen extends React.Component<IFilterScreenProps, any> {
 	static navigationOptions = {
 		title: 'Filter'
 	};
 
-	constructor(props: any) {
+	constructor(props: IFilterScreenProps) {
 		super(props);
 
 		const firstOption = Object.keys(TypesOfFilter)[0];
 
-		// this should come from store
+		// include selected search filter from store
 		const filters: any = {};
-
 		Object.keys(TypesOfFilter).forEach(key => {
 			filters[key] = {};
 		});
-
 		this.state = {
 			selectedFilter: firstOption,
-			filters
+			filters: {
+				...filters,
+				...props.filters
+			}
 		};
 
 		this.applyFilter = this.applyFilter.bind(this);
@@ -83,11 +98,8 @@ class FilterScreen extends React.Component<NavigationInjectedProps, any> {
 	}
 
 	applyFilter() {
-		const { navigation } = this.props;
-		/*
-			Push selected filter to state
-			change the explore-screen state in store
-		 */
+		const { navigation, applyFilter: applyFilterToStore } = this.props;
+		applyFilterToStore(this.state.filters);
 		navigation.goBack();
 	}
 
@@ -203,4 +215,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default withNavigation(FilterScreen);
+const mapStateToProps = (state: IRootState) => {
+	const filters = getSearchFilter(state);
+	return {
+		filters
+	};
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+	return {
+		applyFilter: bindActionCreators(applyFilter, dispatch)
+	};
+};
+
+const connected = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(FilterScreen);
+export default withNavigation(connected);
