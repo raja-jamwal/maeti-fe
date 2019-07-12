@@ -1,6 +1,10 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import {
+	createStackNavigator,
+	createBottomTabNavigator,
+	createMaterialTopTabNavigator
+} from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import ExploreScreen from '../screens/ExploreScreen';
 import Colors from '../constants/Colors';
@@ -12,6 +16,10 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import ChatScreen from '../screens/ChatScreen';
 import FilterScreen from '../screens/FilterScreen';
+
+import IncomingTab from '../components/interests-tab/tabs/IncomingTab';
+import AcceptedTab from '../components/interests-tab/tabs/AcceptedTab';
+import SentTab from '../components/interests-tab/tabs/SentTab';
 
 const defaultNavigationOptions = {
 	headerStyle: {
@@ -96,9 +104,23 @@ FavouritesStack.navigationOptions = {
 	)
 };
 
+const InterestTabs = createMaterialTopTabNavigator(
+	{
+		Incoming: IncomingTab,
+		Accepted: AcceptedTab,
+		Sent: SentTab
+	},
+	{
+		navigationOptions: {
+			title: 'Interests'
+		}
+	}
+);
+
 const InterestsStack = createStackNavigator(
 	{
-		Interests: InterestsScreen,
+		// Interests: InterestsScreen,
+		Interests: InterestTabs,
 		ProfileScreen: ProfileScreen
 	},
 	{ defaultNavigationOptions }

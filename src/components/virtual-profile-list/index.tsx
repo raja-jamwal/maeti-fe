@@ -12,30 +12,14 @@ interface IVirtualProfileListProps {
 	handleMore: () => any;
 }
 
-interface IVirtualProfileListState {
-	isFetchingMore: boolean;
-}
-
-class VirtualProfileList extends React.Component<
-	NavigationInjectedProps & IVirtualProfileListProps,
-	IVirtualProfileListState
+class VirtualProfileList extends React.PureComponent<
+	NavigationInjectedProps & IVirtualProfileListProps
 > {
 	constructor(props: any) {
 		super(props);
-		this.state = {
-			isFetchingMore: false
-		};
 		this.openProfileScreen = this.openProfileScreen.bind(this);
 		this._handleMore = this._handleMore.bind(this);
 		this.renderProfileCard = this.renderProfileCard.bind(this);
-	}
-
-	componentWillReceiveProps(nextProps: IVirtualProfileListProps) {
-		if (!nextProps.fetching) {
-			this.setState({
-				isFetchingMore: false
-			});
-		}
 	}
 
 	openProfileScreen(userProfileId: number) {
@@ -63,24 +47,20 @@ class VirtualProfileList extends React.Component<
 
 	_handleMore() {
 		const { handleMore } = this.props;
-		this.setState({
-			isFetchingMore: true
-		});
 		handleMore();
 	}
 
 	render() {
 		const { fetching, profileIdExtractor, data, headerComponent } = this.props;
-		const { isFetchingMore } = this.state;
-		const loaderClasses = isFetchingMore
-			? [styles.loading, styles.loaderBottom]
-			: [styles.loading, styles.loaderTop];
+		const loaderClasses = [styles.loading, styles.loaderTop];
 
+		console.log('re-render flat-list');
 		return (
 			<View>
 				<FlatList
 					keyExtractor={item => profileIdExtractor(item).toString()}
 					data={data}
+					initialNumToRender={1}
 					ListHeaderComponent={headerComponent}
 					renderItem={({ item }) => this.renderProfileCard(item)}
 					onEndReached={this._handleMore}

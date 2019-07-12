@@ -25,15 +25,24 @@ const ApiRequest = function(url, params) {
 		formData.append(key, value);
 	});
 
-	return fetch(url, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'multipart/form-data'
-		},
-		body: formData
-	}).then(response => {
-		if (response.status !== 200) throw response.json();
-		return response.json();
+	// stimulate slow network
+	const delay = 0;
+
+	return new Promise((resolve, reject) => {
+		setTimeout(function() {
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				},
+				body: formData
+			})
+				.then(response => {
+					if (response.status !== 200) throw response.json();
+					resolve(response.json());
+				})
+				.catch(err => reject(err));
+		}, delay);
 	});
 };
 

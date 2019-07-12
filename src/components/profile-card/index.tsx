@@ -23,7 +23,7 @@ export interface IProfileProps {
 	hideSelfDescription: boolean;
 }
 
-class ProfileCard extends React.Component<IProfileProps, any> {
+class ProfileCard extends React.PureComponent<IProfileProps> {
 	constructor(props: IProfileProps) {
 		super(props);
 	}

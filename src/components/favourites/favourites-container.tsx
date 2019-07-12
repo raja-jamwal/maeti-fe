@@ -1,15 +1,20 @@
 import * as React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
-import { fetchFavouriteProfile, IFavouriteState } from '../../store/reducers/favourite-reducer';
+import {
+	fetchFavouriteProfile,
+	getFavouriteFetching,
+	getFavouriteProfiles,
+	getTotalElements,
+	IFavouriteState
+} from '../../store/reducers/favourite-reducer';
 import { connect } from 'react-redux';
-import { IRootState } from '../../store/index';
-import { toArray, sortBy } from 'lodash';
+import { IRootState } from '../../store';
+import { toArray, sortBy, keys } from 'lodash';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { Favourite } from '../../store/reducers/account-defination';
 import VirtualProfileList from '../virtual-profile-list/index';
-
-interface IFavouriteContainerProps {}
+import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
 
 interface IFavouriteContainerMapStateToProps {
 	userProfileId?: number;
@@ -22,32 +27,29 @@ interface IFavouriteContainerMapDispatchToProps {
 	fetchFavouriteProfile: (id: number) => any;
 }
 
-interface IFavouriteContainerState {
-	isFetchingMore: boolean;
-}
+type IFavouriteContainerProps = NavigationInjectedProps &
+	IFavouriteContainerMapStateToProps &
+	IFavouriteContainerMapDispatchToProps;
 
-class FavouritesContainer extends React.Component<
-	NavigationInjectedProps &
-		IFavouriteContainerProps &
-		IFavouriteContainerMapStateToProps &
-		IFavouriteContainerMapDispatchToProps,
-	IFavouriteContainerState
-> {
-	constructor(props: any) {
+class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
+	constructor(props: IFavouriteContainerProps) {
 		super(props);
 		this._handleMore = this._handleMore.bind(this);
 	}
 
 	componentDidMount() {
-		// given the userId of the account
-		// pull all the favourite profiles
-		// add them favourite reducer - id: { }
-		// add profiles pull from favourite to
-		// userProfiles too.
 		const { userProfileId, fetchFavouriteProfile } = this.props;
 		if (userProfileId) {
 			fetchFavouriteProfile(userProfileId);
 		}
+	}
+
+	shouldComponentUpdate(nextProps: IFavouriteContainerProps) {
+		const { favouriteProfiles, fetching } = this.props;
+		const favouriteListChanged =
+			keys(favouriteProfiles).length != keys(nextProps.favouriteProfiles).length;
+		const isFetching = fetching != nextProps.fetching;
+		return favouriteListChanged || isFetching;
 	}
 
 	getFavouriteProfiles(): Array<Favourite> {
@@ -99,12 +101,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: IRootState) => {
-	const userProfileId =
-		state.account && state.account.userProfile && state.account.userProfile.id;
-	const favouriteProfiles = state.favourites.favourites;
-	const fetching = state.favourites.fetching;
-	const totalFavourites = state.favourites.pageable.totalElements;
-
+	const userProfileId = getCurrentUserProfileId(state);
+	const favouriteProfiles = getFavouriteProfiles(state);
+	const fetching = getFavouriteFetching(state);
+	const totalFavourites = getTotalElements(state);
 	return {
 		userProfileId,
 		favouriteProfiles,

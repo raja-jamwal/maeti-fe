@@ -9,10 +9,29 @@ import { fetchTags } from './tag-reducer';
 import { addSelfProfile } from './self-profile-reducer';
 import { ApiRequest } from '../../utils/index';
 import { Notifications, Permissions } from 'expo';
+import { IRootState } from '../index';
+import { createSelector } from 'reselect';
 
 export interface IAccountState extends ILocalAccount {}
 
 const defaultAccountState: IAccountState = {} as ILocalAccount;
+
+// selector
+export const getAccount = (state: IRootState) => state.account || null;
+export const getUserProfile = createSelector(
+	getAccount,
+	account => {
+		if (!account) return null;
+		return account.userProfile;
+	}
+);
+export const getCurrentUserProfileId = createSelector(
+	getUserProfile,
+	userProfile => {
+		if (!userProfile) return null;
+		return userProfile.id;
+	}
+);
 
 const ADD_ACCOUNT = 'ADD_ACCOUNT';
 export const addAccount = createAction(ADD_ACCOUNT);
