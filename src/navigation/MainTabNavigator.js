@@ -112,14 +112,18 @@ const InterestTabs = createMaterialTopTabNavigator(
 	},
 	{
 		navigationOptions: {
-			title: 'Interests'
+			header: null
+		},
+		tabBarOptions: {
+			style: {
+				backgroundColor: Colors.primaryDarkColor
+			}
 		}
 	}
 );
 
 const InterestsStack = createStackNavigator(
 	{
-		// Interests: InterestsScreen,
 		Interests: InterestTabs,
 		ProfileScreen: ProfileScreen
 	},
