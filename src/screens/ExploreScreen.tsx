@@ -17,10 +17,15 @@ import { Throbber } from '../components/throbber/throbber';
 import { NavigationInjectedProps } from 'react-navigation';
 import { IUserProfileState } from '../store/reducers/user-profile-reducer';
 import { IRootState } from '../store/index';
+import { bindActionCreators, Dispatch } from 'redux';
+import { mayBeFetchSearchResult } from '../store/reducers/explore-reducer';
+import { toArray, sortBy } from 'lodash';
 
 interface IExploreScreenProps {
 	userProfiles: IUserProfileState;
 	fetching: boolean;
+	selectedScreen: string;
+	mayBeFetchSearchResult: (screen: string) => any;
 }
 
 const CustomHeader = (props: any) => {
@@ -52,7 +57,7 @@ const CustomHeader = (props: any) => {
 	);
 };
 
-class ExploreScreen extends React.Component<NavigationInjectedProps & IExploreScreenProps> {
+class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExploreScreenProps> {
 	static navigationOptions = {
 		title: 'Explore',
 		header: CustomHeader
@@ -61,6 +66,7 @@ class ExploreScreen extends React.Component<NavigationInjectedProps & IExploreSc
 	constructor(props: any) {
 		super(props);
 		this.openProfileScreen = this.openProfileScreen.bind(this);
+		this._handleMore = this._handleMore.bind(this);
 	}
 
 	openProfileScreen(userProfileId: number) {
@@ -77,13 +83,16 @@ class ExploreScreen extends React.Component<NavigationInjectedProps & IExploreSc
 			}
 		];
 
-		Object.keys(userProfiles).forEach(userProfileId => {
-			items.push({
-				type: 'user-profile',
-				key: `profile-${userProfileId}`,
-				profileId: userProfileId
+		sortBy(toArray(userProfiles), 'updatedOn')
+			.reverse()
+			.forEach(userProfile => {
+				const userProfileId = userProfile.id;
+				items.push({
+					type: 'user-profile',
+					key: `profile-${userProfileId}`,
+					profileId: userProfileId
+				});
 			});
-		});
 
 		if (fetching) {
 			items.push({
@@ -109,7 +118,7 @@ class ExploreScreen extends React.Component<NavigationInjectedProps & IExploreSc
 	}
 
 	renderItem(item: any) {
-		switch (item.key) {
+		switch (item.type) {
 			case 'filter-tab':
 				return <TabbedFilters />;
 			case 'user-profile':
@@ -122,14 +131,24 @@ class ExploreScreen extends React.Component<NavigationInjectedProps & IExploreSc
 		}
 	}
 
+	_handleMore() {
+		console.log('more more');
+		const { mayBeFetchSearchResult, selectedScreen } = this.props;
+		if (!mayBeFetchSearchResult) return;
+		mayBeFetchSearchResult(selectedScreen);
+	}
+
+	cycles = 0;
+
 	render() {
+		// console.log('explore re-rendering ', this.cycles++);
 		return (
 			<FlatList
 				keyExtractor={(item: any) => item.key}
 				data={this.getItems()}
 				renderItem={({ item }) => this.renderItem(item)}
-				// onEndReached={this._handleMore}
-				// onEndReachedThreshold={100}
+				onEndReached={this._handleMore}
+				onEndReachedThreshold={0.5}
 			/>
 		);
 	}
@@ -168,19 +187,24 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: IRootState) => {
-	// later we will have explore reducer which
-	// will get us profileIds
-	const selected_screen = state.explore.selected_screen;
-	const screen = state.explore[selected_screen];
+	const selectedScreen = state.explore.selected_screen;
+	const screen = state.explore[selectedScreen];
 	const userProfiles = screen.profiles;
 	const fetching = screen.fetching;
 	return {
+		selectedScreen,
 		userProfiles,
 		fetching
 	};
 };
 
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+	return {
+		mayBeFetchSearchResult: bindActionCreators(mayBeFetchSearchResult, dispatch)
+	};
+};
+
 export default connect(
 	mapStateToProps,
-	null
+	mapDispatchToProps
 )(ExploreScreen);

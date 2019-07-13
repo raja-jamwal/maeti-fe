@@ -1,206 +1,159 @@
 import { Pageable, UserProfile } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
+import { Dispatch } from 'redux';
+import { API } from '../../config/API';
+import { object } from 'prop-types';
+import { extractSearchResult } from '../../utils/extract-search-result';
+import { IRootState } from '../index';
+import { bulkAddProfile } from './user-profile-reducer';
+
+export interface IScreenData {
+	profiles: {
+		[profileId: number]: UserProfile;
+	};
+	fetching: boolean;
+	pageable: Pageable;
+}
 
 export interface IExploreState {
-	search: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	discover: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	new_matches: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	reverse_matches: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	my_matches: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	mutual_matches: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	community_matches: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	location_matches: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	added_me: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	viewed_contact: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
-	viewed_profile: {
-		profiles: {
-			[profileId: number]: UserProfile;
-		};
-		fetching: boolean;
-		pageable: Pageable;
-	};
+	search: IScreenData;
+	discover: IScreenData;
+	new_matches: IScreenData;
+	reverse_matches: IScreenData;
+	my_matches: IScreenData;
+	mutual_matches: IScreenData;
+	community_matches: IScreenData;
+	location_matches: IScreenData;
+	added_me: IScreenData;
+	viewed_contact: IScreenData;
+	viewed_profile: IScreenData;
 	selected_screen: string;
 }
 
+const defaultScreenData: IScreenData = {
+	profiles: {},
+	fetching: false,
+	pageable: {
+		last: false,
+		totalPages: 0,
+		number: -1,
+		totalElements: 0
+	}
+};
+
 const defaultExploreState: IExploreState = {
-	search: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	discover: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	new_matches: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	reverse_matches: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	my_matches: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	mutual_matches: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	community_matches: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	location_matches: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	added_me: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	viewed_contact: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	viewed_profile: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
+	search: defaultScreenData,
+	discover: defaultScreenData,
+	new_matches: defaultScreenData,
+	reverse_matches: defaultScreenData,
+	my_matches: defaultScreenData,
+	mutual_matches: defaultScreenData,
+	community_matches: defaultScreenData,
+	location_matches: defaultScreenData,
+	added_me: defaultScreenData,
+	viewed_contact: defaultScreenData,
+	viewed_profile: defaultScreenData,
 	selected_screen: 'discover'
 };
 
 enum ACTIONS {
-	CHANGE_SELECTED_SCREEN = 'CHANGE_SELECTED_SCREEN'
+	CHANGE_SELECTED_SCREEN = 'CHANGE_SELECTED_SCREEN',
+	SET_FETCHING_FOR_SCREEN = 'SET_FETCHING_FOR_SCREEN',
+	SET_SEARCH_RESULT_FOR_SCREEN = 'SET_SEARCH_RESULT_FOR_SCREEN'
 }
 
 export const changeSelectedExploreScreen = createAction<string>(ACTIONS.CHANGE_SELECTED_SCREEN);
+
+interface ISetFetchingForScreenPayload {
+	fetching: boolean;
+	screen: string;
+}
+
+export const setFetchingForScreen = createAction<ISetFetchingForScreenPayload>(
+	ACTIONS.SET_FETCHING_FOR_SCREEN
+);
+
+interface ISetSearchResultForScreen {
+	profiles: Array<UserProfile>;
+	pageable: Pageable;
+	screen: string;
+}
+
+export const setSearchResultForScreen = createAction<ISetSearchResultForScreen>(
+	ACTIONS.SET_SEARCH_RESULT_FOR_SCREEN
+);
+
+export const mayBeFetchSearchResult = function(screen: string) {
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		if (!screen) return;
+		dispatch(changeSelectedExploreScreen(screen));
+		dispatch(fetchSearchResult());
+	};
+};
+
+export const fetchSearchResult = function() {
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		const selectedScreen = getState().explore.selected_screen;
+		if (!selectedScreen) return;
+
+		const currentScreen = (getState().explore[selectedScreen] as any) as IScreenData;
+		if (!currentScreen) return;
+
+		const pageable = currentScreen.pageable;
+
+		if (pageable.last) return;
+
+		dispatch(setFetchingForScreen({ fetching: true, screen: selectedScreen }));
+
+		const storeItemsCount = Object.keys(currentScreen.profiles).length;
+
+		const query = {
+			from: storeItemsCount,
+			size: 10,
+			sort: [
+				{
+					updatedOn: {
+						order: 'desc'
+					}
+				}
+			]
+		};
+
+		return fetch(API.SEARCH.GET, {
+			method: 'post',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(query)
+		})
+			.then(response => {
+				if (response.status !== 200) {
+					throw response.json();
+				}
+				return response.json();
+			})
+			.then(json => {
+				const { items, total } = extractSearchResult(json);
+				const pageable: Pageable = {
+					totalElements: total,
+					totalPages: 0,
+					last: storeItemsCount === total,
+					number: 0
+				};
+				console.log('es items ', items.length);
+				dispatch(
+					setSearchResultForScreen({ profiles: items, pageable, screen: selectedScreen })
+				);
+				dispatch(bulkAddProfile(items));
+				dispatch(setFetchingForScreen({ fetching: false, screen: selectedScreen }));
+			})
+			.catch(err => {
+				console.log('err ', err);
+				dispatch(setFetchingForScreen({ fetching: false, screen: selectedScreen }));
+			});
+	};
+};
 
 export const exploreReducer = handleActions(
 	{
@@ -209,6 +162,36 @@ export const exploreReducer = handleActions(
 			return {
 				...state,
 				selected_screen
+			};
+		},
+		[ACTIONS.SET_FETCHING_FOR_SCREEN]: (state, { payload }) => {
+			const { fetching, screen } = (payload as any) as ISetFetchingForScreenPayload;
+			return {
+				...state,
+				[screen]: {
+					...state[screen],
+					fetching: fetching
+				}
+			};
+		},
+		[ACTIONS.SET_SEARCH_RESULT_FOR_SCREEN]: (state, { payload }) => {
+			const { profiles, pageable, screen } = (payload as any) as ISetSearchResultForScreen;
+			const profilesByKey: any = {};
+			profiles.forEach(profile => {
+				profilesByKey[profile.id] = profile;
+			});
+			return {
+				...state,
+				[screen]: {
+					...state[screen],
+					profiles: {
+						...state[screen].profiles,
+						...profilesByKey
+					},
+					pageable: {
+						...pageable
+					}
+				}
 			};
 		}
 	},

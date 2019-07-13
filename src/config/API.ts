@@ -54,5 +54,9 @@ export const API = {
 
 	TOKEN: {
 		SAVE: `${config.server}/api/userProfile.token.save`
+	},
+
+	SEARCH: {
+		GET: `${config.server}/api/search.get`
 	}
 };

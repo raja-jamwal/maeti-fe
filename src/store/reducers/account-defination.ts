@@ -288,7 +288,7 @@ export interface Channel extends DAO {
 
 export interface Pageable {
 	last: boolean;
-	totalPages: number;
-	number: number;
+	totalPages: number; // total page count
+	number: number; // current page number
 	totalElements: number;
 }

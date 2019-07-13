@@ -7,13 +7,13 @@ import { TAB_SECTIONS } from './tab-sections';
 import { IRootState } from '../../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { changeSelectedExploreScreen } from '../../store/reducers/explore-reducer';
+import { mayBeFetchSearchResult } from '../../store/reducers/explore-reducer';
 import { find } from 'lodash';
 
-class TabbedFilters extends React.Component<any, any> {
+class TabbedFilters extends React.PureComponent<any> {
 	changeSelectedScreen(screen: string) {
-		const { changeSelectedExploreScreen } = this.props;
-		changeSelectedExploreScreen(screen);
+		const { mayBeFetchSearchResult } = this.props;
+		mayBeFetchSearchResult(screen);
 	}
 
 	findSelectedTab(name: string) {
@@ -95,7 +95,7 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		changeSelectedExploreScreen: bindActionCreators(changeSelectedExploreScreen, dispatch)
+		mayBeFetchSearchResult: bindActionCreators(mayBeFetchSearchResult, dispatch)
 	};
 };
 
