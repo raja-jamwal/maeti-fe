@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { Throbber } from '../components/throbber/throbber';
 import { NavigationInjectedProps } from 'react-navigation';
 import { IUserProfileState } from '../store/reducers/user-profile-reducer';
-import { IRootState } from '../store/index';
+import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { mayBeFetchSearchResult } from '../store/reducers/explore-reducer';
 import { toArray, sortBy } from 'lodash';

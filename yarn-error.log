@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/11.10.0/bin/node /usr/local/bin/yarn add @types/react-native-check-box --save
+  /usr/local/Cellar/node/11.10.0/bin/node /usr/local/bin/yarn add @types/react-native-country-picker-modal --save
 
 PATH: 
   /usr/local/opt/icu4c/sbin:/usr/local/opt/icu4c/bin:/usr/local/share/android-sdk/build-tools/19.1.0:/usr/local/share/android-sdk/platform-tools:/usr/local/share/android-sdk/tools:/usr/local/opt/gradle/bin:/usr/local/opt/maven/bin:/usr/local/opt/ant/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2freact-native-check-box: Not found
+  Error: https://registry.yarnpkg.com/@types%2freact-native-country-picker-modal: Not found
       at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:65894:18)
       at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:129018:22)
       at Request.emit (events.js:197:13)
@@ -41,19 +41,24 @@ npm manifest:
     },
     "dependencies": {
       "@expo/samples": "2.1.1",
+      "@types/react-native-tab-view": "^1.0.6",
+      "@types/react-navigation": "^3.0.7",
       "@types/react-redux": "^7.0.9",
       "@types/redux-actions": "^2.6.1",
       "@types/redux-thunk": "^2.1.0",
+      "@types/reselect": "^2.2.0",
       "expo": "^32.0.0",
       "react": "16.5.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
       "react-native-check-box": "^2.1.7",
+      "react-native-country-picker-modal": "^0.8.0",
       "react-native-gifted-chat": "^0.7.2",
       "react-navigation": "^3.0.9",
       "react-redux": "^6.0.0",
       "redux": "^4.0.1",
       "redux-actions": "^2.6.5",
-      "redux-thunk": "^2.3.0"
+      "redux-thunk": "^2.3.0",
+      "reselect": "^4.0.0"
     },
     "devDependencies": {
       "@types/expo": "^32.0.0",
@@ -838,6 +843,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.5.1.tgz#a38f69c62528d56ba7bd1f91335a8004988d72f7"
     integrity sha512-mNhVdZHdtKHMMxbqzNK3RzkBcN1cux3AvuCYGTvjEIQT2uheH3eCAyYsbMbh2Bq8nXkeOWs1kyDiF7geWRFQ4Q==
   
+  "@types/react-native-tab-view@^1.0.6":
+    version "1.0.6"
+    resolved "https://registry.yarnpkg.com/@types/react-native-tab-view/-/react-native-tab-view-1.0.6.tgz#b5a34423fe0d9beb2329433e9113aa50907cf90d"
+    integrity sha512-iWZyflFtE2YYCKP8DviZXe1bEH1G9nUeYcG8HCcnqbJYfFmiBTAh/r9akS3y6G9a0QqY6H+ouzKqQ18nM3a0cQ==
+    dependencies:
+      "@types/react" "*"
+      "@types/react-native" "*"
+  
   "@types/react-native@*":
     version "0.57.34"
     resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.57.34.tgz#f15873386c4eab3accb536c49cef594634c0eafb"
@@ -845,6 +858,14 @@ Lockfile:
     dependencies:
       "@types/prop-types" "*"
       "@types/react" "*"
+  
+  "@types/react-navigation@^3.0.7":
+    version "3.0.7"
+    resolved "https://registry.yarnpkg.com/@types/react-navigation/-/react-navigation-3.0.7.tgz#5d327b00de2bb58203977002c3ea21302da72034"
+    integrity sha512-JFsNeCAQEQGTpObiD1QczDyCyQkFBaQA/F85Fo2W8QML1b6UNYHlUDtEYJA6jcfXqPoL15dVPBVj9NBJlHToqA==
+    dependencies:
+      "@types/react" "*"
+      "@types/react-native" "*"
   
   "@types/react-redux@^7.0.9":
     version "7.0.9"
@@ -883,6 +904,13 @@ Lockfile:
     integrity sha1-vCtulylhgxr7gqm/TwZybjUflBY=
     dependencies:
       redux-thunk "*"
+  
+  "@types/reselect@^2.2.0":
+    version "2.2.0"
+    resolved "https://registry.yarnpkg.com/@types/reselect/-/reselect-2.2.0.tgz#c667206cfdc38190e1d379babe08865b2288575f"
+    integrity sha1-xmcgbP3DgZDh03m6vgiGWyKIV18=
+    dependencies:
+      reselect "*"
   
   "@types/uuid-js@^0.7.1":
     version "0.7.1"
@@ -3381,7 +3409,7 @@ Lockfile:
       semver "^5.1.0"
       through2 "^2.0.0"
   
-  fbjs@0.8.17, fbjs@^0.8.0, fbjs@^0.8.4, fbjs@^0.8.9:
+  fbjs@0.8.17, fbjs@^0.8.0, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.9:
     version "0.8.17"
     resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
     integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -3574,6 +3602,11 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
     integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
+  
+  fuse.js@2.6.2:
+    version "2.6.2"
+    resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-2.6.2.tgz#d5d994fda96f543b5a51df38b72cec9cc60d9dea"
+    integrity sha1-1dmU/alvVDtaUd84tyzsnMYNneo=
   
   gauge@~1.2.5:
     version "1.2.7"
@@ -4973,10 +5006,20 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
     integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
   
+  lodash.toarray@^4.4.0:
+    version "4.4.0"
+    resolved "https://registry.yarnpkg.com/lodash.toarray/-/lodash.toarray-4.4.0.tgz#24c4bfcd6b2fba38bfd0594db1179d8e9b656561"
+    integrity sha1-JMS/zWsvuji/0FlNsRedjptlZWE=
+  
   lodash.zipobject@^4.1.3:
     version "4.1.3"
     resolved "https://registry.yarnpkg.com/lodash.zipobject/-/lodash.zipobject-4.1.3.tgz#b399f5aba8ff62a746f6979bf20b214f964dbef8"
     integrity sha1-s5n1q6j/YqdG9peb8gshT5ZNvvg=
+  
+  lodash@4.17.14:
+    version "4.17.14"
+    resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
+    integrity sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==
   
   lodash@^4.0.0, lodash@^4.13.1, lodash@^4.16.6, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.6.1:
     version "4.17.11"
@@ -5526,6 +5569,13 @@ Lockfile:
     version "1.0.5"
     resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
     integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
+  
+  node-emoji@1.8.1:
+    version "1.8.1"
+    resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.8.1.tgz#6eec6bfb07421e2148c75c6bba72421f8530a826"
+    integrity sha512-+ktMAh1Jwas+TnGodfCfjUbJKoANqPaJFN0z0iqh41eqD8dvguNzcitVSBSVK1pidz0AqGbLKcoVuVLRVZ/aVg==
+    dependencies:
+      lodash.toarray "^4.4.0"
   
   node-fetch@^1.0.1:
     version "1.7.3"
@@ -6132,6 +6182,15 @@ Lockfile:
       kleur "^2.0.1"
       sisteransi "^0.1.1"
   
+  prop-types@15.6.0:
+    version "15.6.0"
+    resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
+    integrity sha1-zq8IMCL8RrSjX2nhPvda7Q1jmFY=
+    dependencies:
+      fbjs "^0.8.16"
+      loose-envify "^1.3.1"
+      object-assign "^4.1.1"
+  
   prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
     version "15.6.2"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
@@ -6280,6 +6339,18 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
     integrity sha1-eIO1ayCgAu63kMET+GFuqGksp5U=
   
+  react-native-country-picker-modal@^0.8.0:
+    version "0.8.0"
+    resolved "https://registry.yarnpkg.com/react-native-country-picker-modal/-/react-native-country-picker-modal-0.8.0.tgz#dacfdc79629a47637ca29eb908f85560a6b3110d"
+    integrity sha512-4hR3h6RjQ9QNkyuV66EcOT0p/o/G4sLObWjh3HozR2wEpQJX3y4dhGajBjENAC4CA1LQO15vZdczX/hCQ3YFJQ==
+    dependencies:
+      fuse.js "2.6.2"
+      lodash "4.17.14"
+      node-emoji "1.8.1"
+      prop-types "15.6.0"
+      react-native-safe-area-view "^0.7.0"
+      world-countries "1.8.0"
+  
   react-native-gesture-handler@1.0.12, react-native-gesture-handler@^1.0.0:
     version "1.0.12"
     resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.12.tgz#99a22f90212df299245357dbd3a9a01c788f310b"
@@ -6340,6 +6411,13 @@ Lockfile:
     version "0.11.0"
     resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.11.0.tgz#4f3dda43c2bace37965e7c6aef5fc83d4f19d174"
     integrity sha512-N3nElaahu1Me2ltnfc9acpgt1znm6pi8DSadKy79kvdzKwvVIzw0IXueA/Hjr51eCW1BsfNw7D1SgBT9U6qEkA==
+    dependencies:
+      hoist-non-react-statics "^2.3.1"
+  
+  react-native-safe-area-view@^0.7.0:
+    version "0.7.0"
+    resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"
+    integrity sha512-SjLdW/Th0WVMhyngH4O6yC21S+O4U4AAG3QxBr7fZ2ftgjXSpKbDHAhEpxBdFwei6HsnsC2h9oYMtPpaW9nfGg==
     dependencies:
       hoist-non-react-statics "^2.3.1"
   
@@ -6769,6 +6847,11 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
     integrity sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
+  
+  reselect@*, reselect@^4.0.0:
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
+    integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==
   
   reselect@^3.0.1:
     version "3.0.1"
@@ -7933,6 +8016,11 @@ Lockfile:
     version "0.0.3"
     resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
     integrity sha1-o9XabNXAvAAI03I0u68b7WMFkQc=
+  
+  world-countries@1.8.0:
+    version "1.8.0"
+    resolved "https://registry.yarnpkg.com/world-countries/-/world-countries-1.8.0.tgz#17f48e7e8470ac5a2136ad6938dfc656fc2bcb95"
+    integrity sha1-F/SOfoRwrFohNq1pON/GVvwry5U=
   
   wrap-ansi@^2.0.0:
     version "2.1.0"
