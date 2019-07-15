@@ -50,7 +50,7 @@ export const fetchChannels = function() {
 		})
 			.then((response: any) => {
 				const { items, page } = extractPageableResponse<Channel>(response);
-
+				console.log('channels.list.length ', items.length);
 				items.forEach(channel => {
 					// Channel are bi-directional entities
 					// Therefore it's required to add this

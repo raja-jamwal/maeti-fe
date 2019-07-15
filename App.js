@@ -45,16 +45,6 @@ class App extends React.Component {
 		}
 	}
 
-	_loadAccount = function() {
-		console.log('loading account');
-		return new Promise((resolve, reject) => {
-			this.props.fetchAccount();
-			resolve('yeahd');
-		});
-	};
-
-	_getNotificationPerm = async function() {};
-
 	_loadResourcesAsync = async () => {
 		return Promise.all([
 			Asset.loadAsync([
@@ -70,9 +60,7 @@ class App extends React.Component {
 				'comfortaa-bold': require('./src/assets/fonts/Comfortaa-Bold.ttf'),
 				'comfortaa-light': require('./src/assets/fonts/Comfortaa-Light.ttf'),
 				'comfortaa-regular': require('./src/assets/fonts/Comfortaa-Regular.ttf')
-			}),
-			this._loadAccount(),
-			this._getNotificationPerm()
+			})
 		]);
 	};
 

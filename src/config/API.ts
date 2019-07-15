@@ -58,5 +58,13 @@ export const API = {
 
 	SEARCH: {
 		GET: `${config.server}/api/search.get`
+	},
+
+	OTP: {
+		SEND: `${config.server}/api/otp.send`
+	},
+
+	ACCOUNT: {
+		CREATE: `${config.server}/api/account.create`
 	}
 };

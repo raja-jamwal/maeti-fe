@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
 	ActivityIndicator,
-	Alert,
+	AsyncStorage,
 	Image,
 	StatusBar,
 	StyleSheet,
@@ -13,42 +13,87 @@ import {
 import GlobalStyle from '../styles/global';
 import { connect } from 'react-redux';
 import Colors from '../constants/Colors';
-import CountryPicker, { FlagType } from 'react-native-country-picker-modal';
+import CountryPicker, { CCA2Code } from 'react-native-country-picker-modal';
 import Layout from '../constants/Layout';
-
-interface IAuthProps {}
+import { ApiRequest } from '../utils';
+import { API } from '../config/API';
+import { simpleAlert } from '../components/alert';
+import { Account } from '../store/reducers/account-defination';
+import { bindActionCreators } from 'redux';
+import { fetchAccount } from '../store/reducers/account-reducer';
+import { NavigationInjectedProps } from 'react-navigation';
+import { getLogger } from '../utils/logger';
 
 interface IAuthDispatchProps {
-	createAccount: () => any;
+	fetchAccount: (id: string) => any;
 }
 
-class Auth extends React.Component<IAuthProps & IAuthDispatchProps, any> {
-	constructor(props: any) {
+enum LOGIN_SCREENS {
+	LOGIN_SIGNUP = 'login-signup',
+	LOGIN = 'login',
+	SIGNUP = 'signup',
+	VERIFY = 'verify',
+	VERIFYING = 'verifying',
+	PLANS = 'plans'
+}
+
+interface IAuthState {
+	cca: CCA2Code;
+	callingCode: number;
+	activeScreen: LOGIN_SCREENS | null;
+	number: number | null;
+	fullName: string | null;
+	otp: number | null;
+}
+
+type IAuthProps = NavigationInjectedProps & IAuthDispatchProps;
+
+class Auth extends React.Component<IAuthProps, IAuthState> {
+	private logger = getLogger(Auth);
+
+	constructor(props: IAuthProps) {
 		super(props);
-		this.buttonClicked = this.buttonClicked.bind(this);
 		this.state = {
 			cca: 'IN',
 			callingCode: 91,
-			activeScreen: 'signup',
+			activeScreen: null,
 			number: null,
-			fullName: null
+			fullName: null,
+			otp: null
 		};
+		this._tryAuth = this._tryAuth.bind(this);
 	}
 
-	buttonClicked() {
-		console.log(this.props.createAccount());
+	async componentDidMount() {
+		await this._tryAuth();
 	}
 
-	changeScreen(screen: string) {
+	async _tryAuth() {
+		const { fetchAccount, navigation } = this.props;
+		// Just in case we want to for - re - login
+		// await AsyncStorage.removeItem('accountId');
+		const accountId = await AsyncStorage.getItem('accountId');
+
+		this.logger.log(`accountId from storage ${accountId}`);
+
+		if (accountId) {
+			fetchAccount(accountId);
+			navigation.navigate('Main');
+		} else {
+			this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+		}
+	}
+
+	changeScreen(screen: LOGIN_SCREENS) {
 		this.setState({
 			activeScreen: screen
 		});
 	}
 
-	sendVerificationSMS() {
-		const { number, fullName } = this.state;
+	sendVerificationSMS(shouldLogin: boolean = false) {
+		const { number, fullName, callingCode } = this.state;
 		let error = '';
-		console.log(number, fullName);
+		this.logger.log(number, fullName);
 		if (!number && !fullName) {
 			error = 'Please provide phone number & your name';
 		} else if (!number) {
@@ -58,15 +103,27 @@ class Auth extends React.Component<IAuthProps & IAuthDispatchProps, any> {
 		}
 
 		if (error) {
-			Alert.alert('', error, [{ text: 'OK', onPress: () => null }], { cancelable: true });
+			simpleAlert('', error);
 		} else {
-			this.setState({
-				activeScreen: 'verify'
-			});
+			ApiRequest(API.OTP.SEND, {
+				phoneNumber: `${callingCode}${number}`
+			})
+				.then((response: any) => {
+					this.logger.log('OTP', response);
+					this.setState({
+						otp: response.code,
+						activeScreen: LOGIN_SCREENS.VERIFY
+					});
+				})
+				.catch((err: any) => {
+					this.logger.log('OTP error ', err);
+					simpleAlert('Error', 'Unable to process');
+				});
 		}
 	}
 
-	renderSignUp() {
+	renderSignUp(login: boolean = false) {
+		const { number, fullName } = this.state;
 		return (
 			<View>
 				<View style={styles.formContainer}>
@@ -79,47 +136,83 @@ class Auth extends React.Component<IAuthProps & IAuthDispatchProps, any> {
 							onChange={value => {
 								this.setState({
 									cca: value.cca2,
-									callingCode: value.callingCode
+									callingCode: parseInt(value.callingCode)
 								});
 							}}
 						/>
 					</View>
 					<View style={styles.fieldContainer}>
 						<TextInput
-							defaultValue={this.state.number}
+							defaultValue={number ? `${number}` : ''}
 							style={styles.textInput}
 							onChange={e => {
-								this.setState({ number: e.nativeEvent.text });
+								this.setState({ number: parseInt(e.nativeEvent.text) });
 							}}
 							keyboardType="numeric"
 							placeholder="Your mobile number"
 						/>
 					</View>
-					<View style={styles.fieldContainer}>
-						<TextInput
-							defaultValue={this.state.fullName}
-							style={styles.textInput}
-							onChange={e => {
-								this.setState({ fullName: e.nativeEvent.text });
-							}}
-							spellCheck={false}
-							placeholder="Your name"
-						/>
-					</View>
-					<TouchableNativeFeedback onPress={() => this.sendVerificationSMS()}>
-						<Text style={styles.verifyBtn}>Sign up</Text>
-					</TouchableNativeFeedback>
+					{!login && (
+						<View style={styles.fieldContainer}>
+							<TextInput
+								defaultValue={fullName || ''}
+								style={styles.textInput}
+								onChange={e => {
+									this.setState({ fullName: e.nativeEvent.text });
+								}}
+								spellCheck={false}
+								placeholder="Your name"
+							/>
+						</View>
+					)}
+					{login && (
+						<View>
+							<TouchableNativeFeedback onPress={() => this.sendVerificationSMS(true)}>
+								<Text style={styles.btn}>Login</Text>
+							</TouchableNativeFeedback>
+							<TouchableNativeFeedback
+								onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}
+							>
+								<Text style={styles.btn}>New User</Text>
+							</TouchableNativeFeedback>
+						</View>
+					)}
+					{!login && (
+						<TouchableNativeFeedback onPress={() => this.sendVerificationSMS()}>
+							<Text style={styles.btn}>Sign up</Text>
+						</TouchableNativeFeedback>
+					)}
 				</View>
 			</View>
 		);
 	}
 
-	validateVerificationCode(code: string) {
-		if (!code) return;
-		if (code.length === 4) {
-			this.setState({
-				activeScreen: 'verifying'
-			});
+	validateVerificationCode(passedInCode: string) {
+		const { otp, number, fullName } = this.state;
+		if (!passedInCode) return;
+		const code = parseInt(passedInCode);
+		if (passedInCode.length === 4) {
+			if (code === otp) {
+				this.setState({
+					activeScreen: LOGIN_SCREENS.VERIFYING
+				});
+
+				ApiRequest(API.ACCOUNT.CREATE, {
+					phoneNumber: number,
+					fullName: fullName
+				})
+					.then(async (response: Account) => {
+						await AsyncStorage.setItem('accountId', `${response.id}`);
+						await this._tryAuth();
+					})
+					.catch((err: any) => {
+						this.logger.log('account create error ', err);
+						simpleAlert('Error', 'Unable to create your account');
+						this.changeScreen(LOGIN_SCREENS.SIGNUP);
+					});
+			} else {
+				simpleAlert('Invalid OTP', 'Please provide valid OTP');
+			}
 		}
 	}
 
@@ -135,8 +228,10 @@ class Auth extends React.Component<IAuthProps & IAuthDispatchProps, any> {
 							placeholder="Enter verification code sent in SMS"
 						/>
 					</View>
-					<TouchableNativeFeedback onPress={() => this.changeScreen('signup')}>
-						<Text style={styles.verifyBtn}>Change Phone Number</Text>
+					<TouchableNativeFeedback
+						onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}
+					>
+						<Text style={styles.btn}>Change Phone Number</Text>
 					</TouchableNativeFeedback>
 				</View>
 			</View>
@@ -162,8 +257,8 @@ class Auth extends React.Component<IAuthProps & IAuthDispatchProps, any> {
 						<Text> FREE for you</Text>
 					</View>
 				</View>
-				<TouchableNativeFeedback onPress={() => this.changeScreen('signup')}>
-					<Text style={styles.verifyBtn}>Create Account</Text>
+				<TouchableNativeFeedback onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}>
+					<Text style={styles.btn}>Create Account</Text>
 				</TouchableNativeFeedback>
 			</View>
 		);
@@ -175,14 +270,17 @@ class Auth extends React.Component<IAuthProps & IAuthDispatchProps, any> {
 			<View style={[GlobalStyle.expand, styles.container]}>
 				<StatusBar hidden={true} />
 				<Image source={require('../assets/images/icon.png')} style={styles.logo} />
-				{activeScreen === 'signup' && this.renderSignUp()}
-				{activeScreen === 'verify' && this.renderVerificationScreen()}
-				{activeScreen === 'verifying' && <ActivityIndicator color="white" />}
-				{activeScreen === 'plans' && this.renderPlans()}
-				<Text style={styles.tos}>
-					Copyright (c) 2019 DataGrid Softwares LLP. All rights reserved. Use of this
-					software is under Terms and conditions
-				</Text>
+				{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
+				{activeScreen === LOGIN_SCREENS.SIGNUP && this.renderSignUp()}
+				{activeScreen === LOGIN_SCREENS.VERIFY && this.renderVerificationScreen()}
+				{activeScreen === LOGIN_SCREENS.VERIFYING && <ActivityIndicator color="white" />}
+				{activeScreen === LOGIN_SCREENS.PLANS && this.renderPlans()}
+				{!!activeScreen && (
+					<Text style={styles.tos}>
+						Copyright (c) 2019 DataGrid Softwares LLP. All rights reserved. Use of this
+						software is under Terms and conditions
+					</Text>
+				)}
 			</View>
 		);
 	}
@@ -220,7 +318,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		textAlign: 'center'
 	},
-	verifyBtn: {
+	btn: {
 		backgroundColor: Colors.pink,
 		padding: 10,
 		textAlign: 'center',
@@ -259,7 +357,7 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch: any) {
 	return {
-		// createAccount: bindActionCreators(createAccount, dispatch)
+		fetchAccount: bindActionCreators(fetchAccount, dispatch)
 	};
 }
 

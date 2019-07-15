@@ -80,22 +80,24 @@ export const savePushToken = function(id: number) {
 	};
 };
 
-export const fetchAccount = function() {
+export const fetchAccount = function(id: number) {
 	return (dispatch: Dispatch<any>, getState: () => any) => {
 		console.log('fetch Account');
-		return fetch(API.ACCOUNTS)
+		if (!id) {
+			console.log('dev invalid account id passed');
+			return;
+		}
+		return fetch(`${API.ACCOUNTS}/${id}`)
 			.then(response => {
 				return response.json();
 			})
 			.then(json => {
-				const accounts = json._embedded.accounts;
-				const account: ILocalAccount = head(accounts) as ILocalAccount;
+				const account: ILocalAccount = json as ILocalAccount;
 				const profile = account.userProfile;
 				dispatch(addAccount(account));
 				dispatch(addSelfProfile(profile));
 				dispatch(addProfile(profile));
 				dispatch(savePushToken(profile.id));
-				// console.log(accounts);
 				console.log('addProfile dispatched');
 				dispatch(fetchTags());
 				return account;
