@@ -11,6 +11,7 @@ import { ApiRequest } from '../../utils/index';
 import { Notifications, Permissions } from 'expo';
 import { IRootState } from '../index';
 import { createSelector } from 'reselect';
+import { getLogger } from '../../utils/logger';
 
 export interface IAccountState extends ILocalAccount {}
 
@@ -37,10 +38,11 @@ const ADD_ACCOUNT = 'ADD_ACCOUNT';
 export const addAccount = createAction(ADD_ACCOUNT);
 
 export const savePushToken = function(id: number) {
+	const logger = getLogger(savePushToken);
 	return async (dispatch: Dispatch<any>, getState: () => any) => {
-		console.log('get notifcation perms');
+		logger.log('get notification perms');
 		const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-		console.log('existingStatus ', existingStatus);
+		logger.log('existingStatus ', existingStatus);
 
 		let finalStatus = existingStatus;
 
@@ -62,7 +64,7 @@ export const savePushToken = function(id: number) {
 		try {
 			// Get the token that uniquely identifies this device
 			token = await Notifications.getExpoPushTokenAsync();
-			console.log('push token ', token);
+			logger.log('push token ', token);
 		} catch (err) {}
 
 		if (!token) return;
@@ -72,19 +74,19 @@ export const savePushToken = function(id: number) {
 			token
 		})
 			.then((response: any) => {
-				console.log('savePushToken');
+				logger.log('savePushToken');
 			})
 			.catch(err => {
-				console.log('err happened while saving token ', err);
+				logger.log('err happened while saving token ', err);
 			});
 	};
 };
 
 export const fetchAccount = function(id: number) {
+	const logger = getLogger(fetchAccount);
 	return (dispatch: Dispatch<any>, getState: () => any) => {
-		console.log('fetch Account');
 		if (!id) {
-			console.log('dev invalid account id passed');
+			logger.log('dev invalid account id passed');
 			return;
 		}
 		return fetch(`${API.ACCOUNTS}/${id}`)
@@ -98,25 +100,19 @@ export const fetchAccount = function(id: number) {
 				dispatch(addSelfProfile(profile));
 				dispatch(addProfile(profile));
 				dispatch(savePushToken(profile.id));
-				console.log('addProfile dispatched');
+				logger.log('addProfile dispatched');
 				dispatch(fetchTags());
 				return account;
 			})
 			.catch(err => {
-				console.log('err happened while fetch ', err);
+				logger.log('err happened while fetch ', err);
 			});
 	};
 };
 
-// add thunks here
-export function createAccount() {
-	return {};
-}
-
 export const accountReducer = handleActions<IAccountState>(
 	{
 		[ADD_ACCOUNT]: (_state, { payload }) => {
-			// console.debug('add account called ', payload);
 			const account = (payload as any) as ILocalAccount;
 			return { ...account };
 		}

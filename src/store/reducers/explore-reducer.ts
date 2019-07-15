@@ -6,6 +6,7 @@ import { object } from 'prop-types';
 import { extractSearchResult } from '../../utils/extract-search-result';
 import { IRootState } from '../index';
 import { bulkAddProfile } from './user-profile-reducer';
+import { getLogger } from '../../utils/logger';
 
 export interface IScreenData {
 	profiles: {
@@ -92,6 +93,7 @@ export const mayBeFetchSearchResult = function(screen: string) {
 };
 
 export const fetchSearchResult = function() {
+	const logger = getLogger(fetchSearchResult);
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		const selectedScreen = getState().explore.selected_screen;
 		if (!selectedScreen) return;
@@ -141,7 +143,7 @@ export const fetchSearchResult = function() {
 					last: storeItemsCount === total,
 					number: 0
 				};
-				console.log('es items ', items.length);
+				logger.log('es items ', items.length);
 				dispatch(
 					setSearchResultForScreen({ profiles: items, pageable, screen: selectedScreen })
 				);

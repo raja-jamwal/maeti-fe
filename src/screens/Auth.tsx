@@ -268,7 +268,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		const { activeScreen } = this.state;
 		return (
 			<View style={[GlobalStyle.expand, styles.container]}>
-				<StatusBar hidden={true} />
+				{/*<StatusBar hidden={true} />*/}
 				<Image source={require('../assets/images/icon.png')} style={styles.logo} />
 				{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
 				{activeScreen === LOGIN_SCREENS.SIGNUP && this.renderSignUp()}
