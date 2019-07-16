@@ -4,6 +4,7 @@ import ChoiceFilter from './filters/ChoiceFilter';
 import {
 	BloodGroupOptions,
 	BodyComplexionOptions,
+	CreatedByOptions,
 	MaritalStatusOptions
 } from '../collapsible-table/profile-table';
 
@@ -23,6 +24,7 @@ export interface FilterOption {
 	label: String;
 	choices?: any;
 	component: any;
+	getSearchFilter?: (userSelections: any) => any;
 }
 
 interface ITypesOfFilter {
@@ -30,10 +32,43 @@ interface ITypesOfFilter {
 }
 
 export const TypesOfFilter: ITypesOfFilter = {
-	'martial-status': {
+	martialStatus: {
 		label: 'Marital Status',
 		choices: MaritalStatusOptions,
-		component: ChoiceFilter
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			// check if not-set is set
+			// then?
+			const queryBase = {
+				bool: {
+					should: Object.keys(userSelections)
+						.filter(u => !!userSelections[u])
+						.map(maritalKey => {
+							return {
+								term: {
+									maritalStatus: maritalKey
+								}
+							};
+						})
+				}
+			};
+			return queryBase;
+		}
+	},
+	createdBy: {
+		label: 'Created by',
+		choices: CreatedByOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			// check if not-set is set
+			// then?
+			const queryBase = {
+				terms: {
+					createdBy: Object.keys(userSelections).filter(u => !!userSelections[u])
+				}
+			};
+			return queryBase;
+		}
 	},
 	age: {
 		label: 'Age',

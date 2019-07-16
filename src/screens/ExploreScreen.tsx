@@ -20,12 +20,15 @@ import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { mayBeFetchSearchResult } from '../store/reducers/explore-reducer';
 import { toArray, sortBy } from 'lodash';
+import { getSearchFilter } from '../store/reducers/filter-reducer';
+import { getLogger } from '../utils/logger';
 
 interface IExploreScreenProps {
 	userProfiles: IUserProfileState;
 	fetching: boolean;
 	selectedScreen: string;
 	mayBeFetchSearchResult: (screen: string) => any;
+	selectedFilter: any;
 }
 
 const CustomHeader = (props: any) => {
@@ -58,6 +61,8 @@ const CustomHeader = (props: any) => {
 };
 
 class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExploreScreenProps> {
+	private logger = getLogger(ExploreScreen);
+
 	static navigationOptions = {
 		title: 'Explore',
 		header: CustomHeader
@@ -132,7 +137,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 	}
 
 	_handleMore() {
-		console.log('more more');
+		this.logger.log('Trying to load more');
 		const { mayBeFetchSearchResult, selectedScreen } = this.props;
 		if (!mayBeFetchSearchResult) return;
 		mayBeFetchSearchResult(selectedScreen);
@@ -191,10 +196,12 @@ const mapStateToProps = (state: IRootState) => {
 	const screen = state.explore[selectedScreen];
 	const userProfiles = screen.profiles;
 	const fetching = screen.fetching;
+	const selectedFilter = getSearchFilter(state);
 	return {
 		selectedScreen,
 		userProfiles,
-		fetching
+		fetching,
+		selectedFilter
 	};
 };
 

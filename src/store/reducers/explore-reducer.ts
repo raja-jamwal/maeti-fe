@@ -2,11 +2,11 @@ import { Pageable, UserProfile } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { Dispatch } from 'redux';
 import { API } from '../../config/API';
-import { object } from 'prop-types';
 import { extractSearchResult } from '../../utils/extract-search-result';
 import { IRootState } from '../index';
 import { bulkAddProfile } from './user-profile-reducer';
 import { getLogger } from '../../utils/logger';
+import { buildSearchFilter } from './filter-util';
 
 export interface IScreenData {
 	profiles: {
@@ -109,6 +109,18 @@ export const fetchSearchResult = function() {
 
 		const storeItemsCount = Object.keys(currentScreen.profiles).length;
 
+		// default match everything
+		// this is show stopper for production
+		let searchQuery: any = {
+			match_all: {}
+		};
+
+		switch (selectedScreen) {
+			case 'search':
+				searchQuery = buildSearchFilter(getState().filter.filters);
+				break;
+		}
+
 		const query = {
 			from: storeItemsCount,
 			size: 10,
@@ -118,8 +130,15 @@ export const fetchSearchResult = function() {
 						order: 'desc'
 					}
 				}
-			]
+			],
+			query: {}
 		};
+
+		query.query = searchQuery;
+
+		logger.log('Search Filter', query.query);
+
+		logger.log(JSON.stringify(query.query));
 
 		return fetch(API.SEARCH.GET, {
 			method: 'post',

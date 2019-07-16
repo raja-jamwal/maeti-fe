@@ -34,7 +34,7 @@ export const GenderOptions = [
 export const CreatedByOptions = [
 	{
 		label: 'Not Set',
-		value: null
+		value: 'not-set'
 	},
 	{
 		label: 'Self',
