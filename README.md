@@ -46,6 +46,26 @@ https://basarat.gitbooks.io/typescript/content/docs/getting-started.html
 
 **A:** Go to the '.vscode' folder and add the entries to the 'settings.json' file.
 
+# Issue with adb
+
+You could run into multiple `adb` issues,
+
+- The `adb` server version is different than `adb` client version.
+
+The root cause for this is, you might have multiple android-sdks installed (expo/android studio) and they have different adb versions in them.
+
+What you need to do is
+1. Agree on to use either android-studio/expo android-sdk, find the path to it let's call it `/Users/home/Library/Android/sdk`.
+2. Need to make sure `adb` binary under this path is accessible from the `PATH`. On bash based terminals, this can be done by updating `~/.bash_profile`
+```bash
+export ANDROID_HOME=/Users/home/Library/Android/sdk
+export PATH=$ANDROID_HOME/tools:$PATH
+export PATH=$ANDROID_HOME/platform-tools:$PATH
+```
+*Add steps for updating window's environment variables*
+3. Point Genymotion, `adb` path to `/Users/home/Library/Android/sdk`.
+4. Now that expo (from PATH) and geneymotion are using same adb, it should work.
+
 
 # FCM server key
 
