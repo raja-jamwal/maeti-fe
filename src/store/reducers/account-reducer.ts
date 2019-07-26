@@ -1,5 +1,5 @@
 // import * as AccountFixture from '../../fixtures/account.json';
-import { Account as ILocalAccount } from './account-defination';
+import { Account as ILocalAccount, Account } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { Dispatch } from 'redux';
 import { API } from '../../config/API';
@@ -89,11 +89,10 @@ export const fetchAccount = function(id: number) {
 			logger.log('dev invalid account id passed');
 			return;
 		}
-		return fetch(`${API.ACCOUNTS}/${id}`)
-			.then(response => {
-				return response.json();
-			})
-			.then(json => {
+		return ApiRequest(API.ACCOUNT.GET, {
+			phoneNumber: id
+		})
+			.then((json: Account) => {
 				const account: ILocalAccount = json as ILocalAccount;
 				const profile = account.userProfile;
 				dispatch(addAccount(account));
@@ -104,7 +103,7 @@ export const fetchAccount = function(id: number) {
 				dispatch(fetchTags());
 				return account;
 			})
-			.catch(err => {
+			.catch((err: any) => {
 				logger.log('err happened while fetch ', err);
 			});
 	};
