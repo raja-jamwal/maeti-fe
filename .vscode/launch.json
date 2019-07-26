@@ -5,18 +5,18 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Debug in Exponent",
-			"cwd": "${workspaceFolder}",
-			"type": "reactnative",
-			"request": "launch",
-			"platform": "exponent"
-		},
-		{
 			"name": "Attach to packager",
 			"cwd": "${workspaceFolder}",
 			"type": "reactnative",
 			"request": "attach",
 			"port": "19000"
+		},
+		{
+			"name": "Debug in Exponent",
+			"cwd": "${workspaceFolder}",
+			"type": "reactnative",
+			"request": "launch",
+			"platform": "exponent"
 		}
 	]
 }
