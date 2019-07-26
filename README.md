@@ -48,6 +48,8 @@ https://basarat.gitbooks.io/typescript/content/docs/getting-started.html
 
 # Issue with adb
 
+Make sure you've android-sdk installed in your system.
+
 You could run into multiple `adb` issues,
 
 - The `adb` server version is different than `adb` client version.
