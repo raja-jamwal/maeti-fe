@@ -3,7 +3,6 @@ import {
 	ActivityIndicator,
 	AsyncStorage,
 	Image,
-	StatusBar,
 	StyleSheet,
 	Text,
 	TextInput,
