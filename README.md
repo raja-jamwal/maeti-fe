@@ -16,7 +16,7 @@ In the project directory, run the following
 
 -   `npm install -g expo-cli`
 -   `mkdir project` and `cd project\`
--   `yarn install`
+-   `yarn install` or 'npm install -g yarn'
 -   Make sure you've an emulator (geny-motion) or a device connected for testing
 -   `expo start` 
 -   Click on `Run on Android device/emulator` from the expo dashboard on your browser. Or press 'a' from the terminal.
