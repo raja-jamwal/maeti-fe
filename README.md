@@ -1,7 +1,7 @@
 # Requirements
 
--   You need an android emulator while developing, use geny-motion.
--   Preferred editor is Visual Studio Code. Install Prettier - Code formatter plugin.
+- You need an android emulator while developing, use geny-motion.
+- Preferred editor is Visual Studio Code. Install Prettier - Code formatter plugin.
 - Add following to workspace settings for auto-formatting on saving file.
 
 ```
@@ -14,12 +14,30 @@
 
 In the project directory, run the following
 
--   `npm install -g expo-cli`
--   `mkdir project` and `cd project\`
+-   `npm install -g expo-cli yarn` (install expo-cli & yarn)
+-   `git clone git@github.com:linuxexp/matrimonial-fe.git`
+-   Install android-sdk or (android-studio) if you don't already have. Make sure you're able to run `adb` on console.
 -   `yarn install` 
 -   Make sure you've an emulator (geny-motion) or a device connected for testing
 -   `expo start` 
 -   Click on `Run on Android device/emulator` from the expo dashboard on your browser. Or press 'a' from the terminal.
+
+# Setting up android prerequisite
+1. Download android-studio or android-sdk
+2. Set up the environment variable i.e `$ANDROID_HOME`
+
+On `bash` based terminals, this can be set by adding `android-sdk` path to `~/.bash_profile`.
+For example if sdk path is `/Users/home/Library/Android/sdk`
+```
+export ANDROID_HOME=/Users/home/Library/Android/sdk
+export PATH=$ANDROID_HOME/tools:$PATH
+export PATH=$ANDROID_HOME/platform-tools:$PATH
+```
+
+# Find sdk path if you've installed Android-studio
+From your android studio preference you'll find the `android sdk` location
+
+![android sdk path android studio](./docs/images/android_home.png)
 
 # Creating PRs
 
