@@ -23,8 +23,8 @@ In the project directory, run the following
 -   Click on `Run on Android device/emulator` from the expo dashboard on your browser. Or press 'a' from the terminal.
 
 # Setting up android prerequisite
-1. Download android-studio or android-sdk
-2. Set up the environment variable i.e `$ANDROID_HOME`
+-  Download android-studio or android-sdk
+-  Set up the environment variable i.e `$ANDROID_HOME`
 
 On `bash` based terminals, this can be set by adding `android-sdk` path to `~/.bash_profile`.
 For example if sdk path is `/Users/home/Library/Android/sdk`
@@ -34,14 +34,24 @@ export PATH=$ANDROID_HOME/tools:$PATH
 export PATH=$ANDROID_HOME/platform-tools:$PATH
 ```
 
-# Find sdk path if you've installed Android-studio
+-  Point geny-motion to use `android-sdk's` `adb` ![geny_motion_adb_pref](./docs/images/genymotion_adb_pref.png)
+ 
+- Install Android phone image, recommended is `Google Nexus 7` API level `22 (5.1v)`
+
+![android_image](./docs/images/android_image.png)
+ 
+- If everything is properly configured you should see geny-motion device listed from `adb` in console.
+
+![adb_devices](./docs/images/adb_devices.png)
+
+# Finding sdk path if you've installed Android-studio
 From your android studio preference you'll find the `android sdk` location
 
 ![android sdk path android studio](./docs/images/android_home.png)
 
 # Creating PRs
 
-For every issue assigned, you should create a branch of the of the name `I{issue_number}-some_name`.
+For every issue assigned, you should create a branch of the of the name `PR-{issue_number}-some_name`.
 
 Also provide the issue number in the commit as `#{issue_number} some description` i.e
 
