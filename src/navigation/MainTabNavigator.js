@@ -107,8 +107,8 @@ FavouritesStack.navigationOptions = {
 const InterestTabs = createMaterialTopTabNavigator(
 	{
 		Incoming: IncomingTab,
-		Accepted: AcceptedTab,
-		Sent: SentTab
+		Sent: SentTab,
+		Accepted: AcceptedTab
 	},
 	{
 		navigationOptions: {

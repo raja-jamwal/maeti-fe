@@ -26,12 +26,13 @@ class UserChannel extends React.Component<IUserChannelProps> {
 						<Text style={[GlobalStyles.bold, GlobalStyles.expand]}>
 							{userProfile.fullName}
 						</Text>
-						{/*<Text>1</Text>*/}
 					</View>
-					<View style={GlobalStyles.row}>
-						<Text style={GlobalStyles.expand}>{latestMessage.message}</Text>
-						<Text>{latestMessage.createdOn}</Text>
-					</View>
+					{latestMessage && (
+						<View style={GlobalStyles.row}>
+							<Text style={GlobalStyles.expand}>{latestMessage.message}</Text>
+							<Text>{latestMessage.createdOn}</Text>
+						</View>
+					)}
 				</View>
 			</View>
 		);

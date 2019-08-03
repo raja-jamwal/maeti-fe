@@ -71,7 +71,7 @@ class ProfileCard extends React.PureComponent<IProfileProps> {
 				<View style={styles.profileSummaryContainer}>
 					<View>
 						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
-							{userProfile.fullName || 'unknown name'}
+							{userProfile.fullName || 'unknown name'} - U{userProfile.id}
 						</Text>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
