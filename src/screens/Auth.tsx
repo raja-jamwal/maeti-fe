@@ -28,12 +28,16 @@ interface IAuthDispatchProps {
 }
 
 enum LOGIN_SCREENS {
-	LOGIN_SIGNUP = 'login-signup',
-	LOGIN = 'login',
-	SIGNUP = 'signup',
-	VERIFY = 'verify',
-	VERIFYING = 'verifying',
-	PLANS = 'plans'
+	LOGIN_SIGNUP,
+	SIGNUP,
+	VERIFY,
+	VERIFYING,
+	PLANS
+}
+
+enum ACTION {
+	SIGN_UP,
+	LOGIN
 }
 
 interface IAuthState {
@@ -43,6 +47,7 @@ interface IAuthState {
 	number: number | null;
 	fullName: string | null;
 	otp: number | null;
+	action: ACTION;
 }
 
 type IAuthProps = NavigationInjectedProps & IAuthDispatchProps;
@@ -58,7 +63,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			activeScreen: null,
 			number: null,
 			fullName: null,
-			otp: null
+			otp: null,
+			action: ACTION.LOGIN
 		};
 		this._tryAuth = this._tryAuth.bind(this);
 	}
@@ -72,33 +78,54 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		// Just in case we want to for - re - login
 		// await AsyncStorage.removeItem('accountId');
 		const accountId = await AsyncStorage.getItem('accountId');
-
 		this.logger.log(`accountId from storage ${accountId}`);
 
 		if (accountId) {
-			fetchAccount(accountId);
-			navigation.navigate('Main');
+			try {
+				const account = await fetchAccount(accountId);
+				if (!account) {
+					throw new Error('Unable to fetch account');
+				}
+				navigation.navigate('Main');
+			} catch (err) {
+				this.logger.log('Error happened while fetching');
+				this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+			}
 		} else {
 			this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
 		}
 	}
 
 	changeScreen(screen: LOGIN_SCREENS) {
+		let action = ACTION.LOGIN;
+		if (screen === LOGIN_SCREENS.SIGNUP) {
+			action = ACTION.SIGN_UP;
+		}
+
 		this.setState({
-			activeScreen: screen
+			activeScreen: screen,
+			action
 		});
 	}
 
 	sendVerificationSMS(shouldLogin: boolean = false) {
 		const { number, fullName, callingCode } = this.state;
+
 		let error = '';
 		this.logger.log(number, fullName);
-		if (!number && !fullName) {
-			error = 'Please provide phone number & your name';
-		} else if (!number) {
-			error = 'Please provide phone number';
-		} else if (!fullName) {
-			error = 'Please provide your name';
+
+		if (shouldLogin) {
+			if (!number) {
+				error = 'Please provide phone number';
+			}
+		} else {
+			if (!number && !fullName) {
+				error = 'Please provide phone number & your name';
+			} else if (!number) {
+				error = 'Please provide phone number';
+			} else if (!fullName) {
+				error = 'Please provide your name';
+			}
 		}
 
 		if (error) {
@@ -186,8 +213,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		);
 	}
 
-	validateVerificationCode(passedInCode: string) {
-		const { otp, number, fullName } = this.state;
+	async validateVerificationCode(passedInCode: string) {
+		const { otp, number, fullName, action } = this.state;
 		if (!passedInCode) return;
 		const code = parseInt(passedInCode);
 		if (passedInCode.length === 4) {
@@ -195,20 +222,28 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				this.setState({
 					activeScreen: LOGIN_SCREENS.VERIFYING
 				});
-
-				ApiRequest(API.ACCOUNT.CREATE, {
-					phoneNumber: number,
-					fullName: fullName
-				})
-					.then(async (response: Account) => {
-						await AsyncStorage.setItem('accountId', `${response.id}`);
-						await this._tryAuth();
-					})
-					.catch((err: any) => {
-						this.logger.log('account create error ', err);
-						simpleAlert('Error', 'Unable to create your account');
-						this.changeScreen(LOGIN_SCREENS.SIGNUP);
-					});
+				try {
+					const api = action === ACTION.SIGN_UP ? API.ACCOUNT.CREATE : API.ACCOUNT.GET;
+					const payload =
+						action === ACTION.SIGN_UP
+							? {
+									phoneNumber: number,
+									fullName: fullName
+							  }
+							: {
+									phoneNumber: number
+							  };
+					const account: Account = await ApiRequest(api, payload);
+					await AsyncStorage.setItem('accountId', `${account.id}`);
+					await this._tryAuth();
+				} catch (er) {
+					this.logger.log('account create error ', er);
+					simpleAlert(
+						'Error',
+						`Unable to ${action === ACTION.LOGIN ? 'log-in' : 'create your account'}`
+					);
+					this.changeScreen(LOGIN_SCREENS.SIGNUP);
+				}
 			} else {
 				simpleAlert('Invalid OTP', 'Please provide valid OTP');
 			}
@@ -216,6 +251,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	renderVerificationScreen() {
+		const { action } = this.state;
 		return (
 			<View>
 				<View style={styles.formContainer}>
@@ -228,7 +264,13 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						/>
 					</View>
 					<TouchableNativeFeedback
-						onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}
+						onPress={() => {
+							if (action === ACTION.SIGN_UP) {
+								this.changeScreen(LOGIN_SCREENS.SIGNUP);
+							} else {
+								this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+							}
+						}}
 					>
 						<Text style={styles.btn}>Change Phone Number</Text>
 					</TouchableNativeFeedback>
@@ -267,7 +309,6 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		const { activeScreen } = this.state;
 		return (
 			<View style={[GlobalStyle.expand, styles.container]}>
-				{/*<StatusBar hidden={true} />*/}
 				<Image source={require('../assets/images/icon.png')} style={styles.logo} />
 				{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
 				{activeScreen === LOGIN_SCREENS.SIGNUP && this.renderSignUp()}
