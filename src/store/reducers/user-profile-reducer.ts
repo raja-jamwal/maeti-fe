@@ -7,6 +7,7 @@ import {
 	Horoscope,
 	Investments,
 	Lifestyle,
+	PhotosEntity,
 	Preference,
 	Profession,
 	UserProfile,
@@ -18,11 +19,28 @@ import { IRootState } from '../index';
 import { API } from '../../config/API';
 import { Dispatch } from 'redux';
 import { ApiRequest } from '../../utils/index';
-import { getSelfProfileId } from './self-profile-reducer';
+import {
+	addSelfProfile,
+	getCurrentUserProfile,
+	getSelfProfileId,
+	setSelfProfileUpdating
+} from './self-profile-reducer';
+import { createSelector } from 'reselect';
+import { getLogger } from '../../utils/logger';
 
 export interface IUserProfileState {
 	[id: number]: UserProfile;
 }
+
+// selector
+
+export const getUserProfiles = (state: IRootState) => state.userProfiles;
+export const getUserProfileFromState = (state: IRootState, userProfileId: number) =>
+	state.userProfiles[userProfileId];
+export const getUserProfileForId = createSelector(
+	getUserProfileFromState,
+	profile => profile || null
+);
 
 const defaultProfileState: IUserProfileState = {};
 
@@ -35,6 +53,42 @@ interface IUpdateEnityPayload {
 	userProfileId: number;
 	object: any;
 }
+
+export const uploadPhoto = function(file: any) {
+	const logger = getLogger(uploadPhoto);
+	console.log('uri ', file.uri);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		const state = getState();
+		const currentUserProfile = getCurrentUserProfile(state);
+		if (!currentUserProfile) return;
+		logger.log('starting to upload');
+		dispatch(setSelfProfileUpdating(true));
+		return ApiRequest(API.PHOTO.UPLOAD, {
+			file
+		})
+			.then((response: any) => {
+				logger.log('uploaded image', response.url);
+				const photo = { url: response.url } as PhotosEntity;
+				const updatedProfile: UserProfile = {
+					...currentUserProfile,
+					photo: currentUserProfile.photo.concat(photo)
+				};
+				/**
+				 * Update server, local userProfiles store
+				 * & selfProfile store
+				 */
+				dispatch(
+					updateUserProfile({ userProfileId: updatedProfile.id, object: updatedProfile })
+				);
+				dispatch(addSelfProfile(updatedProfile));
+				dispatch(setSelfProfileUpdating(false));
+			})
+			.catch(err => {
+				logger.log('err ', err);
+				dispatch(setSelfProfileUpdating(false));
+			});
+	};
+};
 
 const patchEntity = (entityUrl: string, object: any, entityId?: number) => {
 	const url = entityId ? `${entityUrl}/${entityId}` : entityUrl;

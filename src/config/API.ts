@@ -67,5 +67,9 @@ export const API = {
 	ACCOUNT: {
 		CREATE: `${config.server}/api/account.create`,
 		GET: `${config.server}/api/account.get`
+	},
+
+	PHOTO: {
+		UPLOAD: `${config.server}/api/photo.upload`
 	}
 };

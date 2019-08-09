@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { IRootState } from '../../store/index';
 import { getLogger } from '../../utils/logger';
+import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+
+const logger = getLogger('ConnectedProfile');
 
 const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 	const accountData = state.account;
@@ -22,19 +25,17 @@ const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 			state.userProfiles[ownProps.userProfileId]) ||
 		fallbackUserProfile;
 
+	const currentProfileId = getCurrentUserProfileId(state);
+
+	const isSelfProfile = !isEmpty(userProfile) && userProfile.id === currentProfileId;
+
 	return {
-		userProfile
+		userProfile,
+		isSelfProfile
 	};
 };
 
-const ConnectedProfile = () =>
-	connect(
-		mapStateToProps,
-		null
-	)(ProfileCard);
-
-const logger = getLogger(ConnectedProfile);
-
-export default ConnectedProfile();
-
-// export default TestProfile;
+export default connect(
+	mapStateToProps,
+	null
+)(ProfileCard);

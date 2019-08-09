@@ -33,6 +33,7 @@
     "androidStatusBar": {
       "backgroundColor": "#481f6f",
       "barStyle": "light-content"
-    }
+    },
+    "description": ""
   }
 }

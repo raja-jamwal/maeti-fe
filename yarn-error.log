@@ -1,30 +1,23 @@
 Arguments: 
-  /usr/local/Cellar/node/11.10.0/bin/node /usr/local/bin/yarn add @types/react-native-country-picker-modal --save
+  /usr/local/bin/node /Users/test/.yarn/bin/yarn.js add react-native-actionsheet --save
 
 PATH: 
-  /usr/local/opt/icu4c/sbin:/usr/local/opt/icu4c/bin:/usr/local/share/android-sdk/build-tools/19.1.0:/usr/local/share/android-sdk/platform-tools:/usr/local/share/android-sdk/tools:/usr/local/opt/gradle/bin:/usr/local/opt/maven/bin:/usr/local/opt/ant/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+  /Users/test/.yarn/bin:/Users/test/.config/yarn/global/node_modules/.bin:/usr/local/opt/icu4c/sbin:/usr/local/opt/icu4c/bin:/usr/local/share/android-sdk/build-tools/19.1.0:/usr/local/share/android-sdk/platform-tools:/usr/local/share/android-sdk/tools:/usr/local/opt/gradle/bin:/usr/local/opt/maven/bin:/usr/local/opt/ant/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 Yarn version: 
-  1.12.3
+  1.17.3
 
 Node version: 
-  11.10.0
+  11.0.0
 
 Platform: 
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2freact-native-country-picker-modal: Not found
-      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:65894:18)
-      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:129018:22)
-      at Request.emit (events.js:197:13)
-      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:129990:10)
-      at Request.emit (events.js:197:13)
-      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:129912:12)
-      at Object.onceWrapper (events.js:285:13)
-      at IncomingMessage.emit (events.js:202:15)
-      at endReadableNT (_stream_readable.js:1129:12)
-      at processTicksAndRejections (internal/process/next_tick.js:76:17)
+  Error: https://registry.yarnpkg.com/react-native-actionsheet: ETIMEDOUT
+      at Timeout._onTimeout (/Users/test/.yarn/lib/cli.js:141124:19)
+      at listOnTimeout (timers.js:324:15)
+      at processTimers (timers.js:268:5)
 
 npm manifest: 
   {
@@ -48,6 +41,7 @@ npm manifest:
       "@types/redux-thunk": "^2.1.0",
       "@types/reselect": "^2.2.0",
       "expo": "^32.0.0",
+      "expo-image-picker": "^6.0.0",
       "react": "16.5.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
       "react-native-check-box": "^2.1.7",
@@ -3080,6 +3074,11 @@ Lockfile:
     integrity sha512-aOHa37N/8gEyzDGO5df6PST8uce1L94OxNTfD5JtWVH3tWmkaN760S33T9ecWmydcUv9zFCOcCC4gZTwEWUJiQ==
     dependencies:
       expo-core "~2.0.0"
+  
+  expo-image-picker@^6.0.0:
+    version "6.0.0"
+    resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-6.0.0.tgz#776f4487d986ba9cc82169a47445e8c13ca3108b"
+    integrity sha512-7IW4WxDe0xQclGhTnX3DOgTkMvt2kF/MNOPbk2y9fS5k/8am9I8jErjURPxRUGH7+TvYLEWPy63DRAJP7TYyEg==
   
   expo-local-authentication@~2.0.0:
     version "2.0.0"

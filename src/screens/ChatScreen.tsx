@@ -10,6 +10,7 @@ import { toArray, map, keys, sortBy } from 'lodash';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import GlobalStyle from '../styles/global';
 import Colors from '../constants/Colors';
+import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
 
 const messageToChatMessage = (message: Message): IChatMessage => {
 	return {
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: IRootState, ownProps: any) => {
-	const currentUserProfile = state.selfProfile;
+	const currentUserProfile = getSelfUserProfile(state);
 	const channelId = ownProps.navigation.getParam('channelId');
 	const channel = channelId && state.channels.channels[channelId];
 	console.log('channelId ', channelId);

@@ -76,7 +76,7 @@ export interface UserProfile extends DAO {
 	userReference: UserReference;
 	family: Family;
 	preference: Preference;
-	photos: PhotosEntity[];
+	photo: PhotosEntity[];
 }
 
 export interface Education extends DAO {

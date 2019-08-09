@@ -20,6 +20,7 @@ import FilterScreen from '../screens/FilterScreen';
 import IncomingTab from '../components/interests-tab/tabs/IncomingTab';
 import AcceptedTab from '../components/interests-tab/tabs/AcceptedTab';
 import SentTab from '../components/interests-tab/tabs/SentTab';
+import ProfileImageGalleryScreen from '../screens/ProfileImageGalleryScreen';
 
 const defaultNavigationOptions = {
 	headerStyle: {
@@ -36,6 +37,7 @@ const ExploreStack = createStackNavigator(
 	{
 		Explore: ExploreScreen,
 		ProfileScreen: ProfileScreen,
+		ProfileImageGalleryScreen: ProfileImageGalleryScreen,
 		EditProfileScreen: EditProfileScreen,
 		FilterScreen: FilterScreen
 	},

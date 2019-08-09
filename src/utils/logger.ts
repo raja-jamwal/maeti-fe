@@ -4,11 +4,7 @@ const getTime = () => {
 };
 
 export const getLogger = (func: any) => {
-	if (typeof func !== 'function') {
-		console.warn('Developer pass in a class or function');
-	}
-
-	const className = func.name;
+	const className = typeof func === 'function' ? func.name : func;
 	return {
 		log: (...args: any) => {
 			const log = [`[${getTime()} ${className}]`].concat(args);
