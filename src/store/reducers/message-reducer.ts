@@ -6,6 +6,8 @@ import { API } from '../../config/API';
 import { ApiRequest } from '../../utils/index';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
 import { addChannel } from './channel-reducer';
+import { getLogger } from '../../utils/logger';
+import { getCurrentUserProfileId } from './self-profile-reducer';
 
 export interface IMessageState {
 	[channelId: number]: {
@@ -28,9 +30,10 @@ export const addMessagePage = createAction<any>(ADD_MESSAGE_PAGE);
 export const setMessageFetching = createAction<any>(SET_MESSAGE_FETCHING);
 
 export const fetchMessages = function(channelId: number) {
+	const logger = getLogger(fetchMessages);
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		const channel = getState().messages[channelId];
-
+		logger.log('channelId', channelId);
 		if (channel && channel.page.last) {
 			console.log('this is last message');
 			dispatch(setMessageFetching({ channelId, fetching: false }));
@@ -72,7 +75,8 @@ export const fetchMessages = function(channelId: number) {
 
 export const postMessage = function(channelId: number, messageText: string) {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
-		const currentUserId = getState().selfProfile.id;
+		const state = getState();
+		const currentUserId = getCurrentUserProfileId(state);
 		const channel = getState().channels.channels[channelId];
 		if (!channel || !currentUserId) return;
 		return ApiRequest(API.MESSAGE.SAVE, {

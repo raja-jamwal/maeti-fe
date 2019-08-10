@@ -6,6 +6,7 @@ import { API } from '../../config/API';
 import { ApiRequest } from '../../utils/index';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
 import { addProfile } from './user-profile-reducer';
+import { getCurrentUserProfileId } from './self-profile-reducer';
 
 export interface IChannelState {
 	channels: {
@@ -36,7 +37,8 @@ export const setChannelFetching = createAction<boolean>(SET_CHANNEL_FETCHING);
 
 export const fetchChannels = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
-		const currentUserId = getState().selfProfile.id;
+		const state = getState();
+		const currentUserId = getCurrentUserProfileId(state);
 		const currentPage = getState().channels.pageable;
 		if (!currentUserId || currentPage.last) return;
 

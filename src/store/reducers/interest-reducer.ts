@@ -6,6 +6,7 @@ import { IRootState } from '../index';
 import { API } from '../../config/API';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
 import { addProfile, bulkAddProfile } from './user-profile-reducer';
+import { getCurrentUserProfileId } from './self-profile-reducer';
 
 export interface IInterestState {
 	incoming: {
@@ -92,7 +93,8 @@ export const setSentInterestFetching = createAction<boolean>(SET_SENT_INTEREST_F
 
 export const fetchIncomingInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
-		const currentUserId = getState().selfProfile.id;
+		const state = getState();
+		const currentUserId = getCurrentUserProfileId(state);
 		const currentPage = getState().interests.incoming.pageable;
 
 		if (!currentUserId || currentPage.last) return;
@@ -124,7 +126,8 @@ export const fetchIncomingInterests = function() {
 
 export const fetchAcceptedInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
-		const currentUserId = getState().selfProfile.id;
+		const state = getState();
+		const currentUserId = getCurrentUserProfileId(state);
 		const currentPage = getState().interests.accepted.pageable;
 
 		if (!currentUserId || currentPage.last) return;
@@ -159,7 +162,8 @@ export const fetchAcceptedInterests = function() {
 
 export const fetchSentInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
-		const currentUserId = getState().selfProfile.id;
+		const state = getState();
+		const currentUserId = getCurrentUserProfileId(state);
 		const currentPage = getState().interests.sent.pageable;
 
 		if (!currentUserId || currentPage.last) return;
