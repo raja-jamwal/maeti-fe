@@ -10,6 +10,7 @@ import { channelReducer, IChannelState } from './reducers/channel-reducer';
 import { IMessageState, messageReducer } from './reducers/message-reducer';
 import { exploreReducer, IExploreState } from './reducers/explore-reducer';
 import { filterReducer, IFilterState } from './reducers/filter-reducer';
+import rtmMiddleware from './middleware/rtm';
 
 export interface IRootState {
 	account: IAccountState;
@@ -37,6 +38,9 @@ const rootReducer = combineReducers<IRootState>({
 	filter: filterReducer
 });
 
-const store = createStore<IRootState, any, any, any>(rootReducer, applyMiddleware(thunk));
+const store = createStore<IRootState, any, any, any>(
+	rootReducer,
+	applyMiddleware(thunk, rtmMiddleware)
+);
 
 export { rootReducer, store };

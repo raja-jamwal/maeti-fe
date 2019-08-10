@@ -71,5 +71,9 @@ export const API = {
 
 	PHOTO: {
 		UPLOAD: `${config.server}/api/photo.upload`
+	},
+
+	RTM: {
+		CONNECT: `${config.server}/rtm`
 	}
 };

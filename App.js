@@ -6,6 +6,13 @@ import { connect, Provider } from 'react-redux';
 import { store } from './src/store';
 import { fetchAccount } from './src/store/reducers/account-reducer';
 import { bindActionCreators } from 'redux';
+const { TextDecoder, TextEncoder } = require('text-encoding');
+
+/**
+ * Polly-fill following for react-native JSC
+ */
+global.TextDecoder = TextDecoder;
+global.TextEncoder = TextEncoder;
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,13 +25,6 @@ class App extends React.Component {
 	state = {
 		isLoadingComplete: false
 	};
-
-	componentDidMount() {
-		// check for local token
-		// if token is there
-		// pull account from BE
-		// others set to
-	}
 
 	render() {
 		if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

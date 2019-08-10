@@ -22,9 +22,11 @@ import { bindActionCreators } from 'redux';
 import { fetchAccount } from '../store/reducers/account-reducer';
 import { NavigationInjectedProps } from 'react-navigation';
 import { getLogger } from '../utils/logger';
+import { connectRTM } from '../store/middleware/rtm-middleware';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
+	connectRTM: () => any;
 }
 
 enum LOGIN_SCREENS {
@@ -74,7 +76,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	async _tryAuth() {
-		const { fetchAccount, navigation } = this.props;
+		const { fetchAccount, navigation, connectRTM } = this.props;
 		// Just in case we want to for - re - login
 		// await AsyncStorage.removeItem('accountId');
 		const accountId = await AsyncStorage.getItem('accountId');
@@ -86,6 +88,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				if (!account) {
 					throw new Error('Unable to fetch account');
 				}
+				connectRTM();
 				navigation.navigate('Main');
 			} catch (err) {
 				this.logger.log('Error happened while fetching');
@@ -397,7 +400,8 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch: any) {
 	return {
-		fetchAccount: bindActionCreators(fetchAccount, dispatch)
+		fetchAccount: bindActionCreators(fetchAccount, dispatch),
+		connectRTM: bindActionCreators(connectRTM, dispatch)
 	};
 }
 
