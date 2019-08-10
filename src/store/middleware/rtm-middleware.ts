@@ -53,13 +53,13 @@ export const rtmMiddleware = store => next => action => {
 				client.subscribe('/topic/' + currentProfileId, function(data) {
 					try {
 						const text = (data.body || '{}').trim();
-						logger.log('RTM message', data.body);
 						const message = JSON.parse(text);
-						const type = message.type;
+						const type = message.eventType;
 						if (!type) {
 							logger.log('invalid rtm message type');
 							return;
 						}
+						logger.log('RTM message', type);
 						const payload = message.payload;
 						if (typeof handlers[type] === 'function') {
 							handlers[type](store, payload);

@@ -104,12 +104,25 @@ export const messageReducer = handleActions<IMessageState>(
 		[ADD_MESSAGE]: (state, { payload }) => {
 			const message = (payload as any) as Message;
 			const channelId = message.messageIdentity.channelId;
+			/**
+			 * Build default state if we're inserting for the first time
+			 * in store
+			 */
+			const existingMessageState = state[channelId] || {
+				fetching: false,
+				page: {
+					last: false,
+					totalPages: 0,
+					number: -1,
+					totalElements: 0
+				}
+			};
 			return {
 				...state,
 				[channelId]: {
-					...state[channelId],
+					...existingMessageState,
 					messages: {
-						...state[channelId].messages,
+						...existingMessageState.messages,
 						[message.messageIdentity.id]: message
 					}
 				}

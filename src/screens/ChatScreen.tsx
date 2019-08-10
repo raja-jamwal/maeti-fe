@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { GiftedChat, IChatMessage, MessageProps, User, Avatar } from 'react-native-gifted-chat';
+import {
+	GiftedChat,
+	IChatMessage,
+	MessageProps,
+	User,
+	Avatar,
+	IMessage
+} from 'react-native-gifted-chat';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IRootState } from '../store/index';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -11,6 +18,7 @@ import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import GlobalStyle from '../styles/global';
 import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
+import { getLogger } from '../utils/logger';
 
 const messageToChatMessage = (message: Message): IChatMessage => {
 	return {
@@ -49,6 +57,8 @@ class ChatScreen extends React.Component<
 		messages: []
 	};
 
+	logger = getLogger(ChatScreen);
+
 	static navigationOptions = ({ navigation }) => ({
 		title: navigation.getParam('title', '')
 	});
@@ -65,7 +75,8 @@ class ChatScreen extends React.Component<
 		if (channelId && this.state.channelId !== channelId) {
 			fetchMessages(channelId);
 			this.setState({
-				channelId
+				channelId,
+				messages: []
 			});
 		}
 	}
@@ -74,12 +85,14 @@ class ChatScreen extends React.Component<
 		const { messages } = this.props;
 		const stateMessages = this.state.messages;
 		if (stateMessages.length < keys(messages).length) {
-			this.setState({
+			this.logger.log('Adding message to screen');
+			const newMessages = {
 				messages: map(
 					sortBy(toArray(messages), 'createdOn').reverse(),
 					messageToChatMessage
 				)
-			});
+			};
+			this.setState(newMessages);
 		}
 	}
 
@@ -93,10 +106,11 @@ class ChatScreen extends React.Component<
 	}
 
 	componentWillReceiveProps(nextProps: any) {
+		this.logger.log('recv props');
 		this.mayBeUpdateMessages();
 	}
 
-	onSend(messages = []) {
+	onSend(messages: IMessage[] = []) {
 		const channelId = this.props.navigation.getParam('channelId');
 		if (!channelId) return;
 
@@ -153,7 +167,7 @@ class ChatScreen extends React.Component<
 	render() {
 		const { currentUserProfile, fetching, isLastPage } = this.props;
 		if (!currentUserProfile) return;
-
+		this.logger.log('messages.length ', this.state.messages.length);
 		return (
 			<GiftedChat
 				messages={this.state.messages}
@@ -168,7 +182,7 @@ class ChatScreen extends React.Component<
 					onEndReached: this._hasMore,
 					onEndReachedThreshold: 50
 				}}
-				extraData={this.props}
+				extraData={{ length: this.state.messages.length }}
 			/>
 		);
 	}

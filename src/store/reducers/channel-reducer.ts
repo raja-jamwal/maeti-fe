@@ -7,6 +7,7 @@ import { ApiRequest } from '../../utils/index';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
 import { addProfile } from './user-profile-reducer';
 import { getCurrentUserProfileId } from './self-profile-reducer';
+import { createSelector } from 'reselect';
 
 export interface IChannelState {
 	channels: {
@@ -26,6 +27,17 @@ const defaultChannelState: IChannelState = {
 		totalElements: 0
 	}
 };
+
+/**
+ * Selectors
+ */
+
+const getChannelsState = (state: IRootState) => state.channels;
+const getChannelForIdFromState = (state: IRootState, id: number) => state.channels.channels[id];
+export const getChannelForId = createSelector(
+	getChannelForIdFromState,
+	channel => channel || null
+);
 
 const ADD_CHANNEL = 'ADD_CHANNEL';
 const SET_CHANNEL_FETCHING = 'SET_CHANNEL_FETCHING';
