@@ -17,7 +17,7 @@ class UserChannel extends React.Component<IUserChannelProps> {
 			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.container]}>
 				<View style={GlobalStyles.paddedRight}>
 					<Image
-						source={require('../../assets/images/doctor-placeholder.jpg')}
+						source={require('../../assets/images/placeholder.png')}
 						style={styles.avatar}
 					/>
 				</View>

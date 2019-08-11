@@ -21,7 +21,7 @@ import Layout from 'src/constants/Layout.js';
 import Carousel from 'react-native-snap-carousel';
 import ProfileImageCarousel from '../profile-image-carousel/profile-image-carousel';
 
-const defaultPrimaryPhoto = require('../../assets/images/doctor-placeholder.jpg');
+const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
 export interface IProfileProps {
 	userProfile: UserProfile;

@@ -86,7 +86,6 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 				type: 'image/jpeg'
 			});
 		}
-		A;
 	};
 
 	getPhotos() {
@@ -132,7 +131,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 				<View style={styles.addBtnContainer}>
 					<TouchableNativeFeedback onPress={this._pickImage}>
 						<View style={styles.addIconContainer}>
-							<Icon.Ionicons name="md-add" size={20} color="white" />
+							<Icon.Ionicons name="md-add" size={30} color="white" />
 						</View>
 					</TouchableNativeFeedback>
 				</View>
@@ -180,14 +179,14 @@ const styles = StyleSheet.create({
 		right: 30,
 		bottom: 30,
 		backgroundColor: Colors.primaryDarkColor,
-		borderRadius: 15,
+		borderRadius: 30,
 		elevation: 6,
 		zIndex: 1
 	},
 	addIconContainer: {
-		margin: 8,
-		marginLeft: 12,
-		marginRight: 12
+		margin: 10,
+		marginLeft: 15,
+		marginRight: 15
 	},
 	progressContainer: {
 		position: 'absolute',
