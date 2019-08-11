@@ -1,21 +1,13 @@
 import * as React from 'react';
-import {
-	GiftedChat,
-	IChatMessage,
-	MessageProps,
-	User,
-	Avatar,
-	IMessage
-} from 'react-native-gifted-chat';
+import { GiftedChat, IChatMessage, User, IMessage, Bubble, Send } from 'react-native-gifted-chat';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { IRootState } from '../store/index';
+import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Channel, Message, UserProfile } from '../store/reducers/account-defination';
 import { fetchMessages, postMessage } from '../store/reducers/message-reducer';
 import { toArray, map, keys, sortBy } from 'lodash';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
-import GlobalStyle from '../styles/global';
+import { StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
 import { getLogger } from '../utils/logger';
@@ -49,14 +41,16 @@ interface IChatScreenMapDispatchToProps {
 	postMessage: (channelId: number, messageText: string) => any;
 }
 
-class ChatScreen extends React.Component<
-	NavigationInjectedProps & IChatScreenMapStateToProps & IChatScreenMapDispatchToProps
-> {
-	state = {
-		channelId: null,
-		messages: []
-	};
+interface IChatScreenState {
+	channelId?: number;
+	messages: IMessage[];
+}
 
+type IChatScreenProps = NavigationInjectedProps &
+	IChatScreenMapStateToProps &
+	IChatScreenMapDispatchToProps;
+
+class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 	logger = getLogger(ChatScreen);
 
 	static navigationOptions = ({ navigation }) => ({
@@ -65,7 +59,9 @@ class ChatScreen extends React.Component<
 
 	constructor(props: any) {
 		super(props);
-		this.renderMessage = this.renderMessage.bind(this);
+		this.state = {
+			messages: [] as IMessage[]
+		};
 		this._hasMore = this._hasMore.bind(this);
 	}
 
@@ -81,33 +77,28 @@ class ChatScreen extends React.Component<
 		}
 	}
 
-	mayBeUpdateMessages() {
-		const { messages } = this.props;
+	mayBeUpdateMessages(messages: Message[]) {
 		const stateMessages = this.state.messages;
 		if (stateMessages.length < keys(messages).length) {
-			this.logger.log('Adding message to screen');
-			const newMessages = {
+			this.setState({
 				messages: map(
 					sortBy(toArray(messages), 'createdOn').reverse(),
 					messageToChatMessage
 				)
-			};
-			this.setState(newMessages);
+			});
 		}
 	}
 
 	componentWillMount() {
-		const { channel } = this.props;
-		console.log('chat-screen will mount');
+		const { channel, messages } = this.props;
 		this.mayBeLoadMessage();
-		this.mayBeUpdateMessages();
+		this.mayBeUpdateMessages(messages);
 		if (!channel) return;
 		this.props.navigation.setParams({ title: channel.toUser.fullName });
 	}
 
-	componentWillReceiveProps(nextProps: any) {
-		this.logger.log('recv props');
-		this.mayBeUpdateMessages();
+	componentWillReceiveProps(nextProps: IChatScreenProps) {
+		this.mayBeUpdateMessages(nextProps.messages);
 	}
 
 	onSend(messages: IMessage[] = []) {
@@ -115,7 +106,6 @@ class ChatScreen extends React.Component<
 		if (!channelId) return;
 
 		messages.forEach((message: any) => {
-			console.log(message);
 			this.props.postMessage(channelId, message.text);
 		});
 
@@ -124,37 +114,30 @@ class ChatScreen extends React.Component<
 		}));
 	}
 
-	getScreenWidth() {
-		return Dimensions.get('window').width;
-	}
-
-	getWidthStyle() {
-		return {
-			width: this.getScreenWidth() * 0.5
-		};
-	}
-
-	renderMessage(message: MessageProps<IChatMessage>): React.ReactNode {
-		const text = message.currentMessage && message.currentMessage.text;
-		const messageStyle = message.position === 'left' ? styles.leftMessage : styles.rightMessage;
+	renderBubble(props: any) {
 		return (
-			<View style={[GlobalStyle.row, GlobalStyle.expand, styles.messageView]}>
-				<View style={[GlobalStyle.row, messageStyle, GlobalStyle.expand]}>
-					{message.showUserAvatar && (
-						<Avatar
-							{...message}
-							imageStyle={{
-								left: styles.avatarContainerStyle,
-								right: styles.avatarContainerStyle
-							}}
-						/>
-					)}
+			<Bubble
+				{...props}
+				wrapperStyle={{
+					left: {
+						backgroundColor: 'white'
+					},
+					right: {
+						backgroundColor: Colors.primaryDarkColor
+					}
+				}}
+			/>
+		);
+	}
 
-					<View style={styles.messageContainer}>
-						<Text>{text}</Text>
-					</View>
-				</View>
-			</View>
+	renderSend(props: any) {
+		return (
+			<Send
+				{...props}
+				textStyle={{
+					color: Colors.primaryDarkColor
+				}}
+			/>
 		);
 	}
 
@@ -167,13 +150,13 @@ class ChatScreen extends React.Component<
 	render() {
 		const { currentUserProfile, fetching, isLastPage } = this.props;
 		if (!currentUserProfile) return;
-		this.logger.log('messages.length ', this.state.messages.length);
 		return (
 			<GiftedChat
 				messages={this.state.messages}
 				onSend={messages => this.onSend(messages)}
 				user={userProfileToUser(currentUserProfile)}
-				renderMessage={this.renderMessage}
+				renderBubble={this.renderBubble}
+				renderSend={this.renderSend}
 				alwaysShowSend={true}
 				loadEarlier={!isLastPage}
 				isLoadingEarlier={fetching}
@@ -223,7 +206,6 @@ const mapStateToProps = (state: IRootState, ownProps: any) => {
 	const currentUserProfile = getSelfUserProfile(state);
 	const channelId = ownProps.navigation.getParam('channelId');
 	const channel = channelId && state.channels.channels[channelId];
-	console.log('channelId ', channelId);
 	const messageState = channelId && state.messages[channelId];
 	const fetching = (messageState && messageState.fetching) || false;
 	const messages = (messageState && messageState.messages) || {};
