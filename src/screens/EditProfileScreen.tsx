@@ -14,20 +14,21 @@ import Text from '../components/text/index';
 import Colors from '../constants/Colors';
 import TagSelector from '../components/tag-selector/tag-selector';
 import { Tag } from '../store/reducers/account-defination';
+import { Throbber } from '../components/throbber/throbber';
 
-const CustomProgressBar = ({ visible }) => (
+const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
 		<View
 			style={{
 				flex: 1,
-				backgroundColor: '#dcdcdc',
+				backgroundColor: 'rgb(255, 255, 255)',
 				alignItems: 'center',
 				justifyContent: 'center'
 			}}
 		>
-			<View style={{ borderRadius: 10, backgroundColor: 'white', padding: 25 }}>
-				<Text style={{ fontSize: 20, fontWeight: '200' }}>Loading</Text>
-				<ActivityIndicator size="large" />
+			<View>
+				<Text style={{ fontSize: 20, fontWeight: '200', marginBottom: 10 }}>{label}</Text>
+				<Throbber size="large" />
 			</View>
 		</View>
 	</Modal>
@@ -193,7 +194,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		return <View>{fields}</View>;
 	}
 
-	updateInformation() {
+	async updateInformation() {
 		// fire updateAction with userProfileId
 		// wait for it to resolve
 		// show activity indicator meanwhile
@@ -204,15 +205,20 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		const updateAction = navigation.getParam('updateAction', null);
 		const userProfileId = navigation.getParam('userProfileId', null);
 
-		if (userProfileId && updateAction) {
+		if (!userProfileId || !updateAction) {
+			return;
 		}
 
-		/*this.setState({
+		this.setState({
 			showProgress: true
-		});*/
+		});
 
 		if (!updateAction || !userProfileId) return null;
-		updateAction({ userProfileId, object });
+		await updateAction({ userProfileId, object });
+
+		this.setState({
+			showProgress: false
+		});
 
 		navigation.goBack();
 	}

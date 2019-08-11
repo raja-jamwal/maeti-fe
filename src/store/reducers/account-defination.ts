@@ -219,7 +219,7 @@ export interface Preference extends DAO {
 	workCountry: string;
 	workState: string;
 	workCity: string;
-	parentCounty: string;
+	parentCountry: string;
 	parentCity: string;
 	diet: string;
 	smoke: string;

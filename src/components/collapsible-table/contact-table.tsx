@@ -39,7 +39,7 @@ class ContactTable extends React.Component<
 			label: 'Mobile Number 1',
 			type: 'string'
 		},
-		mobileNumberOf1: {
+		mobileNumber1Of: {
 			label: 'Mobile Number 1 Of',
 			type: 'string'
 		},
@@ -47,7 +47,7 @@ class ContactTable extends React.Component<
 			label: 'Mobile Number 2',
 			type: 'string'
 		},
-		mobileNumberOf2: {
+		mobileNumber2Of: {
 			label: 'Mobile Number 2 Of',
 			type: 'string'
 		},

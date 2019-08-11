@@ -118,9 +118,11 @@ const updateLocalAndServer = function<T extends DAO>(
 	getUpdatedProfile: (userProfile: UserProfile, entity: T) => UserProfile,
 	direct?: boolean
 ) {
+	const logger = getLogger(updateLocalAndServer);
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		if (!userProfileId) return null;
 		const entityId = direct ? undefined : entity.id;
+		logger.log(`entityId ${entityId} ${entityUrl}`);
 		return patchEntity(entityUrl, entity, entityId)
 			.then((updatedServerEntity: T) => {
 				const userProfile = getState().userProfiles[userProfileId];
@@ -129,7 +131,7 @@ const updateLocalAndServer = function<T extends DAO>(
 				dispatch(addProfile({ ...updatedUserProfile }));
 				return updatedUserProfile;
 			})
-			.catch(err => console.log('err ', err));
+			.catch(err => logger.log('err ', err));
 	};
 };
 
@@ -138,7 +140,13 @@ export const updateVerification = function({ userProfileId, object }: IUpdateEni
 		userProfile.verification = verification;
 		return userProfile;
 	};
-	return updateLocalAndServer<Verification>(userProfileId, object, API.VERIFICATIONS, updateFunc);
+	return updateLocalAndServer<Verification>(
+		userProfileId,
+		object,
+		API.VERIFICATION.SAVE,
+		updateFunc,
+		true
+	);
 };
 
 export const updateUserProfile = function({ userProfileId, object }: IUpdateEnityPayload) {
@@ -146,7 +154,7 @@ export const updateUserProfile = function({ userProfileId, object }: IUpdateEnit
 	return updateLocalAndServer<UserProfile>(
 		userProfileId,
 		object,
-		API.USER_PROFILE_SAVE,
+		API.USER_PROFILE.SAVE,
 		updateFunc,
 		true
 	);
@@ -157,7 +165,13 @@ export const updateEducation = function({ userProfileId, object }: IUpdateEnityP
 		userProfile.education = education;
 		return userProfile;
 	};
-	return updateLocalAndServer<Education>(userProfileId, object, API.EDUCATIONS, updateFunc);
+	return updateLocalAndServer<Education>(
+		userProfileId,
+		object,
+		API.EDUCATION.SAVE,
+		updateFunc,
+		true
+	);
 };
 
 export const updateProfession = function({ userProfileId, object }: IUpdateEnityPayload) {
@@ -168,7 +182,7 @@ export const updateProfession = function({ userProfileId, object }: IUpdateEnity
 	return updateLocalAndServer<Profession>(
 		userProfileId,
 		object,
-		API.PROFESSION_SAVE,
+		API.PROFESSION.SAVE,
 		updateFunc,
 		true
 	);
@@ -179,7 +193,13 @@ export const updateHoroscope = function({ userProfileId, object }: IUpdateEnityP
 		userProfile.horoscope = horoscope;
 		return userProfile;
 	};
-	return updateLocalAndServer<Horoscope>(userProfileId, object, API.HOROSCOPES, updateFunc);
+	return updateLocalAndServer<Horoscope>(
+		userProfileId,
+		object,
+		API.HOROSCOPE.SAVE,
+		updateFunc,
+		true
+	);
 };
 
 export const updateInvestment = function({ userProfileId, object }: IUpdateEnityPayload) {
@@ -190,7 +210,7 @@ export const updateInvestment = function({ userProfileId, object }: IUpdateEnity
 	return updateLocalAndServer<Investments>(
 		userProfileId,
 		object,
-		API.INVESTMENT_SAVE,
+		API.INVESTMENT.SAVE,
 		updateFunc,
 		true
 	);
@@ -204,7 +224,7 @@ export const updateLifestyle = function({ userProfileId, object }: IUpdateEnityP
 	return updateLocalAndServer<Lifestyle>(
 		userProfileId,
 		object,
-		API.LIFESTYLE_SAVE,
+		API.LIFESTYLE.SAVE,
 		updateFunc,
 		true
 	);
@@ -219,8 +239,9 @@ export const updateContactInformation = function({ userProfileId, object }: IUpd
 	return updateLocalAndServer<ContactInformation>(
 		userProfileId,
 		object,
-		API.CONTACT_INFORMATIONS,
-		updateFunc
+		API.CONTACT_INFORMATION.SAVE,
+		updateFunc,
+		true
 	);
 };
 
@@ -232,8 +253,9 @@ export const updateUserReference = function({ userProfileId, object }: IUpdateEn
 	return updateLocalAndServer<UserReference>(
 		userProfileId,
 		object,
-		API.USER_REFERENCES,
-		updateFunc
+		API.USER_REFERENCE.SAVE,
+		updateFunc,
+		true
 	);
 };
 
@@ -242,7 +264,7 @@ export const updateFamily = function({ userProfileId, object }: IUpdateEnityPayl
 		userProfile.family = family;
 		return userProfile;
 	};
-	return updateLocalAndServer<Family>(userProfileId, object, API.FAMILIES, updateFunc);
+	return updateLocalAndServer<Family>(userProfileId, object, API.FAMILY.SAVE, updateFunc, true);
 };
 
 export const updateFamilyOtherInformation = function({
@@ -260,7 +282,7 @@ export const updateFamilyOtherInformation = function({
 	return updateLocalAndServer<FamilyOtherInformation>(
 		userProfileId,
 		object,
-		API.FAMILY_OTHER_INFORMATION_SAVE,
+		API.FAMILY_OTHER_INFORMATION.SAVE,
 		updateFunc,
 		true
 	);
@@ -274,7 +296,7 @@ export const updatePreference = function({ userProfileId, object }: IUpdateEnity
 	return updateLocalAndServer<Preference>(
 		userProfileId,
 		object,
-		API.PREFERENCE_SAVE,
+		API.PREFERENCE.SAVE,
 		updateFunc,
 		true
 	);

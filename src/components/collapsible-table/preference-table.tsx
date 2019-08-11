@@ -140,7 +140,7 @@ class PreferenceTable extends React.Component<
 			label: 'Work Location City',
 			type: 'string'
 		},
-		parentCounty: {
+		parentCountry: {
 			label: 'Parent State Location',
 			type: 'string'
 		},

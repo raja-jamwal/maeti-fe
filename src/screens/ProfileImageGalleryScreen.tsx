@@ -77,7 +77,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 			aspect: [4, 3]
 		});
 
-		// this.logger.log(result);
+		this.logger.log(result);
 
 		if (!result.cancelled) {
 			this.props.uploadPhoto({
@@ -85,8 +85,8 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 				name: 'image.jpg',
 				type: 'image/jpeg'
 			});
-			// this.setState({ image: result.uri });
 		}
+		A;
 	};
 
 	getPhotos() {
