@@ -6,6 +6,7 @@ import { Preference } from '../../store/reducers/account-defination';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updatePreference } from '../../store/reducers/user-profile-reducer';
 import { Action } from 'redux-actions';
+import { MaritalStatusOptions } from './profile-table';
 
 interface IPreferenceTableProps {
 	userProfileId: number;
@@ -17,13 +18,345 @@ interface IPreferenceTableMapDispatchToProps {
 	updatePreference: () => any;
 }
 
+export const PreferenceEducationOptions = [
+	{
+		label: 'Not Set',
+		value: 'not-set'
+	},
+	{
+		label: 'Administrative Services',
+		value: 'admin-service'
+	},
+	{
+		label: 'Advertising / Marketing',
+		value: 'advert-market'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	},
+	{
+		label: 'Architect',
+		value: 'architect'
+	},
+	{
+		label: 'Army / Air Force / Navy',
+		value: 'defense'
+	},
+	{
+		label: 'Arts',
+		value: 'arts'
+	},
+	{
+		label: 'CA / ICWA / CS / CFA',
+		value: 'ca'
+	},
+	{
+		label: 'Commerce',
+		value: 'commerce'
+	},
+	{
+		label: 'Computer / IT',
+		value: 'it'
+	},
+	{
+		label: 'Education',
+		value: 'education'
+	},
+	{
+		label: 'Engineering / Technology',
+		value: 'eng'
+	},
+	{
+		label: 'Fashion',
+		value: 'fashion'
+	},
+	{
+		label: 'Finance',
+		value: 'finance'
+	},
+	{
+		label: 'Fine Arts',
+		value: 'fine-art'
+	},
+	{
+		label: 'Home Science',
+		value: 'home-science'
+	},
+	{
+		label: 'Hospitality / Hotel Management',
+		value: 'hotel-mgmt'
+	},
+	{
+		label: 'Law',
+		value: 'law'
+	},
+	{
+		label: 'Management',
+		value: 'management'
+	},
+	{
+		label: 'Medicine',
+		value: 'medicine'
+	},
+	{
+		label: 'Nursing / Health Science',
+		value: 'health-science'
+	},
+	{
+		label: 'Others',
+		value: 'others'
+	},
+	{
+		label: 'Pharmacology',
+		value: 'pharma'
+	},
+	{
+		label: 'Science',
+		value: 'science'
+	},
+	{
+		label: 'Social Sciences',
+		value: 'social-science'
+	},
+	{
+		label: 'UPSC / MPSC',
+		value: 'upsc'
+	}
+];
+export const PreferenceOccupationOptions = [
+	{
+		label: 'Not Set',
+		value: 'not-set'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	},
+	{
+		label: 'Business',
+		value: 'business'
+	},
+	{
+		label: 'CA / ICWA /CS',
+		value: 'ca'
+	},
+	{
+		label: 'Consultant',
+		value: 'consultant'
+	},
+	{
+		label: 'Dentist',
+		value: 'dentist'
+	},
+	{
+		label: 'Doctor',
+		value: 'doctor'
+	},
+	{
+		label: 'Employee',
+		value: 'employee'
+	},
+	{
+		label: 'Engineer / Architect',
+		value: 'eng'
+	},
+	{
+		label: 'Government Servant',
+		value: 'gov-ser'
+	},
+	{
+		label: 'Job Seeker',
+		value: 'job-seeker'
+	},
+	{
+		label: 'Lawyer',
+		value: 'lawyer'
+	},
+	{
+		label: 'Military Services',
+		value: 'military'
+	},
+	{
+		label: 'Other',
+		value: 'other'
+	},
+	{
+		label: 'Professionals',
+		value: 'professional'
+	},
+	{
+		label: 'Professor / Teacher',
+		value: 'prof-teacher'
+	},
+	{
+		label: 'Research Fellow',
+		value: 'research'
+	},
+	{
+		label: 'Self Employed',
+		value: 'self'
+	},
+	{
+		label: 'Service + Business',
+		value: 'serv-bus'
+	},
+	{
+		label: 'Student',
+		value: 'student'
+	}
+];
+export const PreferenceDietOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Veg',
+		value: 'veg'
+	},
+	{
+		label: 'Non-Veg Frequently',
+		value: 'non-veg-freq'
+	},
+	{
+		label: 'Eggetarian',
+		value: 'eggetarian'
+	},
+	{
+		label: 'Non-Veg Occasionally',
+		value: 'non-veg-occa'
+	},
+	{
+		label: 'Others (Jain, Vegan)',
+		value: 'others'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+export const PreferenceSmokeOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+export const PreferenceDrinkOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+export const PreferenceHotelingOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+export const PreferencePartyingOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+export const PreferenceCookingOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+
 class PreferenceTable extends React.Component<
 	IPreferenceTableProps & IPreferenceTableMapDispatchToProps & IPreferenceTableStateToProps
 > {
 	mappings = {
 		maritalStatus: {
 			label: 'Marital Status',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: MaritalStatusOptions
+			}
 		},
 		caste: {
 			label: 'Caste',
@@ -50,7 +383,10 @@ class PreferenceTable extends React.Component<
 		},
 		education: {
 			label: 'Education',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: PreferenceEducationOptions
+			}
 		},
 		mediumOfEducation: {
 			label: 'Medium of Primary Education',
@@ -126,7 +462,10 @@ class PreferenceTable extends React.Component<
 		},
 		occupation: {
 			label: 'Occupation',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: PreferenceOccupationOptions
+			}
 		},
 		workCountry: {
 			label: 'Work Location Country',
@@ -152,176 +491,42 @@ class PreferenceTable extends React.Component<
 			label: 'Diet',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Veg',
-						value: 'veg'
-					},
-					{
-						label: 'Non-Veg Frequently',
-						value: 'non-veg-freq'
-					},
-					{
-						label: 'Eggetarian',
-						value: 'eggetarian'
-					},
-					{
-						label: 'Non-Veg Occasionally',
-						value: 'non-veg-occa'
-					},
-					{
-						label: 'Others (Jain, Vegan)',
-						value: 'others'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: PreferenceDietOptions
 			}
 		},
 		smoke: {
 			label: 'Smoke',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: PreferenceSmokeOptions
 			}
 		},
 		drink: {
 			label: 'Drink',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: PreferenceDrinkOptions
 			}
 		},
 		hoteling: {
 			label: 'Hoteling',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: PreferenceHotelingOptions
 			}
 		},
 		partying: {
 			label: 'Partying / Pubbing',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: PreferencePartyingOptions
 			}
 		},
 		cooking: {
 			label: 'Cooking',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: PreferenceCookingOptions
 			}
 		},
 		familyFinancialBackground: {

@@ -61,6 +61,7 @@ export const CreatedByOptions = [
 		value: 'other'
 	}
 ];
+
 export const MaritalStatusOptions = [
 	{
 		label: 'Not Set',
@@ -71,8 +72,16 @@ export const MaritalStatusOptions = [
 		value: 'never-married'
 	},
 	{
-		label: 'Divorcee',
-		value: 'divorcee'
+		label: 'Divorced',
+		value: 'divorced'
+	},
+	{
+		label: 'Widow / Widower',
+		value: 'widow-widower'
+	},
+	{
+		label: 'Awaiting Divorce / Legally Separated',
+		value: 'awaiting-div-legal-sep'
 	}
 ];
 export const BloodGroupOptions = [
