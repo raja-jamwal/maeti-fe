@@ -7,7 +7,9 @@ import {
 	View,
 	Picker,
 	Modal,
-	ActivityIndicator
+	ActivityIndicator,
+	DatePickerAndroid,
+	TimePickerAndroid
 } from 'react-native';
 import GlobalStyles from '../styles/global';
 import Text from '../components/text/index';
@@ -15,6 +17,9 @@ import Colors from '../constants/Colors';
 import TagSelector from '../components/tag-selector/tag-selector';
 import { Tag } from '../store/reducers/account-defination';
 import { Throbber } from '../components/throbber/throbber';
+import { getLogger } from '../utils/logger';
+import Color from 'src/constants/Colors.js';
+import { formatDate, formatDateTime } from '../utils';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
@@ -47,6 +52,8 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			title: `Edit ${title}`
 		};
 	};
+
+	logger = getLogger(EditProfileScreen);
 
 	constructor(props: any) {
 		super(props);
@@ -82,6 +89,40 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		}
 	}
 
+	async setDateField(field: string) {
+		try {
+			const { action, year, month, day } = await DatePickerAndroid.open({
+				date: new Date(1993, 0, 1)
+			});
+			if (action !== DatePickerAndroid.dismissedAction) {
+				const date = new Date(year, month, day);
+				// epoch in seconds
+				const ts = Math.floor(date.getTime() / 1000);
+				this.updateFieldValue(field, ts);
+			}
+		} catch (err) {
+			this.logger.log(err);
+		}
+	}
+
+	async setDateTimeField(field: string) {
+		try {
+			const { dateAction, year, month, day } = await DatePickerAndroid.open({
+				date: new Date(1993, 0, 1)
+			});
+			if (dateAction === DatePickerAndroid.dismissedAction) return;
+			const date = new Date(year, month, day);
+			const { timeAction, hour, minute } = await TimePickerAndroid.open({});
+			if (timeAction === TimePickerAndroid.dismissedAction) return;
+			date.setHours(hour, minute, 0);
+			// epoch in seconds
+			const ts = Math.floor(date.getTime() / 1000);
+			this.updateFieldValue(field, ts);
+		} catch (err) {
+			this.logger.log(err);
+		}
+	}
+
 	renderFields() {
 		const { object, mapping } = this.state;
 		const fields = Object.keys(mapping).map(field => {
@@ -98,6 +139,8 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			const isStringField = type === 'string';
 			const isChoiceField = type === 'choice';
 			const isNumberField = type === 'number';
+			const isDateField = type === 'date';
+			const isDateTimeField = type === 'date-time';
 			const isTagArray = type === 'tag-array';
 			const tagType = isTagArray && fieldDefinition.tagType;
 
@@ -167,11 +210,30 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 							</Picker>
 						</View>
 					)}
-					{/*{!isChoiceField && (
-						<View style={styles.textField}>
-							<TextInput style={styles.fieldText} value={stringValue} />
-						</View>
-					)}*/}
+					{isDateField && (
+						<TouchableNativeFeedback onPress={() => this.setDateField(field)}>
+							<View style={styles.labelContainer}>
+								{!renderString && <Text style={styles.label}>No Set</Text>}
+								{!!renderString && (
+									<Text style={styles.label}>
+										{formatDate(parseInt(renderString))}
+									</Text>
+								)}
+							</View>
+						</TouchableNativeFeedback>
+					)}
+					{isDateTimeField && (
+						<TouchableNativeFeedback onPress={() => this.setDateTimeField(field)}>
+							<View style={styles.labelContainer}>
+								{!renderString && <Text style={styles.label}>No Set</Text>}
+								{!!renderString && (
+									<Text style={styles.label}>
+										{formatDateTime(parseInt(renderString))}
+									</Text>
+								)}
+							</View>
+						</TouchableNativeFeedback>
+					)}
 					{isChoiceField && (
 						<View style={styles.choiceField}>
 							<Picker
@@ -283,5 +345,18 @@ const styles = StyleSheet.create({
 		margin: 4,
 		borderRadius: 4,
 		fontSize: 18
+	},
+	labelContainer: {
+		borderColor: Color.borderColor,
+		borderStyle: 'solid',
+		borderWidth: 1,
+		paddingLeft: 8,
+		paddingRight: 8,
+		paddingTop: 12,
+		paddingBottom: 12,
+		borderRadius: 4
+	},
+	label: {
+		fontSize: 16
 	}
 });

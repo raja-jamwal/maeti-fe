@@ -37,7 +37,7 @@ class HoroscopeTable extends React.Component<
 		},
 		birthTime: {
 			label: 'Birth Time',
-			type: 'time'
+			type: 'date-time'
 		},
 		rashi: {
 			label: 'Rashi',
