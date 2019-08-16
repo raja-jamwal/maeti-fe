@@ -14,7 +14,7 @@ import { calculateAge, humanizeCurrency } from '../../utils/index';
 import Divider from '../divider/index';
 import { isEmpty, head } from 'lodash';
 import { PhotosEntity, UserProfile } from '../../store/reducers/account-defination';
-import { Icon } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import Layout from 'src/constants/Layout.js';
@@ -69,7 +69,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 					<View style={styles.likeContainer}>
 						{!isSelfProfile && (
 							<TouchableNativeFeedback onPress={() => null}>
-								<Icon.Ionicons
+								<Ionicons
 									name={heartIcon}
 									size={30}
 									color={Colors.primaryDarkColor}
@@ -78,7 +78,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						)}
 						{isSelfProfile && (
 							<TouchableNativeFeedback onPress={this.openProfileImageGallery}>
-								<Icon.Ionicons
+								<Ionicons
 									name="md-create"
 									size={30}
 									color={Colors.primaryDarkColor}
@@ -95,7 +95,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 					)}
 
 					<View style={[styles.premiumProfile, this.premiumProfileWidth()]}>
-						<Icon.Ionicons name="md-star-outline" size={20} color="white" />
+						<Ionicons name="md-star-outline" size={20} color="white" />
 						<Text style={styles.premiumProfileText}>Premium Profile</Text>
 					</View>
 				</View>

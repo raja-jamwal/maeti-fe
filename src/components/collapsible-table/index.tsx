@@ -4,7 +4,7 @@ import { View, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import Text from '../text/index';
 import GlobalStyles from '../../styles/global';
 import Table from '../table/index';
-import { Icon } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { withNavigation } from 'react-navigation';
 
@@ -73,14 +73,14 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 								{title}
 							</Text>
 							<TouchableNativeFeedback onPress={this.editTable}>
-								<Icon.Ionicons
+								<Ionicons
 									name="md-create"
 									size={20}
 									style={styles.headerIcon}
 									color={Colors.primaryDarkColor}
 								/>
 							</TouchableNativeFeedback>
-							<Icon.Ionicons
+							<Ionicons
 								style={styles.headerIcon}
 								color={Colors.primaryDarkColor}
 								name={caretIconName}

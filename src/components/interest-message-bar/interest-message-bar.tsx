@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableNativeFeedback, StyleSheet } from 'react-native';
 import Colors from '../../constants/Colors';
-import { Icon } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import { IRootState } from '../../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -294,7 +294,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 					<TouchableNativeFeedback onPress={() => this.showInterest()}>
 						<View style={styles.column}>
 							<View style={styles.btnContainer}>
-								<Icon.Ionicons name="md-flash" size={20} color="white" />
+								<Ionicons name="md-flash" size={20} color="white" />
 								<Text style={styles.text}>Show Interest</Text>
 							</View>
 						</View>
@@ -326,7 +326,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 					<TouchableNativeFeedback onPress={() => this.startMessaging()}>
 						<View style={styles.column}>
 							<View style={styles.btnContainer}>
-								<Icon.Ionicons name="md-chatboxes" size={20} color="white" />
+								<Ionicons name="md-chatboxes" size={20} color="white" />
 								<Text style={styles.text}>Message</Text>
 							</View>
 						</View>

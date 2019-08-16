@@ -115,3 +115,9 @@ AIzaSyD8Ef7mfMg9kynLcNLR-LWM2KKdVYCOTLY
 ```
 expo push:android:upload --api-key <your-token-here>
 ```
+
+## Expo upgrade
+
+- use node 12 - `sudo n 12.0.0.1 `
+- use latest expo-cli `sudo npm -g npm` and `sudo npm -g expo-cli`
+- reinstall modules `yarn install`

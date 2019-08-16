@@ -5,8 +5,9 @@ import { UserProfile } from '../store/reducers/account-defination';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { getLogger } from '../utils/logger';
-import { Icon } from 'expo';
-import { ImagePicker, Permissions, Constants } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
+import { ImagePicker, Constants } from 'expo';
+import * as Permissions from 'expo-permissions';
 import { simpleAlert } from '../components/alert';
 import ActionSheet from 'react-native-actionsheet';
 import { Throbber } from '../components/throbber/throbber';
@@ -131,7 +132,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 				<View style={styles.addBtnContainer}>
 					<TouchableNativeFeedback onPress={this._pickImage}>
 						<View style={styles.addIconContainer}>
-							<Icon.Ionicons name="md-add" size={30} color="white" />
+							<Ionicons name="md-add" size={30} color="white" />
 						</View>
 					</TouchableNativeFeedback>
 				</View>

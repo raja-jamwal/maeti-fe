@@ -10,7 +10,7 @@ import {
 import Colors from '../constants/Colors';
 import GlobalStyles from '../styles/global';
 import ConnectedProfile from '../components/profile-card/connected-profile';
-import { Icon } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import TabbedFilters from '../components/tabbed-filters/index';
 import { connect } from 'react-redux';
 import { Throbber } from '../components/throbber/throbber';
@@ -63,7 +63,7 @@ const ExploreScreenHeader = (props: any) => {
 				/>
 			</TouchableNativeFeedback>*/}
 			<TouchableNativeFeedback onPress={() => openFilterScreen()}>
-				<Icon.Ionicons
+				<Ionicons
 					style={styles.navBarIcon}
 					color={Colors.white}
 					name="md-funnel"
