@@ -17,6 +17,138 @@ interface IProfessionTableMapDispatchToProps {
 	updateProfession: () => any;
 }
 
+export const ProfessionTableOccupationOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Business',
+		value: 'business'
+	},
+	{
+		label: 'CA/ICWA/CS',
+		value: 'ca'
+	},
+	{
+		label: 'Consultant',
+		value: 'consultant'
+	},
+	{
+		label: 'Dentist',
+		value: 'dentist'
+	},
+	{
+		label: 'Doctor',
+		value: 'doctor'
+	},
+	{
+		label: 'Employee',
+		value: 'employee'
+	},
+	{
+		label: 'Engineer/Architect',
+		value: 'engineer'
+	},
+	{
+		label: 'Gov. Servant',
+		value: 'gov'
+	},
+	{
+		label: 'Jobseeker',
+		value: 'job_seeker'
+	},
+	{
+		label: 'Lawyer',
+		value: 'lawyer'
+	},
+	{
+		label: 'Military Services',
+		value: 'military'
+	},
+	{
+		label: 'Other',
+		value: 'other'
+	},
+	{
+		label: 'Professionals',
+		value: 'professionals'
+	},
+	{
+		label: 'Professor/Teacher',
+		value: 'professor'
+	},
+	{
+		label: 'Research fellow',
+		value: 'research'
+	},
+	{
+		label: 'Self Employed',
+		value: 'self'
+	},
+	{
+		label: 'Service+Business',
+		value: 'service+business'
+	},
+	{
+		label: 'Student',
+		value: 'student'
+	}
+];
+export const ProfessionTableWorkingFieldOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Research',
+		value: 'research'
+	},
+	{
+		label: 'Merchant navy',
+		value: 'merchant_navy'
+	},
+	{
+		label: 'Private Sector',
+		value: 'private_sector'
+	},
+	{
+		label: 'MNC',
+		value: 'mnc'
+	},
+	{
+		label: 'Govt./Publish',
+		value: 'govt'
+	},
+	{
+		label: 'Business/Self Employeed',
+		value: 'business'
+	},
+	{
+		label: 'Military / Defense',
+		value: 'military'
+	},
+	{
+		label: 'Professional',
+		value: 'professional'
+	},
+	{
+		label: 'Student',
+		value: 'student'
+	},
+	{
+		label: 'Jobseeker',
+		value: 'jobseeker'
+	},
+	{
+		label: 'Other',
+		value: 'other'
+	},
+	{
+		label: 'Scientist',
+		value: 'scientist'
+	}
+];
 class ProfessionTable extends React.Component<
 	IProfessionTableProps & IProfessionTableMapDispatchToProps & IProfessionTableMapStateToProps
 > {
@@ -25,144 +157,14 @@ class ProfessionTable extends React.Component<
 			label: 'Occupation',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Business',
-						value: 'business'
-					},
-					{
-						label: 'CA/ICWA/CS',
-						value: 'ca'
-					},
-					{
-						label: 'Consultant',
-						value: 'consultant'
-					},
-					{
-						label: 'Dentist',
-						value: 'dentist'
-					},
-					{
-						label: 'Doctor',
-						value: 'doctor'
-					},
-					{
-						label: 'Employee',
-						value: 'employee'
-					},
-					{
-						label: 'Engineer/Architect',
-						value: 'engineer'
-					},
-					{
-						label: 'Gov. Servant',
-						value: 'gov'
-					},
-					{
-						label: 'Jobseeker',
-						value: 'job_seeker'
-					},
-					{
-						label: 'Lawyer',
-						value: 'lawyer'
-					},
-					{
-						label: 'Military Services',
-						value: 'military'
-					},
-					{
-						label: 'Other',
-						value: 'other'
-					},
-					{
-						label: 'Professionals',
-						value: 'professionals'
-					},
-					{
-						label: 'Professor/Teacher',
-						value: 'professor'
-					},
-					{
-						label: 'Research fellow',
-						value: 'research'
-					},
-					{
-						label: 'Self Employed',
-						value: 'self'
-					},
-					{
-						label: 'Service+Business',
-						value: 'service+business'
-					},
-					{
-						label: 'Student',
-						value: 'student'
-					}
-				]
+				options: ProfessionTableOccupationOptions
 			}
 		},
 		workingField: {
 			label: 'Working Field',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Research',
-						value: 'research'
-					},
-					{
-						label: 'Merchant navy',
-						value: 'merchant_navy'
-					},
-					{
-						label: 'Private Sector',
-						value: 'private_sector'
-					},
-					{
-						label: 'MNC',
-						value: 'mnc'
-					},
-					{
-						label: 'Govt./Publish',
-						value: 'govt'
-					},
-					{
-						label: 'Business/Self Employeed',
-						value: 'business'
-					},
-					{
-						label: 'Military / Defense',
-						value: 'military'
-					},
-					{
-						label: 'Professional',
-						value: 'professional'
-					},
-					{
-						label: 'Student',
-						value: 'student'
-					},
-					{
-						label: 'Jobseeker',
-						value: 'jobseeker'
-					},
-					{
-						label: 'Other',
-						value: 'other'
-					},
-					{
-						label: 'Scientist',
-						value: 'scientist'
-					}
-				]
+				options: ProfessionTableWorkingFieldOptions
 			}
 		},
 		lengthOfEmployment: {

@@ -131,7 +131,7 @@ export const BloodGroupOptions = [
 	}
 ];
 
-export const MotherTongueOptions = [
+export const ProfileTableMotherTongueOptions = [
 	{
 		label: 'Not Set',
 		value: 'not-set'
@@ -259,6 +259,20 @@ export const BodyComplexionOptions = [
 		value: 'dark'
 	}
 ];
+export const ProfileTableLensesOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	}
+];
 
 export const SalutationOptions = [
 	{
@@ -286,7 +300,7 @@ export const SalutationOptions = [
 		value: 'mrs'
 	}
 ];
-export const HeightOptions = [
+export const ProfileTableHeightOptions = [
 	{
 		label: 'Not Set',
 		value: 'not-set'
@@ -444,7 +458,7 @@ export const HeightOptions = [
 		value: '>=7'
 	}
 ];
-export const BodyTypeOptions = [
+export const ProfileTableBodyTypeOptions = [
 	{
 		label: 'Not Set',
 		value: 'not-set'
@@ -515,7 +529,7 @@ class ProfileTable extends React.Component<
 			label: 'Height(in Feet)',
 			type: 'choice',
 			choice: {
-				options: HeightOptions
+				options: ProfileTableHeightOptions
 			}
 		},
 		weight: {
@@ -526,7 +540,7 @@ class ProfileTable extends React.Component<
 			label: 'Body Type',
 			type: 'choice',
 			choice: {
-				options: BodyTypeOptions
+				options: ProfileTableBodyTypeOptions
 			}
 		},
 		bodyComplexion: {
@@ -534,6 +548,13 @@ class ProfileTable extends React.Component<
 			type: 'choice',
 			choice: {
 				options: BodyComplexionOptions
+			}
+		},
+		lenses: {
+			label: 'Spect / Lenses',
+			type: 'choice',
+			choice: {
+				options: ProfileTableLensesOptions
 			}
 		},
 		bloodGroup: {
@@ -547,7 +568,7 @@ class ProfileTable extends React.Component<
 			label: 'Mother Tongue',
 			type: 'choice',
 			choice: {
-				options: MotherTongueOptions
+				options: ProfileTableMotherTongueOptions
 			}
 		},
 		specialCases: {

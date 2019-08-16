@@ -19,6 +19,117 @@ interface IEducationTableMapDispatchToProps {
 	updateEducation: () => any;
 }
 
+export const EducationTableMediumOfPrimaryEducationOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'English',
+		value: 'english'
+	},
+	{
+		label: 'Gujrati',
+		value: 'gujrati'
+	},
+	{
+		label: 'Hindi',
+		value: 'hindi'
+	},
+	{
+		label: 'Kannada',
+		value: 'kannada'
+	},
+	{
+		label: 'Marathi',
+		value: 'marathi'
+	},
+	{
+		label: 'Marathi+English',
+		value: 'marathi+english'
+	},
+	{
+		label: 'Other',
+		value: 'other'
+	}
+];
+export const EducationTableEducationFieldOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'UPSC / MPSC',
+		value: 'upsc'
+	},
+	{
+		label: 'Architect',
+		value: 'architect'
+	},
+	{
+		label: 'Computer / IT',
+		value: 'it'
+	},
+	{
+		label: 'Engineering / Technology',
+		value: 'engineering'
+	},
+	{
+		label: 'Finance',
+		value: 'finance'
+	},
+	{
+		label: 'Management',
+		value: 'management'
+	},
+	{
+		label: 'Commerce',
+		value: 'commerce'
+	},
+	{
+		label: 'Arts',
+		value: 'arts'
+	},
+	{
+		label: 'Army / Air Force / Navy',
+		value: 'army'
+	},
+	{
+		label: 'Education',
+		value: 'education'
+	}
+];
+export const EducationTableHighestEducationLevel = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Post Graduate',
+		value: 'post_graduate'
+	},
+	{
+		label: 'International Degree',
+		value: 'international_degree'
+	},
+	{
+		label: 'Graduate',
+		value: 'graduate'
+	},
+	{
+		label: 'Phd',
+		value: 'phd'
+	},
+	{
+		label: 'Diploma',
+		value: 'diploma'
+	},
+	{
+		label: 'Undergraduate',
+		value: 'undergraduate'
+	}
+];
+
 class EducationTable extends React.Component<
 	IEducationTableProps & IEducationTableMapDispatchToProps & IEducationTableMapStateToProps
 > {
@@ -27,128 +138,21 @@ class EducationTable extends React.Component<
 			label: 'Medium of Primary Education',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'English',
-						value: 'english'
-					},
-					{
-						label: 'Gujrati',
-						value: 'gujrati'
-					},
-					{
-						label: 'Hindi',
-						value: 'hindi'
-					},
-					{
-						label: 'Kannada',
-						value: 'kannada'
-					},
-					{
-						label: 'Marathi',
-						value: 'marathi'
-					},
-					{
-						label: 'Marathi+English',
-						value: 'marathi+english'
-					},
-					{
-						label: 'Other',
-						value: 'other'
-					}
-				]
+				options: EducationTableMediumOfPrimaryEducationOptions
 			}
 		},
 		highestEducationLevel: {
 			label: 'Highest Education Level',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Post Graduate',
-						value: 'post_graduate'
-					},
-					{
-						label: 'International Degree',
-						value: 'international_degree'
-					},
-					{
-						label: 'Graduate',
-						value: 'graduate'
-					},
-					{
-						label: 'Phd',
-						value: 'phd'
-					},
-					{
-						label: 'Diploma',
-						value: 'diploma'
-					},
-					{
-						label: 'Undergraduate',
-						value: 'undergraduate'
-					}
-				]
+				options: EducationTableHighestEducationLevel
 			}
 		},
 		educationField: {
 			label: 'Education Field',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'UPSC / MPSC',
-						value: 'upsc'
-					},
-					{
-						label: 'Architect',
-						value: 'architect'
-					},
-					{
-						label: 'Computer / IT',
-						value: 'it'
-					},
-					{
-						label: 'Engineering / Technology',
-						value: 'engineering'
-					},
-					{
-						label: 'Finance',
-						value: 'finance'
-					},
-					{
-						label: 'Management',
-						value: 'management'
-					},
-					{
-						label: 'Commerce',
-						value: 'commerce'
-					},
-					{
-						label: 'Arts',
-						value: 'arts'
-					},
-					{
-						label: 'Army / Air Force / Navy',
-						value: 'army'
-					},
-					{
-						label: 'Education',
-						value: 'education'
-					}
-				]
+				options: EducationTableEducationFieldOptions
 			}
 		},
 		education: {

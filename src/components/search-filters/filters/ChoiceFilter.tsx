@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import Color from '../../../constants/Colors';
 import CheckBox from 'react-native-check-box';
@@ -24,22 +24,27 @@ class ChoiceFilter extends React.PureComponent<IChoiceFilterProps> {
 		if (!choices) return null;
 		return (
 			<View>
-				{choices.map((choice: any) => {
-					const isChecked = choicesValue && choicesValue[choice.value];
-					return (
-						<View key={choice.label}>
-							<CheckBox
-								style={{ flex: 1, padding: 10 }}
-								onClick={() => {
-									this.toggleOption(choice.value);
-								}}
-								checkBoxColor={Color.primaryDarkColor}
-								isChecked={isChecked}
-								rightText={choice.label}
-							/>
-						</View>
-					);
-				})}
+				<FlatList
+					keyExtractor={(choice: any) => choice.value}
+					data={choices}
+					renderItem={({ item }) => {
+						const choice = item;
+						const isChecked = choicesValue && choicesValue[choice.value];
+						return (
+							<View key={choice.label}>
+								<CheckBox
+									style={{ flex: 1, padding: 10 }}
+									onClick={() => {
+										this.toggleOption(choice.value);
+									}}
+									checkBoxColor={Color.primaryDarkColor}
+									isChecked={isChecked}
+									rightText={choice.label}
+								/>
+							</View>
+						);
+					}}
+				/>
 			</View>
 		);
 	}

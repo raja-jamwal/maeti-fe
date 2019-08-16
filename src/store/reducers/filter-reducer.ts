@@ -1,7 +1,11 @@
 import { createAction, handleActions } from 'redux-actions';
 import { IRootState } from '../index';
 import { createSelector } from 'reselect';
-import { changeSelectedExploreScreen } from './explore-reducer';
+import {
+	changeSelectedExploreScreen,
+	clearSearchResultForScreen,
+	fetchSearchResult
+} from './explore-reducer';
 import { Dispatch } from 'redux';
 
 export interface IFilterState {
@@ -30,7 +34,9 @@ export const setSearchFilter = createAction<any>(ACTIONS.SET_SEARCH_FILTER);
 export const applyFilter = function(filter: any) {
 	return (dispatch: Dispatch<any>) => {
 		dispatch(setSearchFilter(filter));
+		dispatch(clearSearchResultForScreen('search'));
 		dispatch(changeSelectedExploreScreen('search'));
+		dispatch(fetchSearchResult());
 	};
 };
 

@@ -17,6 +17,126 @@ interface ILifestyleTableMapDispatchToProps {
 	updateLifestyle: () => any;
 }
 
+export const LifestyleTableDietOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Veg',
+		value: 'veg'
+	},
+	{
+		label: 'Non-Veg Frequently',
+		value: 'non-veg-freq'
+	},
+	{
+		label: 'Eggetarian',
+		value: 'eggetarian'
+	},
+	{
+		label: 'Non-Veg Occasionally',
+		value: 'non-veg-occa'
+	},
+	{
+		label: 'Others (Jain, Vegan)',
+		value: 'others'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+export const LifestyleTableSmokingOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+
+export const LifestyleTableDrinkOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+export const LifestyleTableHotelingOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+export const LifestyleTablePartyingOptions = [
+	{
+		label: 'Not Set',
+		value: null
+	},
+	{
+		label: 'Yes',
+		value: 'yes'
+	},
+	{
+		label: 'No',
+		value: 'no'
+	},
+	{
+		label: 'Occasionally',
+		value: 'occasionally'
+	},
+	{
+		label: 'Any',
+		value: 'any'
+	}
+];
+
 class LifestyleTable extends React.Component<
 	ILifestyleTableProps & ILifestyleTableMapDispatchToProps & ILifestyleTableMapStateToProps
 > {
@@ -25,148 +145,35 @@ class LifestyleTable extends React.Component<
 			label: 'Diet',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Veg',
-						value: 'veg'
-					},
-					{
-						label: 'Non-Veg Frequently',
-						value: 'non-veg-freq'
-					},
-					{
-						label: 'Eggetarian',
-						value: 'eggetarian'
-					},
-					{
-						label: 'Non-Veg Occasionally',
-						value: 'non-veg-occa'
-					},
-					{
-						label: 'Others (Jain, Vegan)',
-						value: 'others'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: LifestyleTableDietOptions
 			}
 		},
 		smoking: {
 			label: 'Smoking',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: LifestyleTableSmokingOptions
 			}
 		},
 		drinking: {
 			label: 'Drinking',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: LifestyleTableDrinkOptions
 			}
 		},
 		hoteling: {
 			label: 'Hoteling',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: LifestyleTableHotelingOptions
 			}
 		},
 		partying: {
 			label: 'Partying',
 			type: 'choice',
 			choice: {
-				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					},
-					{
-						label: 'Occasionally',
-						value: 'occasionally'
-					},
-					{
-						label: 'Any',
-						value: 'any'
-					}
-				]
+				options: LifestyleTablePartyingOptions
 			}
 		},
 		socialNetworking: {

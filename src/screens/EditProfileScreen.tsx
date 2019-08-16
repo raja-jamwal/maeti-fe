@@ -7,7 +7,6 @@ import {
 	View,
 	Picker,
 	Modal,
-	ActivityIndicator,
 	DatePickerAndroid,
 	TimePickerAndroid
 } from 'react-native';
@@ -268,29 +267,6 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 							</Picker>
 						</View>
 					)}
-					{/*{isCountryField && (*/}
-					{/*<View style={styles.labelContainer}>*/}
-					{/*{!renderString && <Text style={styles.label}>No Set</Text>}*/}
-					{/*{!!renderString && (*/}
-					{/*<CountryPicker*/}
-					{/*closeable={true}*/}
-					{/*filterable={true}*/}
-					{/*showCallingCode={false}*/}
-					{/*cca2={renderString}*/}
-					{/*onChange={value => {*/}
-					{/*if (value && value.callingCode) {*/}
-					{/*this.updateFieldValue(*/}
-					{/*field,*/}
-					{/*parseInt(value.callingCode)*/}
-					{/*);*/}
-					{/*}*/}
-					{/*}}*/}
-					{/*>*/}
-					{/*<View>Country name</View>*/}
-					{/*</CountryPicker>*/}
-					{/*)}*/}
-					{/*</View>*/}
-					{/*)}*/}
 					{isCountryField && (
 						<CountryPicker
 							closeable={true}

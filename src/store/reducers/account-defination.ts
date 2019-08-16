@@ -57,6 +57,7 @@ export interface UserProfile extends DAO {
 	weight: number;
 	bodyType: string;
 	bodyComplexion: string;
+	lenses: string;
 	bloodGroup: string;
 	motherTongue: string;
 	isFavourite: boolean;

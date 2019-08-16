@@ -60,10 +60,14 @@ const defaultExploreState: IExploreState = {
 enum ACTIONS {
 	CHANGE_SELECTED_SCREEN = 'CHANGE_SELECTED_SCREEN',
 	SET_FETCHING_FOR_SCREEN = 'SET_FETCHING_FOR_SCREEN',
-	SET_SEARCH_RESULT_FOR_SCREEN = 'SET_SEARCH_RESULT_FOR_SCREEN'
+	SET_SEARCH_RESULT_FOR_SCREEN = 'SET_SEARCH_RESULT_FOR_SCREEN',
+	CLEAR_SEARCH_RESULT_FOR_SCREEN = 'CLEAR_SEARCH_RESULT_FOR_SCREEN'
 }
 
 export const changeSelectedExploreScreen = createAction<string>(ACTIONS.CHANGE_SELECTED_SCREEN);
+export const clearSearchResultForScreen = createAction<string>(
+	ACTIONS.CLEAR_SEARCH_RESULT_FOR_SCREEN
+);
 
 interface ISetFetchingForScreenPayload {
 	fetching: boolean;
@@ -183,6 +187,13 @@ export const exploreReducer = handleActions(
 			return {
 				...state,
 				selected_screen
+			};
+		},
+		[ACTIONS.CLEAR_SEARCH_RESULT_FOR_SCREEN]: (state, { payload }) => {
+			const screen = (payload as any) as string;
+			return {
+				...state,
+				[screen]: defaultScreenData
 			};
 		},
 		[ACTIONS.SET_FETCHING_FOR_SCREEN]: (state, { payload }) => {

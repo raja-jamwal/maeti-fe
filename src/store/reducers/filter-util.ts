@@ -1,10 +1,13 @@
 import { TypesOfFilter } from '../../components/search-filters';
+import { isEmpty } from 'lodash';
 
-// memoize this function
+// probably memoize this function
 export const buildSearchFilter = filters => {
-	// for each filter in filters
-	// call the TypeOfFilter in types
-	// build the TLD query
+	/*
+		For each filter in filters (selected from FilterScreen)
+		find the definition from TypeOfFilter &
+		build the ES Bool DSL query
+	 */
 	const mustFilters: any = [];
 
 	Object.keys(filters).forEach(filter => {
@@ -13,6 +16,11 @@ export const buildSearchFilter = filters => {
 		const getFilter = filterDefinition.getSearchFilter;
 		if (!getFilter) return;
 		const userSelections = filters[filter];
+		/*
+			If there are no user selections for this filter
+			we don't want to add it to query
+		 */
+		if (isEmpty(userSelections)) return;
 		const searchFilter = getFilter(userSelections);
 		mustFilters.push(searchFilter);
 	});

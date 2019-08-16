@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 
 interface IMapStateToProps {
 	filters: any;
+	store: IRootState;
 }
 
 interface IMapDispatchToProps {
@@ -105,11 +106,13 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 
 	render() {
 		const { selectedFilter } = this.state;
+		const { store } = this.props;
 		if (!selectedFilter) return null;
 		const { width, height } = Dimensions.get('window');
 		const filter = TypesOfFilter[selectedFilter];
 		const FilterComponent = filter.component;
-		const choices = filter.choices;
+		const choices =
+			typeof filter.choices === 'function' ? filter.choices(store) : filter.choices;
 		return (
 			<View style={GlobalStyles.expand}>
 				<View style={[GlobalStyles.row, { height: height - 200 }]}>
@@ -218,7 +221,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: IRootState) => {
 	const filters = getSearchFilter(state);
 	return {
-		filters
+		filters,
+		store: state
 	};
 };
 

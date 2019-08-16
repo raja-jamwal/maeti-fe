@@ -5,8 +5,31 @@ import {
 	BloodGroupOptions,
 	BodyComplexionOptions,
 	CreatedByOptions,
-	MaritalStatusOptions
+	MaritalStatusOptions,
+	ProfileTableBodyTypeOptions,
+	ProfileTableHeightOptions,
+	ProfileTableLensesOptions,
+	ProfileTableMotherTongueOptions
 } from '../collapsible-table/profile-table';
+import { getAllCountries } from 'react-native-country-picker-modal';
+import { IRootState } from '../../store';
+import { Tag } from '../../store/reducers/account-defination';
+import {
+	EducationTableEducationFieldOptions,
+	EducationTableHighestEducationLevel,
+	EducationTableMediumOfPrimaryEducationOptions
+} from '../collapsible-table/education-table';
+import {
+	LifestyleTableDietOptions,
+	LifestyleTableDrinkOptions,
+	LifestyleTableHotelingOptions,
+	LifestyleTablePartyingOptions,
+	LifestyleTableSmokingOptions
+} from '../collapsible-table/lifestyle-table';
+import {
+	ProfessionTableOccupationOptions,
+	ProfessionTableWorkingFieldOptions
+} from '../collapsible-table/profession-table';
 
 interface FilterProps {
 	options: any;
@@ -32,6 +55,9 @@ interface ITypesOfFilter {
 }
 
 export const TypesOfFilter: ITypesOfFilter = {
+	/*
+		UserProfile options
+	 */
 	martialStatus: {
 		label: 'Marital Status',
 		choices: MaritalStatusOptions,
@@ -46,7 +72,7 @@ export const TypesOfFilter: ITypesOfFilter = {
 						.map(maritalKey => {
 							return {
 								term: {
-									maritalStatus: maritalKey
+									'maritalStatus.keyword': maritalKey
 								}
 							};
 						})
@@ -64,87 +90,471 @@ export const TypesOfFilter: ITypesOfFilter = {
 			// then?
 			const queryBase = {
 				terms: {
-					createdBy: Object.keys(userSelections).filter(u => !!userSelections[u])
+					'createdBy.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
 				}
 			};
 			return queryBase;
 		}
 	},
+	// TODO: Range type filter
 	age: {
 		label: 'Age',
 		component: Filter
 	},
 	height: {
 		label: 'Height',
-		component: Filter
+		choices: ProfileTableHeightOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'height.keyword': Object.keys(userSelections).filter(u => !!userSelections[u])
+				}
+			};
+		}
 	},
+	bloodGroup: {
+		label: 'Blood Group',
+		choices: BloodGroupOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'bloodGroup.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+	lenses: {
+		label: 'Spect / Lenses',
+		choices: ProfileTableLensesOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lenses.keyword': Object.keys(userSelections).filter(u => !!userSelections[u])
+				}
+			};
+		}
+	},
+	bodyComplexion: {
+		label: 'Complexion',
+		choices: BodyComplexionOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'bodyComplexion.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+	describeMyself: {
+		label: 'Personal Values',
+		choices: (store: IRootState) => {
+			const descriptionTags = store.tags['description'] || [];
+			return descriptionTags.map((description: Tag) => {
+				return {
+					label: description.value,
+					value: description.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'describeMyself.value.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+	bodyType: {
+		label: 'Body type',
+		choices: ProfileTableBodyTypeOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'bodyType.keyword': Object.keys(userSelections).filter(u => !!userSelections[u])
+				}
+			};
+		}
+	},
+	motherTongue: {
+		label: 'Mother Tongue',
+		choices: ProfileTableMotherTongueOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'motherTongue.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+
+	/*
+		Horoscope options
+	 */
 	caste: {
 		label: 'Caste',
-		component: Filter
+		choices: (store: IRootState) => {
+			const casteTags = store.tags['caste'] || [];
+			return casteTags.map((casteTag: Tag) => {
+				return {
+					label: casteTag.value,
+					value: casteTag.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'horoscope.caste.value.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
-	'sub-caste': {
-		label: 'Sub-Caste',
-		component: Filter
+	subCaste: {
+		label: 'Sub Caste',
+		choices: (store: IRootState) => {
+			const subCasteTags = store.tags['sub_caste'] || [];
+			return subCasteTags.map((subCasteTag: Tag) => {
+				return {
+					label: subCasteTag.value,
+					value: subCasteTag.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'horoscope.subCaste.value.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
-	country: {
-		label: 'Country',
-		component: Filter
-	},
-	state: {
-		label: 'State',
-		component: Filter
-	},
-	city: {
-		label: 'City',
-		component: Filter
-	},
+
+	/*
+		Profession options
+	 */
+
 	occupation: {
 		label: 'Occupation',
-		component: Filter
+		choices: ProfessionTableOccupationOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'profession.occupation.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
+	workingField: {
+		label: 'Working Field',
+		choices: ProfessionTableWorkingFieldOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'profession.workingField.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+	workCountry: {
+		label: 'Work country',
+		choices: getAllCountries().map(country => {
+			return {
+				label: country.name.common,
+				value: country.callingCode
+			};
+		}),
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'profession.workCountry.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+
+	/*
+		String fields how do we want to provide options
+		aggs from es?
+	 */
+
+	// range type filter
 	income: {
 		label: 'Income',
 		component: Filter
 	},
+
+	/*
+		Education options
+	 */
 	education: {
-		label: 'Education',
-		component: Filter
+		label: 'Education Level',
+		choices: EducationTableHighestEducationLevel,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'education.highestEducationLevel.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
-	'education-field': {
+	educationField: {
 		label: 'Education Field',
-		component: Filter
+		choices: EducationTableEducationFieldOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'education.educationField.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
-	'education-medium': {
+	educationMedium: {
 		label: 'Education Medium',
-		component: Filter
+		choices: EducationTableMediumOfPrimaryEducationOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'education.mediumOfPrimaryEducation.keyword': Object.keys(
+						userSelections
+					).filter(u => !!userSelections[u])
+				}
+			};
+		}
 	},
-	'personal-values': {
-		label: 'Personal Values',
-		component: Filter
+
+	/*
+		Personal investment options
+	 */
+	investments: {
+		label: 'Investments',
+		choices: (store: IRootState) => {
+			const investmentsTags = store.tags['investment'] || [];
+			return investmentsTags.map((investment: Tag) => {
+				return {
+					label: investment.value,
+					value: investment.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'investments.investments.value.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
+
+	/*
+		Lifestyle options
+	 */
+
 	diet: {
 		label: 'Diet',
-		component: Filter
+		choices: LifestyleTableDietOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.diet.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
 	smoke: {
 		label: 'Smoke',
-		component: Filter
+		choices: LifestyleTableSmokingOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.smoking.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
-	'blood-group': {
-		label: 'Blood Group',
-		choices: BloodGroupOptions,
-		component: ChoiceFilter
+	drink: {
+		label: 'Drink',
+		choices: LifestyleTableDrinkOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.drinking.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
-	lenses: {
-		label: 'Spect/Lenses',
-		component: Filter
+	hoteling: {
+		label: 'Hoteling',
+		choices: LifestyleTableHotelingOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.hoteling.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
-	complexion: {
-		label: 'Complexion',
-		choices: BodyComplexionOptions,
-		component: ChoiceFilter
+	partying: {
+		label: 'Partying',
+		choices: LifestyleTablePartyingOptions,
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.partying.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
 	},
-	mangal: {
+	socialNetworking: {
+		label: 'Social Networking',
+		choices: (store: IRootState) => {
+			const socialTags = store.tags['social'] || [];
+			return socialTags.map((social: Tag) => {
+				return {
+					label: social.value,
+					value: social.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.socialNetworking.value.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+	priorities: {
+		label: 'Priorities',
+		choices: (store: IRootState) => {
+			const priorityTags = store.tags['priority'] || [];
+			return priorityTags.map((priority: Tag) => {
+				return {
+					label: priority.value,
+					value: priority.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.priorities.value.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+	hobbies: {
+		label: 'Hobbies',
+		choices: (store: IRootState) => {
+			const hobbyTags = store.tags['hobby'] || [];
+			return hobbyTags.map((hobby: Tag) => {
+				return {
+					label: hobby.value,
+					value: hobby.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.hobbies.value.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	},
+	sports: {
+		label: 'Sports and Fitness',
+		choices: (store: IRootState) => {
+			const sportsTags = store.tags['sports'] || [];
+			return sportsTags.map((sport: Tag) => {
+				return {
+					label: sport.value,
+					value: sport.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			return {
+				terms: {
+					'lifestyle.sports.value.keyword': Object.keys(userSelections).filter(
+						u => !!userSelections[u]
+					)
+				}
+			};
+		}
+	}
+
+	/*
+		Need to acertain which way we want to implement them
+		or do we even want to?
+	 */
+	/*mangal: {
 		label: 'Mangal',
 		component: Filter
 	},
@@ -155,9 +565,11 @@ export const TypesOfFilter: ITypesOfFilter = {
 	nadi: {
 		label: 'Nadi',
 		component: Filter
-	},
-	'sort-by': {
+	},*/
+
+	// TODO: revisit this later
+	/*'sort-by': {
 		label: 'Sort By',
 		component: Filter
-	}
+	}*/
 };
