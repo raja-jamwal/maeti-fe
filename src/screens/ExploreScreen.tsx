@@ -14,15 +14,19 @@ import { Icon } from 'expo';
 import TabbedFilters from '../components/tabbed-filters/index';
 import { connect } from 'react-redux';
 import { Throbber } from '../components/throbber/throbber';
-import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { NavigationInjectedProps } from 'react-navigation';
 import { IUserProfileState } from '../store/reducers/user-profile-reducer';
 import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { mayBeFetchSearchResult } from '../store/reducers/explore-reducer';
-import { toArray, sortBy } from 'lodash';
+import { toArray, sortBy, head, isEmpty } from 'lodash';
 import { getSearchFilter } from '../store/reducers/filter-reducer';
 import { getLogger } from '../utils/logger';
-import { getCurrentUserProfileId } from '../store/reducers/self-profile-reducer';
+import {
+	getCurrentUserProfile,
+	getCurrentUserProfileId
+} from '../store/reducers/self-profile-reducer';
+const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
 interface IExploreScreenProps {
 	userProfiles: IUserProfileState;
@@ -36,20 +40,28 @@ const ExploreScreenHeader = (props: any) => {
 	const navigateToProfile = () =>
 		props.navigation.push('ProfileScreen', { userProfileId: props.currentUserProfileId });
 	const openFilterScreen = () => props.navigation.push('FilterScreen');
+	const profileImage = head(props.currentUserProfile.photo);
+	const profileAvatar = !isEmpty(profileImage)
+		? {
+				uri: profileImage.url,
+				width: 36,
+				height: 36
+		  }
+		: defaultPrimaryPhoto;
 	return (
 		<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.header]}>
 			<TouchableNativeFeedback onPress={() => navigateToProfile()}>
-				<Image source={require('../assets/images/robot-dev.png')} style={styles.avatar} />
+				<Image source={profileAvatar} style={styles.avatar} />
 			</TouchableNativeFeedback>
 			<TextInput style={[GlobalStyles.expand, styles.searchInput]} />
-			<TouchableNativeFeedback>
+			{/*<TouchableNativeFeedback>
 				<Icon.Ionicons
 					style={styles.navBarIcon}
 					color={Colors.white}
 					name="md-save"
 					size={26}
 				/>
-			</TouchableNativeFeedback>
+			</TouchableNativeFeedback>*/}
 			<TouchableNativeFeedback onPress={() => openFilterScreen()}>
 				<Icon.Ionicons
 					style={styles.navBarIcon}
@@ -65,7 +77,8 @@ const ExploreScreenHeader = (props: any) => {
 const ConnectedHeader = connect(
 	(state: IRootState) => {
 		return {
-			currentUserProfileId: getCurrentUserProfileId(state)
+			currentUserProfileId: getCurrentUserProfileId(state),
+			currentUserProfile: getCurrentUserProfile(state)
 		};
 	},
 	null
@@ -176,20 +189,20 @@ const styles = StyleSheet.create({
 	},
 	searchInput: {
 		backgroundColor: Colors.tintColor,
-		marginLeft: 10,
+		marginLeft: 5,
 		marginRight: 10,
 		borderRadius: 10,
 		paddingLeft: 10,
 		paddingRight: 10,
+		height: 36,
 		color: 'white'
 	},
 	avatar: {
-		width: 26,
-		height: 26,
+		width: 36,
+		height: 36,
 		borderRadius: 20,
 		margin: 10,
 		borderWidth: 3,
-		// padding: 10,
 		borderColor: 'white'
 	},
 	header: {
