@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { View, ScrollView, TouchableNativeFeedback, FlatList, StyleSheet } from 'react-native';
+import { View, TouchableNativeFeedback, FlatList, StyleSheet, Text } from 'react-native';
 import UserChannel from '../components/user-channel/index';
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IRootState } from '../store/index';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -99,15 +99,25 @@ class MessagesScreen extends React.PureComponent<
 		const loaderClasses = isFetchingMore
 			? [styles.loading, styles.loaderBottom]
 			: [styles.loading, styles.loaderTop];
+		const isEmptyInbox = isEmpty(this.getChannels());
 		return (
-			<View>
-				<FlatList
-					keyExtractor={this.keyExtractor}
-					data={this.getChannels()}
-					renderItem={({ item }) => this.renderChannel(item)}
-					onEndReached={this._handleMore}
-					onEndReachedThreshold={100}
-				/>
+			<View style={styles.container}>
+				{!isEmptyInbox && (
+					<FlatList
+						keyExtractor={this.keyExtractor}
+						data={this.getChannels()}
+						renderItem={({ item }) => this.renderChannel(item)}
+						onEndReached={this._handleMore}
+						onEndReachedThreshold={100}
+					/>
+				)}
+				{isEmptyInbox && !fetching && (
+					<View style={styles.emptyInbox}>
+						<Text style={styles.inboxEmoji}>📥</Text>
+						<Text>No messages</Text>
+						<Text>Send interests to begin messaging</Text>
+					</View>
+				)}
 				{!!fetching && (
 					<View style={loaderClasses}>
 						<Throbber />
@@ -119,6 +129,19 @@ class MessagesScreen extends React.PureComponent<
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column'
+	},
+	inboxEmoji: {
+		fontSize: 25,
+		paddingBottom: 10
+	},
+	emptyInbox: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 	loading: {
 		position: 'absolute',
 		left: 0,
