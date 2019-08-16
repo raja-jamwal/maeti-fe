@@ -20,6 +20,8 @@ import { Throbber } from '../components/throbber/throbber';
 import { getLogger } from '../utils/logger';
 import Color from 'src/constants/Colors.js';
 import { formatDate, formatDateTime } from '../utils';
+import CountryPicker, { Country, getAllCountries } from 'react-native-country-picker-modal';
+import { find } from 'lodash';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
@@ -123,6 +125,21 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		}
 	}
 
+	getCcaCodeFromCallingCode(callingCode: number) {
+		const allCountries = getAllCountries();
+		const country: Country = find(allCountries, { callingCode: `${callingCode}` });
+		if (!country) return null;
+		return country.cca2;
+	}
+
+	renderCountryName(callingCode: number) {
+		this.logger.log(callingCode);
+		const allCountries = getAllCountries();
+		const country: Country | null = find(allCountries, { callingCode: `${callingCode}` });
+		if (!country) return null;
+		return (country.name && country.name.common) || 'Unknown country';
+	}
+
 	renderFields() {
 		const { object, mapping } = this.state;
 		const fields = Object.keys(mapping).map(field => {
@@ -141,6 +158,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			const isNumberField = type === 'number';
 			const isDateField = type === 'date';
 			const isDateTimeField = type === 'date-time';
+			const isCountryField = type === 'country';
 			const isTagArray = type === 'tag-array';
 			const tagType = isTagArray && fieldDefinition.tagType;
 
@@ -249,6 +267,51 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 								))}
 							</Picker>
 						</View>
+					)}
+					{/*{isCountryField && (*/}
+					{/*<View style={styles.labelContainer}>*/}
+					{/*{!renderString && <Text style={styles.label}>No Set</Text>}*/}
+					{/*{!!renderString && (*/}
+					{/*<CountryPicker*/}
+					{/*closeable={true}*/}
+					{/*filterable={true}*/}
+					{/*showCallingCode={false}*/}
+					{/*cca2={renderString}*/}
+					{/*onChange={value => {*/}
+					{/*if (value && value.callingCode) {*/}
+					{/*this.updateFieldValue(*/}
+					{/*field,*/}
+					{/*parseInt(value.callingCode)*/}
+					{/*);*/}
+					{/*}*/}
+					{/*}}*/}
+					{/*>*/}
+					{/*<View>Country name</View>*/}
+					{/*</CountryPicker>*/}
+					{/*)}*/}
+					{/*</View>*/}
+					{/*)}*/}
+					{isCountryField && (
+						<CountryPicker
+							closeable={true}
+							filterable={true}
+							showCallingCode={false}
+							cca2={
+								(renderString && this.getCcaCodeFromCallingCode(renderString)) ||
+								'IN'
+							}
+							onChange={value => {
+								if (value && value.callingCode) {
+									this.updateFieldValue(field, parseInt(value.callingCode));
+								}
+							}}
+						>
+							<View style={styles.labelContainer}>
+								<Text style={styles.label}>
+									{this.renderCountryName(renderString) || 'Choose country'}
+								</Text>
+							</View>
+						</CountryPicker>
 					)}
 				</View>
 			);

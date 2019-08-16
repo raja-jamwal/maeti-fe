@@ -110,8 +110,8 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						<Divider />
 						<Value>{userProfile.height || 0} Ft</Value>
 						<Divider />
-						<Value>{horoscope.caste || 'unknown caste'}</Value>
-						<Value>, {horoscope.subCaste || 'unknown sub caste'}</Value>
+						{/*<Value>{horoscope.caste || 'unknown caste'}</Value>*/}
+						{/*<Value>, {horoscope.subCaste || 'unknown sub caste'}</Value>*/}
 					</View>
 					<View style={GlobalStyles.row}>
 						<Value>{education.education || 'unknown education'}</Value>

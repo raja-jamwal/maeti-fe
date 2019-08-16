@@ -25,11 +25,13 @@ class HoroscopeTable extends React.Component<
 	mappings = {
 		caste: {
 			label: 'Caste',
-			type: 'string'
+			tagType: 'caste',
+			type: 'tag-array'
 		},
 		subCaste: {
 			label: 'Sub Caste',
-			type: 'string'
+			tagType: 'sub_caste',
+			type: 'tag-array'
 		},
 		birthPlace: {
 			label: 'Birth Place',

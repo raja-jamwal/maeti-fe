@@ -100,11 +100,12 @@ export interface Profession extends DAO {
 	loans: Array<Tag>;
 	otherLoans: string;
 	workCity: string;
+	workCountry: number;
 }
 
 export interface Horoscope extends DAO {
-	caste: string;
-	subCaste: string;
+	caste: Array<Tag>;
+	subCaste: Array<Tag>;
 	birthPlace: string;
 	birthTime: number;
 	rashi: string;

@@ -302,6 +302,10 @@ class ProfessionTable extends React.Component<
 			label: 'Other loans',
 			type: 'string'
 		},
+		workCountry: {
+			label: 'Work Country',
+			type: 'country'
+		},
 		workCity: {
 			label: 'Work City',
 			type: 'string'
