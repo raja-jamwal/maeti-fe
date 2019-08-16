@@ -14,7 +14,7 @@ import { Icon } from 'expo';
 import TabbedFilters from '../components/tabbed-filters/index';
 import { connect } from 'react-redux';
 import { Throbber } from '../components/throbber/throbber';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IUserProfileState } from '../store/reducers/user-profile-reducer';
 import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -22,6 +22,7 @@ import { mayBeFetchSearchResult } from '../store/reducers/explore-reducer';
 import { toArray, sortBy } from 'lodash';
 import { getSearchFilter } from '../store/reducers/filter-reducer';
 import { getLogger } from '../utils/logger';
+import { getCurrentUserProfileId } from '../store/reducers/self-profile-reducer';
 
 interface IExploreScreenProps {
 	userProfiles: IUserProfileState;
@@ -31,8 +32,9 @@ interface IExploreScreenProps {
 	selectedFilter: any;
 }
 
-const CustomHeader = (props: any) => {
-	const navigateToProfile = () => null; // props.navigation.push('ProfileScreen');
+const ExploreScreenHeader = (props: any) => {
+	const navigateToProfile = () =>
+		props.navigation.push('ProfileScreen', { userProfileId: props.currentUserProfileId });
 	const openFilterScreen = () => props.navigation.push('FilterScreen');
 	return (
 		<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.header]}>
@@ -60,13 +62,22 @@ const CustomHeader = (props: any) => {
 	);
 };
 
+const ConnectedHeader = connect(
+	(state: IRootState) => {
+		return {
+			currentUserProfileId: getCurrentUserProfileId(state)
+		};
+	},
+	null
+)(ExploreScreenHeader);
+
 class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExploreScreenProps> {
 	private logger = getLogger(ExploreScreen);
 
-	static navigationOptions = {
+	static navigationOptions = ({ navigation }) => ({
 		title: 'Explore',
-		header: CustomHeader
-	};
+		header: () => <ConnectedHeader navigation={navigation} />
+	});
 
 	constructor(props: any) {
 		super(props);
