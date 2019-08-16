@@ -133,6 +133,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 					<ScrollView style={GlobalStyles.expand}>
 						{
 							<FilterComponent
+								key={selectedFilter}
 								choices={choices}
 								setChoiceValue={(choiceKey, choiceValue) =>
 									this.setChoiceValue(selectedFilter, choiceKey, choiceValue)
