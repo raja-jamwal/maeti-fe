@@ -106,35 +106,46 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						</Text>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
-						<Value>Age {calculateAge(userProfile.dob || 0)}</Value>
-						<Divider />
-						<Value>{userProfile.height || 0} Ft</Value>
-						<Divider />
+						{!!userProfile.dob && (
+							<Value>Age {calculateAge(userProfile.dob || 0)}</Value>
+						)}
+						{!!userProfile.height && <Value>{userProfile.height || 0} Ft</Value>}
 						{/*<Value>{horoscope.caste || 'unknown caste'}</Value>*/}
 						{/*<Value>, {horoscope.subCaste || 'unknown sub caste'}</Value>*/}
 					</View>
-					<View style={GlobalStyles.row}>
-						<Value>{education.education || 'unknown education'}</Value>
-					</View>
+					{!!education.education && (
+						<View style={GlobalStyles.row}>
+							<Value>{education.education || 'unknown education'}</Value>
+						</View>
+					)}
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
-						<Value style={GlobalStyles.bold}>
-							{profession.designation || 'unknown designation'}
-						</Value>
-						<Value>@ {profession.company || 'unknown company'}</Value>
-						<Divider />
-						<Value style={GlobalStyles.bold}>
-							{humanizeCurrency(profession.annualIncome || '0')}
-							/Year
-						</Value>
+						{!!profession.designation && (
+							<Value style={GlobalStyles.bold}>
+								{profession.designation || 'unknown designation'}
+							</Value>
+						)}
+						{!!profession.company && (
+							<Value>@ {profession.company || 'unknown company'}</Value>
+						)}
+						{!!profession.annualIncome && (
+							<Value style={GlobalStyles.bold}>
+								{humanizeCurrency(profession.annualIncome || '0')}
+								/Year
+							</Value>
+						)}
 					</View>
-					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
-						<Value style={GlobalStyles.bold}>Home</Value>
-						<Value>- {family.familyLocation || 'unknown location'}</Value>
-					</View>
-					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
-						<Value style={GlobalStyles.bold}>Work</Value>
-						<Value>- {profession.workCity || 'unknown work city'}</Value>
-					</View>
+					{!!family.familyLocation && (
+						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
+							<Value style={GlobalStyles.bold}>Home</Value>
+							<Value>- {family.familyLocation || 'unknown location'}</Value>
+						</View>
+					)}
+					{!!profession.workCity && (
+						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
+							<Value style={GlobalStyles.bold}>Work</Value>
+							<Value>- {profession.workCity || 'unknown work city'}</Value>
+						</View>
+					)}
 					{userProfile.describeMyself && !hideSelfDescription && (
 						<View style={[GlobalStyles.row, styles.describeSelfContainer]}>
 							{userProfile.describeMyself.map(description => (
@@ -162,7 +173,8 @@ const styles = StyleSheet.create({
 		resizeMode: 'cover'
 	},
 	profileSummaryContainer: {
-		padding: 10
+		padding: 10,
+		paddingBottom: 15
 	},
 	describeSelfContainer: {
 		flexWrap: 'wrap'
