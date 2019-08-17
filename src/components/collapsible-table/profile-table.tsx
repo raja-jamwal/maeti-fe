@@ -65,7 +65,7 @@ export const CreatedByOptions = [
 export const MaritalStatusOptions = [
 	{
 		label: 'Not Set',
-		value: 'not-set'
+		value: null
 	},
 	{
 		label: 'Never Married',

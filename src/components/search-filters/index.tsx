@@ -54,13 +54,19 @@ interface ITypesOfFilter {
 	[key: string]: FilterOption;
 }
 
+function saneChoices(choices: any) {
+	return (choices || []).filter((choice: any) => {
+		return !!choice.value;
+	});
+}
+
 export const TypesOfFilter: ITypesOfFilter = {
 	/*
 		UserProfile options
 	 */
 	martialStatus: {
 		label: 'Marital Status',
-		choices: MaritalStatusOptions,
+		choices: saneChoices(MaritalStatusOptions),
 		component: ChoiceFilter,
 		getSearchFilter: userSelections => {
 			// check if not-set is set
