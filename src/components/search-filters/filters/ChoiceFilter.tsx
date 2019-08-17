@@ -10,12 +10,31 @@ interface IChoiceFilterProps {
 	setChoiceValue: (key: string, value: boolean) => any;
 }
 
-class ChoiceFilter extends React.PureComponent<IChoiceFilterProps> {
+interface IChoiceFilterState {
+	filtersUpdated: number;
+}
+
+class ChoiceFilter extends React.PureComponent<IChoiceFilterProps, IChoiceFilterState> {
+	constructor(props: IChoiceFilterProps) {
+		super(props);
+		this.state = {
+			filtersUpdated: 0
+		};
+	}
+
 	toggleOption(key: string) {
 		const { setChoiceValue, choicesValue } = this.props;
 		const value = choicesValue && choicesValue[key];
 		if (key) {
 			setChoiceValue(key, !value);
+		}
+	}
+
+	componentWillReceiveProps(nextProps: IChoiceFilterProps) {
+		if (this.props.choicesValue !== nextProps.choicesValue) {
+			this.setState({
+				filtersUpdated: this.state.filtersUpdated + 1
+			});
 		}
 	}
 
@@ -25,7 +44,11 @@ class ChoiceFilter extends React.PureComponent<IChoiceFilterProps> {
 		return (
 			<View>
 				<FlatList
-					keyExtractor={(choice: any) => choice.value}
+					keyExtractor={(choice: any) => {
+						const isChecked = choicesValue && choicesValue[choice.value];
+						const keyName = (choice.label || '').toLowerCase().replace(/ /g, '-');
+						return `${keyName}-${isChecked ? 'true' : 'false'}`;
+					}}
 					data={choices}
 					renderItem={({ item }) => {
 						const choice = item;
@@ -44,6 +67,7 @@ class ChoiceFilter extends React.PureComponent<IChoiceFilterProps> {
 							</View>
 						);
 					}}
+					extraData={this.state.filtersUpdated}
 				/>
 			</View>
 		);

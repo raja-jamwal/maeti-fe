@@ -346,10 +346,6 @@ export const ProfileTableHeightOptions = [
 		value: '4.9'
 	},
 	{
-		label: '4.9',
-		value: '4.9'
-	},
-	{
 		label: '4.10',
 		value: '4.10'
 	},
