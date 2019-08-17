@@ -21,6 +21,7 @@ import IncomingTab from '../components/interests-tab/tabs/IncomingTab';
 import AcceptedTab from '../components/interests-tab/tabs/AcceptedTab';
 import SentTab from '../components/interests-tab/tabs/SentTab';
 import ProfileImageGalleryScreen from '../screens/ProfileImageGalleryScreen';
+import TabBarComponent from '../components/tab-bar-component';
 
 const defaultNavigationOptions = {
 	headerStyle: {
@@ -167,6 +168,17 @@ MoreStack.navigationOptions = {
 	)
 };
 
+const bottomTabNavigatorOptions = {
+	initialRouteName: 'ExploreStack',
+	tabBarOptions: {
+		activeTintColor: Colors.primaryDarkColor
+	}
+};
+
+if (Platform.OS === 'android') {
+	bottomTabNavigatorOptions.tabBarComponent = props => <TabBarComponent {...props} />;
+}
+
 export default createBottomTabNavigator(
 	{
 		ExploreStack,
@@ -175,12 +187,7 @@ export default createBottomTabNavigator(
 		InterestsStack,
 		MoreStack
 	},
-	{
-		initialRouteName: 'ExploreStack',
-		tabBarOptions: {
-			activeTintColor: Colors.primaryDarkColor
-		}
-	}
+	bottomTabNavigatorOptions
 );
 
 export { ExploreStack };

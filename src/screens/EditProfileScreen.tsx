@@ -8,7 +8,10 @@ import {
 	Picker,
 	Modal,
 	DatePickerAndroid,
-	TimePickerAndroid
+	TimePickerAndroid,
+	EmitterSubscription,
+	Platform,
+	Keyboard
 } from 'react-native';
 import GlobalStyles from '../styles/global';
 import Text from '../components/text/index';
@@ -44,6 +47,7 @@ interface IEditProfileScreenState {
 	object: any;
 	showProgress: boolean;
 	mapping: any;
+	showSubmissionFooter: boolean;
 }
 
 export default class EditProfileScreen extends React.Component<any, IEditProfileScreenState> {
@@ -56,19 +60,36 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 
 	logger = getLogger(EditProfileScreen);
 
+	keyboardEventListeners: EmitterSubscription[] = [];
+
 	constructor(props: any) {
 		super(props);
 		const { object, mapping } = this.getObjectAndMapping();
 		this.state = {
 			object: object,
 			showProgress: false,
-			mapping: mapping
+			mapping: mapping,
+			showSubmissionFooter: true
 		};
 	}
 
-	// componentWillReceiveProps(props: IEditProfileScreenState) {
-	// 	console.log('EDIT_PROFILE recv props');
-	// }
+	componentDidMount() {
+		if (Platform.OS === 'android') {
+			this.keyboardEventListeners = [
+				Keyboard.addListener('keyboardDidShow', this.showSubmissionFooter(false)),
+				Keyboard.addListener('keyboardDidHide', this.showSubmissionFooter(true))
+			];
+		}
+	}
+
+	componentWillUnmount() {
+		this.keyboardEventListeners &&
+			this.keyboardEventListeners.forEach(eventListener => eventListener.remove());
+	}
+
+	showSubmissionFooter(showSubmissionFooter: boolean) {
+		return () => this.setState({ showSubmissionFooter });
+	}
 
 	getObjectAndMapping() {
 		const { navigation } = this.props;
@@ -325,18 +346,20 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 	}
 
 	render() {
-		const { showProgress } = this.state;
+		const { showProgress, showSubmissionFooter } = this.state;
 		return (
 			<View style={GlobalStyles.expand}>
 				<ScrollView style={[GlobalStyles.expand, styles.formContainer]}>
 					{this.renderFields()}
 				</ScrollView>
 				{showProgress && <CustomProgressBar visible={true} />}
-				<View style={styles.submissionFooter}>
-					<TouchableNativeFeedback onPress={() => this.updateInformation()}>
-						<Text style={styles.submissionBtn}>Update Information</Text>
-					</TouchableNativeFeedback>
-				</View>
+				{showSubmissionFooter && (
+					<View style={styles.submissionFooter}>
+						<TouchableNativeFeedback onPress={() => this.updateInformation()}>
+							<Text style={styles.submissionBtn}>Update Information</Text>
+						</TouchableNativeFeedback>
+					</View>
+				)}
 			</View>
 		);
 	}
