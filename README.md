@@ -1,4 +1,4 @@
-# Requirements
+# Requirements 
 
 -   You need an android emulator while developing, use geny-motion.
 -   Preferred editor is Visual Studio Code. Install Prettier - Code formatter plugin.
