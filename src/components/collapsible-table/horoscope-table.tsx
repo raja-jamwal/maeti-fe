@@ -71,7 +71,19 @@ class HoroscopeTable extends React.Component<
 		},
 		wantToSeePatrika: {
 			label: 'Want to see patrika',
-			type: 'bool'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Yes',
+						value: true
+					},
+					{
+						label: 'No',
+						value: false
+					}
+				]
+			}
 		}
 	};
 

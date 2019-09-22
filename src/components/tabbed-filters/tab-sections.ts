@@ -14,21 +14,23 @@ export const TAB_SECTIONS = [
 		icon: require('../../assets/images/icons/new_matches.png'),
 		label: 'New Matches'
 	},
-	{
+	// until we have better understanding on prod spec
+	/*{
 		name: 'reverse_matches',
 		icon: require('../../assets/images/icons/reverse_matches.png'),
 		label: 'Reverse Matches'
-	},
+	},*/
 	{
 		name: 'my_matches',
 		icon: require('../../assets/images/icons/my_matches.png'),
 		label: 'My Matches'
 	},
-	{
+	// until we have better understanding on prod spec
+	/*{
 		name: 'mutual_matches',
 		icon: require('../../assets/images/icons/my_matches.png'),
 		label: 'Mutual Matches'
-	},
+	},*/
 	{
 		name: 'community_matches',
 		icon: require('../../assets/images/icons/community_match.png'),

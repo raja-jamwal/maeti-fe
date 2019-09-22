@@ -19,10 +19,6 @@ interface IProfileTableMapDispatchToProps {
 
 export const GenderOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Male',
 		value: 'male'
 	},
@@ -32,10 +28,6 @@ export const GenderOptions = [
 	}
 ];
 export const CreatedByOptions = [
-	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
 	{
 		label: 'Self',
 		value: 'self'
@@ -64,10 +56,6 @@ export const CreatedByOptions = [
 
 export const MaritalStatusOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Never Married',
 		value: 'never-married'
 	},
@@ -85,10 +73,6 @@ export const MaritalStatusOptions = [
 	}
 ];
 export const BloodGroupOptions = [
-	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
 	{
 		label: 'A +ve',
 		value: 'a+ve'
@@ -132,10 +116,6 @@ export const BloodGroupOptions = [
 ];
 
 export const ProfileTableMotherTongueOptions = [
-	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
 	{
 		label: 'Marathi',
 		value: 'marathi'
@@ -235,10 +215,6 @@ export const ProfileTableMotherTongueOptions = [
 ];
 export const BodyComplexionOptions = [
 	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
-	{
 		label: 'Fair',
 		value: 'fair'
 	},
@@ -261,10 +237,6 @@ export const BodyComplexionOptions = [
 ];
 export const ProfileTableLensesOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Yes',
 		value: 'yes'
 	},
@@ -275,10 +247,6 @@ export const ProfileTableLensesOptions = [
 ];
 
 export const SalutationOptions = [
-	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
 	{
 		label: 'Mr.',
 		value: 'mr'
@@ -301,10 +269,6 @@ export const SalutationOptions = [
 	}
 ];
 export const ProfileTableHeightOptions = [
-	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
 	{
 		label: 'Below 4.1',
 		value: '<4.1'
@@ -455,10 +419,6 @@ export const ProfileTableHeightOptions = [
 	}
 ];
 export const ProfileTableBodyTypeOptions = [
-	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
 	{
 		label: 'Average',
 		value: 'average'

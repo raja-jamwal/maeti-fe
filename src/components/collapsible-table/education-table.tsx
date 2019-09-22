@@ -21,10 +21,6 @@ interface IEducationTableMapDispatchToProps {
 
 export const EducationTableMediumOfPrimaryEducationOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'English',
 		value: 'english'
 	},
@@ -54,10 +50,6 @@ export const EducationTableMediumOfPrimaryEducationOptions = [
 	}
 ];
 export const EducationTableEducationFieldOptions = [
-	{
-		label: 'Not Set',
-		value: null
-	},
 	{
 		label: 'UPSC / MPSC',
 		value: 'upsc'
@@ -100,10 +92,6 @@ export const EducationTableEducationFieldOptions = [
 	}
 ];
 export const EducationTableHighestEducationLevel = [
-	{
-		label: 'Not Set',
-		value: null
-	},
 	{
 		label: 'Post Graduate',
 		value: 'post_graduate'

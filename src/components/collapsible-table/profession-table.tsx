@@ -19,10 +19,6 @@ interface IProfessionTableMapDispatchToProps {
 
 export const ProfessionTableOccupationOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Business',
 		value: 'business'
 	},
@@ -96,10 +92,6 @@ export const ProfessionTableOccupationOptions = [
 	}
 ];
 export const ProfessionTableWorkingFieldOptions = [
-	{
-		label: 'Not Set',
-		value: null
-	},
 	{
 		label: 'Research',
 		value: 'research'
@@ -184,10 +176,6 @@ class ProfessionTable extends React.Component<
 			type: 'choice',
 			choice: {
 				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
 					{
 						label: 'Rupees',
 						value: 'rupees'

@@ -24,6 +24,7 @@ import Color from 'src/constants/Colors.js';
 import { formatDate, formatDateTime } from '../utils';
 import CountryPicker, { Country, getAllCountries } from 'react-native-country-picker-modal';
 import { find } from 'lodash';
+import RNPickerSelect from 'react-native-picker-select';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
@@ -274,7 +275,13 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 					)}
 					{isChoiceField && (
 						<View style={styles.choiceField}>
-							<Picker
+							<RNPickerSelect
+								value={value}
+								// placeholder={'Select...'}
+								onValueChange={itemValue => this.updateFieldValue(field, itemValue)}
+								items={choiceOptions}
+							/>
+							{/*<Picker
 								selectedValue={value}
 								onValueChange={itemValue => this.updateFieldValue(field, itemValue)}
 							>
@@ -285,7 +292,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 										value={option.value}
 									/>
 								))}
-							</Picker>
+							</Picker>*/}
 						</View>
 					)}
 					{isCountryField && (

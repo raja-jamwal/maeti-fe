@@ -20,10 +20,6 @@ interface IPreferenceTableMapDispatchToProps {
 
 export const PreferenceEducationOptions = [
 	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
-	{
 		label: 'Administrative Services',
 		value: 'admin-service'
 	},
@@ -126,10 +122,6 @@ export const PreferenceEducationOptions = [
 ];
 export const PreferenceOccupationOptions = [
 	{
-		label: 'Not Set',
-		value: 'not-set'
-	},
-	{
 		label: 'Any',
 		value: 'any'
 	},
@@ -208,10 +200,6 @@ export const PreferenceOccupationOptions = [
 ];
 export const PreferenceDietOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Veg',
 		value: 'veg'
 	},
@@ -238,10 +226,6 @@ export const PreferenceDietOptions = [
 ];
 export const PreferenceSmokeOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Yes',
 		value: 'yes'
 	},
@@ -259,10 +243,6 @@ export const PreferenceSmokeOptions = [
 	}
 ];
 export const PreferenceDrinkOptions = [
-	{
-		label: 'Not Set',
-		value: null
-	},
 	{
 		label: 'Yes',
 		value: 'yes'
@@ -282,10 +262,6 @@ export const PreferenceDrinkOptions = [
 ];
 export const PreferenceHotelingOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Yes',
 		value: 'yes'
 	},
@@ -304,10 +280,6 @@ export const PreferenceHotelingOptions = [
 ];
 export const PreferencePartyingOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Yes',
 		value: 'yes'
 	},
@@ -325,10 +297,6 @@ export const PreferencePartyingOptions = [
 	}
 ];
 export const PreferenceCookingOptions = [
-	{
-		label: 'Not Set',
-		value: null
-	},
 	{
 		label: 'Yes',
 		value: 'yes'
@@ -394,10 +362,6 @@ class PreferenceTable extends React.Component<
 			choice: {
 				options: [
 					{
-						label: 'Not Set',
-						value: null
-					},
-					{
 						label: 'Any',
 						value: 'any'
 					},
@@ -437,10 +401,6 @@ class PreferenceTable extends React.Component<
 			type: 'choice',
 			choice: {
 				options: [
-					{
-						label: 'Not Set',
-						value: null
-					},
 					{
 						label: 'Must',
 						value: 'must'

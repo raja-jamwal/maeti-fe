@@ -19,10 +19,6 @@ interface ILifestyleTableMapDispatchToProps {
 
 export const LifestyleTableDietOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Veg',
 		value: 'veg'
 	},
@@ -49,10 +45,6 @@ export const LifestyleTableDietOptions = [
 ];
 export const LifestyleTableSmokingOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Yes',
 		value: 'yes'
 	},
@@ -72,10 +64,6 @@ export const LifestyleTableSmokingOptions = [
 
 export const LifestyleTableDrinkOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Yes',
 		value: 'yes'
 	},
@@ -94,10 +82,6 @@ export const LifestyleTableDrinkOptions = [
 ];
 export const LifestyleTableHotelingOptions = [
 	{
-		label: 'Not Set',
-		value: null
-	},
-	{
 		label: 'Yes',
 		value: 'yes'
 	},
@@ -115,10 +99,6 @@ export const LifestyleTableHotelingOptions = [
 	}
 ];
 export const LifestyleTablePartyingOptions = [
-	{
-		label: 'Not Set',
-		value: null
-	},
 	{
 		label: 'Yes',
 		value: 'yes'
