@@ -92,9 +92,17 @@ class FamilyTable extends React.Component<
 			label: 'About Family',
 			type: 'string'
 		},
-		familyLocation: {
-			label: 'Families current location',
-			type: 'string'
+		familyCountry: {
+			label: 'Family country',
+			type: 'country'
+		},
+		familyState: {
+			label: 'Family state',
+			type: 'state'
+		},
+		familyCity: {
+			label: 'Family city',
+			type: 'city'
 		},
 		interCasteParents: {
 			label: 'Inter caste marriage of Parents?',

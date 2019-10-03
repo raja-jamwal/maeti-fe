@@ -1,4 +1,5 @@
-import forOwn from 'lodash/forOwn';
+import { isEmpty, forOwn } from 'lodash';
+
 const moment = require('moment');
 
 /**
@@ -28,13 +29,16 @@ const ApiRequest = function(url, params) {
 
 	return new Promise((resolve, reject) => {
 		setTimeout(function() {
-			fetch(url, {
-				method: 'POST',
-				headers: {
+			const fetchOptions: any = {
+				method: 'POST'
+			};
+			if (!isEmpty(params)) {
+				fetchOptions['headers'] = {
 					'Content-Type': 'multipart/form-data'
-				},
-				body: formData
-			})
+				};
+				fetchOptions['body'] = formData;
+			}
+			fetch(url, fetchOptions)
 				.then(response => {
 					if (response.status !== 200) throw response.json();
 					resolve(response.json());

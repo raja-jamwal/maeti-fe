@@ -3,7 +3,24 @@
  *
  * TODO: harden string types to enums as and when needed
  */
-import { User } from 'react-native-gifted-chat';
+
+export interface WorldEntity {
+	id: number;
+	name: string;
+}
+
+export interface City extends WorldEntity {
+	regionId: number;
+	countryId: number;
+}
+
+export interface Region extends WorldEntity {
+	code: number;
+}
+
+export interface Country extends WorldEntity {
+	code: number;
+}
 
 export interface DAO {
 	// TODO: need to revisit this sometime
@@ -100,8 +117,9 @@ export interface Profession extends DAO {
 	annualIncome: number;
 	loans: Array<Tag>;
 	otherLoans: string;
-	workCity: string;
-	workCountry: number;
+	workCountry: Country;
+	workState: Region;
+	workCity: City;
 }
 
 export interface Horoscope extends DAO {
@@ -186,7 +204,9 @@ export interface Family extends DAO {
 	noOfSisters: number;
 	sistersMarried: number;
 	aboutFamily: string;
-	familyLocation: string;
+	familyCountry: Country;
+	familyState: Region;
+	familyCity: City;
 	interCasteParents: boolean;
 	parentsLivingSeperately: boolean;
 	familyOtherInformation: FamilyOtherInformation;
@@ -218,11 +238,12 @@ export interface Preference extends DAO {
 	mediumOfEducation: string;
 	workingPartner: string;
 	occupation: string;
-	workCountry: string;
-	workState: string;
-	workCity: string;
-	parentCountry: string;
-	parentCity: string;
+	workCountry: Country;
+	workState: Region;
+	workCity: City;
+	parentCountry: Country;
+	parentState: Region;
+	parentCity: City;
 	diet: string;
 	smoke: string;
 	drink: string;

@@ -428,24 +428,28 @@ class PreferenceTable extends React.Component<
 			}
 		},
 		workCountry: {
-			label: 'Work Location Country',
+			label: 'Work country',
 			type: 'country'
 		},
 		workState: {
-			label: 'Work Location State',
-			type: 'string'
+			label: 'Work state',
+			type: 'state'
 		},
 		workCity: {
-			label: 'Work Location City',
-			type: 'string'
+			label: 'Work city',
+			type: 'city'
 		},
 		parentCountry: {
-			label: 'Parent Country',
+			label: 'Parent country',
 			type: 'country'
 		},
+		parentState: {
+			label: 'Parent state',
+			type: 'state'
+		},
 		parentCity: {
-			label: 'Parent City Location',
-			type: 'string'
+			label: 'Parent city',
+			type: 'city'
 		},
 		diet: {
 			label: 'Diet',

@@ -102,5 +102,11 @@ export const API = {
 
 	RTM: {
 		CONNECT: `${config.server}/rtm`
+	},
+
+	WORLD: {
+		COUNTRY: `${config.server}/api/countries.list`,
+		STATES: `${config.server}/api/states.get`,
+		CITIES: `${config.server}/api/cities.get`
 	}
 };

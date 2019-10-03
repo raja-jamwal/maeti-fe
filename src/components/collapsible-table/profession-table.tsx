@@ -296,9 +296,13 @@ class ProfessionTable extends React.Component<
 			label: 'Work Country',
 			type: 'country'
 		},
+		workState: {
+			label: 'Work State',
+			type: 'state'
+		},
 		workCity: {
 			label: 'Work City',
-			type: 'string'
+			type: 'city'
 		}
 	};
 

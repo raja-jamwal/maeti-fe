@@ -15,16 +15,16 @@ import {
 } from 'react-native';
 import GlobalStyles from '../styles/global';
 import Text from '../components/text/index';
-import Colors from '../constants/Colors';
 import TagSelector from '../components/tag-selector/tag-selector';
 import { Tag } from '../store/reducers/account-defination';
 import { Throbber } from '../components/throbber/throbber';
 import { getLogger } from '../utils/logger';
-import Color from 'src/constants/Colors.js';
 import { formatDate, formatDateTime } from '../utils';
 import CountryPicker, { Country, getAllCountries } from 'react-native-country-picker-modal';
 import { find } from 'lodash';
 import RNPickerSelect from 'react-native-picker-select';
+import { WorldSelectorField } from '../components/world-selector';
+import Color from '../constants/Colors';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
@@ -295,7 +295,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 							</Picker>*/}
 						</View>
 					)}
-					{isCountryField && (
+					{/*{isCountryField && (
 						<CountryPicker
 							closeable={true}
 							filterable={true}
@@ -316,7 +316,8 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 								</Text>
 							</View>
 						</CountryPicker>
-					)}
+					)}*/}
+					{isCountryField && <WorldSelectorField />}
 				</View>
 			);
 		});
@@ -386,7 +387,7 @@ const styles = StyleSheet.create({
 		fontSize: 18
 	},
 	textField: {
-		borderColor: Colors.borderColor,
+		borderColor: Color.borderColor,
 		borderWidth: 1,
 		paddingLeft: 8,
 		paddingRight: 8,
@@ -395,7 +396,7 @@ const styles = StyleSheet.create({
 		borderRadius: 4
 	},
 	choiceField: {
-		borderColor: Colors.borderColor,
+		borderColor: Color.borderColor,
 		borderWidth: 1,
 		paddingLeft: 2,
 		borderRadius: 4
@@ -404,10 +405,10 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		padding: 8,
 		borderTopWidth: 1,
-		borderColor: Colors.tabIconDefault
+		borderColor: Color.tabIconDefault
 	},
 	submissionBtn: {
-		backgroundColor: Colors.pink,
+		backgroundColor: Color.pink,
 		padding: 4,
 		textAlign: 'center',
 		color: 'white',
