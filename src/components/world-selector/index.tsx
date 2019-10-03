@@ -137,8 +137,8 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 		}
 		const isValidScreen = !!nextScreen && includes(options, nextScreen);
 		if (!isValidScreen) {
-			return;
-			// return onSelect(newSelection);
+			// return;
+			return onSelect(newSelection);
 		}
 		this.setState({
 			selection: newSelection,
@@ -181,6 +181,7 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 		const data = this.getData();
 		return (
 			<View>
+				<Text style={styles.title}>Select {screen}</Text>
 				{!!loading && <Throbber size="large" />}
 				{!loading && this.renderList(screen, data)}
 			</View>
@@ -188,11 +189,20 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 	}
 }
 
+interface IWorldSelectorFieldProps {
+	options: WORLD_OPTION[];
+	onSelect: (selection: SelectionResult) => void;
+	value: string;
+}
+
 interface IWorldSelectorFieldState {
 	showModal?: boolean;
 }
 
-class WorldSelectorField extends React.Component<any, IWorldSelectorFieldState> {
+class WorldSelectorField extends React.Component<
+	IWorldSelectorFieldProps,
+	IWorldSelectorFieldState
+> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
@@ -209,23 +219,30 @@ class WorldSelectorField extends React.Component<any, IWorldSelectorFieldState> 
 
 	render() {
 		const { showModal } = this.state;
+		const { options, onSelect, value } = this.props;
 		return (
 			<View>
 				<TouchableNativeFeedback onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
-						<Text style={styles.label}>No Set</Text>
+						<Text style={styles.label}>{value || 'No Set'}</Text>
 					</View>
 				</TouchableNativeFeedback>
 				<Modal
 					animationType="slide"
-					transparent={true}
+					// transparent={true}
 					visible={showModal}
 					onRequestClose={() => {
 						this.toggleShowModal();
 					}}
 				>
-					<View>
-						<Text>World Selector Field</Text>
+					<View style={styles.container}>
+						<WorldSelector
+							options={options}
+							onSelect={selection => {
+								onSelect(selection);
+								this.toggleShowModal();
+							}}
+						/>
 					</View>
 				</Modal>
 			</View>
@@ -234,6 +251,10 @@ class WorldSelectorField extends React.Component<any, IWorldSelectorFieldState> 
 }
 
 const styles = StyleSheet.create({
+	container: {
+		// flex: 1,
+		// backgroundColor: Color.white
+	},
 	item: {
 		flex: 1,
 		padding: 15
@@ -250,6 +271,12 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		fontSize: 16
+	},
+	title: {
+		color: Color.primaryDarkColor,
+		padding: 15,
+		fontSize: 18,
+		fontWeight: 'bold'
 	}
 });
 

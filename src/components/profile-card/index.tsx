@@ -12,7 +12,7 @@ import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency } from '../../utils/index';
 import Divider from '../divider/index';
-import { isEmpty, head } from 'lodash';
+import { isEmpty, head, get } from 'lodash';
 import { PhotosEntity, UserProfile } from '../../store/reducers/account-defination';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
@@ -61,6 +61,11 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		const { userProfile, hideSelfDescription, isSelfProfile } = this.props;
 		if (isEmpty(userProfile)) return null;
 		const { horoscope, education, profession, family } = { ...userProfile };
+		const professionLocation = ['workCity', 'workState', 'workCountry']
+			.map(e => get(profession, e))
+			.map(o => o && o.name)
+			.filter(o => !!o)
+			.join(', ');
 		const heartIcon = userProfile.isFavourite ? 'md-heart' : 'md-heart-empty';
 		const primaryUserProfilePhoto = !isEmpty(userProfile.photo) && head(userProfile.photo).url;
 		return (
@@ -140,10 +145,10 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 							<Value>- {family.familyLocation || 'unknown location'}</Value>
 						</View>
 					)}
-					{!!profession.workCity && (
+					{!!professionLocation && (
 						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 							<Value style={GlobalStyles.bold}>Work</Value>
-							<Value>- {profession.workCity || 'unknown work city'}</Value>
+							<Value>- {professionLocation || 'Work location not available'}</Value>
 						</View>
 					)}
 					{userProfile.describeMyself && !hideSelfDescription && (

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import {
-	TextInput,
-	TouchableNativeFeedback,
-	StyleSheet,
-	ScrollView,
-	View,
-	Picker,
-	Modal,
 	DatePickerAndroid,
-	TimePickerAndroid,
 	EmitterSubscription,
+	Keyboard,
+	Modal,
+	Picker,
 	Platform,
-	Keyboard
+	ScrollView,
+	StyleSheet,
+	TextInput,
+	TimePickerAndroid,
+	TouchableNativeFeedback,
+	View
 } from 'react-native';
 import GlobalStyles from '../styles/global';
 import Text from '../components/text/index';
@@ -20,10 +20,10 @@ import { Tag } from '../store/reducers/account-defination';
 import { Throbber } from '../components/throbber/throbber';
 import { getLogger } from '../utils/logger';
 import { formatDate, formatDateTime } from '../utils';
-import CountryPicker, { Country, getAllCountries } from 'react-native-country-picker-modal';
+import { Country, getAllCountries } from 'react-native-country-picker-modal';
 import { find } from 'lodash';
 import RNPickerSelect from 'react-native-picker-select';
-import { WorldSelectorField } from '../components/world-selector';
+import { WORLD_OPTION, WorldSelectorField } from '../components/world-selector';
 import Color from '../constants/Colors';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
@@ -180,11 +180,15 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			const isDateField = type === 'date';
 			const isDateTimeField = type === 'date-time';
 			const isCountryField = type === 'country';
+			const isStateField = type === 'state';
+			const isCityField = type === 'city';
 			const isTagArray = type === 'tag-array';
 			const tagType = isTagArray && fieldDefinition.tagType;
 
 			let renderString = null;
 			let stringEditable = false;
+
+			let renderWorldValue = '';
 
 			switch (type) {
 				case 'string':
@@ -194,6 +198,11 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 				case 'bool':
 					renderString = value ? 'Yes' : 'No';
 					stringEditable = false;
+					break;
+				case 'country':
+				case 'state':
+				case 'city':
+					renderWorldValue = (value && value.name) || '';
 					break;
 				default:
 					renderString = value;
@@ -277,47 +286,48 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 						<View style={styles.choiceField}>
 							<RNPickerSelect
 								value={value}
-								// placeholder={'Select...'}
+								useNativeAndroidPickerStyle={true}
 								onValueChange={itemValue => this.updateFieldValue(field, itemValue)}
 								items={choiceOptions}
 							/>
-							{/*<Picker
-								selectedValue={value}
-								onValueChange={itemValue => this.updateFieldValue(field, itemValue)}
-							>
-								{choiceOptions.map(option => (
-									<Picker.Item
-										key={option.value}
-										label={option.label}
-										value={option.value}
-									/>
-								))}
-							</Picker>*/}
 						</View>
 					)}
-					{/*{isCountryField && (
-						<CountryPicker
-							closeable={true}
-							filterable={true}
-							showCallingCode={false}
-							cca2={
-								(renderString && this.getCcaCodeFromCallingCode(renderString)) ||
-								'IN'
-							}
-							onChange={value => {
-								if (value && value.callingCode) {
-									this.updateFieldValue(field, parseInt(value.callingCode));
+					{isCountryField && (
+						<WorldSelectorField
+							options={[WORLD_OPTION.COUNTRY]}
+							onSelect={selection => {
+								if (!selection || !selection.country) {
+									return;
 								}
+								this.updateFieldValue(field, selection.country);
 							}}
-						>
-							<View style={styles.labelContainer}>
-								<Text style={styles.label}>
-									{this.renderCountryName(renderString) || 'Choose country'}
-								</Text>
-							</View>
-						</CountryPicker>
-					)}*/}
-					{isCountryField && <WorldSelectorField />}
+							value={renderWorldValue}
+						/>
+					)}
+					{isStateField && (
+						<WorldSelectorField
+							options={[WORLD_OPTION.COUNTRY, WORLD_OPTION.STATE]}
+							onSelect={selection => {
+								if (!selection || !selection.state) {
+									return;
+								}
+								this.updateFieldValue(field, selection.state);
+							}}
+							value={renderWorldValue}
+						/>
+					)}
+					{isCityField && (
+						<WorldSelectorField
+							options={[WORLD_OPTION.COUNTRY, WORLD_OPTION.STATE, WORLD_OPTION.CITY]}
+							onSelect={selection => {
+								if (!selection || !selection.city) {
+									return;
+								}
+								this.updateFieldValue(field, selection.city);
+							}}
+							value={renderWorldValue}
+						/>
+					)}
 				</View>
 			);
 		});
