@@ -30,6 +30,8 @@ import {
 	ProfessionTableOccupationOptions,
 	ProfessionTableWorkingFieldOptions
 } from '../collapsible-table/profession-table';
+import RangeFilter, { IRangeFilterProps } from './filters/RangeFilter';
+import { yearsToTs } from '../../utils';
 
 interface FilterProps {
 	options: any;
@@ -48,6 +50,7 @@ export interface FilterOption {
 	choices?: any;
 	component: any;
 	getSearchFilter?: (userSelections: any) => any;
+	range?: IRangeFilterProps;
 }
 
 interface ITypesOfFilter {
@@ -107,7 +110,28 @@ export const TypesOfFilter: ITypesOfFilter = {
 	// TODO: Range type filter
 	age: {
 		label: 'Age',
-		component: Filter
+		range: {
+			from: 18,
+			to: 60,
+			defaultFrom: 20,
+			defaultTo: 34,
+			suffix: 'yrs'
+		},
+		component: RangeFilter,
+		getSearchFilter: userSelections => {
+			const currentTs = new Date().getTime() / 1000;
+			const { from, to } = userSelections;
+			const fromTs = Math.ceil(currentTs - yearsToTs(from || 0));
+			const toTs = Math.floor(currentTs - yearsToTs(to || 0));
+			return {
+				"range" : {
+					"dob" : {
+						"lte" : fromTs,
+						"gte" : toTs,
+					}
+				}
+			};
+		}
 	},
 	height: {
 		label: 'Height',

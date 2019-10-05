@@ -50,6 +50,8 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 			}
 		};
 
+		this.setRangeValue = this.setRangeValue.bind(this);
+		this.setChoiceValue = this.setChoiceValue.bind(this);
 		this.applyFilter = this.applyFilter.bind(this);
 	}
 
@@ -74,6 +76,20 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 				</View>
 			</TouchableNativeFeedback>
 		);
+	}
+
+	setRangeValue(range: any) {
+		const { selectedFilter } = this.state;
+		if (selectedFilter) {
+			this.setState({
+				filters: {
+					...this.state.filters,
+					[selectedFilter]: {
+						...range
+					}
+				}
+			});
+		}
 	}
 
 	setChoiceValue(filterName: string, choiceKey: string, choiceValue: string) {
@@ -113,6 +129,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 		const FilterComponent = filter.component;
 		const choices =
 			typeof filter.choices === 'function' ? filter.choices(store) : filter.choices;
+		const isRangeFilter = !!filter.range;
 		return (
 			<View style={GlobalStyles.expand}>
 				<View style={[GlobalStyles.row, { height: height - 200 }]}>
@@ -132,7 +149,12 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 					</ScrollView>
 					<ScrollView style={GlobalStyles.expand}>
 						{
-							<FilterComponent
+							isRangeFilter && <FilterComponent
+								rangeValue={this.state.filters[selectedFilter]}
+								setRangeValue={this.setRangeValue} {...filter.range} />
+						}
+						{
+							!isRangeFilter && <FilterComponent
 								key={selectedFilter}
 								choices={choices}
 								setChoiceValue={(choiceKey, choiceValue) =>

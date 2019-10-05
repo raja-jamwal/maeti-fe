@@ -13,6 +13,7 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^10.0.0",
+    "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "@stomp/stompjs": "^5.4.2",
     "@types/react-native-actionsheet": "^2.4.1",
     "@types/react-native-snap-carousel": "^3.7.4",

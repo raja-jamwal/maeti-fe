@@ -1,6 +1,7 @@
 import { isEmpty, forOwn } from 'lodash';
 
 const moment = require('moment');
+const secondsInYear = 60 * 60 * 24 * 365;
 
 /**
  * return the age from the timestamp
@@ -9,8 +10,11 @@ const moment = require('moment');
 const calculateAge = function(timestamp: number) {
 	const today = new Date();
 	const diff = today.getTime() - new Date(timestamp * 1000).getTime();
-	const secondsInYear = 60 * 60 * 24 * 365;
 	return Math.floor(diff / (secondsInYear * 1000));
+};
+
+const yearsToTs = function(years: number) {
+	return years * secondsInYear;
 };
 
 const humanizeCurrency = function(value: number) {
@@ -62,4 +66,4 @@ const formatDateTime = (ts: number) => {
 	return moment(date).format('dddd, MMMM Do YYYY, h:mm a');
 };
 
-export { calculateAge, humanizeCurrency, ApiRequest, formatDate, formatDateTime };
+export { calculateAge, yearsToTs, humanizeCurrency, ApiRequest, formatDate, formatDateTime };
