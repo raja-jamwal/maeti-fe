@@ -2,6 +2,8 @@ import { isEmpty, forOwn } from 'lodash';
 
 const moment = require('moment');
 const secondsInYear = 60 * 60 * 24 * 365;
+const LAKH_RUPEE = 100000;
+const CRORE_RUPEE = 100 * LAKH_RUPEE;
 
 /**
  * return the age from the timestamp
@@ -17,8 +19,8 @@ const yearsToTs = function(years: number) {
 	return years * secondsInYear;
 };
 
-const humanizeCurrency = function(value: number) {
-	return `₹ ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+const humanizeCurrency = function(value: number, prefix: string) {
+	return `${prefix ? prefix : ''} ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 };
 
 const ApiRequest = function(url, params) {
@@ -66,4 +68,13 @@ const formatDateTime = (ts: number) => {
 	return moment(date).format('dddd, MMMM Do YYYY, h:mm a');
 };
 
-export { calculateAge, yearsToTs, humanizeCurrency, ApiRequest, formatDate, formatDateTime };
+export {
+	LAKH_RUPEE,
+	CRORE_RUPEE,
+	calculateAge,
+	yearsToTs,
+	humanizeCurrency,
+	ApiRequest,
+	formatDate,
+	formatDateTime
+};

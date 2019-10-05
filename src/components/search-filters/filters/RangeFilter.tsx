@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Text, View, StyleSheet, Slider } from 'react-native';
 import Colors from 'src/constants/Colors';
 import { isEqual } from 'lodash';
+import { humanizeCurrency } from '../../../utils';
 
 export interface IRangeFilterProps {
 	from: number;
@@ -49,7 +50,7 @@ export default class RangeFilter extends React.Component<IRangeFilterProps, IRan
 
 	componentDidMount(): void {
 		const ranges = RangeFilter.getRanges(this.props);
-		const { from, to } = this.props.rangeValue;
+		const { from, to } = this.props.rangeValue || {};
 		this.setState({
 			selectedFrom: from || ranges.first.default,
 			selectedTo: to || ranges.second.default
@@ -59,7 +60,8 @@ export default class RangeFilter extends React.Component<IRangeFilterProps, IRan
 	getFormattedValue(value: number) {
 		const prefix = this.props.prefix || '';
 		const suffix = this.props.suffix || '';
-		return `${prefix}${value} ${suffix}`;
+		const humanized = humanizeCurrency(value, prefix);
+		return `${humanized} ${suffix}`;
 	}
 
 	static getRanges(props: IRangeFilterProps): ISliderRanges {

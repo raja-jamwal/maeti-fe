@@ -31,7 +31,7 @@ import {
 	ProfessionTableWorkingFieldOptions
 } from '../collapsible-table/profession-table';
 import RangeFilter, { IRangeFilterProps } from './filters/RangeFilter';
-import { yearsToTs } from '../../utils';
+import { CRORE_RUPEE, LAKH_RUPEE, yearsToTs } from '../../utils';
 
 interface FilterProps {
 	options: any;
@@ -107,7 +107,6 @@ export const TypesOfFilter: ITypesOfFilter = {
 			return queryBase;
 		}
 	},
-	// TODO: Range type filter
 	age: {
 		label: 'Age',
 		range: {
@@ -133,6 +132,7 @@ export const TypesOfFilter: ITypesOfFilter = {
 			};
 		}
 	},
+	// TODO: Convert height to range filter
 	height: {
 		label: 'Height',
 		choices: ProfileTableHeightOptions,
@@ -342,7 +342,28 @@ export const TypesOfFilter: ITypesOfFilter = {
 	// range type filter
 	income: {
 		label: 'Income',
-		component: Filter
+		range: {
+			from: 0,
+			to: 10 * CRORE_RUPEE,
+			defaultFrom: 3 * LAKH_RUPEE,
+			defaultTo: 30 * LAKH_RUPEE,
+			prefix: '₹',
+			suffix: ' Rupees / Year'
+		},
+		component: RangeFilter,
+		getSearchFilter: userSelections => {
+			const { from, to } = userSelections;
+			const fromIncome = from || 0;
+			const toIncome = to || 0;
+			return {
+				"range" : {
+					"profession.annualIncome" : {
+						"gte" : fromIncome,
+						"lte" : toIncome,
+					}
+				}
+			};
+		}
 	},
 
 	/*

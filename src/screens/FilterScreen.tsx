@@ -15,6 +15,8 @@ import { IRootState } from '../store';
 import { applyFilter, getSearchFilter } from '../store/reducers/filter-reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
+import { omit, isEmpty } from 'lodash';
 
 interface IMapStateToProps {
 	filters: any;
@@ -56,12 +58,20 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 	}
 
 	setSelectedFilter(filterKey: string) {
+		let filters = this.state.filters;
+		/*
+			Remove when a selected filter is clicked again while in focus
+		*/
+		if (this.state.filters[filterKey] && filterKey === this.state.selectedFilter) {
+			filters = omit(this.state.filters, [filterKey]);
+		}
 		this.setState({
-			selectedFilter: filterKey
+			selectedFilter: filterKey,
+			filters: {...filters}
 		});
 	}
 
-	renderFilerButton(filter: FilterOption, key: string) {
+	renderFilterButton(filter: FilterOption, key: string) {
 		const { selectedFilter } = this.state;
 		const classes: any = [styles.filterBtn];
 
@@ -69,9 +79,19 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 			classes.push(styles.selectedFilter);
 		}
 
+		const isFilterEnabled = !isEmpty(this.state.filters[key]);
+
 		return (
 			<TouchableNativeFeedback onPress={() => this.setSelectedFilter(key)}>
 				<View style={classes}>
+					{
+						isFilterEnabled && <Ionicons
+							name="md-checkbox-outline"
+							size={23}
+							style={{ marginBottom: -3, marginRight: 10 }}
+							color={Colors.primaryDarkColor}
+						/>
+					}
 					<Text>{filter.label}</Text>
 				</View>
 			</TouchableNativeFeedback>
@@ -142,7 +162,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 							const filter = TypesOfFilter[filterKey];
 							return (
 								<View key={filterKey}>
-									{this.renderFilerButton(filter, filterKey)}
+									{this.renderFilterButton(filter, filterKey)}
 								</View>
 							);
 						})}
@@ -217,7 +237,8 @@ const styles = StyleSheet.create({
 		borderTopWidth: 0,
 		borderWidth: 1,
 		borderColor: Colors.borderColor,
-		padding: 15
+		padding: 15,
+		flexDirection: 'row'
 	},
 	selectedFilter: {
 		borderLeftColor: Colors.pink,

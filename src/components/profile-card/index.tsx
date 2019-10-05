@@ -134,7 +134,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						)}
 						{!!profession.annualIncome && (
 							<Value style={GlobalStyles.bold}>
-								{humanizeCurrency(profession.annualIncome || '0')}
+								{humanizeCurrency(profession.annualIncome || 0, '₹')}
 								/Year
 							</Value>
 						)}
