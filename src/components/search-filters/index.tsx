@@ -46,6 +46,7 @@ const Filter = (props: FilterProps) => {
 };
 
 export interface FilterOption {
+	hidden?: boolean;
 	label: String;
 	choices?: any;
 	component: any;
@@ -596,6 +597,28 @@ export const TypesOfFilter: ITypesOfFilter = {
 					'lifestyle.sports.value.keyword': Object.keys(userSelections).filter(
 						u => !!userSelections[u]
 					)
+				}
+			};
+		}
+	},
+
+	/*
+		Global Search
+	 */
+	search: {
+		hidden: true,
+		label: 'Global Search',
+		component: Filter,
+		getSearchFilter: text => {
+			console.log("getSearchFilter ", text);
+			return {
+				query_string: {
+					// Add more string fields here to search
+					fields: [
+						"fullName",
+						"about"
+					],
+					query: `*${text}*`
 				}
 			};
 		}

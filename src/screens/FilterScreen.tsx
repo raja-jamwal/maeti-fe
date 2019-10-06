@@ -160,6 +160,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 					>
 						{Object.keys(TypesOfFilter).map((filterKey: string) => {
 							const filter = TypesOfFilter[filterKey];
+							if (!!filter.hidden) return;
 							return (
 								<View key={filterKey}>
 									{this.renderFilterButton(filter, filterKey)}

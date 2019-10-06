@@ -7,6 +7,7 @@ import { IRootState } from '../index';
 import { bulkAddProfile } from './user-profile-reducer';
 import { getLogger } from '../../utils/logger';
 import { buildSearchFilter } from './filter-util';
+import { createSelector } from 'reselect';
 
 export interface IScreenData {
 	profiles: {
@@ -56,6 +57,13 @@ const defaultExploreState: IExploreState = {
 	viewed_profile: defaultScreenData,
 	selected_screen: 'discover'
 };
+
+// Rules
+export const getExploreState = (state: IRootState) => state.explore;
+export const getSelectedScreen = createSelector(
+	getExploreState,
+	explore => explore.selected_screen
+);
 
 enum ACTIONS {
 	CHANGE_SELECTED_SCREEN = 'CHANGE_SELECTED_SCREEN',
@@ -174,7 +182,7 @@ export const fetchSearchResult = function() {
 				dispatch(setFetchingForScreen({ fetching: false, screen: selectedScreen }));
 			})
 			.catch(err => {
-				console.log('err ', err);
+				logger.log('err ', err);
 				dispatch(setFetchingForScreen({ fetching: false, screen: selectedScreen }));
 			});
 	};

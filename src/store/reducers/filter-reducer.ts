@@ -40,6 +40,18 @@ export const applyFilter = function(filter: any) {
 	};
 };
 
+export const applyGlobalFilter = function(search: string) {
+	return (dispatch: Dispatch<any>) => {
+		const filter = {
+			search
+		};
+		dispatch(setSearchFilter(filter));
+		dispatch(clearSearchResultForScreen('search'));
+		dispatch(changeSelectedExploreScreen('search'));
+		dispatch(fetchSearchResult());
+	};
+};
+
 export const filterReducer = handleActions(
 	{
 		[ACTIONS.SET_SEARCH_FILTER]: (state, { payload }) => {

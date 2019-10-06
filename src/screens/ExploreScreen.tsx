@@ -20,12 +20,14 @@ import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { mayBeFetchSearchResult } from '../store/reducers/explore-reducer';
 import { toArray, sortBy, head, isEmpty } from 'lodash';
-import { getSearchFilter } from '../store/reducers/filter-reducer';
+import { applyGlobalFilter, getSearchFilter } from '../store/reducers/filter-reducer';
 import { getLogger } from '../utils/logger';
 import {
 	getCurrentUserProfile,
 	getCurrentUserProfileId
 } from '../store/reducers/self-profile-reducer';
+import SelectedFilter from '../components/selected-filters';
+
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
 interface IExploreScreenProps {
@@ -43,17 +45,19 @@ const ExploreScreenHeader = (props: any) => {
 	const profileImage = head(props.currentUserProfile.photo);
 	const profileAvatar = !isEmpty(profileImage)
 		? {
-				uri: profileImage.url,
-				width: 36,
-				height: 36
-		  }
+			uri: profileImage.url,
+			width: 36,
+			height: 36
+		}
 		: defaultPrimaryPhoto;
+	const onSubmitEditing = ({ nativeEvent: { text } }) => props.applyGlobalFilter(text);
 	return (
 		<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.header]}>
 			<TouchableNativeFeedback onPress={() => navigateToProfile()}>
-				<Image source={profileAvatar} style={styles.avatar} />
+				<Image source={profileAvatar} style={styles.avatar}/>
 			</TouchableNativeFeedback>
-			<TextInput style={[GlobalStyles.expand, styles.searchInput]} />
+			<TextInput style={[GlobalStyles.expand, styles.searchInput]}
+					   onSubmitEditing={onSubmitEditing}/>
 			{/*<TouchableNativeFeedback>
 				<Icon.Ionicons
 					style={styles.navBarIcon}
@@ -78,10 +82,15 @@ const ConnectedHeader = connect(
 	(state: IRootState) => {
 		return {
 			currentUserProfileId: getCurrentUserProfileId(state),
-			currentUserProfile: getCurrentUserProfile(state)
+			currentUserProfile: getCurrentUserProfile(state),
+			filters: getSearchFilter(state)
 		};
 	},
-	null
+	(dispatch) => {
+		return {
+			applyGlobalFilter: bindActionCreators(applyGlobalFilter, dispatch)
+		};
+	}
 )(ExploreScreenHeader);
 
 class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExploreScreenProps> {
@@ -89,7 +98,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 
 	static navigationOptions = ({ navigation }) => ({
 		title: 'Explore',
-		header: () => <ConnectedHeader navigation={navigation} />
+		header: () => <ConnectedHeader navigation={navigation}/>
 	});
 
 	constructor(props: any) {
@@ -109,6 +118,10 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 			{
 				type: 'filter-tab',
 				key: 'filter-tab'
+			},
+			{
+				type: 'selected-filters',
+				key: 'selected-filters'
 			}
 		];
 
@@ -140,7 +153,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 				onPress={() => this.openProfileScreen(userProfileId)}
 			>
 				<View style={styles.profileCardContainer}>
-					<ConnectedProfile userProfileId={userProfileId} />
+					<ConnectedProfile userProfileId={userProfileId}/>
 				</View>
 			</TouchableNativeFeedback>
 		);
@@ -149,12 +162,13 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 	renderItem(item: any) {
 		switch (item.type) {
 			case 'filter-tab':
-				return <TabbedFilters />;
+				return <TabbedFilters/>;
 			case 'user-profile':
 				return this.renderProfileCard(item.profileId);
-			case 'loader': {
-				return <Throbber />;
-			}
+			case 'loader':
+				return <Throbber size="large" />;
+			case 'selected-filters':
+				return <SelectedFilter/>;
 			default:
 				return null;
 		}
