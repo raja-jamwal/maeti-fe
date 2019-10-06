@@ -27,6 +27,7 @@ import {
 	getCurrentUserProfileId
 } from '../store/reducers/self-profile-reducer';
 import SelectedFilter from '../components/selected-filters';
+import EmptyResult from '../components/empty-result';
 
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
@@ -125,16 +126,25 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 			}
 		];
 
-		sortBy(toArray(userProfiles), 'updatedOn')
-			.reverse()
-			.forEach(userProfile => {
-				const userProfileId = userProfile.id;
-				items.push({
-					type: 'user-profile',
-					key: `profile-${userProfileId}`,
-					profileId: userProfileId
+		if (toArray(userProfiles).length) {
+			sortBy(toArray(userProfiles), 'updatedOn')
+				.reverse()
+				.forEach(userProfile => {
+					const userProfileId = userProfile.id;
+					items.push({
+						type: 'user-profile',
+						key: `profile-${userProfileId}`,
+						profileId: userProfileId
+					});
 				});
-			});
+		} else {
+			if (!fetching) {
+				items.push({
+					type: 'empty-result',
+					key: 'empty-result'
+				});
+			}
+		}
 
 		if (fetching) {
 			items.push({
@@ -169,6 +179,8 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 				return <Throbber size="large" />;
 			case 'selected-filters':
 				return <SelectedFilter/>;
+			case 'empty-result':
+				return <EmptyResult/>;
 			default:
 				return null;
 		}
