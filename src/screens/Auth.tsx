@@ -34,7 +34,8 @@ enum LOGIN_SCREENS {
 	SIGNUP,
 	VERIFY,
 	VERIFYING,
-	PLANS
+	PLANS,
+	ERROR
 }
 
 enum ACTION {
@@ -92,7 +93,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				navigation.navigate('Main');
 			} catch (err) {
 				this.logger.log('Error happened while fetching');
-				this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+				this.changeScreen(LOGIN_SCREENS.ERROR);
 			}
 		} else {
 			this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
@@ -308,6 +309,17 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		);
 	}
 
+	renderError() {
+		return (
+			<View>
+				<Text style={styles.disabledText}>Make sure you have Internet</Text>
+				<TouchableNativeFeedback onPress={() => this._tryAuth()}>
+					<Text style={styles.btn}>Retry</Text>
+				</TouchableNativeFeedback>
+			</View>
+		);
+	}
+
 	render() {
 		const { activeScreen } = this.state;
 		return (
@@ -318,7 +330,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				{activeScreen === LOGIN_SCREENS.VERIFY && this.renderVerificationScreen()}
 				{activeScreen === LOGIN_SCREENS.VERIFYING && <ActivityIndicator color="white" />}
 				{activeScreen === LOGIN_SCREENS.PLANS && this.renderPlans()}
-				{!!activeScreen && (
+				{activeScreen === LOGIN_SCREENS.ERROR && this.renderError()}
+				{!!activeScreen && activeScreen !== LOGIN_SCREENS.ERROR && (
 					<Text style={styles.tos}>
 						Copyright (c) 2019 DataGrid Softwares LLP. All rights reserved. Use of this
 						software is under Terms and conditions
