@@ -28,7 +28,6 @@ interface IFilterBreadCrum {
 type ISelectedFilterProps = ISelectedFilterMapStateToProps & ISelectedFilterMapDispatchToProps;
 
 class SelectedFilter extends React.Component<ISelectedFilterProps> {
-
 	constructor(props: ISelectedFilterProps) {
 		super(props);
 		this.getSelectedFilters = this.getSelectedFilters.bind(this);
@@ -37,10 +36,12 @@ class SelectedFilter extends React.Component<ISelectedFilterProps> {
 
 	getApplicableFilters(): string[] {
 		const { filters } = this.props;
-		return Object.keys(filters).map(key => {
-			if (isEmpty(filters[key])) return;
-			return key;
-		}).filter(p => !!p) as string[];
+		return Object.keys(filters)
+			.map(key => {
+				if (isEmpty(filters[key])) return;
+				return key;
+			})
+			.filter(p => !!p) as string[];
 	}
 
 	getSelectedFilters(): IFilterBreadCrum[] {
@@ -60,30 +61,34 @@ class SelectedFilter extends React.Component<ISelectedFilterProps> {
 	}
 
 	renderFilterButton(breadCrum: IFilterBreadCrum) {
-		return <TouchableNativeFeedback
-			key={breadCrum.key}
-			onPress={() => this.removeFilter(breadCrum.key)}>
-			<View style={[GlobalStyles.row, styles.filterBreadCrumContainer]}>
-				<Text style={styles.filterBreadCrumText}>{breadCrum.filter.label}</Text>
-				<Ionicons style={styles.filterBreadCrumText} name="md-close" size={20}
-						  color="black"/>
-			</View>
-		</TouchableNativeFeedback>;
+		return (
+			<TouchableNativeFeedback
+				key={breadCrum.key}
+				onPress={() => this.removeFilter(breadCrum.key)}
+			>
+				<View style={[GlobalStyles.row, styles.filterBreadCrumContainer]}>
+					<Text style={styles.filterBreadCrumText}>{breadCrum.filter.label}</Text>
+					<Ionicons
+						style={styles.filterBreadCrumText}
+						name="md-close"
+						size={20}
+						color="black"
+					/>
+				</View>
+			</TouchableNativeFeedback>
+		);
 	}
 
 	render() {
 		const { selectedScreen } = this.props;
 		if (selectedScreen !== 'search') return null;
-		return <ScrollView horizontal={true}
-						   showsHorizontalScrollIndicator={false}
-						   style={[]}>
-			<View style={[styles.container, GlobalStyles.row]}>
-				{
-					this.getSelectedFilters()
-						.map(this.renderFilterButton)
-				}
-			</View>
-		</ScrollView>;
+		return (
+			<ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={[]}>
+				<View style={[styles.container, GlobalStyles.row]}>
+					{this.getSelectedFilters().map(this.renderFilterButton)}
+				</View>
+			</ScrollView>
+		);
 	}
 }
 
@@ -105,15 +110,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ConnectedSelectedFilter = connect((state: IRootState) => {
-	return {
-		filters: getSearchFilter(state),
-		selectedScreen: getSelectedScreen(state)
-	};
-}, (dispatch) => {
-	return {
-		applyFilter: bindActionCreators(applyFilter, dispatch)
-	};
-})(SelectedFilter);
+const ConnectedSelectedFilter = connect(
+	(state: IRootState) => {
+		return {
+			filters: getSearchFilter(state),
+			selectedScreen: getSelectedScreen(state)
+		};
+	},
+	dispatch => {
+		return {
+			applyFilter: bindActionCreators(applyFilter, dispatch)
+		};
+	}
+)(SelectedFilter);
 
 export default ConnectedSelectedFilter;

@@ -67,7 +67,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 		}
 		this.setState({
 			selectedFilter: filterKey,
-			filters: {...filters}
+			filters: { ...filters }
 		});
 	}
 
@@ -84,14 +84,14 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 		return (
 			<TouchableNativeFeedback onPress={() => this.setSelectedFilter(key)}>
 				<View style={classes}>
-					{
-						isFilterEnabled && <Ionicons
+					{isFilterEnabled && (
+						<Ionicons
 							name="md-checkbox-outline"
 							size={23}
 							style={{ marginBottom: -3, marginRight: 10 }}
 							color={Colors.primaryDarkColor}
 						/>
-					}
+					)}
 					<Text>{filter.label}</Text>
 				</View>
 			</TouchableNativeFeedback>
@@ -169,13 +169,15 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 						})}
 					</ScrollView>
 					<ScrollView style={GlobalStyles.expand}>
-						{
-							isRangeFilter && <FilterComponent
+						{isRangeFilter && (
+							<FilterComponent
 								rangeValue={this.state.filters[selectedFilter]}
-								setRangeValue={this.setRangeValue} {...filter.range} />
-						}
-						{
-							!isRangeFilter && <FilterComponent
+								setRangeValue={this.setRangeValue}
+								{...filter.range}
+							/>
+						)}
+						{!isRangeFilter && (
+							<FilterComponent
 								key={selectedFilter}
 								choices={choices}
 								setChoiceValue={(choiceKey, choiceValue) =>
@@ -183,7 +185,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 								}
 								choicesValue={this.state.filters[selectedFilter]}
 							/>
-						}
+						)}
 					</ScrollView>
 				</View>
 

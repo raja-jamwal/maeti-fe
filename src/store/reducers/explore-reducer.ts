@@ -8,6 +8,7 @@ import { bulkAddProfile } from './user-profile-reducer';
 import { getLogger } from '../../utils/logger';
 import { buildSearchFilter } from './filter-util';
 import { createSelector } from 'reselect';
+import { getCurrentUserProfileId } from './self-profile-reducer';
 
 export interface IScreenData {
 	profiles: {
@@ -121,6 +122,10 @@ export const fetchSearchResult = function() {
 
 		const storeItemsCount = Object.keys(currentScreen.profiles).length;
 
+		const currentUserProfileId = getCurrentUserProfileId(getState());
+
+		if (!currentUserProfileId) return;
+
 		// default match everything
 		// this is show stopper for production
 		let searchQuery: any = {
@@ -129,7 +134,7 @@ export const fetchSearchResult = function() {
 
 		switch (selectedScreen) {
 			case 'search':
-				searchQuery = buildSearchFilter(getState().filter.filters);
+				searchQuery = buildSearchFilter(getState().filter.filters, currentUserProfileId);
 				break;
 		}
 
@@ -152,7 +157,7 @@ export const fetchSearchResult = function() {
 
 		logger.log(JSON.stringify(query.query));
 
-		return fetch(API.SEARCH.GET, {
+		return fetch(`${API.SEARCH.GET}/${currentUserProfileId}`, {
 			method: 'post',
 			headers: {
 				Accept: 'application/json',

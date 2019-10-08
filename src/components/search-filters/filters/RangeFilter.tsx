@@ -20,12 +20,12 @@ interface ISliderRanges {
 		from: number;
 		to: number;
 		default: number;
-	},
+	};
 	second: {
 		from: number;
 		to: number;
 		default: number;
-	}
+	};
 }
 
 interface IRangeFilterState {
@@ -39,7 +39,6 @@ enum SLIDERS {
 }
 
 export default class RangeFilter extends React.Component<IRangeFilterProps, IRangeFilterState> {
-
 	constructor(props: IRangeFilterProps) {
 		super(props);
 		this.state = {
@@ -85,7 +84,8 @@ export default class RangeFilter extends React.Component<IRangeFilterProps, IRan
 
 	componentWillReceiveProps(nextProps: Readonly<IRangeFilterProps>): void {
 		const ranges = RangeFilter.getRanges(nextProps);
-		const isRangeValueSupplied = nextProps.rangeValue && nextProps.rangeValue.from && nextProps.rangeValue.to;
+		const isRangeValueSupplied =
+			nextProps.rangeValue && nextProps.rangeValue.from && nextProps.rangeValue.to;
 		if (!isRangeValueSupplied) {
 			this.setState({
 				selectedFrom: ranges.first.default,
@@ -103,7 +103,7 @@ export default class RangeFilter extends React.Component<IRangeFilterProps, IRan
 	toSliderValue(slider: SLIDERS, value: number) {
 		const ranges = RangeFilter.getRanges(this.props);
 		if (slider === SLIDERS.FIRST) {
-			return -((value - ranges.first.to) - ranges.first.from);
+			return -(value - ranges.first.to - ranges.first.from);
 		}
 		return value;
 	}
@@ -121,24 +121,31 @@ export default class RangeFilter extends React.Component<IRangeFilterProps, IRan
 		const { selectedTo, selectedFrom } = this.state;
 		return (
 			<View style={styles.container}>
-				<Text
-					style={styles.sliderLabels}>From: {this.getFormattedValue(selectedFrom)}</Text>
-				<Slider style={styles.startSlider}
-						onValueChange={() => null}
-						onSlidingComplete={this.handleEndValue(SLIDERS.FIRST).bind(this)}
-						value={this.fromSliderValue(SLIDERS.FIRST, selectedFrom)} step={1}
-						minimumValue={ranges.first.from} maximumValue={ranges.first.to}
-						thumbTintColor={Colors.primaryDarkColor}
-						minimumTrackTintColor={Colors.primaryDarkColor}
+				<Text style={styles.sliderLabels}>
+					From: {this.getFormattedValue(selectedFrom)}
+				</Text>
+				<Slider
+					style={styles.startSlider}
+					onValueChange={() => null}
+					onSlidingComplete={this.handleEndValue(SLIDERS.FIRST).bind(this)}
+					value={this.fromSliderValue(SLIDERS.FIRST, selectedFrom)}
+					step={1}
+					minimumValue={ranges.first.from}
+					maximumValue={ranges.first.to}
+					thumbTintColor={Colors.primaryDarkColor}
+					minimumTrackTintColor={Colors.primaryDarkColor}
 				/>
 				<Text style={styles.sliderLabels}>To: {this.getFormattedValue(selectedTo)}</Text>
-				<Slider onValueChange={() => null}
-						onSlidingComplete={this.handleEndValue(SLIDERS.SECOND).bind(this)}
-						value={this.fromSliderValue(SLIDERS.SECOND, selectedTo)} step={1}
-						minimumValue={ranges.second.from} maximumValue={ranges.second.to}
-						thumbTintColor={Colors.primaryDarkColor}
-						minimumTrackTintColor={Colors.primaryDarkColor}/>
-
+				<Slider
+					onValueChange={() => null}
+					onSlidingComplete={this.handleEndValue(SLIDERS.SECOND).bind(this)}
+					value={this.fromSliderValue(SLIDERS.SECOND, selectedTo)}
+					step={1}
+					minimumValue={ranges.second.from}
+					maximumValue={ranges.second.to}
+					thumbTintColor={Colors.primaryDarkColor}
+					minimumTrackTintColor={Colors.primaryDarkColor}
+				/>
 			</View>
 		);
 	}

@@ -1,12 +1,14 @@
-import { Favourite, Pageable } from './account-defination';
+import { Favourite, Pageable, UserProfile } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { Dispatch } from 'redux';
 import { API } from '../../config/API';
-import { bulkAddProfile } from './user-profile-reducer';
+import { addProfile, bulkAddProfile } from './user-profile-reducer';
 import { ApiRequest } from '../../utils/index';
 import { IRootState } from '../index';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
 import { createSelector } from 'reselect';
+import { getLogger } from '../../utils/logger';
+import { getCurrentUserProfileId } from './self-profile-reducer';
 
 export interface IFavouriteState {
 	favourites: {
@@ -56,6 +58,7 @@ export const getTotalElements = createSelector(
 const ADD_FAVOURITE = 'ADD_FAVOURITE';
 const BULK_ADD_FAVOURITE = 'BULK_ADD_FAVOURITE';
 const ADD_FAVOURITE_PAGE = 'ADD_FAVOURITE_PAGE';
+const REMOVE_FAVOURITE = 'REMOVE_FAVOURITE';
 // super performant to reduce render cycles
 const BULK_ADD_FAVOURITE_RESPONSE = 'BULK_ADD_FAVOURITE_RESPONSE';
 const SET_FAVOURITE_FETCHING = 'SET_FAVOURITE_FETCHING';
@@ -67,6 +70,48 @@ export const bulkAddFavouriteResponse = createAction<IBulkAddFavouriteResponse>(
 );
 export const addFavouritePage = createAction<Pageable>(ADD_FAVOURITE_PAGE);
 export const setFavouriteFetching = createAction<boolean>(SET_FAVOURITE_FETCHING);
+export const removeFavourite = createAction<Favourite>(REMOVE_FAVOURITE);
+
+export const setUserProfileFavourite = function(userProfile: UserProfile, isFavourite: boolean) {
+	const logger = getLogger(setUserProfileFavourite);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		logger.log(
+			`trying to marking ${userProfile.id} as favourite ${isFavourite ? 'true' : 'false'}`
+		);
+		const currentProfileId = getCurrentUserProfileId(getState());
+		if (!userProfile.id || !currentProfileId) return;
+		//
+		// Eagerly update the store
+		//
+		const eagerlyUpdatedProfile = { ...userProfile };
+		eagerlyUpdatedProfile.isFavourite = isFavourite;
+		dispatch(addProfile(eagerlyUpdatedProfile));
+		return ApiRequest(API.FAVOURITE.SAVE, {
+			favouriteOfUserId: currentProfileId,
+			favouriteProfileId: userProfile.id,
+			isFavourite
+		})
+			.then((response: any) => {
+				const favourite = response as Favourite;
+				//
+				// Finally add changes to the favourite profile list
+				//
+				if (isFavourite) {
+					dispatch(addFavourite(favourite));
+				} else {
+					dispatch(removeFavourite(favourite));
+				}
+			})
+			.catch(err => {
+				logger.log('error while changing favourite ', err);
+				//
+				// Do a rollback just in case we missed it
+				//
+				eagerlyUpdatedProfile.isFavourite = !eagerlyUpdatedProfile.isFavourite;
+				dispatch(addProfile(eagerlyUpdatedProfile));
+			});
+	};
+};
 
 export const fetchFavouriteProfile = function(id: number) {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
@@ -145,6 +190,17 @@ export const favouriteReducer = handleActions<IFavouriteState>(
 				favourites: {
 					...existingFavs,
 					[favourite.favouriteIdentity.favouriteProfileId]: favourite
+				}
+			};
+		},
+		[REMOVE_FAVOURITE]: (state, { payload }) => {
+			const favourite = (payload as any) as Favourite;
+			const existingFavs = { ...state.favourites };
+			delete existingFavs[favourite.favouriteIdentity.favouriteProfileId];
+			return {
+				...state,
+				favourites: {
+					...existingFavs
 				}
 			};
 		},

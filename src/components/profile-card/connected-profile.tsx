@@ -5,6 +5,8 @@ import { isEmpty } from 'lodash';
 import { IRootState } from '../../store/index';
 import { getLogger } from '../../utils/logger';
 import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+import { bindActionCreators, Dispatch } from 'redux';
+import { setUserProfileFavourite } from '../../store/reducers/favourite-reducer';
 
 const logger = getLogger('ConnectedProfile');
 
@@ -35,7 +37,13 @@ const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 	};
 };
 
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+	return {
+		setUserProfileFavourite: bindActionCreators(setUserProfileFavourite, dispatch)
+	};
+};
+
 export default connect(
 	mapStateToProps,
-	null
+	mapDispatchToProps
 )(ProfileCard);

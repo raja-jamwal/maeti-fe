@@ -271,151 +271,151 @@ export const SalutationOptions = [
 export const ProfileTableHeightOptions = [
 	{
 		label: 'Below 4.1',
-		value: '<4.1'
+		value: 123
 	},
 	{
 		label: '4.1',
-		value: '4.1'
+		value: 124
 	},
 	{
 		label: '4.2',
-		value: '4.2'
+		value: 127
 	},
 	{
 		label: '4.3',
-		value: '4.3'
+		value: 130
 	},
 	{
 		label: '4.4',
-		value: '4.4'
+		value: 132
 	},
 	{
 		label: '4.5',
-		value: '4.5'
+		value: 135
 	},
 	{
 		label: '4.6',
-		value: '4.6'
+		value: 137
 	},
 	{
 		label: '4.7',
-		value: '4.7'
+		value: 140
 	},
 	{
 		label: '4.8',
-		value: '4.8'
+		value: 142
 	},
 	{
 		label: '4.9',
-		value: '4.9'
+		value: 145
 	},
 	{
 		label: '4.10',
-		value: '4.10'
+		value: 147
 	},
 	{
 		label: '4.11',
-		value: '4.11'
+		value: 150
 	},
 	{
 		label: '5.0',
-		value: '5.0'
+		value: 152
 	},
 	{
 		label: '5.1',
-		value: '5.1'
+		value: 155
 	},
 	{
 		label: '5.2',
-		value: '5.2'
+		value: 158
 	},
 	{
 		label: '5.3',
-		value: '5.3'
+		value: 160
 	},
 	{
 		label: '5.4',
-		value: '5.4'
+		value: 163
 	},
 	{
 		label: '5.5',
-		value: '5.5'
+		value: 165
 	},
 	{
 		label: '5.6',
-		value: '5.6'
+		value: 168
 	},
 	{
 		label: '5.7',
-		value: '5.7'
+		value: 170
 	},
 	{
 		label: '5.8',
-		value: '5.8'
+		value: 173
 	},
 	{
 		label: '5.9',
-		value: '5.9'
+		value: 175
 	},
 	{
 		label: '5.10',
-		value: '5.10'
+		value: 178
 	},
 	{
 		label: '5.11',
-		value: '5.11'
+		value: 180
 	},
 	{
 		label: '6.0',
-		value: '6.0'
+		value: 183
 	},
 	{
 		label: '6.1',
-		value: '6.1'
+		value: 185
 	},
 	{
 		label: '6.2',
-		value: '6.2'
+		value: 188
 	},
 	{
 		label: '6.3',
-		value: '6.3'
+		value: 191
 	},
 	{
 		label: '6.4',
-		value: '6.4'
+		value: 193
 	},
 	{
 		label: '6.5',
-		value: '6.5'
+		value: 196
 	},
 	{
 		label: '6.6',
-		value: '6.6'
+		value: 198
 	},
 	{
 		label: '6.7',
-		value: '6.7'
+		value: 201
 	},
 	{
 		label: '6.8',
-		value: '6.8'
+		value: 203
 	},
 	{
 		label: '6.9',
-		value: '6.9'
+		value: 206
 	},
 	{
 		label: '6.10',
-		value: '6.10'
+		value: 209
 	},
 	{
 		label: '6.11',
-		value: '6.11'
+		value: 211
 	},
 	{
 		label: '7 or Above',
-		value: '>=7'
+		value: 213
 	}
 ];
 export const ProfileTableBodyTypeOptions = [

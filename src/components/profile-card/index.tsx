@@ -27,6 +27,7 @@ export interface IProfileProps {
 	userProfile: UserProfile;
 	isSelfProfile: boolean;
 	hideSelfDescription: boolean;
+	setUserProfileFavourite: (userProfile: UserProfile, setFavourite: boolean) => void;
 }
 
 type IProfileCardProps = NavigationInjectedProps & IProfileProps;
@@ -35,6 +36,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 	constructor(props: IProfileCardProps) {
 		super(props);
 		this.openProfileImageGallery = this.openProfileImageGallery.bind(this);
+		this.setUserProfileFavourite = this.setUserProfileFavourite.bind(this);
 	}
 
 	fullWidth() {
@@ -57,6 +59,11 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		navigation.push('ProfileImageGalleryScreen', { userProfileId });
 	}
 
+	setUserProfileFavourite() {
+		const { userProfile, setUserProfileFavourite } = this.props;
+		setUserProfileFavourite(userProfile, !userProfile.isFavourite);
+	}
+
 	render() {
 		const { userProfile, hideSelfDescription, isSelfProfile } = this.props;
 		if (isEmpty(userProfile)) return null;
@@ -73,7 +80,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 				<View style={styles.profileImageContainer}>
 					<View style={styles.likeContainer}>
 						{!isSelfProfile && (
-							<TouchableNativeFeedback onPress={() => null}>
+							<TouchableNativeFeedback onPress={this.setUserProfileFavourite}>
 								<Ionicons
 									name={heartIcon}
 									size={30}

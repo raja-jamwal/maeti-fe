@@ -69,7 +69,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			otp: null,
 			action: ACTION.LOGIN
 		};
+
 		this._tryAuth = this._tryAuth.bind(this);
+		this._forceLogin = this._forceLogin.bind(this);
 	}
 
 	async componentDidMount() {
@@ -98,6 +100,11 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		} else {
 			this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
 		}
+	}
+
+	async _forceLogin() {
+		await AsyncStorage.removeItem('accountId');
+		await this._tryAuth();
 	}
 
 	changeScreen(screen: LOGIN_SCREENS) {
@@ -315,6 +322,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				<Text style={styles.disabledText}>Make sure you have Internet</Text>
 				<TouchableNativeFeedback onPress={() => this._tryAuth()}>
 					<Text style={styles.btn}>Retry</Text>
+				</TouchableNativeFeedback>
+				<TouchableNativeFeedback onPress={this._forceLogin}>
+					<Text style={styles.btn}>Try Login</Text>
 				</TouchableNativeFeedback>
 			</View>
 		);

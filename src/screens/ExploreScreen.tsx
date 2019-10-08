@@ -46,19 +46,21 @@ const ExploreScreenHeader = (props: any) => {
 	const profileImage = head(props.currentUserProfile.photo);
 	const profileAvatar = !isEmpty(profileImage)
 		? {
-			uri: profileImage.url,
-			width: 36,
-			height: 36
-		}
+				uri: profileImage.url,
+				width: 36,
+				height: 36
+		  }
 		: defaultPrimaryPhoto;
 	const onSubmitEditing = ({ nativeEvent: { text } }) => props.applyGlobalFilter(text);
 	return (
 		<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.header]}>
 			<TouchableNativeFeedback onPress={() => navigateToProfile()}>
-				<Image source={profileAvatar} style={styles.avatar}/>
+				<Image source={profileAvatar} style={styles.avatar} />
 			</TouchableNativeFeedback>
-			<TextInput style={[GlobalStyles.expand, styles.searchInput]}
-					   onSubmitEditing={onSubmitEditing}/>
+			<TextInput
+				style={[GlobalStyles.expand, styles.searchInput]}
+				onSubmitEditing={onSubmitEditing}
+			/>
 			{/*<TouchableNativeFeedback>
 				<Icon.Ionicons
 					style={styles.navBarIcon}
@@ -87,7 +89,7 @@ const ConnectedHeader = connect(
 			filters: getSearchFilter(state)
 		};
 	},
-	(dispatch) => {
+	dispatch => {
 		return {
 			applyGlobalFilter: bindActionCreators(applyGlobalFilter, dispatch)
 		};
@@ -99,7 +101,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 
 	static navigationOptions = ({ navigation }) => ({
 		title: 'Explore',
-		header: () => <ConnectedHeader navigation={navigation}/>
+		header: () => <ConnectedHeader navigation={navigation} />
 	});
 
 	constructor(props: any) {
@@ -163,7 +165,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 				onPress={() => this.openProfileScreen(userProfileId)}
 			>
 				<View style={styles.profileCardContainer}>
-					<ConnectedProfile userProfileId={userProfileId}/>
+					<ConnectedProfile userProfileId={userProfileId} />
 				</View>
 			</TouchableNativeFeedback>
 		);
@@ -172,15 +174,15 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 	renderItem(item: any) {
 		switch (item.type) {
 			case 'filter-tab':
-				return <TabbedFilters/>;
+				return <TabbedFilters />;
 			case 'user-profile':
 				return this.renderProfileCard(item.profileId);
 			case 'loader':
 				return <Throbber size="large" />;
 			case 'selected-filters':
-				return <SelectedFilter/>;
+				return <SelectedFilter />;
 			case 'empty-result':
-				return <EmptyResult/>;
+				return <EmptyResult />;
 			default:
 				return null;
 		}

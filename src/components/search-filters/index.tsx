@@ -124,10 +124,10 @@ export const TypesOfFilter: ITypesOfFilter = {
 			const fromTs = Math.ceil(currentTs - yearsToTs(from || 0));
 			const toTs = Math.floor(currentTs - yearsToTs(to || 0));
 			return {
-				"range" : {
-					"dob" : {
-						"lte" : fromTs,
-						"gte" : toTs,
+				range: {
+					dob: {
+						lte: fromTs,
+						gte: toTs
 					}
 				}
 			};
@@ -136,12 +136,22 @@ export const TypesOfFilter: ITypesOfFilter = {
 	// TODO: Convert height to range filter
 	height: {
 		label: 'Height',
-		choices: ProfileTableHeightOptions,
-		component: ChoiceFilter,
+		range: {
+			from: 120,
+			to: 214,
+			defaultFrom: 120,
+			defaultTo: 200,
+			suffix: 'cms'
+		},
+		component: RangeFilter,
 		getSearchFilter: userSelections => {
+			const { from, to } = userSelections;
 			return {
-				terms: {
-					'height.keyword': Object.keys(userSelections).filter(u => !!userSelections[u])
+				range: {
+					height: {
+						lte: to,
+						gte: from
+					}
 				}
 			};
 		}
@@ -357,10 +367,10 @@ export const TypesOfFilter: ITypesOfFilter = {
 			const fromIncome = from || 0;
 			const toIncome = to || 0;
 			return {
-				"range" : {
-					"profession.annualIncome" : {
-						"gte" : fromIncome,
-						"lte" : toIncome,
+				range: {
+					'profession.annualIncome': {
+						gte: fromIncome,
+						lte: toIncome
 					}
 				}
 			};
@@ -610,14 +620,11 @@ export const TypesOfFilter: ITypesOfFilter = {
 		label: 'Global Search',
 		component: Filter,
 		getSearchFilter: text => {
-			console.log("getSearchFilter ", text);
+			console.log('getSearchFilter ', text);
 			return {
 				query_string: {
 					// Add more string fields here to search
-					fields: [
-						"fullName",
-						"about"
-					],
+					fields: ['fullName', 'about'],
 					query: `*${text}*`
 				}
 			};

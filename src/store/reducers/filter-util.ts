@@ -2,7 +2,7 @@ import { TypesOfFilter } from '../../components/search-filters';
 import { isEmpty } from 'lodash';
 
 // probably memoize this function
-export const buildSearchFilter = filters => {
+export const buildSearchFilter = (filters: any, currentProfileId: number) => {
 	/*
 		For each filter in filters (selected from FilterScreen)
 		find the definition from TypeOfFilter &
@@ -27,7 +27,12 @@ export const buildSearchFilter = filters => {
 
 	const query = {
 		bool: {
-			must: mustFilters
+			must: mustFilters,
+			must_not: {
+				term: {
+					id: currentProfileId
+				}
+			}
 		}
 	};
 
