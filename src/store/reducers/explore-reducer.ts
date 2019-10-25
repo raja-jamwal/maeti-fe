@@ -10,12 +10,13 @@ import {
 	buildAddedToFavouriteFilter,
 	buildCommunityFilter,
 	buildLocationFilter,
+	buildNewMatchesFilter,
 	buildSearchFilter,
 	buildViewedMyContactFilter,
 	buildViewedMyProfileFilter
 } from './filter-util';
 import { createSelector } from 'reselect';
-import { getCurrentUserProfile, getCurrentUserProfileId } from './self-profile-reducer';
+import { getCurrentUserProfileId } from './self-profile-reducer';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
 
 export interface IScreenData {
@@ -58,8 +59,8 @@ const defaultExploreState: IExploreState = {
 	search: defaultScreenData,
 	discover: defaultScreenData,
 	new_matches: defaultScreenData,
-	reverse_matches: defaultScreenData,
-	my_matches: defaultScreenData,
+	reverse_matches: defaultScreenData, // not used at the moment
+	my_matches: defaultScreenData, // not used at the moment
 	mutual_matches: defaultScreenData,
 	community_matches: defaultScreenData,
 	location_matches: defaultScreenData,
@@ -179,6 +180,9 @@ export const fetchSearchResult = function() {
 						currentUserProfileId
 					);
 					break;
+				case 'new_matches':
+					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
+					searchQuery = buildNewMatchesFilter(currentUserProfile);
 				case 'community_matches':
 					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
 					searchQuery = buildCommunityFilter(currentUserProfile);
@@ -198,6 +202,9 @@ export const fetchSearchResult = function() {
 				case 'viewed_profile':
 					searchUrl = `${API.VIEWED_MY_PROFILE.SEARCH}/${currentUserProfileId}`;
 					searchQuery = buildViewedMyProfileFilter(currentUserProfileId);
+					break;
+				case 'discover':
+				default:
 					break;
 			}
 
