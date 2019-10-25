@@ -1,4 +1,4 @@
-import { Pageable, UserProfile } from './account-defination';
+import { Favourite, Pageable, UserProfile } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { Dispatch } from 'redux';
 import { API } from '../../config/API';
@@ -16,6 +16,7 @@ import {
 } from './filter-util';
 import { createSelector } from 'reselect';
 import { getCurrentUserProfile, getCurrentUserProfileId } from './self-profile-reducer';
+import { extractPageableResponse } from '../../utils/extract-pageable-response';
 
 export interface IScreenData {
 	profiles: {
@@ -40,15 +41,17 @@ export interface IExploreState {
 	selected_screen: string;
 }
 
+const defaultPageable = {
+	last: false,
+	totalPages: 0,
+	number: -1,
+	totalElements: 0
+};
+
 const defaultScreenData: IScreenData = {
 	profiles: {},
 	fetching: false,
-	pageable: {
-		last: false,
-		totalPages: 0,
-		number: -1,
-		totalElements: 0
-	}
+	pageable: defaultPageable
 };
 
 const defaultExploreState: IExploreState = {
@@ -130,54 +133,18 @@ export const fetchSearchResult = function() {
 		const storeItemsCount = Object.keys(currentScreen.profiles).length;
 
 		const currentUserProfileId = getCurrentUserProfileId(getState());
-
 		if (!currentUserProfileId) return;
-
 		const currentUserProfile = getUserProfileForId(getState(), currentUserProfileId);
-
 		if (!currentUserProfile) return;
 
-		// default match everything
-		// this is show stopper for production
-		// Modify to must not currentUserProfileId
-		let searchQuery: any = {
-			match_all: {}
-		};
+		/*
+			Default to elastic Search
+			1. At the moment reverse_matches is run through DB,
+			   for reverse_matches we'll take different flow
+		 */
 
 		let searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
-
-		//
-		// TODO: all filter builders should include must_not for the current user profile
-		//
-
-		switch (selectedScreen) {
-			case 'search':
-				searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
-				searchQuery = buildSearchFilter(getState().filter.filters, currentUserProfileId);
-				break;
-			case 'community_matches':
-				searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
-				searchQuery = buildCommunityFilter(currentUserProfile);
-				break;
-			case 'location_matches':
-				searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
-				searchQuery = buildLocationFilter(currentUserProfile);
-				break;
-			case 'added_me':
-				searchUrl = `${API.ADDED_TO_FAVOURITE.SEARCH}/${currentUserProfileId}`;
-				searchQuery = buildAddedToFavouriteFilter(currentUserProfileId);
-				break;
-			case 'viewed_contact':
-				searchUrl = `${API.VIEWED_MY_CONTACT.SEARCH}/${currentUserProfileId}`;
-				searchQuery = buildViewedMyContactFilter(currentUserProfileId);
-				break;
-			case 'viewed_profile':
-				searchUrl = `${API.VIEWED_MY_PROFILE.SEARCH}/${currentUserProfileId}`;
-				searchQuery = buildViewedMyProfileFilter(currentUserProfileId);
-				break;
-		}
-
-		const query = {
+		let query: any = {
 			from: storeItemsCount,
 			size: 10,
 			sort: [
@@ -190,11 +157,64 @@ export const fetchSearchResult = function() {
 			query: {}
 		};
 
-		query.query = searchQuery;
+		const isMutualMatchQuery = selectedScreen === 'mutual_matches';
 
-		logger.log('Search Filter', query.query);
+		if (!isMutualMatchQuery) {
+			/*
+				Fallback to match all ES documents
+			 */
+			let searchQuery: any = {
+				match_all: {}
+			};
 
-		logger.log(JSON.stringify(query.query));
+			//
+			// TODO: all filter builders should include must_not for the current user profile
+			//
+
+			switch (selectedScreen) {
+				case 'search':
+					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
+					searchQuery = buildSearchFilter(
+						getState().filter.filters,
+						currentUserProfileId
+					);
+					break;
+				case 'community_matches':
+					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
+					searchQuery = buildCommunityFilter(currentUserProfile);
+					break;
+				case 'location_matches':
+					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
+					searchQuery = buildLocationFilter(currentUserProfile);
+					break;
+				case 'added_me':
+					searchUrl = `${API.ADDED_TO_FAVOURITE.SEARCH}/${currentUserProfileId}`;
+					searchQuery = buildAddedToFavouriteFilter(currentUserProfileId);
+					break;
+				case 'viewed_contact':
+					searchUrl = `${API.VIEWED_MY_CONTACT.SEARCH}/${currentUserProfileId}`;
+					searchQuery = buildViewedMyContactFilter(currentUserProfileId);
+					break;
+				case 'viewed_profile':
+					searchUrl = `${API.VIEWED_MY_PROFILE.SEARCH}/${currentUserProfileId}`;
+					searchQuery = buildViewedMyProfileFilter(currentUserProfileId);
+					break;
+			}
+
+			query.query = searchQuery;
+			logger.log('Search Filter', query.query);
+			logger.log(JSON.stringify(query.query));
+		} else {
+			/*
+				Handle for reverse_matches
+			 */
+			logger.log('handling for reverse_matches');
+			searchUrl = `${API.ADDED_TO_FAVOURITE.MUTUAL_MATCHES}/${currentUserProfileId}`;
+			const pageToRequest = pageable.number + 1;
+			query = {
+				page: pageToRequest
+			};
+		}
 
 		return fetch(searchUrl, {
 			method: 'post',
@@ -211,14 +231,26 @@ export const fetchSearchResult = function() {
 				return response.json();
 			})
 			.then(json => {
-				const { items, total } = extractSearchResult(json);
-				const pageable: Pageable = {
-					totalElements: total,
-					totalPages: 0,
-					last: storeItemsCount === total,
-					number: 0
-				};
-				logger.log('es items ', items.length);
+				let items = [];
+				let pageable: Pageable = defaultPageable;
+
+				if (!isMutualMatchQuery) {
+					const extractableSearchResult = extractSearchResult(json);
+					items = extractableSearchResult.items;
+					const total = extractableSearchResult.total;
+					pageable = {
+						totalElements: total,
+						totalPages: 0,
+						last: storeItemsCount === total,
+						number: 0
+					};
+					logger.log('es items ', items.length);
+				} else {
+					const extractablePageableResponse = extractPageableResponse<Favourite>(json);
+					items = extractablePageableResponse.items.map(s => s.favouriteUserProfile);
+					pageable = extractablePageableResponse.page;
+				}
+
 				dispatch(
 					setSearchResultForScreen({ profiles: items, pageable, screen: selectedScreen })
 				);

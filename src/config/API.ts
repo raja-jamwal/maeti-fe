@@ -56,7 +56,8 @@ export const API = {
 	},
 
 	ADDED_TO_FAVOURITE: {
-		SEARCH: `${config.server}/api/addToFavourite.search`
+		SEARCH: `${config.server}/api/addToFavourite.search`,
+		MUTUAL_MATCHES: `${config.server}/api/mutualMatches.search`
 	},
 
 	INTEREST: {
