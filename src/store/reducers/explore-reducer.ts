@@ -4,11 +4,18 @@ import { Dispatch } from 'redux';
 import { API } from '../../config/API';
 import { extractSearchResult } from '../../utils/extract-search-result';
 import { IRootState } from '../index';
-import { bulkAddProfile } from './user-profile-reducer';
+import { bulkAddProfile, getUserProfileForId } from './user-profile-reducer';
 import { getLogger } from '../../utils/logger';
-import { buildSearchFilter } from './filter-util';
+import {
+	buildAddedToFavouriteFilter,
+	buildCommunityFilter,
+	buildLocationFilter,
+	buildSearchFilter,
+	buildViewedMyContactFilter,
+	buildViewedMyProfileFilter
+} from './filter-util';
 import { createSelector } from 'reselect';
-import { getCurrentUserProfileId } from './self-profile-reducer';
+import { getCurrentUserProfile, getCurrentUserProfileId } from './self-profile-reducer';
 
 export interface IScreenData {
 	profiles: {
@@ -126,15 +133,47 @@ export const fetchSearchResult = function() {
 
 		if (!currentUserProfileId) return;
 
+		const currentUserProfile = getUserProfileForId(getState(), currentUserProfileId);
+
+		if (!currentUserProfile) return;
+
 		// default match everything
 		// this is show stopper for production
+		// Modify to must not currentUserProfileId
 		let searchQuery: any = {
 			match_all: {}
 		};
 
+		let searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
+
+		//
+		// TODO: all filter builders should include must_not for the current user profile
+		//
+
 		switch (selectedScreen) {
 			case 'search':
+				searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
 				searchQuery = buildSearchFilter(getState().filter.filters, currentUserProfileId);
+				break;
+			case 'community_matches':
+				searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
+				searchQuery = buildCommunityFilter(currentUserProfile);
+				break;
+			case 'location_matches':
+				searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
+				searchQuery = buildLocationFilter(currentUserProfile);
+				break;
+			case 'added_me':
+				searchUrl = `${API.ADDED_TO_FAVOURITE.SEARCH}/${currentUserProfileId}`;
+				searchQuery = buildAddedToFavouriteFilter(currentUserProfileId);
+				break;
+			case 'viewed_contact':
+				searchUrl = `${API.VIEWED_MY_CONTACT.SEARCH}/${currentUserProfileId}`;
+				searchQuery = buildViewedMyContactFilter(currentUserProfileId);
+				break;
+			case 'viewed_profile':
+				searchUrl = `${API.VIEWED_MY_PROFILE.SEARCH}/${currentUserProfileId}`;
+				searchQuery = buildViewedMyProfileFilter(currentUserProfileId);
 				break;
 		}
 
@@ -157,7 +196,7 @@ export const fetchSearchResult = function() {
 
 		logger.log(JSON.stringify(query.query));
 
-		return fetch(`${API.SEARCH.GET}/${currentUserProfileId}`, {
+		return fetch(searchUrl, {
 			method: 'post',
 			headers: {
 				Accept: 'application/json',

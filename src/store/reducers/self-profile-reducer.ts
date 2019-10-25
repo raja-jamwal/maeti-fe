@@ -27,6 +27,13 @@ export const getSelfUserProfile = createSelector(
 	getSelfProfile,
 	selfProfile => selfProfile.profile || null
 );
+
+/*
+	Riskier functions, don't use
+	This store might not be up to date with user-profile store
+	Fetch currentUserProfile from user-profile instead
+	i.e getUserProfileForId(getState(), currentUserProfileId);
+ */
 export const getCurrentUserProfile = getSelfUserProfile;
 export const getSelfProfileId = createSelector(
 	getSelfUserProfile,

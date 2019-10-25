@@ -7,16 +7,28 @@ import InterestMessageBar from '../components/interest-message-bar/interest-mess
 import { IRootState } from '../store/index';
 import { connect } from 'react-redux';
 import { getCurrentUserProfileId } from '../store/reducers/account-reducer';
-
-interface IProfileScreenProps {}
+import { bindActionCreators, Dispatch } from 'redux';
+import {
+	getViewedMyContact,
+	markProfileAsViewed,
+	saveViewedMyContact
+} from '../store/reducers/user-profile-reducer';
 
 interface IProfileScreenMapStateToProps {
 	selfProfileId?: number | null;
 }
 
-class ProfileScreen extends React.Component<
-	NavigationInjectedProps & IProfileScreenMapStateToProps & IProfileScreenProps
-> {
+interface IProfileScreenMapDispatchToProps {
+	markProfileAsViewed: (userProfileId: number) => any;
+	saveViewedMyContact: (userProfileId: number) => any;
+	getViewedMyContact: (userProfileId: number) => any;
+}
+
+type IProfileScreenProps = NavigationInjectedProps &
+	IProfileScreenMapStateToProps &
+	IProfileScreenMapDispatchToProps;
+
+class ProfileScreen extends React.Component<IProfileScreenProps> {
 	static navigationOptions = {
 		title: 'My Profile'
 	};
@@ -25,14 +37,27 @@ class ProfileScreen extends React.Component<
 		super(props);
 	}
 
+	componentDidMount() {
+		const { selfProfileId, navigation, markProfileAsViewed } = this.props;
+		const userProfileId = navigation.getParam('userProfileId');
+		if (!!userProfileId && userProfileId !== selfProfileId) {
+			markProfileAsViewed(userProfileId);
+		}
+	}
+
 	render() {
-		const { navigation, selfProfileId } = this.props;
+		const { navigation, selfProfileId, saveViewedMyContact, getViewedMyContact } = this.props;
 		const userProfileId = navigation.getParam('userProfileId');
 		if (!userProfileId || !selfProfileId) return null;
 		const showInterestMessageBar = !!selfProfileId && userProfileId !== selfProfileId;
 		return (
 			<View style={GlobalStyles.expand}>
-				<ProfileInfoTab userProfileId={userProfileId} />
+				<ProfileInfoTab
+					userProfileId={userProfileId}
+					selfProfileId={selfProfileId}
+					saveViewedMyContact={saveViewedMyContact}
+					getViewedMyContact={getViewedMyContact}
+				/>
 				{showInterestMessageBar && <InterestMessageBar userProfileId={userProfileId} />}
 			</View>
 		);
@@ -46,7 +71,20 @@ const mapStateToProps = (state: IRootState) => {
 	};
 };
 
-export default connect<IProfileScreenMapStateToProps, any, any, IRootState>(
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+	return {
+		markProfileAsViewed: bindActionCreators(markProfileAsViewed, dispatch),
+		saveViewedMyContact: bindActionCreators(saveViewedMyContact, dispatch),
+		getViewedMyContact: bindActionCreators(getViewedMyContact, dispatch)
+	};
+};
+
+export default connect<
+	IProfileScreenMapStateToProps,
+	IProfileScreenMapDispatchToProps,
+	any,
+	IRootState
+>(
 	mapStateToProps,
-	null
+	mapDispatchToProps
 )(withNavigation(ProfileScreen));

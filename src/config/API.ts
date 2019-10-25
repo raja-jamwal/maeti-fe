@@ -55,6 +55,10 @@ export const API = {
 		SAVE: `${config.server}/api/favourite.save`
 	},
 
+	ADDED_TO_FAVOURITE: {
+		SEARCH: `${config.server}/api/addToFavourite.search`
+	},
+
 	INTEREST: {
 		GET: `${config.server}/api/interest.get`,
 		LIST: `${config.server}/api/interest.list`,
@@ -108,5 +112,16 @@ export const API = {
 		COUNTRY: `${config.server}/api/countries.list`,
 		STATES: `${config.server}/api/states.get`,
 		CITIES: `${config.server}/api/cities.get`
+	},
+
+	VIEWED_MY_PROFILE: {
+		SAVE: `${config.server}/api/viewedMyProfile.save`,
+		SEARCH: `${config.server}/api/viewedMyProfile.search`
+	},
+
+	VIEWED_MY_CONTACT: {
+		GET: `${config.server}/api/viewedMyContact.get`,
+		SAVE: `${config.server}/api/viewedMyContact.save`,
+		SEARCH: `${config.server}/api/viewedMyContact.search`
 	}
 };

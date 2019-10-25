@@ -22,6 +22,7 @@ import { ApiRequest } from '../../utils/index';
 import {
 	addSelfProfile,
 	getCurrentUserProfile,
+	getCurrentUserProfileId,
 	getSelfProfileId,
 	setSelfProfileUpdating
 } from './self-profile-reducer';
@@ -53,6 +54,47 @@ interface IUpdateEnityPayload {
 	userProfileId: number;
 	object: any;
 }
+
+export const markProfileAsViewed = function(userProfileId: number) {
+	const logger = getLogger(markProfileAsViewed);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		logger.log(`marking profile Id ${userProfileId} as viewed`);
+		const currentProfileId = getCurrentUserProfileId(getState());
+		return ApiRequest(API.VIEWED_MY_PROFILE.SAVE, {
+			actorUserProfileId: currentProfileId,
+			userProfileId
+		}).catch(err => logger.log('unable to mark profile as viewed', err));
+	};
+};
+
+export const getViewedMyContact = function(userProfileId: number) {
+	const logger = getLogger(getViewedMyContact);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		logger.log(`fetching viewed contact of profileId ${userProfileId}`);
+		return new Promise((resolve, reject) => {
+			ApiRequest(API.VIEWED_MY_CONTACT.GET, {
+				actorUserProfileId: userProfileId,
+				userProfileId: getCurrentUserProfileId(getState())
+			})
+				.then(res => resolve(true))
+				.catch(err => {
+					logger.log(`error fetching viewed contact ${userProfileId}`, err);
+					resolve(false);
+				});
+		});
+	};
+};
+
+export const saveViewedMyContact = function(userProfileId: number) {
+	const logger = getLogger(saveViewedMyContact);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		logger.log(`mark viewed contact for userProfileId ${userProfileId}`);
+		return ApiRequest(API.VIEWED_MY_CONTACT.SAVE, {
+			actorUserProfileId: getCurrentUserProfileId(getState()),
+			userProfileId
+		}).catch(err => logger.log(`unable to mark viewed contact ${userProfileId}`, err));
+	};
+};
 
 export const uploadPhoto = function(file: any) {
 	const logger = getLogger(uploadPhoto);
