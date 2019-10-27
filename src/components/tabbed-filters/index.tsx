@@ -62,14 +62,14 @@ class TabbedFilters extends React.PureComponent<any> {
 
 const styles = StyleSheet.create({
 	headline: {
-		fontSize: 25,
+		fontSize: 20,
 		fontWeight: '500',
 		padding: 20
 	},
 	tile: {
 		flexDirection: 'column',
 		alignItems: 'center',
-		width: 120
+		width: 100
 	},
 	selectedTitle: {
 		borderBottomWidth: 2,
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	icon: {
-		width: 80,
-		height: 80,
+		width: 40,
+		height: 40,
 		resizeMode: 'contain'
 	}
 });

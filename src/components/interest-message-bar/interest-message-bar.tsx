@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
 import { API } from '../../config/API';
-import { ApiRequest } from '../../utils';
+import { ApiRequest, formatDuration } from '../../utils';
 import { getLogger } from '../../utils/logger';
 import { Channel, Interest } from '../../store/reducers/account-defination';
 import { Throbber } from '../throbber/throbber';
@@ -202,40 +202,43 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				case InterestStates.SENT_PENDING:
 					return (
 						<Text style={styles.statusText}>
-							You sent a interest at {sentInterest && sentInterest.updatedOn}
+							You sent a interest at{' '}
+							{sentInterest && formatDuration(sentInterest.updatedOn)}
 						</Text>
 					);
 				case InterestStates.SENT_ACCEPTED:
 					return (
 						<Text style={styles.statusText}>
-							Your interest was accepted at {sentInterest && sentInterest.updatedOn}
+							Your interest was accepted at{' '}
+							{sentInterest && formatDuration(sentInterest.updatedOn)}
 						</Text>
 					);
 				case InterestStates.SENT_DECLINED:
 					return (
 						<Text style={styles.statusText}>
-							Your interest was declined at {sentInterest && sentInterest.updatedOn}
+							Your interest was declined at{' '}
+							{sentInterest && formatDuration(sentInterest.updatedOn)}
 						</Text>
 					);
 				case InterestStates.RECV_PENDING:
 					return (
 						<Text style={styles.statusText}>
 							Your received interest at{' '}
-							{incomingInterest && incomingInterest.updatedOn}
+							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
 						</Text>
 					);
 				case InterestStates.RECV_ACCEPTED:
 					return (
 						<Text style={styles.statusText}>
 							You accepted interest at{' '}
-							{incomingInterest && incomingInterest.updatedOn}
+							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
 						</Text>
 					);
 				case InterestStates.RECV_DECLINED:
 					return (
 						<Text style={styles.statusText}>
 							You declined interest at{' '}
-							{incomingInterest && incomingInterest.updatedOn}
+							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
 						</Text>
 					);
 				default:

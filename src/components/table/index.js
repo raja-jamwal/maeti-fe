@@ -4,9 +4,20 @@ import Text, { Value } from '../text/index';
 import { View, StyleSheet } from 'react-native';
 import GlobalStyles from '../../styles/global';
 import { map, includes } from 'lodash';
+import { formatDate, formatDateTime } from '../../utils';
 
 export default class Table extends React.Component {
 	renderValue(value, mapping) {
+		if (mapping.type === 'date') {
+			if (!value) return '';
+			return formatDate(value);
+		}
+
+		if (mapping.type === 'date-time') {
+			if (!value) return '';
+			return formatDateTime(value);
+		}
+
 		if (_.isString(value) || _.isNumber(value)) {
 			return value;
 		}

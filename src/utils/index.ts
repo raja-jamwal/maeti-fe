@@ -68,6 +68,16 @@ const formatDateTime = (ts: number) => {
 	return moment(date).format('dddd, MMMM Do YYYY, h:mm a');
 };
 
+/**
+ *
+ * @param tsm - epoch in milliseconds
+ */
+const formatDuration = (tsm: number) => {
+	const ts = tsm / 1000;
+	const currentTs = Math.floor(new Date().getTime() / 1000);
+	return moment.duration(Math.floor(currentTs - ts)).humanize() + ' ago';
+};
+
 export {
 	LAKH_RUPEE,
 	CRORE_RUPEE,
@@ -76,5 +86,6 @@ export {
 	humanizeCurrency,
 	ApiRequest,
 	formatDate,
-	formatDateTime
+	formatDateTime,
+	formatDuration
 };

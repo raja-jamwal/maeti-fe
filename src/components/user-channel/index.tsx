@@ -3,6 +3,7 @@ import { Image, View, StyleSheet } from 'react-native';
 import Text from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { Message, UserProfile } from '../../store/reducers/account-defination';
+import { formatDuration } from '../../utils';
 
 interface IUserChannelProps {
 	userProfile: UserProfile;
@@ -30,7 +31,7 @@ class UserChannel extends React.Component<IUserChannelProps> {
 					{latestMessage && (
 						<View style={GlobalStyles.row}>
 							<Text style={GlobalStyles.expand}>{latestMessage.message}</Text>
-							<Text>{latestMessage.createdOn}</Text>
+							<Text>{formatDuration(latestMessage.createdOn)}</Text>
 						</View>
 					)}
 				</View>
