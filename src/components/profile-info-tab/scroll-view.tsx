@@ -17,6 +17,7 @@ import VerificationTable from '../collapsible-table/verification-table';
 import PreferenceTable from '../collapsible-table/preference-table';
 import { Throbber } from '../throbber/throbber';
 import { getLogger } from '../../utils/logger';
+import ProfileActivity from '../profile-card/profile-activity';
 
 interface IProfileInfoTabProps {
 	userProfileId: number;
@@ -174,32 +175,7 @@ export default class ProfileInfoTab extends React.Component<
 			>
 				<View>
 					<ConnectedProfile userProfileId={userProfileId} hideSelfDescription={true} />
-					<View style={GlobalStyles.row}>
-						<View style={[GlobalStyles.expand, GlobalStyles.alignCenter]}>
-							<Image
-								style={styles.icon}
-								source={require('../../assets/images/icons/response_rate.png')}
-							/>
-							<Text style={[styles.iconLabel, GlobalStyles.bold]}>73%</Text>
-							<Text style={styles.iconLabel}>Response Rate</Text>
-						</View>
-						<View style={[GlobalStyles.expand, GlobalStyles.alignCenter]}>
-							<Image
-								style={styles.icon}
-								source={require('../../assets/images/icons/response_time.png')}
-							/>
-							<Text style={[styles.iconLabel, GlobalStyles.bold]}>1 Day(s)</Text>
-							<Text style={styles.iconLabel}>Response Time</Text>
-						</View>
-						<View style={[GlobalStyles.expand, GlobalStyles.alignCenter]}>
-							<Image
-								style={styles.icon}
-								source={require('../../assets/images/icons/last_login.png')}
-							/>
-							<Text style={[styles.iconLabel, GlobalStyles.bold]}>26/01/2019</Text>
-							<Text style={styles.iconLabel}>Last Login</Text>
-						</View>
-					</View>
+					<ProfileActivity userProfileId={userProfileId} />
 				</View>
 				<View style={styles.tabBar}>
 					<View style={[GlobalStyles.row, GlobalStyles.expand, GlobalStyles.alignCenter]}>

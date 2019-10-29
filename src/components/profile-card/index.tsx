@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
 	},
 	profileImage: {
 		width: 100,
-		height: 250,
+		height: 200,
 		resizeMode: 'cover'
 	},
 	profileSummaryContainer: {

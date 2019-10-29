@@ -72,7 +72,7 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 const styles = StyleSheet.create({
 	profileImage: {
 		width: 100,
-		height: 250,
+		height: 200,
 		resizeMode: 'cover'
 	},
 	paginationContainer: {

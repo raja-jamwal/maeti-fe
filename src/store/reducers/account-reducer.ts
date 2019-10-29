@@ -70,9 +70,11 @@ export const savePushToken = function(id: number) {
 
 		if (!token) return;
 
+		const lastLogin = new Date().getTime();
 		return ApiRequest(API.TOKEN.SAVE, {
 			id,
-			token
+			token,
+			lastLogin
 		})
 			.then((response: any) => {
 				logger.log('savePushToken');
