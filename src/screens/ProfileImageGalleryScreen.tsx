@@ -60,7 +60,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 	}
 
 	getPermissionAsync = async () => {
-		if (Constants.platform.ios) {
+		if (Constants.platform && Constants.platform.ios) {
 			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 			if (status !== 'granted') {
 				simpleAlert(

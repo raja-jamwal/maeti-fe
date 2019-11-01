@@ -228,8 +228,9 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 						</View>
 					)}
 					{isAboutField && (
-						<AboutField value={renderString}
-									onChangeText={(text) => this.updateFieldValue(field, text)}
+						<AboutField
+							value={renderString}
+							onChangeText={text => this.updateFieldValue(field, text)}
 						/>
 					)}
 					{isNumberField && (
@@ -269,7 +270,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 					{isDateField && (
 						<TouchableNativeFeedback onPress={() => this.setDateField(field)}>
 							<View style={styles.labelContainer}>
-								{!renderString && <Text style={styles.label}>No Set</Text>}
+								{!renderString && <Text style={styles.label}>&nbsp;</Text>}
 								{!!renderString && (
 									<Text style={styles.label}>
 										{formatDate(parseInt(renderString))}
@@ -281,7 +282,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 					{isDateTimeField && (
 						<TouchableNativeFeedback onPress={() => this.setDateTimeField(field)}>
 							<View style={styles.labelContainer}>
-								{!renderString && <Text style={styles.label}>No Set</Text>}
+								{!renderString && <Text style={styles.label}>&nbsp;</Text>}
 								{!!renderString && (
 									<Text style={styles.label}>
 										{formatDateTime(parseInt(renderString))}

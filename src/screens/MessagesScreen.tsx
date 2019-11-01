@@ -10,6 +10,7 @@ import { Channel } from '../store/reducers/account-defination';
 import { fetchChannels } from '../store/reducers/channel-reducer';
 import { Throbber } from '../components/throbber/throbber';
 import { toArray, sortBy } from 'lodash';
+import Color from '../constants/Colors';
 
 interface IMessageScreenMapStateToProps {
 	channels: Array<Channel>;
@@ -113,9 +114,8 @@ class MessagesScreen extends React.PureComponent<
 				)}
 				{isEmptyInbox && !fetching && (
 					<View style={styles.emptyInbox}>
-						<Text style={styles.inboxEmoji}>📥</Text>
-						<Text>No messages</Text>
-						<Text>Send interests to begin messaging</Text>
+						<Text style={styles.lightText}>No messages</Text>
+						<Text style={styles.lightText}>Send interests to begin messaging</Text>
 					</View>
 				)}
 				{!!fetching && (
@@ -153,6 +153,10 @@ const styles = StyleSheet.create({
 	},
 	loaderBottom: {
 		bottom: 10
+	},
+	lightText: {
+		color: Color.borderColor,
+		fontSize: 18
 	}
 });
 

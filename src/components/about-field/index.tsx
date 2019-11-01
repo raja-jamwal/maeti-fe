@@ -12,7 +12,6 @@ interface IAboutFieldState {
 }
 
 class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState> {
-
 	constructor(props: any) {
 		super(props);
 		this.state = {
@@ -30,34 +29,36 @@ class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState>
 	render() {
 		const { showModal } = this.state;
 		const { value, onChangeText } = this.props;
-		return <View>
-			<TouchableNativeFeedback onPress={() => this.toggleShowModal()}>
-				<View style={styles.labelContainer}>
-					<Text style={styles.label}>{value || ''}</Text>
-				</View>
-			</TouchableNativeFeedback>
-			<Modal
-				animationType="slide"
-				// transparent={true}
-				visible={showModal}
-				onRequestClose={() => {
-					this.toggleShowModal();
-				}}
-			>
-				<View style={styles.container}>
-					<Text style={styles.title}>About</Text>
-					<View style={styles.editorContainer}>
-						<TextInput
-							onChangeText={text => onChangeText(text)}
-							value={value}
-							multiline={true}
-							placeholder={"Click here and start typing..."}
-							style={styles.editBox}
-						/>
+		return (
+			<View>
+				<TouchableNativeFeedback onPress={() => this.toggleShowModal()}>
+					<View style={styles.labelContainer}>
+						<Text style={styles.label}>{value || ''}</Text>
 					</View>
-				</View>
-			</Modal>
-		</View>
+				</TouchableNativeFeedback>
+				<Modal
+					animationType="slide"
+					// transparent={true}
+					visible={showModal}
+					onRequestClose={() => {
+						this.toggleShowModal();
+					}}
+				>
+					<View style={styles.container}>
+						<Text style={styles.title}>About</Text>
+						<View style={styles.editorContainer}>
+							<TextInput
+								onChangeText={text => onChangeText(text)}
+								value={value}
+								multiline={true}
+								placeholder={'Click here and start typing...'}
+								style={styles.editBox}
+							/>
+						</View>
+					</View>
+				</Modal>
+			</View>
+		);
 	}
 }
 
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
 	editBox: {
 		padding: 15,
 		fontSize: 18,
-		fontWeight: 'bold',
+		fontWeight: 'bold'
 	},
 	item: {
 		flex: 1,
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
 		color: Color.primaryDarkColor,
 		padding: 15,
 		fontSize: 18,
-		fontWeight: 'bold',
+		fontWeight: 'bold'
 	}
 });
 

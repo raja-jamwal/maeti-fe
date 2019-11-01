@@ -10,11 +10,12 @@ import {
 } from '../../store/reducers/favourite-reducer';
 import { connect } from 'react-redux';
 import { IRootState } from '../../store';
-import { toArray, sortBy, keys } from 'lodash';
+import { toArray, sortBy, keys, isEmpty } from 'lodash';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { Favourite } from '../../store/reducers/account-defination';
 import VirtualProfileList from '../virtual-profile-list/index';
 import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+import Color from '../../constants/Colors';
 
 interface IFavouriteContainerMapStateToProps {
 	userProfileId?: number;
@@ -78,21 +79,42 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 		);
 	}
 
+	noFavourites() {
+		return <Text style={styles.lightText}>You've not added any favourites</Text>;
+	}
+
 	render() {
 		const { fetching } = this.props;
+		const profiles = this.getFavouriteProfiles();
+		const style = styles.emptyContainer;
 		return (
-			<VirtualProfileList
-				fetching={fetching}
-				profileIdExtractor={this.profileIdExtractor}
-				data={this.getFavouriteProfiles()}
-				headerComponent={this.totalCount()}
-				handleMore={this._handleMore}
-			/>
+			<View style={style}>
+				{!isEmpty(profiles) && (
+					<VirtualProfileList
+						fetching={fetching}
+						profileIdExtractor={this.profileIdExtractor}
+						data={profiles}
+						headerComponent={this.totalCount()}
+						handleMore={this._handleMore}
+					/>
+				)}
+				{isEmpty(profiles) && this.noFavourites()}
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
+	emptyContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	lightText: {
+		color: Color.borderColor,
+		fontSize: 18
+	},
 	totalCountContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',

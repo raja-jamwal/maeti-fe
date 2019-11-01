@@ -31,7 +31,7 @@ class ReferenceTable extends React.Component<
 		},
 		contactNumber: {
 			label: 'Contact Number',
-			type: 'string'
+			type: 'number'
 		},
 		address: {
 			label: 'Address',

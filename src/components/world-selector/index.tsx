@@ -6,7 +6,8 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 	TouchableNativeFeedback,
-	Modal, TextInput
+	Modal,
+	TextInput
 } from 'react-native';
 import { ApiRequest } from '../../utils';
 import { API } from '../../config/API';
@@ -151,7 +152,9 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 
 	maybeFilter(entities: WorldEntity[], filterText: string) {
 		if (!entities || !filterText) return entities;
-		return entities.filter(entity => (entity.name || '').toLowerCase().includes(filterText.toLowerCase()))
+		return entities.filter(entity =>
+			(entity.name || '').toLowerCase().includes(filterText.toLowerCase())
+		);
 	}
 
 	getData() {
@@ -190,15 +193,15 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 		return (
 			<View>
 				<Text style={styles.title}>Select {screen}</Text>
-				{
-					!loading && <View style={styles.textField}>
+				{!loading && (
+					<View style={styles.textField}>
 						<TextInput
-							onChangeText={text => this.setState({filterText: text})}
+							onChangeText={text => this.setState({ filterText: text })}
 							value={filterText}
 							style={styles.fieldText}
 						/>
 					</View>
-				}
+				)}
 				{!!loading && <Throbber size="large" />}
 				{!loading && this.renderList(screen, data)}
 			</View>

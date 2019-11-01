@@ -110,9 +110,9 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 		this._handleMore = this._handleMore.bind(this);
 	}
 
-	openProfileScreen(userProfileId: number) {
+	openProfileScreen(userProfileId: number, profileName: string) {
 		const { navigation } = this.props;
-		navigation.push('ProfileScreen', { userProfileId });
+		navigation.push('ProfileScreen', { userProfileId, profileName });
 	}
 
 	getItems() {
@@ -136,7 +136,8 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 					items.push({
 						type: 'user-profile',
 						key: `profile-${userProfileId}`,
-						profileId: userProfileId
+						profileId: userProfileId,
+						profileName: userProfile.fullName
 					});
 				});
 		} else {
@@ -158,11 +159,11 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 		return items;
 	}
 
-	renderProfileCard(userProfileId: number) {
+	renderProfileCard(userProfileId: number, profileName: string) {
 		return (
 			<TouchableNativeFeedback
 				key={userProfileId}
-				onPress={() => this.openProfileScreen(userProfileId)}
+				onPress={() => this.openProfileScreen(userProfileId, profileName)}
 			>
 				<View style={styles.profileCardContainer}>
 					<ConnectedProfile userProfileId={userProfileId} />
@@ -176,7 +177,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 			case 'filter-tab':
 				return <TabbedFilters />;
 			case 'user-profile':
-				return this.renderProfileCard(item.profileId);
+				return this.renderProfileCard(item.profileId, item.profileName);
 			case 'loader':
 				return <Throbber size="large" />;
 			case 'selected-filters':

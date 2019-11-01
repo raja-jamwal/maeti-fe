@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import Text, { Value } from '../text/index';
 import { View, StyleSheet } from 'react-native';
 import GlobalStyles from '../../styles/global';
-import { map, includes } from 'lodash';
+import { map, includes, find } from 'lodash';
 import { formatDate, formatDateTime } from '../../utils';
 
 export default class Table extends React.Component {
@@ -25,6 +25,12 @@ export default class Table extends React.Component {
 
 			if (mapping.type === 'tag-array') {
 				return map(value, 'value').join(', ');
+			}
+
+			if (mapping.type === 'choice') {
+				const options = (mapping.choice && mapping.choice.options) || [];
+				const option = find(options, { value });
+				return !!option ? option.label || value : value;
 			}
 
 			if (includes(['country', 'state', 'city'], mapping.type)) {

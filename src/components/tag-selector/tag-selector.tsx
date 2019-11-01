@@ -123,18 +123,18 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 const styles = StyleSheet.create({
 	flexContainer: {
 		flex: 1,
-		flexDirection: 'column',
+		flexDirection: 'column'
 	},
 	container: {
 		backgroundColor: Color.white,
 		padding: 10,
-		paddingBottom: 20,
+		paddingBottom: 20
 	},
 	title: {
 		color: Color.primaryDarkColor,
 		padding: 15,
 		fontSize: 18,
-		fontWeight: 'bold',
+		fontWeight: 'bold'
 	},
 	labelContainer: {
 		borderColor: Color.borderColor,
