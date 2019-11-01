@@ -25,6 +25,7 @@ import { find } from 'lodash';
 import RNPickerSelect from 'react-native-picker-select';
 import { WORLD_OPTION, WorldSelectorField } from '../components/world-selector';
 import Color from '../constants/Colors';
+import AboutField from '../components/about-field';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
@@ -174,6 +175,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			const type = fieldDefinition.type;
 
 			const isBooleanField = type === 'bool';
+			const isAboutField = type === 'about';
 			const isStringField = type === 'string';
 			const isChoiceField = type === 'choice';
 			const isNumberField = type === 'number';
@@ -191,6 +193,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			let renderWorldValue = '';
 
 			switch (type) {
+				case 'about':
 				case 'string':
 					renderString = value && value.toString();
 					stringEditable = true;
@@ -223,6 +226,11 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 								style={styles.fieldText}
 							/>
 						</View>
+					)}
+					{isAboutField && (
+						<AboutField value={renderString}
+									onChangeText={(text) => this.updateFieldValue(field, text)}
+						/>
 					)}
 					{isNumberField && (
 						<View style={styles.textField}>

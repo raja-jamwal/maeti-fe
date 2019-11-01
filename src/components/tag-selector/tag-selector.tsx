@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Modal, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import { View, Text, Modal, StyleSheet, TouchableNativeFeedback, ScrollView } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import { IRootState } from '../../store/index';
 import { connect } from 'react-redux';
@@ -79,13 +79,13 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 			<View>
 				<TouchableNativeFeedback onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
-						{isEmpty(currentTags) && <Text style={styles.label}>No Set</Text>}
+						{isEmpty(currentTags) && <Text style={styles.label}>&nbsp;</Text>}
 						{!isEmpty(currentTags) && <Text style={styles.label}>{label}</Text>}
 					</View>
 				</TouchableNativeFeedback>
 				<Modal
 					animationType="slide"
-					transparent={true}
+					transparent={false}
 					visible={showModal}
 					onRequestClose={() => {
 						this.onRequestClose();
@@ -93,23 +93,25 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 					}}
 				>
 					<View style={styles.flexContainer}>
-						<View style={[styles.container]} elevation={5}>
+						<View style={[styles.container]}>
 							<Text style={styles.title}>{title || 'No Title'}</Text>
-							{tags.map(tag => {
-								return (
-									<CheckBox
-										style={{ flex: 1, padding: 20 }}
-										onClick={() => {
-											this.toggleTagSelect(tag.id);
-										}}
-										checkBoxColor={Color.primaryDarkColor}
-										isChecked={!!selectedTags[tag.id]}
-										key={tag.id}
-										rightText={tag.value}
-										rightTextStyle={styles.optionLabel}
-									/>
-								);
-							})}
+							<ScrollView>
+								{tags.map(tag => {
+									return (
+										<CheckBox
+											style={{ flex: 1, padding: 20 }}
+											onClick={() => {
+												this.toggleTagSelect(tag.id);
+											}}
+											checkBoxColor={Color.primaryDarkColor}
+											isChecked={!!selectedTags[tag.id]}
+											key={tag.id}
+											rightText={tag.value}
+											rightTextStyle={styles.optionLabel}
+										/>
+									);
+								})}
+							</ScrollView>
 						</View>
 					</View>
 				</Modal>
@@ -122,19 +124,17 @@ const styles = StyleSheet.create({
 	flexContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'center',
-		marginLeft: 20,
-		marginRight: 20
 	},
 	container: {
 		backgroundColor: Color.white,
 		padding: 10,
 		paddingBottom: 20,
-		borderRadius: 5
 	},
 	title: {
-		padding: 10,
-		color: Color.offWhite
+		color: Color.primaryDarkColor,
+		padding: 15,
+		fontSize: 18,
+		fontWeight: 'bold',
 	},
 	labelContainer: {
 		borderColor: Color.borderColor,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	},
 	optionLabel: {
-		fontSize: 16
+		fontSize: 20
 	}
 });
 

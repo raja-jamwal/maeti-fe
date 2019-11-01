@@ -450,7 +450,7 @@ class ProfileTable extends React.Component<
 		},
 		about: {
 			label: 'About',
-			type: 'string'
+			type: 'about'
 		},
 		createdBy: {
 			label: 'Profile created by',

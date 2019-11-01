@@ -8,29 +8,37 @@ import { formatDate, formatDateTime } from '../../utils';
 
 export default class Table extends React.Component {
 	renderValue(value, mapping) {
-		if (mapping.type === 'date') {
-			if (!value) return '';
-			return formatDate(value);
+		if (mapping.type) {
+			if (mapping.type === 'about') {
+				return value || '';
+			}
+
+			if (mapping.type === 'date') {
+				if (!value) return '';
+				return formatDate(value);
+			}
+
+			if (mapping.type === 'date-time') {
+				if (!value) return '';
+				return formatDateTime(value);
+			}
+
+			if (mapping.type === 'tag-array') {
+				return map(value, 'value').join(', ');
+			}
+
+			if (includes(['country', 'state', 'city'], mapping.type)) {
+				return value && value.name;
+			}
 		}
 
-		if (mapping.type === 'date-time') {
-			if (!value) return '';
-			return formatDateTime(value);
-		}
+		// Phase out dynamic type check
 
 		if (_.isString(value) || _.isNumber(value)) {
 			return value;
 		}
 		if (_.isBoolean(value)) {
 			return value ? 'Yes' : 'No';
-		}
-
-		if (mapping.type === 'tag-array') {
-			return map(value, 'value').join(', ');
-		}
-
-		if (includes(['country', 'state', 'city'], mapping.type)) {
-			return value && value.name;
 		}
 
 		return null;
@@ -62,7 +70,7 @@ export default class Table extends React.Component {
 									</View>
 									<View>
 										<Value style={styles.tableValue}>
-											{this.renderValue(object[key])}
+											{this.renderValue(object[key], mappings[key])}
 										</Value>
 									</View>
 								</View>

@@ -6,13 +6,13 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 	TouchableNativeFeedback,
-	Modal
+	Modal, TextInput
 } from 'react-native';
 import { ApiRequest } from '../../utils';
 import { API } from '../../config/API';
 import { getLogger } from '../../utils/logger';
 import { Throbber } from '../throbber/throbber';
-import { City, Country, Region } from '../../store/reducers/account-defination';
+import { City, Country, Region, WorldEntity } from '../../store/reducers/account-defination';
 import { includes } from 'lodash';
 import Color from '../../constants/Colors';
 
@@ -40,6 +40,7 @@ interface IWorldSelectorState {
 	cities: City[];
 	selection: SelectionResult;
 	screen: WORLD_OPTION;
+	filterText: string;
 }
 
 function Item({ id, name, onSelect }) {
@@ -63,7 +64,8 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 			regions: [],
 			cities: [],
 			selection: {},
-			screen: WORLD_OPTION.COUNTRY
+			screen: WORLD_OPTION.COUNTRY,
+			filterText: ''
 		};
 	}
 
@@ -142,19 +144,25 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 		}
 		this.setState({
 			selection: newSelection,
-			screen: nextScreen as WORLD_OPTION
+			screen: nextScreen as WORLD_OPTION,
+			filterText: ''
 		});
 	}
 
+	maybeFilter(entities: WorldEntity[], filterText: string) {
+		if (!entities || !filterText) return entities;
+		return entities.filter(entity => (entity.name || '').toLowerCase().includes(filterText.toLowerCase()))
+	}
+
 	getData() {
-		const { countries, regions, cities, screen } = this.state;
+		const { countries, regions, cities, screen, filterText } = this.state;
 		switch (screen) {
 			case WORLD_OPTION.COUNTRY:
-				return countries;
+				return this.maybeFilter(countries, filterText);
 			case WORLD_OPTION.STATE:
-				return regions;
+				return this.maybeFilter(regions, filterText);
 			case WORLD_OPTION.CITY:
-				return cities;
+				return this.maybeFilter(cities, filterText);
 			default:
 				return [];
 		}
@@ -177,11 +185,20 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 	}
 
 	render() {
-		const { screen, loading } = this.state;
+		const { screen, loading, filterText } = this.state;
 		const data = this.getData();
 		return (
 			<View>
 				<Text style={styles.title}>Select {screen}</Text>
+				{
+					!loading && <View style={styles.textField}>
+						<TextInput
+							onChangeText={text => this.setState({filterText: text})}
+							value={filterText}
+							style={styles.fieldText}
+						/>
+					</View>
+				}
 				{!!loading && <Throbber size="large" />}
 				{!loading && this.renderList(screen, data)}
 			</View>
@@ -224,7 +241,7 @@ class WorldSelectorField extends React.Component<
 			<View>
 				<TouchableNativeFeedback onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
-						<Text style={styles.label}>{value || 'No Set'}</Text>
+						<Text style={styles.label}>{value || ' '}</Text>
 					</View>
 				</TouchableNativeFeedback>
 				<Modal
@@ -254,6 +271,17 @@ const styles = StyleSheet.create({
 	container: {
 		// flex: 1,
 		// backgroundColor: Color.white
+	},
+	textField: {
+		borderColor: Color.borderColor,
+		borderWidth: 1,
+		paddingLeft: 8,
+		paddingRight: 8,
+		paddingTop: 6,
+		paddingBottom: 6,
+		borderRadius: 4,
+		marginLeft: 12,
+		marginRight: 12
 	},
 	item: {
 		flex: 1,
