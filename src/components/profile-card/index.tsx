@@ -186,7 +186,8 @@ const styles = StyleSheet.create({
 	},
 	profileSummaryContainer: {
 		padding: 10,
-		paddingBottom: 15
+		paddingTop: 15,
+		paddingBottom: 15,
 	},
 	describeSelfContainer: {
 		flexWrap: 'wrap'
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
 	},
 	premiumProfile: {
 		position: 'absolute',
-		bottom: 30,
+		bottom: 40,
 		flexDirection: 'row',
 		backgroundColor: Colors.pink,
 		borderTopRightRadius: 20,

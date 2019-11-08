@@ -340,7 +340,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 				</View>
 			);
 		});
-		return <View>{fields}</View>;
+		return <View style={styles.formGroup}>{fields}</View>;
 	}
 
 	async updateInformation() {
@@ -395,7 +395,10 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 const styles = StyleSheet.create({
 	formContainer: {
 		padding: 8,
-		paddingTop: 0
+		paddingTop: 0,
+	},
+	formGroup: {
+		paddingBottom: 30
 	},
 	fieldLabel: {
 		paddingTop: 14,

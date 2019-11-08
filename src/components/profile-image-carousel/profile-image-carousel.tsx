@@ -32,7 +32,7 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 					uri: image.url,
 					width: Layout.window.width
 				}}
-				style={[styles.profileImage, { width: Layout.window.width }]}
+				style={[styles.profileImage, { width: Layout.window.width, height: Layout.window.height / 2 }]}
 			/>
 		);
 	};
@@ -59,7 +59,7 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 						width: 10,
 						height: 10,
 						borderRadius: 5,
-						backgroundColor: 'rgba(255, 255, 255, 0.92)'
+						backgroundColor: 'rgba(0, 0, 0, 0.6)'
 					}}
 					inactiveDotOpacity={0.4}
 					inactiveDotScale={0.6}
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
 	paginationContainer: {
 		position: 'absolute',
 		width: Layout.window.width,
-		bottom: 0
+		bottom: -60,
 	}
 });
