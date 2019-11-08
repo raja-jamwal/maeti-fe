@@ -56,8 +56,8 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 					activeDotIndex={activeIndex}
 					containerStyle={styles.paginationContainer}
 					dotStyle={{
-						width: 10,
-						height: 10,
+						width: 5,
+						height: 5,
 						borderRadius: 5,
 						backgroundColor: 'rgba(0, 0, 0, 0.6)'
 					}}
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
 	paginationContainer: {
 		position: 'absolute',
 		width: Layout.window.width,
-		bottom: -60,
+		bottom: -45,
 	}
 });
