@@ -6,7 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Channel, Message, UserProfile } from '../store/reducers/account-defination';
 import { fetchMessages, postMessage } from '../store/reducers/message-reducer';
-import { toArray, map, keys, sortBy } from 'lodash';
+import { toArray, map, keys, sortBy, head, isEmpty } from 'lodash';
 import { StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
@@ -22,10 +22,18 @@ const messageToChatMessage = (message: Message): IChatMessage => {
 };
 
 const userProfileToUser = (userProfile: UserProfile): User => {
-	return {
+	const user: User = {
 		_id: userProfile.id,
 		name: userProfile.fullName
 	};
+
+	const userProfileImage = !isEmpty(userProfile.photo) && head(userProfile.photo).url;
+
+	if (userProfileImage) {
+		user.avatar = userProfileImage;
+	}
+
+	return user;
 };
 
 interface IChatScreenMapStateToProps {

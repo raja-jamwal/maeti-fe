@@ -4,6 +4,9 @@ import Text from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { Message, UserProfile } from '../../store/reducers/account-defination';
 import { formatDuration } from '../../utils';
+import { isEmpty, head } from 'lodash';
+
+const defaultProfileImage = require('../../assets/images/placeholder.png');
 
 interface IUserChannelProps {
 	userProfile: UserProfile;
@@ -13,14 +16,25 @@ interface IUserChannelProps {
 class UserChannel extends React.Component<IUserChannelProps> {
 	render() {
 		const { userProfile, latestMessage } = this.props;
-
+		const userProfileImage = !isEmpty(userProfile.photo) && head(userProfile.photo).url;
 		return (
 			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.container]}>
 				<View style={GlobalStyles.paddedRight}>
-					<Image
-						source={require('../../assets/images/placeholder.png')}
-						style={styles.avatar}
-					/>
+					{
+						!!userProfileImage && <Image
+							source={{
+								uri: userProfileImage,
+								width: 50
+							}}
+							style={styles.avatar}
+						/>
+					}
+					{
+						!userProfileImage && <Image
+							source={defaultProfileImage}
+							style={styles.avatar}
+						/>
+					}
 				</View>
 				<View style={GlobalStyles.expand}>
 					<View style={GlobalStyles.row}>
