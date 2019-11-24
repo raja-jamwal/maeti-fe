@@ -10,6 +10,17 @@ import { store } from './src/store';
 import { fetchAccount } from './src/store/reducers/account-reducer';
 import { bindActionCreators } from 'redux';
 const { TextDecoder, TextEncoder } = require('text-encoding');
+import Constants from 'expo-constants';
+import * as Sentry from 'sentry-expo';
+import * as config from './src/config/config.json';
+import { getLogger } from './src/utils/logger';
+
+Sentry.setRelease(Constants.manifest.revisionId);
+Sentry.init({
+	dsn: config.sentry_dsn,
+	enableInExpoDevelopment: true,
+	debug: true
+});
 
 /**
  * Polly-fill following for react-native JSC
@@ -25,9 +36,14 @@ const styles = StyleSheet.create({
 });
 
 class App extends React.Component {
+	logger = getLogger(App);
 	state = {
 		isLoadingComplete: false
 	};
+
+	componentDidMount() {
+		this.logger.log(config.sentry_dsn);
+	}
 
 	render() {
 		if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

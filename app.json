@@ -35,6 +35,18 @@
       "backgroundColor": "#481f6f",
       "barStyle": "light-content"
     },
-    "description": ""
+    "description": "",
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "datagrids",
+            "project": "matrimony",
+            "authToken": "480ed1777edc4717870ee791a4baf5c7c516826acc95452dbeb5db9b63a92a27"
+          }
+        }
+      ]
+    }
   }
 }
