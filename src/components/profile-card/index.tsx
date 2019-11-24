@@ -11,15 +11,15 @@ import { View, Image, StyleSheet, Dimensions, TouchableNativeFeedback } from 're
 import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency } from '../../utils/index';
-import Divider from '../divider/index';
 import { isEmpty, head, get } from 'lodash';
-import { PhotosEntity, UserProfile } from '../../store/reducers/account-defination';
+import { UserProfile } from '../../store/reducers/account-defination';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
+import { find } from 'lodash';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import Layout from 'src/constants/Layout.js';
-import Carousel from 'react-native-snap-carousel';
 import ProfileImageCarousel from '../profile-image-carousel/profile-image-carousel';
+import { ProfileTableHeightOptions } from '../collapsible-table/profile-table';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
@@ -39,13 +39,6 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		this.setUserProfileFavourite = this.setUserProfileFavourite.bind(this);
 	}
 
-	fullWidth() {
-		const screenWidth = Dimensions.get('window').width;
-		return {
-			width: screenWidth
-		};
-	}
-
 	premiumProfileWidth() {
 		const screenWidth = Dimensions.get('window').width;
 		return {
@@ -62,6 +55,13 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 	setUserProfileFavourite() {
 		const { userProfile, setUserProfileFavourite } = this.props;
 		setUserProfileFavourite(userProfile, !userProfile.isFavourite);
+	}
+
+	getHeightInFt(height: number): string {
+		if (!height) return '0';
+		const heightOption = find(ProfileTableHeightOptions, { value: height }) as any;
+		if (!heightOption) return '0';
+		return heightOption.label;
 	}
 
 	render() {
@@ -102,7 +102,10 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 					{!primaryUserProfilePhoto && (
 						<Image
 							source={defaultPrimaryPhoto}
-							style={[styles.profileImage, this.fullWidth()]}
+							style={[
+								styles.profileImage,
+								{ width: Layout.window.width, height: Layout.window.height / 2 }
+							]}
 						/>
 					)}
 
@@ -121,7 +124,9 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						{!!userProfile.dob && (
 							<Value>Age {calculateAge(userProfile.dob || 0)}</Value>
 						)}
-						{!!userProfile.height && <Value>{userProfile.height || 0} Ft</Value>}
+						{!!userProfile.height && (
+							<Value>{this.getHeightInFt(userProfile.height || 0)} Ft</Value>
+						)}
 						{/*<Value>{horoscope.caste || 'unknown caste'}</Value>*/}
 						{/*<Value>, {horoscope.subCaste || 'unknown sub caste'}</Value>*/}
 					</View>
@@ -187,7 +192,7 @@ const styles = StyleSheet.create({
 	profileSummaryContainer: {
 		padding: 10,
 		paddingTop: 15,
-		paddingBottom: 15,
+		paddingBottom: 15
 	},
 	describeSelfContainer: {
 		flexWrap: 'wrap'
