@@ -1,12 +1,7 @@
-import { PhotosEntity, UserProfile } from './account-defination';
+import { UserProfile } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { IRootState } from '../index';
-import { ApiRequest } from 'src/utils';
-import { Dispatch } from 'redux';
-import { API } from '../../config/API';
-import { getLogger } from '../../utils/logger';
 import { createSelector } from 'reselect';
-import { updateUserProfile } from './user-profile-reducer';
 
 export interface ISelfProfileState {
 	profile?: UserProfile;

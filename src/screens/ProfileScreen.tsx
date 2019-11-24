@@ -29,10 +29,6 @@ type IProfileScreenProps = NavigationInjectedProps &
 	IProfileScreenMapDispatchToProps;
 
 class ProfileScreen extends React.Component<IProfileScreenProps> {
-	/*static navigationOptions = {
-		title: 'My Profile'
-	};*/
-
 	static navigationOptions = ({ navigation }) => ({
 		title: navigation.getParam('profileName', 'My Profile')
 	});

@@ -244,7 +244,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 							: {
 									phoneNumber: number
 							  };
-					const account: Account = await ApiRequest(api, payload);
+					const account: Account = (await ApiRequest(api, payload)) as Account;
 					await AsyncStorage.setItem('accountId', `${account.id}`);
 					await this._tryAuth();
 				} catch (er) {

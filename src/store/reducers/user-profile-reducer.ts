@@ -57,7 +57,7 @@ interface IUpdateEnityPayload {
 
 export const markProfileAsViewed = function(userProfileId: number) {
 	const logger = getLogger(markProfileAsViewed);
-	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+	return (_dispatch: Dispatch<any>, getState: () => IRootState) => {
 		logger.log(`marking profile Id ${userProfileId} as viewed`);
 		const currentProfileId = getCurrentUserProfileId(getState());
 		return ApiRequest(API.VIEWED_MY_PROFILE.SAVE, {
@@ -69,14 +69,14 @@ export const markProfileAsViewed = function(userProfileId: number) {
 
 export const getViewedMyContact = function(userProfileId: number) {
 	const logger = getLogger(getViewedMyContact);
-	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+	return (_dispatch: Dispatch<any>, getState: () => IRootState) => {
 		logger.log(`fetching viewed contact of profileId ${userProfileId}`);
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve, _reject) => {
 			ApiRequest(API.VIEWED_MY_CONTACT.GET, {
 				actorUserProfileId: userProfileId,
 				userProfileId: getCurrentUserProfileId(getState())
 			})
-				.then(res => resolve(true))
+				.then(_res => resolve(true))
 				.catch(err => {
 					logger.log(`error fetching viewed contact ${userProfileId}`, err);
 					resolve(false);
@@ -210,7 +210,7 @@ export const updateVerification = function({ userProfileId, object }: IUpdateEni
 };
 
 export const updateUserProfile = function({ userProfileId, object }: IUpdateEnityPayload) {
-	const updateFunc = (userProfile: UserProfile, newUserProfile: UserProfile) => newUserProfile;
+	const updateFunc = (_userProfile: UserProfile, newUserProfile: UserProfile) => newUserProfile;
 	return updateLocalAndServer<UserProfile>(
 		userProfileId,
 		object,
