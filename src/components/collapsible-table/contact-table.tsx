@@ -23,6 +23,10 @@ class ContactTable extends React.Component<
 	IContactTableProps & IContactTableMapDispatchToProps & IContactTableMapStateToProps
 > {
 	mappings = {
+		phoneNumber: {
+			label: 'Phone Number',
+			type: 'string'
+		},
 		address: {
 			label: 'Address',
 			type: 'string'

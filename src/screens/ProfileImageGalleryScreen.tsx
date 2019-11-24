@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, TouchableNativeFeedback, Image, Text } from 'react-native';
 import { IRootState } from '../store';
-import { UserProfile } from '../store/reducers/account-defination';
+import { PhotosEntity, UserProfile } from '../store/reducers/account-defination';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { getLogger } from '../utils/logger';
@@ -11,15 +11,22 @@ import * as Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { simpleAlert } from '../components/alert';
 import ActionSheet from 'react-native-actionsheet';
+import { remove } from 'lodash';
 import { Throbber } from '../components/throbber/throbber';
 import Colors from 'src/constants/Colors.js';
 import {
 	getCurrentUserProfile,
 	getIsCurrentProfileUpdating
 } from '../store/reducers/self-profile-reducer';
-import { uploadPhoto } from 'src/store/reducers/user-profile-reducer.ts';
+import { uploadPhoto, updatePhoto } from 'src/store/reducers/user-profile-reducer.ts';
 import { bindActionCreators, Dispatch } from 'redux';
 import Layout from 'src/constants/Layout.js';
+
+enum PHOTO_ACTIONS {
+	PRIMARY = 0,
+	DELETE = 1,
+	CANCEL = 2
+}
 
 interface IPassedInProps extends NavigationInjectedProps {}
 
@@ -30,6 +37,7 @@ interface IMapStateToProps {
 
 interface IMapDispatchToProps {
 	uploadPhoto: any;
+	updatePhoto: (photos: PhotosEntity[]) => any;
 }
 
 interface IState {
@@ -122,6 +130,28 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 		});
 	}
 
+	handlePhotoAction(action: PHOTO_ACTIONS) {
+		const { selectedIndex } = this.state;
+		const { userProfile, updatePhoto } = this.props;
+		if (!userProfile || selectedIndex === -1) return;
+
+		const photoArrayWithoutSelected = ([] as PhotosEntity[]).concat(userProfile.photo);
+		const selectedPhoto = userProfile.photo[selectedIndex];
+		if (!selectedPhoto) return;
+		remove(photoArrayWithoutSelected, selectedPhoto);
+
+		if (action === PHOTO_ACTIONS.PRIMARY) {
+			this.logger.log('Making photo primary');
+			const updatedPhotoArray = [selectedPhoto].concat(photoArrayWithoutSelected);
+			updatePhoto(updatedPhotoArray);
+		}
+
+		if (action === PHOTO_ACTIONS.DELETE) {
+			this.logger.log('deleting photo');
+			updatePhoto(photoArrayWithoutSelected);
+		}
+	}
+
 	render() {
 		const { userProfile, isCurrentProfileUpdating } = this.props;
 		if (!userProfile) return null;
@@ -141,13 +171,11 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 					ref={o => (this.imageActionSheet = o)}
 					// title={'Perform action'}
 					options={['Make it primary', 'Delete photo', 'Cancel']}
-					cancelButtonIndex={2}
-					destructiveButtonIndex={1}
+					cancelButtonIndex={PHOTO_ACTIONS.CANCEL}
+					destructiveButtonIndex={PHOTO_ACTIONS.DELETE}
 					onPress={index => {
 						this.logger.log(index);
-						this.setState({
-							selectedIndex: index
-						});
+						this.handlePhotoAction(index as PHOTO_ACTIONS);
 					}}
 				/>
 				{isCurrentProfileUpdating && (
@@ -220,7 +248,8 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		uploadPhoto: bindActionCreators(uploadPhoto, dispatch)
+		uploadPhoto: bindActionCreators(uploadPhoto, dispatch),
+		updatePhoto: bindActionCreators(updatePhoto, dispatch)
 	};
 };
 

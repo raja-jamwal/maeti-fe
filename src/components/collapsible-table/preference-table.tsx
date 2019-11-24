@@ -28,10 +28,6 @@ export const PreferenceEducationOptions = [
 		value: 'advert-market'
 	},
 	{
-		label: 'Any',
-		value: 'any'
-	},
-	{
 		label: 'Architect',
 		value: 'architect'
 	},
@@ -121,10 +117,6 @@ export const PreferenceEducationOptions = [
 	}
 ];
 export const PreferenceOccupationOptions = [
-	{
-		label: 'Any',
-		value: 'any'
-	},
 	{
 		label: 'Business',
 		value: 'business'
@@ -218,10 +210,6 @@ export const PreferenceDietOptions = [
 	{
 		label: 'Others (Jain, Vegan)',
 		value: 'others'
-	},
-	{
-		label: 'Any',
-		value: 'any'
 	}
 ];
 export const PreferenceSmokeOptions = [
@@ -236,10 +224,6 @@ export const PreferenceSmokeOptions = [
 	{
 		label: 'Occasionally',
 		value: 'occasionally'
-	},
-	{
-		label: 'Any',
-		value: 'any'
 	}
 ];
 export const PreferenceDrinkOptions = [
@@ -254,10 +238,6 @@ export const PreferenceDrinkOptions = [
 	{
 		label: 'Occasionally',
 		value: 'occasionally'
-	},
-	{
-		label: 'Any',
-		value: 'any'
 	}
 ];
 export const PreferenceHotelingOptions = [
@@ -272,10 +252,6 @@ export const PreferenceHotelingOptions = [
 	{
 		label: 'Occasionally',
 		value: 'occasionally'
-	},
-	{
-		label: 'Any',
-		value: 'any'
 	}
 ];
 export const PreferencePartyingOptions = [
@@ -290,10 +266,6 @@ export const PreferencePartyingOptions = [
 	{
 		label: 'Occasionally',
 		value: 'occasionally'
-	},
-	{
-		label: 'Any',
-		value: 'any'
 	}
 ];
 export const PreferenceCookingOptions = [
@@ -308,10 +280,6 @@ export const PreferenceCookingOptions = [
 	{
 		label: 'Occasionally',
 		value: 'occasionally'
-	},
-	{
-		label: 'Any',
-		value: 'any'
 	}
 ];
 
@@ -337,7 +305,7 @@ class PreferenceTable extends React.Component<
 			type: 'tag-array'
 		},
 		differenceHeight: {
-			label: 'Height',
+			label: 'Difference in height (cms)',
 			type: 'string'
 		},
 		differenceAge: {
@@ -361,10 +329,6 @@ class PreferenceTable extends React.Component<
 			type: 'choice',
 			choice: {
 				options: [
-					{
-						label: 'Any',
-						value: 'any'
-					},
 					{
 						label: 'English',
 						value: 'english'
@@ -412,10 +376,6 @@ class PreferenceTable extends React.Component<
 					{
 						label: 'No',
 						value: 'no'
-					},
-					{
-						label: 'Any',
-						value: 'any'
 					}
 				]
 			}

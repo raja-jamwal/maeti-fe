@@ -22,9 +22,9 @@ import { ApiRequest } from '../../utils/index';
 import {
 	addSelfProfile,
 	getCurrentUserProfile,
-	getCurrentUserProfileId,
 	getSelfProfileId,
-	setSelfProfileUpdating
+	setSelfProfileUpdating,
+	getCurrentUserProfileId
 } from './self-profile-reducer';
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
@@ -87,12 +87,30 @@ export const getViewedMyContact = function(userProfileId: number) {
 
 export const saveViewedMyContact = function(userProfileId: number) {
 	const logger = getLogger(saveViewedMyContact);
-	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+	return (_dispatch: Dispatch<any>, getState: () => IRootState) => {
 		logger.log(`mark viewed contact for userProfileId ${userProfileId}`);
 		return ApiRequest(API.VIEWED_MY_CONTACT.SAVE, {
 			actorUserProfileId: getCurrentUserProfileId(getState()),
 			userProfileId
 		}).catch(err => logger.log(`unable to mark viewed contact ${userProfileId}`, err));
+	};
+};
+
+export const updatePhoto = function(photos: PhotosEntity[]) {
+	const logger = getLogger(updatePhoto);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		logger.log('trying to update photos');
+		const currentProfileId = getCurrentUserProfileId(getState());
+		if (!currentProfileId) return;
+		const currentUserProfile = getUserProfileForId(getState(), currentProfileId);
+		if (!currentUserProfile) return;
+		const updatedProfile = {
+			...currentUserProfile,
+			photo: ([] as Array<PhotosEntity>).concat(photos)
+		};
+		dispatch(updateUserProfile({ userProfileId: updatedProfile.id, object: updatedProfile }));
+		dispatch(addSelfProfile(updatedProfile));
+		logger.log('photos updated');
 	};
 };
 

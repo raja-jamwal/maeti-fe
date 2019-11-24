@@ -24,6 +24,17 @@ interface IFamilyTableMapDispatchToProps {
 	updateFamilyOtherInformation: () => any;
 }
 
+const ParentAliveOptions = [
+	{
+		label: 'Alive',
+		value: 'alive'
+	},
+	{
+		label: 'Expired',
+		value: 'expired'
+	}
+];
+
 class FamilyTable extends React.Component<
 	IFamilyTableProps & IFamilyTableMapStateToProps & IFamilyTableMapDispatchToProps
 > {
@@ -34,7 +45,10 @@ class FamilyTable extends React.Component<
 		},
 		father: {
 			label: 'Father',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: ParentAliveOptions
+			}
 		},
 		fatherOccupation: {
 			label: "Father's Occupation",
@@ -54,7 +68,10 @@ class FamilyTable extends React.Component<
 		},
 		mother: {
 			label: 'Mother',
-			type: 'string'
+			type: 'choice',
+			choice: {
+				options: ParentAliveOptions
+			}
 		},
 		motherOccupation: {
 			label: "Mothers's Occupation",

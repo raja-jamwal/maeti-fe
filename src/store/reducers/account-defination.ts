@@ -164,6 +164,7 @@ export interface OtherDetails extends DAO {
 }
 
 export interface ContactInformation extends DAO {
+	phoneNumber: string;
 	address: string;
 	pin_code: string;
 	residentialCity: string;
