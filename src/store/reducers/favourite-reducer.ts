@@ -96,11 +96,16 @@ export const setUserProfileFavourite = function(userProfile: UserProfile, isFavo
 				//
 				// Finally add changes to the favourite profile list
 				//
+				// Update local page
+				const page = getFavouritePage(getState());
 				if (isFavourite) {
+					page.totalElements += 1;
 					dispatch(addFavourite(favourite));
 				} else {
+					page.totalElements -= 1;
 					dispatch(removeFavourite(favourite));
 				}
+				dispatch(addFavouritePage(page));
 			})
 			.catch(err => {
 				logger.log('error while changing favourite ', err);
