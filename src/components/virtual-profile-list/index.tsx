@@ -35,7 +35,7 @@ class VirtualProfileList extends React.PureComponent<
 				key={profileIdExtractor(item)}
 				onPress={() => this.openProfileScreen(profileIdExtractor(item))}
 			>
-				<View>
+				<View style={styles.profileCardContainer}>
 					<ConnectedProfileCard
 						key={profileIdExtractor(item)}
 						userProfileId={profileIdExtractor(item)}
@@ -88,6 +88,11 @@ const styles = StyleSheet.create({
 	},
 	loaderBottom: {
 		bottom: 10
+	},
+	profileCardContainer: {
+		elevation: 10,
+		marginBottom: 10,
+		borderColor: 'black'
 	}
 });
 
