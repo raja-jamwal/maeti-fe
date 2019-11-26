@@ -25,12 +25,16 @@ import TabBarComponent from '../components/tab-bar-component';
 
 const defaultNavigationOptions = {
 	headerStyle: {
-		backgroundColor: Colors.primaryDarkColor
+		backgroundColor: 'white'
+		// backgroundColor: Colors.primaryDarkColor
 		// marginTop: Constants.statusBarHeight
 	},
-	headerTintColor: '#fff',
+	headerTintColor: Colors.offWhite,
 	headerTitleStyle: {
 		fontWeight: 'normal'
+	},
+	labelStyle: {
+		fontSize: 12
 	}
 };
 
@@ -118,8 +122,11 @@ const InterestTabs = createMaterialTopTabNavigator(
 			header: null
 		},
 		tabBarOptions: {
+			inactiveTintColor: Colors.offWhite,
+			activeTintColor: Colors.primaryDarkColor,
 			style: {
-				backgroundColor: Colors.primaryDarkColor
+				// backgroundColor: Colors.primaryDarkColor,
+				backgroundColor: 'white'
 			}
 		}
 	}
@@ -171,7 +178,8 @@ MoreStack.navigationOptions = {
 const bottomTabNavigatorOptions = {
 	initialRouteName: 'ExploreStack',
 	tabBarOptions: {
-		activeTintColor: Colors.primaryDarkColor
+		// color: 'black',
+		activeTintColor: 'black'
 	}
 };
 

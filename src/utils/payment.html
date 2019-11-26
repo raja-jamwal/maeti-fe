@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+    <script type="text/javascript" src="https://checkout.razorpay.com/v1/razorpay.js"></script>
+</head>
+<body onload="document.forms[0].submit();">
+    <form style="visibility: hidden" name="theForm" method="POST" action="https://api.razorpay.com/v1/checkout/embedded">
+        <input type="hidden" name="key_id" value="rzp_test_3umS10hV3WYmQm">
+        <input type="hidden" name="order_id" value="orderId">
+        <input type="hidden" name="name" value="Rishto">
+        <input type="hidden" name="description" value="Sidhyun jo Sindhyun sa">
+        <input type="hidden" name="image" value="https://s3.ap-south-1.amazonaws.com/matrimony.datagrids.in/icon.png">
+        <input type="hidden" name="prefill[name]" value="fullName">
+        <input type="hidden" name="prefill[contact]" value="phoneNumber">
+        <input type="hidden" name="callback_url" value="https://example.com/payment-callback">
+        <input type="hidden" name="cancel_url" value="https://example.com/payment-cancel">
+        <button>Submit</button>
+    </form>
+</body>
+</html>

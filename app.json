@@ -32,7 +32,7 @@
       "versionCode": 7
     },
     "androidStatusBar": {
-      "backgroundColor": "#481f6f",
+      "backgroundColor": "#1b73b4",
       "barStyle": "light-content"
     },
     "description": "",

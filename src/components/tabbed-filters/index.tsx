@@ -62,8 +62,6 @@ class TabbedFilters extends React.PureComponent<any> {
 
 const styles = StyleSheet.create({
 	headline: {
-		fontSize: 20,
-		fontWeight: '500',
 		padding: 20
 	},
 	tile: {
@@ -73,10 +71,11 @@ const styles = StyleSheet.create({
 	},
 	selectedTitle: {
 		borderBottomWidth: 2,
-		borderColor: Colors.orange
+		borderColor: Colors.offWhite
 	},
 	label: {
 		color: Colors.offWhite,
+		fontSize: 12,
 		textAlign: 'center'
 	},
 	icon: {

@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 		bottom: 10
 	},
 	profileCardContainer: {
-		elevation: 10,
+		// elevation: 10,
 		marginBottom: 10,
 		borderColor: 'black'
 	}

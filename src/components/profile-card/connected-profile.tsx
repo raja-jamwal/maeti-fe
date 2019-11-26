@@ -1,5 +1,4 @@
 import ProfileCard, { IProfileProps } from './index';
-import TestProfile from './test-profile';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { IRootState } from '../../store/index';

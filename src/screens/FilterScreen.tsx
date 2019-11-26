@@ -5,7 +5,8 @@ import {
 	ScrollView,
 	TouchableNativeFeedback,
 	StyleSheet,
-	Dimensions
+	Dimensions,
+	StatusBar
 } from 'react-native';
 import GlobalStyles from '../styles/global';
 import Colors from '../constants/Colors';
@@ -31,7 +32,13 @@ type IFilterScreenProps = NavigationInjectedProps & IMapStateToProps & IMapDispa
 
 class FilterScreen extends React.Component<IFilterScreenProps, any> {
 	static navigationOptions = {
-		title: 'Filter'
+		title: 'Filter',
+		headerStyle: {
+			// backgroundColor: 'white'
+			backgroundColor: Colors.primaryDarkColor
+			// marginTop: Constants.statusBarHeight
+		},
+		headerTintColor: 'white'
 	};
 
 	constructor(props: IFilterScreenProps) {
@@ -152,6 +159,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 		const isRangeFilter = !!filter.range;
 		return (
 			<View style={GlobalStyles.expand}>
+				<StatusBar backgroundColor={Colors.primaryDarkColor} barStyle="light-content" />
 				<View style={[GlobalStyles.row, { height: height - 200 }]}>
 					<ScrollView
 						style={{

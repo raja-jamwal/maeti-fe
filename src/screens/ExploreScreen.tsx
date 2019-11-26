@@ -5,7 +5,8 @@ import {
 	TextInput,
 	View,
 	TouchableNativeFeedback,
-	FlatList
+	FlatList,
+	StatusBar
 } from 'react-native';
 import Colors from '../constants/Colors';
 import GlobalStyles from '../styles/global';
@@ -72,7 +73,7 @@ const ExploreScreenHeader = (props: any) => {
 			<TouchableNativeFeedback onPress={() => openFilterScreen()}>
 				<Ionicons
 					style={styles.navBarIcon}
-					color={Colors.white}
+					color={Colors.offWhite}
 					name="md-funnel"
 					size={26}
 				/>
@@ -201,13 +202,16 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 	render() {
 		// console.log('explore re-rendering ', this.cycles++);
 		return (
-			<FlatList
-				keyExtractor={(item: any) => item.key}
-				data={this.getItems()}
-				renderItem={({ item }) => this.renderItem(item)}
-				onEndReached={this._handleMore}
-				onEndReachedThreshold={0.5}
-			/>
+			<View>
+				<StatusBar backgroundColor="white" barStyle="dark-content" />
+				<FlatList
+					keyExtractor={(item: any) => item.key}
+					data={this.getItems()}
+					renderItem={({ item }) => this.renderItem(item)}
+					onEndReached={this._handleMore}
+					onEndReachedThreshold={0.5}
+				/>
+			</View>
 		);
 	}
 }
@@ -217,28 +221,28 @@ const styles = StyleSheet.create({
 		paddingRight: 10
 	},
 	searchInput: {
-		backgroundColor: Colors.tintColor,
+		backgroundColor: Colors.borderColor,
 		marginLeft: 5,
 		marginRight: 10,
 		borderRadius: 10,
 		paddingLeft: 10,
 		paddingRight: 10,
 		height: 36,
-		color: 'white'
+		color: Colors.offWhite
 	},
 	avatar: {
 		width: 36,
 		height: 36,
 		borderRadius: 20,
 		margin: 10,
-		borderWidth: 3,
-		borderColor: 'white'
+		borderWidth: 1,
+		borderColor: Colors.borderColor
 	},
 	header: {
-		backgroundColor: Colors.primaryDarkColor
+		backgroundColor: 'white'
 	},
 	profileCardContainer: {
-		elevation: 10,
+		// elevation: 10,
 		marginBottom: 10,
 		borderColor: 'black'
 	}

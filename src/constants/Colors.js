@@ -1,7 +1,7 @@
-const tintColor = 'rgb(92, 47, 133)';
-const primaryDarkColor = '#481f6f';
+const tintColor = '#3498db';
+const primaryDarkColor = '#1b73b4';
 export default {
-	borderColor: 'rgb(205, 205, 205)',
+	borderColor: '#eaeced',
 	tintColor,
 	primaryDarkColor,
 	tabIconDefault: '#ccc',
@@ -10,7 +10,7 @@ export default {
 	errorBackground: 'red',
 	errorText: '#fff',
 	white: '#fff',
-	offWhite: 'rgb(155, 155, 155)',
+	offWhite: '#646464',
 	orange: 'rgb(245, 166, 35)',
 	warningBackground: '#EAEB5E',
 	warningText: '#666804',
