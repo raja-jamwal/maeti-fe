@@ -14,6 +14,7 @@ import { Throbber } from '../throbber/throbber';
 import { addChannel } from '../../store/reducers/channel-reducer';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { addSentInterest } from '../../store/reducers/interest-reducer';
+import { Value } from '../text';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
@@ -201,45 +202,45 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 			switch (interestState) {
 				case InterestStates.SENT_PENDING:
 					return (
-						<Text style={styles.statusText}>
+						<Value style={styles.statusText}>
 							You sent a interest at{' '}
 							{sentInterest && formatDuration(sentInterest.updatedOn)}
-						</Text>
+						</Value>
 					);
 				case InterestStates.SENT_ACCEPTED:
 					return (
-						<Text style={styles.statusText}>
+						<Value style={styles.statusText}>
 							Your interest was accepted at{' '}
 							{sentInterest && formatDuration(sentInterest.updatedOn)}
-						</Text>
+						</Value>
 					);
 				case InterestStates.SENT_DECLINED:
 					return (
-						<Text style={styles.statusText}>
+						<Value style={styles.statusText}>
 							Your interest was declined at{' '}
 							{sentInterest && formatDuration(sentInterest.updatedOn)}
-						</Text>
+						</Value>
 					);
 				case InterestStates.RECV_PENDING:
 					return (
-						<Text style={styles.statusText}>
+						<Value style={styles.statusText}>
 							Your received interest at{' '}
 							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
-						</Text>
+						</Value>
 					);
 				case InterestStates.RECV_ACCEPTED:
 					return (
-						<Text style={styles.statusText}>
+						<Value style={styles.statusText}>
 							You accepted interest at{' '}
 							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
-						</Text>
+						</Value>
 					);
 				case InterestStates.RECV_DECLINED:
 					return (
-						<Text style={styles.statusText}>
+						<Value style={styles.statusText}>
 							You declined interest at{' '}
 							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
-						</Text>
+						</Value>
 					);
 				default:
 					return null;
@@ -374,7 +375,7 @@ const styles = StyleSheet.create({
 	},
 	btnContainer: {
 		flexDirection: 'row',
-		backgroundColor: Colors.pink,
+		backgroundColor: Colors.primaryDarkColor,
 		margin: 8,
 		padding: 5,
 		paddingLeft: 15,
@@ -395,10 +396,12 @@ const styles = StyleSheet.create({
 		paddingLeft: 20
 	},
 	statusText: {
-		textAlign: 'center'
+		textAlign: 'center',
+		color: Colors.black,
+		fontWeight: '500'
 	},
 	interestAction: {
-		backgroundColor: Colors.pink,
+		backgroundColor: Colors.primaryDarkColor,
 		paddingTop: 5,
 		paddingBottom: 5,
 		marginRight: 5,

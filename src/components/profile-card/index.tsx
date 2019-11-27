@@ -7,7 +7,14 @@
 //
 
 import * as React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableNativeFeedback } from 'react-native';
+import {
+	View,
+	Image,
+	StyleSheet,
+	Dimensions,
+	TouchableNativeFeedback,
+	TouchableHighlight
+} from 'react-native';
 import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency } from '../../utils/index';
@@ -28,6 +35,7 @@ export interface IProfileProps {
 	isSelfProfile: boolean;
 	hideSelfDescription: boolean;
 	setUserProfileFavourite: (userProfile: UserProfile, setFavourite: boolean) => void;
+	onPhotoPress?: () => any;
 }
 
 type IProfileCardProps = NavigationInjectedProps & IProfileProps;
@@ -65,7 +73,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 	}
 
 	render() {
-		const { userProfile, hideSelfDescription, isSelfProfile } = this.props;
+		const { userProfile, hideSelfDescription, isSelfProfile, onPhotoPress } = this.props;
 		if (isEmpty(userProfile)) return null;
 		const { horoscope, education, profession, family } = { ...userProfile };
 		const professionLocation = ['workCity', 'workState', 'workCountry']
@@ -74,47 +82,58 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			.filter(o => !!o)
 			.join(', ');
 		const heartIcon = userProfile.isFavourite ? 'md-heart' : 'md-heart-empty';
+		const heartColor = userProfile.isFavourite ? Colors.pink : Colors.black;
 		const primaryUserProfilePhoto = !isEmpty(userProfile.photo) && head(userProfile.photo).url;
 		return (
 			<View style={styles.profileCard}>
 				<View style={styles.profileImageContainer}>
-					<View style={styles.likeContainer}>
+					{primaryUserProfilePhoto && (
+						<ProfileImageCarousel
+							onPress={() => onPhotoPress && onPhotoPress()}
+							userProfile={userProfile}
+						/>
+					)}
+					{!primaryUserProfilePhoto && (
+						<TouchableHighlight onPress={() => onPhotoPress && onPhotoPress()}>
+							<Image
+								source={defaultPrimaryPhoto}
+								style={[
+									styles.profileImage,
+									{ width: Layout.window.width, height: Layout.window.height / 2 }
+								]}
+							/>
+						</TouchableHighlight>
+					)}
+				</View>
+				<View style={styles.profileSummaryContainer}>
+					<View style={[GlobalStyles.row, GlobalStyles.expand]}>
 						{!isSelfProfile && (
 							<TouchableNativeFeedback onPress={this.setUserProfileFavourite}>
 								<Ionicons
+									style={styles.profileActionIcon}
 									name={heartIcon}
-									size={30}
-									color={Colors.primaryDarkColor}
+									size={24}
+									color={heartColor}
 								/>
 							</TouchableNativeFeedback>
 						)}
+						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
+							<Ionicons
+								style={styles.profileActionIcon}
+								name="md-star-outline"
+								size={24}
+								color={Colors.offWhite}
+							/>
+							<Value>Premium Profile</Value>
+						</View>
+						{/*<Text style={styles.premiumProfileText}>Premium Profile</Text>*/}
+						<View style={GlobalStyles.expand} />
 						{isSelfProfile && (
 							<TouchableNativeFeedback onPress={this.openProfileImageGallery}>
-								<Ionicons
-									name="md-create"
-									size={30}
-									color={Colors.primaryDarkColor}
-								/>
+								<Ionicons name="md-camera" size={24} color={Colors.black} />
 							</TouchableNativeFeedback>
 						)}
 					</View>
-					{primaryUserProfilePhoto && <ProfileImageCarousel userProfile={userProfile} />}
-					{!primaryUserProfilePhoto && (
-						<Image
-							source={defaultPrimaryPhoto}
-							style={[
-								styles.profileImage,
-								{ width: Layout.window.width, height: Layout.window.height / 2 }
-							]}
-						/>
-					)}
-
-					<View style={[styles.premiumProfile, this.premiumProfileWidth()]}>
-						<Ionicons name="md-star-outline" size={20} color="white" />
-						<Text style={styles.premiumProfileText}>Premium Profile</Text>
-					</View>
-				</View>
-				<View style={styles.profileSummaryContainer}>
 					<View>
 						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
 							{userProfile.fullName || 'unknown name'} - U{userProfile.id}
@@ -137,15 +156,13 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 					)}
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 						{!!profession.designation && (
-							<Value style={GlobalStyles.bold}>
-								{profession.designation || 'unknown designation'}
-							</Value>
+							<Value>{profession.designation || 'unknown designation'}</Value>
 						)}
 						{!!profession.company && (
 							<Value>@ {profession.company || 'unknown company'}</Value>
 						)}
 						{!!profession.annualIncome && (
-							<Value style={GlobalStyles.bold}>
+							<Value>
 								{humanizeCurrency(profession.annualIncome || 0, '₹')}
 								/Year
 							</Value>
@@ -166,9 +183,9 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 					{userProfile.describeMyself && !hideSelfDescription && (
 						<View style={[GlobalStyles.row, styles.describeSelfContainer]}>
 							{userProfile.describeMyself.map(description => (
-								<Text style={styles.selfDescriptionChip} key={description.id}>
-									{description.value}
-								</Text>
+								<Value style={styles.selfDescriptionChip} key={description.id}>
+									#{description.value}
+								</Value>
 							))}
 						</View>
 					)}
@@ -198,11 +215,12 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap'
 	},
 	selfDescriptionChip: {
-		backgroundColor: '#FAD291',
-		padding: 5,
+		// backgroundColor: '#FAD291',
+		// padding: 5,
 		marginTop: 5,
-		marginRight: 8,
-		borderRadius: 5
+		// color: Colors.black,
+		marginRight: 8
+		// borderRadius: 5
 	},
 	profileImageContainer: {
 		position: 'relative'
@@ -213,6 +231,9 @@ const styles = StyleSheet.create({
 		right: 0,
 		margin: 15,
 		zIndex: 1
+	},
+	profileActionIcon: {
+		paddingRight: 10
 	},
 	premiumProfile: {
 		position: 'absolute',
@@ -225,6 +246,7 @@ const styles = StyleSheet.create({
 	},
 	premiumProfileText: {
 		color: 'white',
-		marginLeft: 10
+		marginLeft: 10,
+		backgroundColor: Colors.pink
 	}
 });

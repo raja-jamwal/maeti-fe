@@ -106,7 +106,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 const styles = StyleSheet.create({
 	title: {
 		padding: 10,
-		color: Colors.pink,
+		color: Colors.primaryDarkColor,
 		fontWeight: '500'
 	},
 	headerIcon: {

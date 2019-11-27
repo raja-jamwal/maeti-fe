@@ -7,6 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { fetchAcceptedInterests } from '../../../store/reducers/interest-reducer';
 import { connect } from 'react-redux';
 import VirtualProfileList from '../../virtual-profile-list/index';
+import { Value } from '../../text';
 
 interface IAcceptedTabMapStateToProps {
 	acceptedInterests: Array<Interest>;
@@ -46,7 +47,7 @@ class AcceptedTab extends React.Component<
 		if (fetching) return null;
 		return (
 			<View style={styles.totalCountContainer}>
-				<Text>{totalAcceptedInterests} Accepted Interests</Text>
+				<Value>{totalAcceptedInterests} Accepted Interests</Value>
 			</View>
 		);
 	}

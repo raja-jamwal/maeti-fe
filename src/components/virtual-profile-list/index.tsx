@@ -31,17 +31,13 @@ class VirtualProfileList extends React.PureComponent<
 		const { profileIdExtractor } = this.props;
 		if (!item) return null;
 		return (
-			<TouchableNativeFeedback
-				key={profileIdExtractor(item)}
-				onPress={() => this.openProfileScreen(profileIdExtractor(item))}
-			>
-				<View style={styles.profileCardContainer}>
-					<ConnectedProfileCard
-						key={profileIdExtractor(item)}
-						userProfileId={profileIdExtractor(item)}
-					/>
-				</View>
-			</TouchableNativeFeedback>
+			<View style={styles.profileCardContainer}>
+				<ConnectedProfileCard
+					key={profileIdExtractor(item)}
+					userProfileId={profileIdExtractor(item)}
+					onPhotoPress={() => this.openProfileScreen(profileIdExtractor(item))}
+				/>
+			</View>
 		);
 	}
 

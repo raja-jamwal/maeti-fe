@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { View, Text, TouchableNativeFeedback, Modal, StyleSheet, TextInput } from 'react-native';
+import {
+	View,
+	Text,
+	TouchableNativeFeedback,
+	Modal,
+	StyleSheet,
+	TextInput,
+	StatusBar
+} from 'react-native';
 import Color from '../../constants/Colors';
 
 interface IAboutFieldProps {
@@ -44,6 +52,7 @@ class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState>
 						this.toggleShowModal();
 					}}
 				>
+					<StatusBar backgroundColor={Color.primaryDarkColor} barStyle="light-content" />
 					<View style={styles.container}>
 						<Text style={styles.title}>About</Text>
 						<View style={styles.editorContainer}>

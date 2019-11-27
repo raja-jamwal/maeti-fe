@@ -5,6 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import GlobalStyles from '../../styles/global';
 import { map, includes, find } from 'lodash';
 import { formatDate, formatDateTime } from '../../utils';
+import Colors from 'src/constants/Colors';
 
 export default class Table extends React.Component {
 	renderValue(value, mapping) {
@@ -75,7 +76,7 @@ export default class Table extends React.Component {
 										<Value>:</Value>
 									</View>
 									<View>
-										<Value style={styles.tableValue}>
+										<Value style={[styles.tableValue, styles.aboutValue]}>
 											{this.renderValue(object[key], mappings[key])}
 										</Value>
 									</View>
@@ -107,6 +108,11 @@ const styles = StyleSheet.create({
 	tableValue: {
 		flex: 0.5,
 		textTransform: 'capitalize',
-		fontWeight: '500'
+		fontWeight: '500',
+		color: Colors.black
+	},
+	aboutValue: {
+		paddingTop: 5,
+		paddingBottom: 5
 	}
 });

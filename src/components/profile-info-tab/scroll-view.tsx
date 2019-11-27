@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, ScrollView, TouchableNativeFeedback } from 'react-native';
-import Text from '../text/index';
+import Text, { Value } from '../text/index';
 import ConnectedProfile from '../profile-card/connected-profile';
 import GlobalStyles from '../../styles/global';
 import ProfileTable from '../collapsible-table/profile-table';
@@ -199,14 +199,14 @@ export default class ProfileInfoTab extends React.Component<
 							onPress={() => this._handleRouteChange('expectations')}
 						>
 							<View style={GlobalStyles.expand}>
-								<Text style={[styles.tabLink, this.activeRoute('expectations')]}>
+								<Value style={[styles.tabLink, this.activeRoute('expectations')]}>
 									Expectations
-								</Text>
+								</Value>
 							</View>
 						</TouchableNativeFeedback>
 					</View>
 				</View>
-				<View>{this._renderScene()}</View>
+				<View style={styles.sceneContainer}>{this._renderScene()}</View>
 			</ScrollView>
 		);
 	}
@@ -219,6 +219,9 @@ const styles = StyleSheet.create({
 	scene: {
 		flex: 1
 	},
+	sceneContainer: {
+		marginTop: 10
+	},
 	tabBar: {
 		backgroundColor: 'white'
 	},
@@ -229,7 +232,7 @@ const styles = StyleSheet.create({
 	},
 	focusedTab: {
 		borderBottomWidth: 2,
-		borderBottomColor: Colors.orange
+		borderBottomColor: Colors.primaryDarkColor
 	},
 	icon: {
 		width: 80,
@@ -240,7 +243,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	contactActionBtn: {
-		backgroundColor: Colors.pink,
+		backgroundColor: Colors.primaryDarkColor,
 		paddingTop: 5,
 		paddingBottom: 5,
 		margin: 10,

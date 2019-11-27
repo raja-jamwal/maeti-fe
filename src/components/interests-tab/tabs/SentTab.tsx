@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Interest } from '../../../store/reducers/account-defination';
 import { toArray, sortBy } from 'lodash';
 import VirtualProfileList from '../../virtual-profile-list/index';
+import { Value } from '../../text';
 
 interface ISentTabMapStateToProps {
 	sentInterests: Array<Interest>;
@@ -44,7 +45,7 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 		if (fetching) return null;
 		return (
 			<View style={styles.totalCountContainer}>
-				<Text>{totalSentInterests} Sent Interests</Text>
+				<Value>{totalSentInterests} Sent Interests</Value>
 			</View>
 		);
 	}

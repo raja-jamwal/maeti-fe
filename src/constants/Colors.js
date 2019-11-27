@@ -2,6 +2,7 @@ const tintColor = '#3498db';
 const primaryDarkColor = '#1b73b4';
 export default {
 	borderColor: '#eaeced',
+	black: '#111111',
 	tintColor,
 	primaryDarkColor,
 	tabIconDefault: '#ccc',

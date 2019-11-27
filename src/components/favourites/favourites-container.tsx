@@ -16,6 +16,7 @@ import { Favourite } from '../../store/reducers/account-defination';
 import VirtualProfileList from '../virtual-profile-list/index';
 import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
 import Color from '../../constants/Colors';
+import { Value } from '../text';
 
 interface IFavouriteContainerMapStateToProps {
 	userProfileId?: number;
@@ -74,7 +75,7 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 		if (fetching) return null;
 		return (
 			<View style={styles.totalCountContainer}>
-				<Text>{totalFavourites} Favourites</Text>
+				<Value>{totalFavourites} Favourites</Value>
 			</View>
 		);
 	}

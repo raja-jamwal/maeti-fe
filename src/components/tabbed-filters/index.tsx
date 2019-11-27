@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 	},
 	selectedTitle: {
 		borderBottomWidth: 2,
-		borderColor: Colors.offWhite
+		borderColor: Colors.primaryDarkColor
 	},
 	label: {
 		color: Colors.offWhite,

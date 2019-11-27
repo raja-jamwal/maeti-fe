@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import GlobalStyles from '../../styles/global';
 import { View } from 'react-native';
 import { Image } from 'react-native';
-import Text from '../text';
+import Text, { Value } from '../text';
 import { connect } from 'react-redux';
 import { IRootState } from '../../store';
 import { getUserProfileForId } from '../../store/reducers/user-profile-reducer';
@@ -28,30 +28,30 @@ class ProfileActivity extends React.Component<IProfileActivityMapStateToProps> {
 						style={styles.icon}
 						source={require('../../assets/images/icons/response_rate.png')}
 					/>
-					<Text style={[styles.iconLabel, GlobalStyles.bold]}>
+					<Value style={[styles.iconLabel, GlobalStyles.bold]}>
 						{userProfile.responseRate}%
-					</Text>
-					<Text style={styles.iconLabel}>Response Rate</Text>
+					</Value>
+					<Value style={styles.iconLabel}>Response Rate</Value>
 				</View>
 				<View style={[GlobalStyles.expand, GlobalStyles.alignCenter]}>
 					<Image
 						style={styles.icon}
 						source={require('../../assets/images/icons/response_time.png')}
 					/>
-					<Text style={[styles.iconLabel, GlobalStyles.bold]}>
+					<Value style={[styles.iconLabel, GlobalStyles.bold]}>
 						{formatDuration(userProfile.responseTime)}
-					</Text>
-					<Text style={styles.iconLabel}>Response Time</Text>
+					</Value>
+					<Value style={styles.iconLabel}>Response Time</Value>
 				</View>
 				<View style={[GlobalStyles.expand, GlobalStyles.alignCenter]}>
 					<Image
 						style={styles.icon}
 						source={require('../../assets/images/icons/last_login.png')}
 					/>
-					<Text style={[styles.iconLabel, GlobalStyles.bold]}>
+					<Value style={[styles.iconLabel, GlobalStyles.bold]}>
 						{formatDate(userProfile.lastLogin / 1000)}
-					</Text>
-					<Text style={styles.iconLabel}>Last Login</Text>
+					</Value>
+					<Value style={styles.iconLabel}>Last Login</Value>
 				</View>
 			</View>
 		);
@@ -60,8 +60,8 @@ class ProfileActivity extends React.Component<IProfileActivityMapStateToProps> {
 
 const styles = StyleSheet.create({
 	icon: {
-		width: 80,
-		height: 80,
+		width: 40,
+		height: 40,
 		resizeMode: 'contain'
 	},
 	iconLabel: {

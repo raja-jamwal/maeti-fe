@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
-import Text from '../text/index';
+import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { Message, UserProfile } from '../../store/reducers/account-defination';
 import { formatDuration } from '../../utils';
@@ -20,32 +20,28 @@ class UserChannel extends React.Component<IUserChannelProps> {
 		return (
 			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.container]}>
 				<View style={GlobalStyles.paddedRight}>
-					{
-						!!userProfileImage && <Image
+					{!!userProfileImage && (
+						<Image
 							source={{
-								uri: userProfileImage,
-								width: 50
+								uri: userProfileImage
 							}}
 							style={styles.avatar}
 						/>
-					}
-					{
-						!userProfileImage && <Image
-							source={defaultProfileImage}
-							style={styles.avatar}
-						/>
-					}
+					)}
+					{!userProfileImage && (
+						<Image source={defaultProfileImage} style={styles.avatar} />
+					)}
 				</View>
 				<View style={GlobalStyles.expand}>
 					<View style={GlobalStyles.row}>
-						<Text style={[GlobalStyles.bold, GlobalStyles.expand]}>
+						<Value style={[GlobalStyles.bold, GlobalStyles.expand]}>
 							{userProfile.fullName}
-						</Text>
+						</Value>
 					</View>
 					{latestMessage && (
 						<View style={GlobalStyles.row}>
-							<Text style={GlobalStyles.expand}>{latestMessage.message}</Text>
-							<Text>{formatDuration(latestMessage.createdOn)}</Text>
+							<Value style={GlobalStyles.expand}>{latestMessage.message}</Value>
+							<Value>{formatDuration(latestMessage.createdOn)}</Value>
 						</View>
 					)}
 				</View>
@@ -59,8 +55,8 @@ const styles = StyleSheet.create({
 		padding: 8
 	},
 	avatar: {
-		width: 50,
-		height: 50,
+		width: 40,
+		height: 40,
 		borderRadius: 25
 	}
 });

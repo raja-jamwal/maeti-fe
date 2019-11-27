@@ -18,7 +18,7 @@ import { getLogger } from './src/utils/logger';
 Sentry.setRelease(Constants.manifest.revisionId);
 Sentry.init({
 	dsn: config.sentry_dsn,
-	enableInExpoDevelopment: true,
+	enableInExpoDevelopment: false,
 	debug: true
 });
 

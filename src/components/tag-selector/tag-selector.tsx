@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { View, Text, Modal, StyleSheet, TouchableNativeFeedback, ScrollView } from 'react-native';
+import {
+	View,
+	Text,
+	Modal,
+	StyleSheet,
+	TouchableNativeFeedback,
+	ScrollView,
+	StatusBar
+} from 'react-native';
 import CheckBox from 'react-native-check-box';
 import { IRootState } from '../../store/index';
 import { connect } from 'react-redux';
@@ -93,6 +101,10 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 					}}
 				>
 					<View style={styles.flexContainer}>
+						<StatusBar
+							backgroundColor={Color.primaryDarkColor}
+							barStyle="light-content"
+						/>
 						<View style={[styles.container]}>
 							<Text style={styles.title}>{title || 'No Title'}</Text>
 							<ScrollView>

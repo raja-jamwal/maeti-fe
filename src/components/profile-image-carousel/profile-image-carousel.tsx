@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { UserProfile } from '../../store/reducers/account-defination';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableHighlight, TouchableNativeFeedback, View } from 'react-native';
 import Layout from 'src/constants/Layout.js';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { getLogger } from '../../utils/logger';
 
 interface IProps {
 	userProfile?: UserProfile;
+	onPress?: () => any;
 }
 
 interface IState {
@@ -21,19 +22,26 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 		this.state = {
 			activeIndex: 0
 		};
+		this.renderItem = this.renderItem.bind(this);
 	}
 
 	renderItem = ({ item }) => {
+		const { onPress } = this.props;
 		const image = item;
 		if (!image) return null;
 		return (
-			<Image
-				source={{
-					uri: image.url,
-					width: Layout.window.width
-				}}
-				style={[styles.profileImage, { width: Layout.window.width, height: Layout.window.height / 2 }]}
-			/>
+			<TouchableHighlight onPress={() => onPress && onPress()}>
+				<Image
+					source={{
+						uri: image.url,
+						width: Layout.window.width
+					}}
+					style={[
+						styles.profileImage,
+						{ width: Layout.window.width, height: Layout.window.height / 2 }
+					]}
+				/>
+			</TouchableHighlight>
 		);
 	};
 
@@ -78,6 +86,6 @@ const styles = StyleSheet.create({
 	paginationContainer: {
 		position: 'absolute',
 		width: Layout.window.width,
-		bottom: -45,
+		bottom: -45
 	}
 });

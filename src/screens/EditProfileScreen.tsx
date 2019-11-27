@@ -7,6 +7,7 @@ import {
 	Picker,
 	Platform,
 	ScrollView,
+	StatusBar,
 	StyleSheet,
 	TextInput,
 	TimePickerAndroid,
@@ -14,7 +15,7 @@ import {
 	View
 } from 'react-native';
 import GlobalStyles from '../styles/global';
-import Text from '../components/text/index';
+import Text, { Value } from '../components/text/index';
 import TagSelector from '../components/tag-selector/tag-selector';
 import { Tag } from '../store/reducers/account-defination';
 import { Throbber } from '../components/throbber/throbber';
@@ -29,6 +30,7 @@ import AboutField from '../components/about-field';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
+		<StatusBar backgroundColor={Color.white} barStyle="dark-content" />
 		<View
 			style={{
 				flex: 1,
@@ -216,7 +218,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 
 			return (
 				<View key={field}>
-					<Text style={styles.fieldLabel}>{fieldDefinition.label}</Text>
+					<Value style={styles.fieldLabel}>{fieldDefinition.label}</Value>
 					{isStringField && (
 						<View style={styles.textField}>
 							<TextInput
@@ -376,6 +378,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		const { showProgress, showSubmissionFooter } = this.state;
 		return (
 			<View style={GlobalStyles.expand}>
+				<StatusBar backgroundColor={Color.white} barStyle="dark-content" />
 				<ScrollView style={[GlobalStyles.expand, styles.formContainer]}>
 					{this.renderFields()}
 				</ScrollView>
@@ -395,18 +398,19 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 const styles = StyleSheet.create({
 	formContainer: {
 		padding: 8,
-		paddingTop: 0,
+		paddingTop: 0
 	},
 	formGroup: {
 		paddingBottom: 30
 	},
 	fieldLabel: {
 		paddingTop: 14,
-		paddingBottom: 4
+		paddingBottom: 4,
+		fontSize: 16
 	},
 	fieldText: {
 		height: 35,
-		fontSize: 18
+		fontSize: 16
 	},
 	textField: {
 		borderColor: Color.borderColor,
@@ -430,13 +434,13 @@ const styles = StyleSheet.create({
 		borderColor: Color.tabIconDefault
 	},
 	submissionBtn: {
-		backgroundColor: Color.pink,
-		padding: 4,
+		backgroundColor: Color.primaryDarkColor,
+		padding: 6,
 		textAlign: 'center',
 		color: 'white',
 		margin: 4,
 		borderRadius: 4,
-		fontSize: 18
+		fontSize: 16
 	},
 	labelContainer: {
 		borderColor: Color.borderColor,

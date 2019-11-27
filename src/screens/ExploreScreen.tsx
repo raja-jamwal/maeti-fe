@@ -6,7 +6,8 @@ import {
 	View,
 	TouchableNativeFeedback,
 	FlatList,
-	StatusBar
+	StatusBar,
+	TouchableOpacity
 } from 'react-native';
 import Colors from '../constants/Colors';
 import GlobalStyles from '../styles/global';
@@ -162,14 +163,12 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 
 	renderProfileCard(userProfileId: number, profileName: string) {
 		return (
-			<TouchableNativeFeedback
-				key={userProfileId}
-				onPress={() => this.openProfileScreen(userProfileId, profileName)}
-			>
-				<View style={styles.profileCardContainer}>
-					<ConnectedProfile userProfileId={userProfileId} />
-				</View>
-			</TouchableNativeFeedback>
+			<View style={styles.profileCardContainer}>
+				<ConnectedProfile
+					onPhotoPress={() => this.openProfileScreen(userProfileId, profileName)}
+					userProfileId={userProfileId}
+				/>
+			</View>
 		);
 	}
 

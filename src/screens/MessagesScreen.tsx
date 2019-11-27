@@ -131,7 +131,8 @@ class MessagesScreen extends React.PureComponent<
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		marginTop: 8
 	},
 	inboxEmoji: {
 		fontSize: 25,

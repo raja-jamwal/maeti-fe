@@ -7,6 +7,7 @@ import { fetchIncomingInterests } from '../../../store/reducers/interest-reducer
 import { Interest } from '../../../store/reducers/account-defination';
 import VirtualProfileList from '../../virtual-profile-list/index';
 import { toArray, sortBy } from 'lodash';
+import { Value } from '../../text';
 
 interface IIncomingTabMapStateToProps {
 	incomingInterests: Array<Interest>;
@@ -45,7 +46,7 @@ class IncomingTab extends React.PureComponent<
 		if (fetching) return null;
 		return (
 			<View style={styles.totalCountContainer}>
-				<Text>{totalIncomingInterests} Incoming Interests</Text>
+				<Value>{totalIncomingInterests} Incoming Interests</Value>
 			</View>
 		);
 	}

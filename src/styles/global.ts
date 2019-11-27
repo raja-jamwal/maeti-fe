@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import Colors from 'src/constants/Colors';
 
 export default StyleSheet.create({
 	expand: {
@@ -11,15 +12,15 @@ export default StyleSheet.create({
 		flexDirection: 'column'
 	},
 	large: {
-		fontSize: 18
+		fontSize: 14
 	},
 	bold: {
 		fontWeight: '500',
-		fontFamily: 'comfortaa-bold'
+		color: Colors.black
 	},
 	textRegular: {
-		fontFamily: 'comfortaa-regular',
-		fontSize: 14
+		fontSize: 12,
+		color: Colors.offWhite
 	},
 	justifyCenter: {
 		justifyContent: 'center'
