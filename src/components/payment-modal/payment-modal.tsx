@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Modal, WebView, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, Modal, WebView, StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import { getRazor } from '../../utils/payment-wrapper';
 import { connect } from 'react-redux';
 import { getAccount } from '../../store/reducers/account-reducer';
@@ -79,6 +79,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 						this.requestClose();
 					}}
 				>
+					<StatusBar backgroundColor={Colors.primaryDarkColor} barStyle="light-content" />
 					<View style={{ flex: 1 }}>
 						{!showRazor && (
 							<View style={{ flex: 1 }}>

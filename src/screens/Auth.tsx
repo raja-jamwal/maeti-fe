@@ -6,7 +6,6 @@ import {
 	StyleSheet,
 	Text,
 	TextInput,
-	TouchableNativeFeedback,
 	View
 } from 'react-native';
 import GlobalStyle from '../styles/global';
@@ -23,6 +22,7 @@ import { fetchAccount } from '../store/reducers/account-reducer';
 import { NavigationInjectedProps } from 'react-navigation';
 import { getLogger } from '../utils/logger';
 import { connectRTM } from '../store/middleware/rtm-middleware';
+import Button from '../components/button/button';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -204,20 +204,20 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 					)}
 					{login && (
 						<View>
-							<TouchableNativeFeedback onPress={() => this.sendVerificationSMS(true)}>
-								<Text style={styles.btn}>Login</Text>
-							</TouchableNativeFeedback>
-							<TouchableNativeFeedback
+							<View style={{ paddingBottom: 16 }}>
+								<Button
+									label="Login"
+									onPress={() => this.sendVerificationSMS(true)}
+								/>
+							</View>
+							<Button
+								label="New User"
 								onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}
-							>
-								<Text style={styles.btn}>New User</Text>
-							</TouchableNativeFeedback>
+							/>
 						</View>
 					)}
 					{!login && (
-						<TouchableNativeFeedback onPress={() => this.sendVerificationSMS()}>
-							<Text style={styles.btn}>Sign up</Text>
-						</TouchableNativeFeedback>
+						<Button label="Sign up" onPress={() => this.sendVerificationSMS()} />
 					)}
 				</View>
 			</View>
@@ -274,7 +274,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 							placeholder="Enter verification code sent in SMS"
 						/>
 					</View>
-					<TouchableNativeFeedback
+					<Button
+						label="Change Phone Number"
 						onPress={() => {
 							if (action === ACTION.SIGN_UP) {
 								this.changeScreen(LOGIN_SCREENS.SIGNUP);
@@ -282,9 +283,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 								this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
 							}
 						}}
-					>
-						<Text style={styles.btn}>Change Phone Number</Text>
-					</TouchableNativeFeedback>
+					/>
 				</View>
 			</View>
 		);
@@ -309,9 +308,10 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						<Text> FREE for you</Text>
 					</View>
 				</View>
-				<TouchableNativeFeedback onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}>
-					<Text style={styles.btn}>Create Account</Text>
-				</TouchableNativeFeedback>
+				<Button
+					label="Create Account"
+					onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}
+				/>
 			</View>
 		);
 	}
@@ -320,12 +320,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		return (
 			<View>
 				<Text style={styles.disabledText}>Make sure you have Internet</Text>
-				<TouchableNativeFeedback onPress={() => this._tryAuth()}>
-					<Text style={styles.btn}>Retry</Text>
-				</TouchableNativeFeedback>
-				<TouchableNativeFeedback onPress={this._forceLogin}>
-					<Text style={styles.btn}>Try Login</Text>
-				</TouchableNativeFeedback>
+				<Button label="Retry" onPress={() => this._tryAuth()} />
+				<Button label="Try Login" onPress={this._forceLogin} />
 			</View>
 		);
 	}
@@ -338,7 +334,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
 				{activeScreen === LOGIN_SCREENS.SIGNUP && this.renderSignUp()}
 				{activeScreen === LOGIN_SCREENS.VERIFY && this.renderVerificationScreen()}
-				{activeScreen === LOGIN_SCREENS.VERIFYING && <ActivityIndicator color="white" />}
+				{activeScreen === LOGIN_SCREENS.VERIFYING && (
+					<ActivityIndicator color={Colors.primaryDarkColor} />
+				)}
 				{activeScreen === LOGIN_SCREENS.PLANS && this.renderPlans()}
 				{activeScreen === LOGIN_SCREENS.ERROR && this.renderError()}
 				{!!activeScreen && activeScreen !== LOGIN_SCREENS.ERROR && (
@@ -354,7 +352,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: Colors.primaryDarkColor,
+		backgroundColor: Colors.white,
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -365,7 +363,7 @@ const styles = StyleSheet.create({
 		width: Layout.window.width
 	},
 	fieldContainer: {
-		backgroundColor: Colors.tintColor,
+		backgroundColor: Colors.borderColor,
 		flexDirection: 'row',
 		padding: 10,
 		borderRadius: 20,
@@ -380,11 +378,11 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		paddingLeft: 10,
 		paddingRight: 10,
-		color: 'white',
+		color: Colors.black,
 		flex: 1,
 		textAlign: 'center'
 	},
-	btn: {
+	/*btn: {
 		backgroundColor: Colors.pink,
 		padding: 10,
 		textAlign: 'center',
@@ -392,7 +390,7 @@ const styles = StyleSheet.create({
 		margin: 10,
 		borderRadius: 4,
 		fontSize: 18
-	},
+	},*/
 	tos: {
 		textAlign: 'center',
 		color: Colors.offWhite,
@@ -414,6 +412,7 @@ const styles = StyleSheet.create({
 	logo: {
 		height: 100,
 		margin: 10,
+		marginTop: 0,
 		resizeMode: 'contain'
 	},
 	disabledText: {
