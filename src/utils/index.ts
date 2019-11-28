@@ -78,6 +78,10 @@ const formatDuration = (tsm: number) => {
 	return moment.duration(Math.floor(currentTs - ts)).humanize() + ' ago';
 };
 
+const getCurrentUnixEpoch = () => {
+	return Math.floor(new Date().getTime() / 1000);
+};
+
 export {
 	LAKH_RUPEE,
 	CRORE_RUPEE,
@@ -87,5 +91,6 @@ export {
 	ApiRequest,
 	formatDate,
 	formatDateTime,
-	formatDuration
+	formatDuration,
+	getCurrentUnixEpoch
 };

@@ -6,7 +6,7 @@ import { API } from '../../config/API';
 import { addProfile } from './user-profile-reducer';
 import { fetchTags } from './tag-reducer';
 import { addSelfProfile } from './self-profile-reducer';
-import { ApiRequest } from '../../utils/index';
+import { ApiRequest, getCurrentUnixEpoch } from '../../utils/index';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import { IRootState } from '../index';
@@ -30,11 +30,14 @@ export const getPayment = createSelector(
 	getAccount,
 	account => account.payment
 );
+
 export const isAccountPaid = createSelector(
 	getPayment,
 	payment => {
 		if (!payment) return false;
-		return payment.selectedPackage === 'paid';
+		const isPaid = payment.selectedPackage === 'paid';
+		const isExpired = getCurrentUnixEpoch() > payment.expiryDate;
+		return isPaid && !isExpired;
 	}
 );
 export const getCurrentUserProfileId = createSelector(

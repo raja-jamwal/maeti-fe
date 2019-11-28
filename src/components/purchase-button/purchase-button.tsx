@@ -2,15 +2,14 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import { IRootState } from '../../store';
-import { getAccount } from '../../store/reducers/account-reducer';
-import { Account } from '../../store/reducers/account-defination';
+import { isAccountPaid } from '../../store/reducers/account-reducer';
 import Colors from 'src/constants/Colors';
 import ConnectedPaymentModal from '../payment-modal/payment-modal';
 
 interface IPurchaseButtonProps {
-	account?: Account;
 	children: any;
 	label: string;
+	isAccountPaid: boolean;
 }
 
 interface IPurchaseButtonState {
@@ -29,10 +28,9 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 	}
 
 	render() {
-		const { label, account, children } = this.props;
+		const { label, children, isAccountPaid } = this.props;
 		const { showPayment } = this.state;
-		if (!account) return null;
-		if (account.payment.selectedPackage === 'paid') {
+		if (isAccountPaid) {
 			return children;
 		}
 
@@ -70,7 +68,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: IRootState) => {
 	return {
-		account: getAccount(state)
+		isAccountPaid: isAccountPaid(state)
 	};
 };
 
