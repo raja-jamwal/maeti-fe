@@ -98,7 +98,8 @@ export const API = {
 
 	ACCOUNT: {
 		CREATE: `${config.server}/api/account.create`,
-		GET: `${config.server}/api/account.get`
+		GET: `${config.server}/api/account.get`,
+		SAVE: `${config.server}/api/account.save`
 	},
 
 	PHOTO: {
@@ -124,5 +125,11 @@ export const API = {
 		GET: `${config.server}/api/viewedMyContact.get`,
 		SAVE: `${config.server}/api/viewedMyContact.save`,
 		SEARCH: `${config.server}/api/viewedMyContact.search`
+	},
+
+	ORDER: {
+		CREATE: `${config.server}/api/order.create`,
+		SUCCESS: `${config.server}/api/order.success`,
+		ERROR: `${config.server}/api/order.error`
 	}
 };

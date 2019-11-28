@@ -310,6 +310,13 @@ export interface Channel extends DAO {
 	latestMessage: any;
 }
 
+export interface Order extends DAO {
+	amount: number;
+	accountId: string;
+	userProfileId: number;
+	pgOrderId: string;
+}
+
 export interface Pageable {
 	last: boolean;
 	totalPages: number; // total page count

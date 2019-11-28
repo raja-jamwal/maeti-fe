@@ -18,6 +18,7 @@ import PreferenceTable from '../collapsible-table/preference-table';
 import { Throbber } from '../throbber/throbber';
 import { getLogger } from '../../utils/logger';
 import ProfileActivity from '../profile-card/profile-activity';
+import ConnectedPurchaseButton from 'src/components/purchase-button/purchase-button';
 
 interface IProfileInfoTabProps {
 	userProfileId: number;
@@ -132,9 +133,13 @@ export default class ProfileInfoTab extends React.Component<
 						<InvestmentTable userProfileId={userProfileId} />
 						<LifestyleTable userProfileId={userProfileId} />
 
-						{this.maybeRenderContactTable()}
+						<ConnectedPurchaseButton label="Purchase plan to see Contact Information">
+							{this.maybeRenderContactTable()}
+						</ConnectedPurchaseButton>
 
-						<ReferenceTable userProfileId={userProfileId} />
+						<ConnectedPurchaseButton label="Purchase plan to see References">
+							<ReferenceTable userProfileId={userProfileId} />
+						</ConnectedPurchaseButton>
 					</View>
 				);
 				break;

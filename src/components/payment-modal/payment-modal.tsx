@@ -2,13 +2,16 @@ import * as React from 'react';
 import { View, Text, Modal, WebView, StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import { getRazor } from '../../utils/payment-wrapper';
 import { connect } from 'react-redux';
-import { getAccount } from '../../store/reducers/account-reducer';
-import { Account } from '../../store/reducers/account-defination';
+import { fetchAccount, getAccount } from '../../store/reducers/account-reducer';
+import { Account, Order } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store';
 import { getLogger } from '../../utils/logger';
 import Layout from 'src/constants/Layout';
 import Colors from 'src/constants/Colors';
 import Button from '../button/button';
+import { ApiRequest } from '../../utils';
+import { API } from '../../config/API';
+import { bindActionCreators, Dispatch } from 'redux';
 
 const icon = require('src/assets/images/icon.png');
 
@@ -23,15 +26,23 @@ interface IPaymentModalMapStateToProps {
 
 interface IPaymentModalState {
 	showRazor: boolean;
+	pgOrderId?: string | null;
 }
 
-type IPaymentModalProps = IPaymentModalMapStateToProps & IPaymentModalPassedProps;
+interface IPaymentModalMapDispatch {
+	fetchAccount: (id: string, skipPushingToken: boolean) => any;
+}
+
+type IPaymentModalProps = IPaymentModalMapStateToProps &
+	IPaymentModalMapDispatch &
+	IPaymentModalPassedProps;
 
 class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModalState> {
 	logger = getLogger(PaymentModal);
 
 	state = {
-		showRazor: false
+		showRazor: false,
+		pgOrderId: null
 	};
 
 	requestClose() {
@@ -39,12 +50,18 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 		requestClose();
 	}
 
-	startPayment() {
-		console.log('log log');
-		this.logger.log('starting payment');
-		this.setState({
-			showRazor: true
-		});
+	async startPayment() {
+		const { account } = this.props;
+		if (!account) return;
+		try {
+			const order = (await ApiRequest(API.ORDER.CREATE, { accountId: account.id })) as Order;
+			this.setState({
+				pgOrderId: order.pgOrderId,
+				showRazor: true
+			});
+		} catch (err) {
+			this.logger.log(`Error creating order ${JSON.stringify(err)}`);
+		}
 	}
 
 	features = [
@@ -61,8 +78,28 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 		'Mutual match'
 	];
 
+	handleNavigationChange(e: any) {
+		const { fetchAccount, account, requestClose } = this.props;
+		const { pgOrderId } = this.state;
+
+		this.logger.log(e.url);
+
+		if (!e.url || !pgOrderId || !account) return;
+
+		if (!e.url.startsWith('data:text/html') && e.url.includes('order.success')) {
+			this.logger.log('try to mark as paid');
+			fetchAccount(account.id as any, true);
+			requestClose();
+		}
+
+		if (!e.url.startsWith('data:text/html') && e.url.includes('order.error')) {
+			this.logger.log('try to close modal');
+			requestClose();
+		}
+	}
+
 	render() {
-		const { showRazor } = this.state;
+		const { showRazor, pgOrderId } = this.state;
 		const { account, show } = this.props;
 		if (!account) {
 			this.logger.log('account not passed');
@@ -132,11 +169,11 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 								</View>
 							</View>
 						)}
-						{!!showRazor && (
+						{!!showRazor && pgOrderId && (
 							<WebView
 								source={{
 									html: getRazor(
-										'order_DkuaRWc7vAonZu',
+										pgOrderId,
 										account.userProfile.fullName,
 										account.phoneNumber
 									)
@@ -144,6 +181,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 								onMessage={e => console.log(e)}
 								javaScriptEnabled={true}
 								style={{ flex: 1 }}
+								onNavigationStateChange={e => this.handleNavigationChange(e)}
 							/>
 						)}
 					</View>
@@ -166,7 +204,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
-		flex: 1
+		flex: 1,
+		borderRadius: 20
 	},
 	featureLine: {
 		textAlign: 'center',
@@ -192,9 +231,15 @@ const mapStateToProps = (state: IRootState) => {
 	};
 };
 
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+	return {
+		fetchAccount: bindActionCreators(fetchAccount, dispatch)
+	};
+};
+
 const ConnectedPaymentModal = connect(
 	mapStateToProps,
-	null
+	mapDispatchToProps
 )(PaymentModal);
 
 export default ConnectedPaymentModal;

@@ -3,7 +3,6 @@ import { Account as ILocalAccount, Account } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { Dispatch } from 'redux';
 import { API } from '../../config/API';
-import { head } from 'lodash';
 import { addProfile } from './user-profile-reducer';
 import { fetchTags } from './tag-reducer';
 import { addSelfProfile } from './self-profile-reducer';
@@ -27,6 +26,17 @@ export const getUserProfile = createSelector(
 		return account.userProfile;
 	}
 );
+export const getPayment = createSelector(
+	getAccount,
+	account => account.payment
+);
+export const isAccountPaid = createSelector(
+	getPayment,
+	payment => {
+		if (!payment) return false;
+		return payment.selectedPackage === 'paid';
+	}
+);
 export const getCurrentUserProfileId = createSelector(
 	getUserProfile,
 	userProfile => {
@@ -37,6 +47,47 @@ export const getCurrentUserProfileId = createSelector(
 
 const ADD_ACCOUNT = 'ADD_ACCOUNT';
 export const addAccount = createAction(ADD_ACCOUNT);
+
+export const markAccountAsPaid = function(orderId: string) {
+	const logger = getLogger(markAccountAsPaid);
+	return (dispatch: Dispatch<any>, getState: () => any) => {
+		const account = getAccount(getState());
+		if (!account) return;
+		const updatedAccount = {
+			...account
+		};
+		// update to get a year later
+		updatedAccount.payment.expiryDate = new Date().getTime();
+		updatedAccount.payment.receiptNumber = orderId;
+		updatedAccount.payment.selectedPackage = 'paid';
+
+		// ApiRequest handles only form-data, we need to do JSON post
+		return fetch(API.ACCOUNT.SAVE, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(updatedAccount)
+		})
+			.then(response => {
+				if (response.status !== 200) {
+					throw response.json();
+				}
+				return response;
+			})
+			.then(response => response.json())
+			.then(account => {
+				const paidAccount = account as ILocalAccount;
+				const profile = paidAccount.userProfile;
+				dispatch(addAccount(paidAccount));
+				dispatch(addSelfProfile(profile));
+				dispatch(addProfile(profile));
+				return paidAccount;
+			})
+			.catch(err => logger.log('err happened while marking account as paid ', err));
+	};
+};
 
 export const savePushToken = function(id: number) {
 	const logger = getLogger(savePushToken);
@@ -85,7 +136,7 @@ export const savePushToken = function(id: number) {
 	};
 };
 
-export const fetchAccount = function(id: number) {
+export const fetchAccount = function(id: number, skipPushingToken?: boolean) {
 	const logger = getLogger(fetchAccount);
 	return (dispatch: Dispatch<any>, getState: () => any) => {
 		if (!id) {
@@ -101,9 +152,11 @@ export const fetchAccount = function(id: number) {
 				dispatch(addAccount(account));
 				dispatch(addSelfProfile(profile));
 				dispatch(addProfile(profile));
-				dispatch(savePushToken(profile.id));
 				logger.log('addProfile dispatched');
-				dispatch(fetchTags());
+				if (!skipPushingToken) {
+					dispatch(savePushToken(profile.id));
+					dispatch(fetchTags());
+				}
 				return account;
 			})
 			.catch((err: any) => {

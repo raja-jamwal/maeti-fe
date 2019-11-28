@@ -58,8 +58,9 @@ interface IUpdateEnityPayload {
 export const markProfileAsViewed = function(userProfileId: number) {
 	const logger = getLogger(markProfileAsViewed);
 	return (_dispatch: Dispatch<any>, getState: () => IRootState) => {
-		logger.log(`marking profile Id ${userProfileId} as viewed`);
 		const currentProfileId = getCurrentUserProfileId(getState());
+		if (userProfileId === currentProfileId) return;
+		logger.log(`marking profile Id ${userProfileId} as viewed`);
 		return ApiRequest(API.VIEWED_MY_PROFILE.SAVE, {
 			actorUserProfileId: currentProfileId,
 			userProfileId

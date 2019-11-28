@@ -20,8 +20,12 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { IUserProfileState } from '../store/reducers/user-profile-reducer';
 import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
-import { mayBeFetchSearchResult } from '../store/reducers/explore-reducer';
-import { toArray, sortBy, head, isEmpty } from 'lodash';
+import {
+	EXPLORE_SCREENS,
+	isPaidScreen,
+	mayBeFetchSearchResult
+} from '../store/reducers/explore-reducer';
+import { toArray, sortBy, head, isEmpty, includes } from 'lodash';
 import { applyGlobalFilter, getSearchFilter } from '../store/reducers/filter-reducer';
 import { getLogger } from '../utils/logger';
 import {
@@ -30,6 +34,8 @@ import {
 } from '../store/reducers/self-profile-reducer';
 import SelectedFilter from '../components/selected-filters';
 import EmptyResult from '../components/empty-result';
+import ConnectedPurchaseButton from '../components/purchase-button/purchase-button';
+import { isAccountPaid } from '../store/reducers/account-reducer';
 
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
@@ -39,6 +45,8 @@ interface IExploreScreenProps {
 	selectedScreen: string;
 	mayBeFetchSearchResult: (screen: string) => any;
 	selectedFilter: any;
+	isAccountPaid: boolean;
+	isPaidScreen: boolean;
 }
 
 const ExploreScreenHeader = (props: any) => {
@@ -118,7 +126,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 	}
 
 	getItems() {
-		const { userProfiles, fetching } = this.props;
+		const { userProfiles, fetching, selectedScreen, isPaidScreen, isAccountPaid } = this.props;
 		const items: any = [
 			{
 				type: 'filter-tab',
@@ -129,6 +137,14 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 				key: 'selected-filters'
 			}
 		];
+
+		if (isPaidScreen && !isAccountPaid) {
+			items.push({
+				type: 'purchase-button',
+				key: 'purchase-button'
+			});
+			return items;
+		}
 
 		if (toArray(userProfiles).length) {
 			sortBy(toArray(userProfiles), 'updatedOn')
@@ -184,6 +200,8 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 				return <SelectedFilter />;
 			case 'empty-result':
 				return <EmptyResult />;
+			case 'purchase-button':
+				return <ConnectedPurchaseButton label="Premium feature purchase plan" />;
 			default:
 				return null;
 		}
@@ -191,7 +209,8 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 
 	_handleMore() {
 		this.logger.log('Trying to load more');
-		const { mayBeFetchSearchResult, selectedScreen } = this.props;
+		const { mayBeFetchSearchResult, selectedScreen, isPaidScreen, isAccountPaid } = this.props;
+		if (isPaidScreen && !isAccountPaid) return;
 		if (!mayBeFetchSearchResult) return;
 		mayBeFetchSearchResult(selectedScreen);
 	}
@@ -257,7 +276,9 @@ const mapStateToProps = (state: IRootState) => {
 		selectedScreen,
 		userProfiles,
 		fetching,
-		selectedFilter
+		selectedFilter,
+		isAccountPaid: isAccountPaid(state),
+		isPaidScreen: isPaidScreen(state)
 	};
 };
 

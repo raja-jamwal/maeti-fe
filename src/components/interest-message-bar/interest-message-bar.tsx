@@ -15,6 +15,7 @@ import { addChannel } from '../../store/reducers/channel-reducer';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { addSentInterest } from '../../store/reducers/interest-reducer';
 import { Value } from '../text';
+import ConnectedPurchaseButton from '../purchase-button/purchase-button';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
@@ -295,14 +296,16 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 		return (
 			<View style={styles.row}>
 				{interestState === InterestStates.SHOW_INTEREST && (
-					<TouchableNativeFeedback onPress={() => this.showInterest()}>
-						<View style={styles.column}>
-							<View style={styles.btnContainer}>
-								<Ionicons name="md-flash" size={20} color="white" />
-								<Text style={styles.text}>Show Interest</Text>
+					<ConnectedPurchaseButton label="Purchase plan to send Interest">
+						<TouchableNativeFeedback onPress={() => this.showInterest()}>
+							<View style={styles.column}>
+								<View style={styles.btnContainer}>
+									<Ionicons name="md-flash" size={20} color="white" />
+									<Text style={styles.text}>Show Interest</Text>
+								</View>
 							</View>
-						</View>
-					</TouchableNativeFeedback>
+						</TouchableNativeFeedback>
+					</ConnectedPurchaseButton>
 				)}
 				{interestState !== InterestStates.SHOW_INTEREST && (
 					<View style={styles.statusContainer}>{this.renderInterestStatus()}</View>

@@ -18,6 +18,7 @@ import {
 import { createSelector } from 'reselect';
 import { getCurrentUserProfileId } from './self-profile-reducer';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
+import { includes } from 'lodash';
 
 export interface IScreenData {
 	profiles: {
@@ -27,18 +28,32 @@ export interface IScreenData {
 	pageable: Pageable;
 }
 
+export enum EXPLORE_SCREENS {
+	search = 'search',
+	discover = 'discover',
+	new_matches = 'new_matches',
+	reverse_matches = 'reverse_matches',
+	my_matches = 'my_matches',
+	mutual_matches = 'mutual_matches',
+	community_matches = 'community_matches',
+	location_matches = 'location_matches',
+	added_me = 'added_me',
+	viewed_contact = 'viewed_contact',
+	viewed_profile = 'viewed_profile'
+}
+
 export interface IExploreState {
-	search: IScreenData;
-	discover: IScreenData;
-	new_matches: IScreenData;
-	reverse_matches: IScreenData;
-	my_matches: IScreenData;
-	mutual_matches: IScreenData;
-	community_matches: IScreenData;
-	location_matches: IScreenData;
-	added_me: IScreenData;
-	viewed_contact: IScreenData;
-	viewed_profile: IScreenData;
+	[EXPLORE_SCREENS.search]: IScreenData;
+	[EXPLORE_SCREENS.discover]: IScreenData;
+	[EXPLORE_SCREENS.new_matches]: IScreenData;
+	[EXPLORE_SCREENS.reverse_matches]: IScreenData;
+	[EXPLORE_SCREENS.my_matches]: IScreenData;
+	[EXPLORE_SCREENS.mutual_matches]: IScreenData;
+	[EXPLORE_SCREENS.community_matches]: IScreenData;
+	[EXPLORE_SCREENS.location_matches]: IScreenData;
+	[EXPLORE_SCREENS.added_me]: IScreenData;
+	[EXPLORE_SCREENS.viewed_contact]: IScreenData;
+	[EXPLORE_SCREENS.viewed_profile]: IScreenData;
 	selected_screen: string;
 }
 
@@ -56,17 +71,17 @@ const defaultScreenData: IScreenData = {
 };
 
 const defaultExploreState: IExploreState = {
-	search: defaultScreenData,
-	discover: defaultScreenData,
-	new_matches: defaultScreenData,
-	reverse_matches: defaultScreenData, // not used at the moment
-	my_matches: defaultScreenData, // not used at the moment
-	mutual_matches: defaultScreenData,
-	community_matches: defaultScreenData,
-	location_matches: defaultScreenData,
-	added_me: defaultScreenData,
-	viewed_contact: defaultScreenData,
-	viewed_profile: defaultScreenData,
+	[EXPLORE_SCREENS.search]: defaultScreenData,
+	[EXPLORE_SCREENS.discover]: defaultScreenData,
+	[EXPLORE_SCREENS.new_matches]: defaultScreenData,
+	[EXPLORE_SCREENS.reverse_matches]: defaultScreenData, // not used at the moment
+	[EXPLORE_SCREENS.my_matches]: defaultScreenData, // not used at the moment
+	[EXPLORE_SCREENS.mutual_matches]: defaultScreenData,
+	[EXPLORE_SCREENS.community_matches]: defaultScreenData,
+	[EXPLORE_SCREENS.location_matches]: defaultScreenData,
+	[EXPLORE_SCREENS.added_me]: defaultScreenData,
+	[EXPLORE_SCREENS.viewed_contact]: defaultScreenData,
+	[EXPLORE_SCREENS.viewed_profile]: defaultScreenData,
 	selected_screen: 'discover'
 };
 
@@ -75,6 +90,22 @@ export const getExploreState = (state: IRootState) => state.explore;
 export const getSelectedScreen = createSelector(
 	getExploreState,
 	explore => explore.selected_screen
+);
+
+const paidScreens = [
+	EXPLORE_SCREENS.new_matches,
+	EXPLORE_SCREENS.mutual_matches,
+	EXPLORE_SCREENS.community_matches,
+	EXPLORE_SCREENS.location_matches,
+	EXPLORE_SCREENS.added_me,
+	EXPLORE_SCREENS.viewed_contact,
+	EXPLORE_SCREENS.viewed_profile
+];
+export const isPaidScreen = createSelector(
+	getSelectedScreen,
+	selectedScreen => {
+		return includes(paidScreens, selectedScreen);
+	}
 );
 
 enum ACTIONS {

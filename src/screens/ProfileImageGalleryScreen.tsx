@@ -21,6 +21,7 @@ import {
 import { uploadPhoto, updatePhoto } from 'src/store/reducers/user-profile-reducer.ts';
 import { bindActionCreators, Dispatch } from 'redux';
 import Layout from 'src/constants/Layout.js';
+import { MediaTypeOptions } from 'expo-image-picker';
 
 enum PHOTO_ACTIONS {
 	PRIMARY = 0,
@@ -81,7 +82,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 
 	_pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: 'Images',
+			mediaTypes: MediaTypeOptions.Images,
 			allowsEditing: true,
 			quality: 0.5,
 			aspect: [4, 3]

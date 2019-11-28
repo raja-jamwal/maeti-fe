@@ -23,6 +23,10 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { getLogger } from '../utils/logger';
 import { connectRTM } from '../store/middleware/rtm-middleware';
 import Button from '../components/button/button';
+import * as Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
+import { MediaTypeOptions } from 'expo-image-picker';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -34,6 +38,7 @@ enum LOGIN_SCREENS {
 	SIGNUP,
 	VERIFY,
 	VERIFYING,
+	PICK_IMAGE,
 	PLANS,
 	ERROR
 }
@@ -72,6 +77,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 
 		this._tryAuth = this._tryAuth.bind(this);
 		this._forceLogin = this._forceLogin.bind(this);
+		this._startPhotoUpload = this._startPhotoUpload.bind(this);
 	}
 
 	async componentDidMount() {
@@ -225,7 +231,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	async validateVerificationCode(passedInCode: string) {
-		const { otp, number, fullName, action } = this.state;
+		const { otp, number, action, callingCode } = this.state;
 		if (!passedInCode) return;
 		const code = parseInt(passedInCode);
 		if (passedInCode.length === 4) {
@@ -233,18 +239,15 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				this.setState({
 					activeScreen: LOGIN_SCREENS.VERIFYING
 				});
+				if (action === ACTION.SIGN_UP) {
+					return this.setState({
+						activeScreen: LOGIN_SCREENS.PICK_IMAGE
+					});
+				}
 				try {
-					const api = action === ACTION.SIGN_UP ? API.ACCOUNT.CREATE : API.ACCOUNT.GET;
-					const payload =
-						action === ACTION.SIGN_UP
-							? {
-									phoneNumber: number,
-									fullName: fullName
-							  }
-							: {
-									phoneNumber: number
-							  };
-					const account: Account = (await ApiRequest(api, payload)) as Account;
+					const account: Account = (await ApiRequest(API.ACCOUNT.GET, {
+						phoneNumber: `${callingCode}-${number}`
+					})) as Account;
 					await AsyncStorage.setItem('accountId', `${account.id}`);
 					await this._tryAuth();
 				} catch (er) {
@@ -320,8 +323,75 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		return (
 			<View>
 				<Text style={styles.disabledText}>Make sure you have Internet</Text>
-				<Button label="Retry" onPress={() => this._tryAuth()} />
+				<View style={{ paddingBottom: 16, paddingTop: 16 }}>
+					<Button label="Retry" onPress={() => this._tryAuth()} />
+				</View>
 				<Button label="Try Login" onPress={this._forceLogin} />
+			</View>
+		);
+	}
+
+	getPermissionAsync = async () => {
+		if (Constants.platform && Constants.platform.ios) {
+			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+			if (status !== 'granted') {
+				simpleAlert(
+					'Need Permission',
+					'Sorry, we need camera roll permissions to make this work!'
+				);
+				return false;
+			}
+		}
+		return true;
+	};
+
+	async _startPhotoUpload() {
+		const { number, fullName, callingCode } = this.state;
+		try {
+			const permitted = await this.getPermissionAsync();
+			if (permitted) {
+				const image = await ImagePicker.launchImageLibraryAsync({
+					mediaTypes: MediaTypeOptions.Images,
+					allowsEditing: true,
+					quality: 0.5,
+					aspect: [4, 3]
+				});
+				if (!image.cancelled) {
+					this.setState({
+						activeScreen: LOGIN_SCREENS.VERIFYING
+					});
+					const uploadedImage = (await ApiRequest(API.PHOTO.UPLOAD, {
+						file: {
+							uri: image.uri,
+							name: 'image.jpg',
+							type: 'image/jpeg'
+						}
+					})) as any;
+					if (!uploadedImage) {
+						throw new Error('unable to upload photo');
+					}
+					const account: Account = (await ApiRequest(API.ACCOUNT.CREATE, {
+						phoneNumber: `${callingCode}-${number}`,
+						fullName: fullName,
+						photoUrl: uploadedImage.url
+					})) as Account;
+					await AsyncStorage.setItem('accountId', `${account.id}`);
+					await this._tryAuth();
+				}
+			}
+		} catch (err) {
+			this.logger.log(err);
+			simpleAlert('Error', `Unable to upload your photo, Please contact support - ${err}`);
+			this.setState({
+				activeScreen: LOGIN_SCREENS.PICK_IMAGE
+			});
+		}
+	}
+
+	renderUploadPhoto() {
+		return (
+			<View>
+				<Button label="Upload your Best Photo" onPress={this._startPhotoUpload} />
 			</View>
 		);
 	}
@@ -334,6 +404,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
 				{activeScreen === LOGIN_SCREENS.SIGNUP && this.renderSignUp()}
 				{activeScreen === LOGIN_SCREENS.VERIFY && this.renderVerificationScreen()}
+				{activeScreen === LOGIN_SCREENS.PICK_IMAGE && this.renderUploadPhoto()}
 				{activeScreen === LOGIN_SCREENS.VERIFYING && (
 					<ActivityIndicator color={Colors.primaryDarkColor} />
 				)}
@@ -382,15 +453,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		textAlign: 'center'
 	},
-	/*btn: {
-		backgroundColor: Colors.pink,
-		padding: 10,
-		textAlign: 'center',
-		color: 'white',
-		margin: 10,
-		borderRadius: 4,
-		fontSize: 18
-	},*/
 	tos: {
 		textAlign: 'center',
 		color: Colors.offWhite,
