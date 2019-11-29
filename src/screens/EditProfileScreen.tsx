@@ -11,7 +11,6 @@ import {
 	StyleSheet,
 	TextInput,
 	TimePickerAndroid,
-	TouchableNativeFeedback,
 	View
 } from 'react-native';
 import GlobalStyles from '../styles/global';
@@ -271,7 +270,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 						</View>
 					)}
 					{isDateField && (
-						<TouchableNativeFeedback onPress={() => this.setDateField(field)}>
+						<TouchableBtn onPress={() => this.setDateField(field)}>
 							<View style={styles.labelContainer}>
 								{!renderString && <Text style={styles.label}>&nbsp;</Text>}
 								{!!renderString && (
@@ -280,10 +279,10 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 									</Text>
 								)}
 							</View>
-						</TouchableNativeFeedback>
+						</TouchableBtn>
 					)}
 					{isDateTimeField && (
-						<TouchableNativeFeedback onPress={() => this.setDateTimeField(field)}>
+						<TouchableBtn onPress={() => this.setDateTimeField(field)}>
 							<View style={styles.labelContainer}>
 								{!renderString && <Text style={styles.label}>&nbsp;</Text>}
 								{!!renderString && (
@@ -292,7 +291,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 									</Text>
 								)}
 							</View>
-						</TouchableNativeFeedback>
+						</TouchableBtn>
 					)}
 					{isChoiceField && (
 						<View style={styles.choiceField}>

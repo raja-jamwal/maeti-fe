@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { Tag } from '../../store/reducers/account-defination';
 import { find, isEmpty, keys, map } from 'lodash';
 import Color from '../../constants/Colors';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 interface ITagSelectorProps {
 	tags: Array<Tag>;
@@ -85,12 +86,12 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 		const label = map(currentTags, 'value').join(', ');
 		return (
 			<View>
-				<TouchableNativeFeedback onPress={() => this.toggleShowModal()}>
+				<TouchableBtn onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
 						{isEmpty(currentTags) && <Text style={styles.label}>&nbsp;</Text>}
 						{!isEmpty(currentTags) && <Text style={styles.label}>{label}</Text>}
 					</View>
-				</TouchableNativeFeedback>
+				</TouchableBtn>
 				<Modal
 					animationType="slide"
 					transparent={false}

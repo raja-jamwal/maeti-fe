@@ -9,6 +9,7 @@ import {
 	StatusBar
 } from 'react-native';
 import Color from '../../constants/Colors';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 interface IAboutFieldProps {
 	value: string;
@@ -39,11 +40,11 @@ class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState>
 		const { value, onChangeText } = this.props;
 		return (
 			<View>
-				<TouchableNativeFeedback onPress={() => this.toggleShowModal()}>
+				<TouchableBtn onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
 						<Text style={styles.label}>{value || ''}</Text>
 					</View>
-				</TouchableNativeFeedback>
+				</TouchableBtn>
 				<Modal
 					animationType="slide"
 					// transparent={true}
