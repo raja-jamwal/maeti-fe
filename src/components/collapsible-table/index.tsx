@@ -7,6 +7,7 @@ import Table from '../table/index';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { withNavigation } from 'react-navigation';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 interface ICollapsibleTableProps {
 	title: string;
@@ -58,10 +59,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 		return (
 			<View>
 				<View style={[GlobalStyles.row, GlobalStyles.expand]}>
-					<TouchableNativeFeedback
-						style={GlobalStyles.expand}
-						onPress={this.toggleExpand}
-					>
+					<TouchableBtn style={GlobalStyles.expand} onPress={this.toggleExpand}>
 						<View
 							style={[
 								GlobalStyles.row,
@@ -72,14 +70,14 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 							<Text style={[GlobalStyles.large, GlobalStyles.expand, styles.title]}>
 								{title}
 							</Text>
-							<TouchableNativeFeedback onPress={this.editTable}>
+							<TouchableBtn onPress={this.editTable}>
 								<Ionicons
 									name="md-create"
 									size={20}
 									style={styles.headerIcon}
 									color={Colors.primaryDarkColor}
 								/>
-							</TouchableNativeFeedback>
+							</TouchableBtn>
 							<Ionicons
 								style={styles.headerIcon}
 								color={Colors.primaryDarkColor}
@@ -87,7 +85,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 								size={20}
 							/>
 						</View>
-					</TouchableNativeFeedback>
+					</TouchableBtn>
 				</View>
 				<Collapsible collapsed={!expanded}>
 					<View

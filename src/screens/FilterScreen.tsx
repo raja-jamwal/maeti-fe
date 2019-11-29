@@ -6,7 +6,8 @@ import {
 	TouchableNativeFeedback,
 	StyleSheet,
 	Dimensions,
-	StatusBar
+	StatusBar,
+	Platform
 } from 'react-native';
 import GlobalStyles from '../styles/global';
 import Colors from '../constants/Colors';
@@ -18,6 +19,8 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { omit, isEmpty } from 'lodash';
+import TouchableBtn from '../components/touchable-btn/touchable-btn';
+import { IS_IOS } from '../utils';
 
 interface IMapStateToProps {
 	filters: any;
@@ -89,7 +92,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 		const isFilterEnabled = !isEmpty(this.state.filters[key]);
 
 		return (
-			<TouchableNativeFeedback onPress={() => this.setSelectedFilter(key)}>
+			<TouchableBtn onPress={() => this.setSelectedFilter(key)}>
 				<View style={classes}>
 					{isFilterEnabled && (
 						<Ionicons
@@ -101,7 +104,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 					)}
 					<Text>{filter.label}</Text>
 				</View>
-			</TouchableNativeFeedback>
+			</TouchableBtn>
 		);
 	}
 
@@ -160,7 +163,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 		return (
 			<View style={GlobalStyles.expand}>
 				<StatusBar backgroundColor={Colors.primaryDarkColor} barStyle="light-content" />
-				<View style={[GlobalStyles.row, { height: height - 200 }]}>
+				<View style={[GlobalStyles.row, { height: height - (IS_IOS ? 210 : 200) }]}>
 					<ScrollView
 						style={{
 							width: 8
@@ -197,7 +200,18 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 					</ScrollView>
 				</View>
 
-				<View style={GlobalStyles.row}>
+				<View
+					style={[
+						GlobalStyles.row,
+						{
+							...Platform.select({
+								ios: {
+									...GlobalStyles.expand
+								}
+							})
+						}
+					]}
+				>
 					{/*<TouchableNativeFeedback onPress={() => null}>
 						<View
 							style={[
@@ -211,7 +225,10 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 							<Text>Save Filter</Text>
 						</View>
 					</TouchableNativeFeedback>*/}
-					<TouchableNativeFeedback onPress={() => this.clearAllFilters()}>
+					<TouchableBtn
+						style={GlobalStyles.expand}
+						onPress={() => this.clearAllFilters()}
+					>
 						<View
 							style={[
 								GlobalStyles.row,
@@ -223,8 +240,8 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 						>
 							<Text>Clear All</Text>
 						</View>
-					</TouchableNativeFeedback>
-					<TouchableNativeFeedback onPress={this.applyFilter}>
+					</TouchableBtn>
+					<TouchableBtn style={GlobalStyles.expand} onPress={this.applyFilter}>
 						<View
 							style={[
 								GlobalStyles.row,
@@ -236,7 +253,7 @@ class FilterScreen extends React.Component<IFilterScreenProps, any> {
 						>
 							<Text style={styles.primaryBtnText}>Apply</Text>
 						</View>
-					</TouchableNativeFeedback>
+					</TouchableBtn>
 				</View>
 			</View>
 		);

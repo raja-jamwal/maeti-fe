@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Image, TouchableNativeFeedback, View, StyleSheet, ScrollView } from 'react-native';
+import {
+	Image,
+	TouchableNativeFeedback,
+	View,
+	StyleSheet,
+	ScrollView,
+	Platform
+} from 'react-native';
 import GlobalStyles from '../../styles/global';
 import Text from '../text/index';
 import Colors from '../../constants/Colors';
@@ -9,6 +16,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { mayBeFetchSearchResult } from '../../store/reducers/explore-reducer';
 import { find } from 'lodash';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 class TabbedFilters extends React.PureComponent<any> {
 	changeSelectedScreen(screen: string) {
@@ -40,7 +48,7 @@ class TabbedFilters extends React.PureComponent<any> {
 							classes.push(styles.selectedTitle);
 						}
 						return (
-							<TouchableNativeFeedback
+							<TouchableBtn
 								onPress={() => this.changeSelectedScreen(tab.name)}
 								key={tab.name}
 							>
@@ -48,7 +56,7 @@ class TabbedFilters extends React.PureComponent<any> {
 									<Image style={styles.icon} source={tab.icon} />
 									<Text style={styles.label}>{tab.label}</Text>
 								</View>
-							</TouchableNativeFeedback>
+							</TouchableBtn>
 						);
 					})}
 				</ScrollView>
@@ -67,7 +75,12 @@ const styles = StyleSheet.create({
 	tile: {
 		flexDirection: 'column',
 		alignItems: 'center',
-		width: 100
+		width: 100,
+		...Platform.select({
+			ios: {
+				paddingBottom: 10
+			}
+		})
 	},
 	selectedTitle: {
 		borderBottomWidth: 2,

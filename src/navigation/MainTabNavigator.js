@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View, Text, SafeAreaView } from 'react-native';
 import {
 	createStackNavigator,
 	createBottomTabNavigator,
@@ -118,9 +118,18 @@ const InterestTabs = createMaterialTopTabNavigator(
 		Accepted: AcceptedTab
 	},
 	{
-		navigationOptions: {
-			header: null
-		},
+		...Platform.select({
+			ios: {
+				navigationOptions: {
+					header: <SafeAreaView style={{ backgroundColor: Colors.white }} />
+				}
+			},
+			android: {
+				navigationOptions: {
+					header: null
+				}
+			}
+		}),
 		tabBarOptions: {
 			inactiveTintColor: Colors.offWhite,
 			activeTintColor: Colors.primaryDarkColor,

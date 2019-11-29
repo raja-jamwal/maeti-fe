@@ -19,6 +19,7 @@ import { Throbber } from '../throbber/throbber';
 import { getLogger } from '../../utils/logger';
 import ProfileActivity from '../profile-card/profile-activity';
 import ConnectedPurchaseButton from 'src/components/purchase-button/purchase-button';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 interface IProfileInfoTabProps {
 	userProfileId: number;
@@ -94,11 +95,11 @@ export default class ProfileInfoTab extends React.Component<
 
 	markContactAsViewedBtn() {
 		return (
-			<TouchableNativeFeedback onPress={() => this.markContactAsViewed()}>
+			<TouchableBtn onPress={() => this.markContactAsViewed()}>
 				<View style={styles.contactActionBtn}>
 					<Text style={styles.btnLabel}>View Contact</Text>
 				</View>
-			</TouchableNativeFeedback>
+			</TouchableBtn>
 		);
 	}
 
@@ -184,7 +185,8 @@ export default class ProfileInfoTab extends React.Component<
 				</View>
 				<View style={styles.tabBar}>
 					<View style={[GlobalStyles.row, GlobalStyles.expand, GlobalStyles.alignCenter]}>
-						<TouchableNativeFeedback
+						<TouchableBtn
+							style={GlobalStyles.expand}
 							onPress={() => this._handleRouteChange('personal')}
 						>
 							<View style={GlobalStyles.expand}>
@@ -192,15 +194,19 @@ export default class ProfileInfoTab extends React.Component<
 									Personal
 								</Text>
 							</View>
-						</TouchableNativeFeedback>
-						<TouchableNativeFeedback onPress={() => this._handleRouteChange('family')}>
+						</TouchableBtn>
+						<TouchableBtn
+							style={GlobalStyles.expand}
+							onPress={() => this._handleRouteChange('family')}
+						>
 							<View style={GlobalStyles.expand}>
 								<Text style={[styles.tabLink, this.activeRoute('family')]}>
 									Family
 								</Text>
 							</View>
-						</TouchableNativeFeedback>
-						<TouchableNativeFeedback
+						</TouchableBtn>
+						<TouchableBtn
+							style={GlobalStyles.expand}
 							onPress={() => this._handleRouteChange('expectations')}
 						>
 							<View style={GlobalStyles.expand}>
@@ -208,7 +214,7 @@ export default class ProfileInfoTab extends React.Component<
 									Expectations
 								</Value>
 							</View>
-						</TouchableNativeFeedback>
+						</TouchableBtn>
 					</View>
 				</View>
 				<View style={styles.sceneContainer}>{this._renderScene()}</View>

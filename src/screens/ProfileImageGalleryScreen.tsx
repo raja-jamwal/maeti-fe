@@ -22,6 +22,7 @@ import { uploadPhoto, updatePhoto } from 'src/store/reducers/user-profile-reduce
 import { bindActionCreators, Dispatch } from 'redux';
 import Layout from 'src/constants/Layout.js';
 import { MediaTypeOptions } from 'expo-image-picker';
+import { IS_IOS } from '../utils';
 
 enum PHOTO_ACTIONS {
 	PRIMARY = 0,
@@ -69,7 +70,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 	}
 
 	getPermissionAsync = async () => {
-		if (Constants.platform && Constants.platform.ios) {
+		if (IS_IOS) {
 			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 			if (status !== 'granted') {
 				simpleAlert(

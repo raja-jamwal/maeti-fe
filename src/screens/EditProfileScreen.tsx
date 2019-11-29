@@ -27,6 +27,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { WORLD_OPTION, WorldSelectorField } from '../components/world-selector';
 import Color from '../constants/Colors';
 import AboutField from '../components/about-field';
+import TouchableBtn from '../components/touchable-btn/touchable-btn';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
@@ -385,9 +386,9 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 				{showProgress && <CustomProgressBar visible={true} />}
 				{showSubmissionFooter && (
 					<View style={styles.submissionFooter}>
-						<TouchableNativeFeedback onPress={() => this.updateInformation()}>
+						<TouchableBtn onPress={() => this.updateInformation()}>
 							<Text style={styles.submissionBtn}>Update Information</Text>
-						</TouchableNativeFeedback>
+						</TouchableBtn>
 					</View>
 				)}
 			</View>

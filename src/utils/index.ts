@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { isEmpty, forOwn } from 'lodash';
 
 const moment = require('moment');
@@ -82,6 +83,9 @@ const getCurrentUnixEpoch = () => {
 	return Math.floor(new Date().getTime() / 1000);
 };
 
+const IS_IOS = Platform.OS === 'ios';
+const IS_ANDROID = Platform.OS === 'android';
+
 export {
 	LAKH_RUPEE,
 	CRORE_RUPEE,
@@ -92,5 +96,7 @@ export {
 	formatDate,
 	formatDateTime,
 	formatDuration,
-	getCurrentUnixEpoch
+	getCurrentUnixEpoch,
+	IS_IOS,
+	IS_ANDROID
 };

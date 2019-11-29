@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import Colors from '../constants/Colors';
 import CountryPicker, { CCA2Code } from 'react-native-country-picker-modal';
 import Layout from '../constants/Layout';
-import { ApiRequest } from '../utils';
+import { ApiRequest, IS_IOS } from '../utils';
 import { API } from '../config/API';
 import { simpleAlert } from '../components/alert';
 import { Account } from '../store/reducers/account-defination';
@@ -332,7 +332,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	getPermissionAsync = async () => {
-		if (Constants.platform && Constants.platform.ios) {
+		if (IS_IOS) {
 			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 			if (status !== 'granted') {
 				simpleAlert(

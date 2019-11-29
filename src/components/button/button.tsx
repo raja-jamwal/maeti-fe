@@ -1,6 +1,14 @@
 import * as React from 'react';
-import { Text, TouchableNativeFeedback, View, StyleSheet } from 'react-native';
+import {
+	Text,
+	TouchableNativeFeedback,
+	View,
+	StyleSheet,
+	TouchableOpacity,
+	Platform
+} from 'react-native';
 import Color from 'src/constants/Colors';
+import { IS_IOS } from '../../utils';
 
 interface IButtonProps {
 	label: string;
@@ -9,17 +17,33 @@ interface IButtonProps {
 }
 
 export default class Button extends React.PureComponent<IButtonProps> {
-	render() {
-		const { label, onPress, style } = this.props;
+	renderBtnView() {
+		const { label, style } = this.props;
 		const containerStyle = {
 			...styles.btnContainer,
 			...(style || {})
 		};
 		return (
+			<View style={containerStyle}>
+				<Text style={styles.label}>{label}</Text>
+			</View>
+		);
+	}
+
+	render() {
+		const { onPress } = this.props;
+
+		if (IS_IOS) {
+			return (
+				<TouchableOpacity onPress={() => onPress()}>
+					{this.renderBtnView()}
+				</TouchableOpacity>
+			);
+		}
+
+		return (
 			<TouchableNativeFeedback onPress={() => onPress()}>
-				<View style={containerStyle}>
-					<Text style={styles.label}>{label}</Text>
-				</View>
+				{this.renderBtnView()}
 			</TouchableNativeFeedback>
 		);
 	}
@@ -32,10 +56,22 @@ const styles = StyleSheet.create({
 		paddingLeft: 32,
 		paddingRight: 32,
 		borderRadius: 6,
-		elevation: 2,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		...Platform.select({
+			ios: {
+				shadowOpacity: 0.2,
+				shadowRadius: 1,
+				shadowOffset: {
+					height: 0,
+					width: 0
+				}
+			},
+			android: {
+				elevation: 2
+			}
+		})
 	},
 	label: {
 		color: Color.offWhite

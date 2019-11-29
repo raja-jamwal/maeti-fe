@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import { View, Text, StyleSheet, TouchableNativeFeedback, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { IRootState } from '../../store';
 import { isAccountPaid } from '../../store/reducers/account-reducer';
 import Colors from 'src/constants/Colors';
 import ConnectedPaymentModal from '../payment-modal/payment-modal';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 interface IPurchaseButtonProps {
 	children: any;
@@ -35,7 +36,7 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 		}
 
 		return (
-			<TouchableNativeFeedback onPress={() => this.toggleStartPayment()}>
+			<TouchableBtn style={{ flex: 1 }} onPress={() => this.toggleStartPayment()}>
 				<View style={styles.contactActionBtn}>
 					<Text style={styles.btnLabel}>{label}</Text>
 					<ConnectedPaymentModal
@@ -43,7 +44,7 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 						requestClose={() => this.toggleStartPayment()}
 					/>
 				</View>
-			</TouchableNativeFeedback>
+			</TouchableBtn>
 		);
 	}
 }
@@ -58,7 +59,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		flex: 1
+		...Platform.select({
+			android: {
+				flex: 1
+			}
+		})
 	},
 	btnLabel: {
 		color: 'white',

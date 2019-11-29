@@ -171,6 +171,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 						)}
 						{!!showRazor && pgOrderId && (
 							<WebView
+								useWebKit={true}
 								source={{
 									html: getRazor(
 										pgOrderId,

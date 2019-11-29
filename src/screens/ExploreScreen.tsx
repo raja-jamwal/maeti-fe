@@ -7,7 +7,8 @@ import {
 	TouchableNativeFeedback,
 	FlatList,
 	StatusBar,
-	TouchableOpacity
+	TouchableOpacity,
+	SafeAreaView
 } from 'react-native';
 import Colors from '../constants/Colors';
 import GlobalStyles from '../styles/global';
@@ -36,6 +37,7 @@ import SelectedFilter from '../components/selected-filters';
 import EmptyResult from '../components/empty-result';
 import ConnectedPurchaseButton from '../components/purchase-button/purchase-button';
 import { isAccountPaid } from '../store/reducers/account-reducer';
+import TouchableBtn from '../components/touchable-btn/touchable-btn';
 
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
@@ -63,15 +65,16 @@ const ExploreScreenHeader = (props: any) => {
 		: defaultPrimaryPhoto;
 	const onSubmitEditing = ({ nativeEvent: { text } }) => props.applyGlobalFilter(text);
 	return (
-		<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.header]}>
-			<TouchableNativeFeedback onPress={() => navigateToProfile()}>
-				<Image source={profileAvatar} style={styles.avatar} />
-			</TouchableNativeFeedback>
-			<TextInput
-				style={[GlobalStyles.expand, styles.searchInput]}
-				onSubmitEditing={onSubmitEditing}
-			/>
-			{/*<TouchableNativeFeedback>
+		<SafeAreaView style={{ backgroundColor: Colors.white }}>
+			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.header]}>
+				<TouchableBtn onPress={() => navigateToProfile()}>
+					<Image source={profileAvatar} style={styles.avatar} />
+				</TouchableBtn>
+				<TextInput
+					style={[GlobalStyles.expand, styles.searchInput]}
+					onSubmitEditing={onSubmitEditing}
+				/>
+				{/*<TouchableNativeFeedback>
 				<Icon.Ionicons
 					style={styles.navBarIcon}
 					color={Colors.white}
@@ -79,15 +82,16 @@ const ExploreScreenHeader = (props: any) => {
 					size={26}
 				/>
 			</TouchableNativeFeedback>*/}
-			<TouchableNativeFeedback onPress={() => openFilterScreen()}>
-				<Ionicons
-					style={styles.navBarIcon}
-					color={Colors.offWhite}
-					name="md-funnel"
-					size={26}
-				/>
-			</TouchableNativeFeedback>
-		</View>
+				<TouchableBtn onPress={() => openFilterScreen()}>
+					<Ionicons
+						style={styles.navBarIcon}
+						color={Colors.offWhite}
+						name="md-funnel"
+						size={26}
+					/>
+				</TouchableBtn>
+			</View>
+		</SafeAreaView>
 	);
 };
 

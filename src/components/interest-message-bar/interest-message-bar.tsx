@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableNativeFeedback, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import Colors from '../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { IRootState } from '../../store';
@@ -16,6 +16,8 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { addSentInterest } from '../../store/reducers/interest-reducer';
 import { Value } from '../text';
 import ConnectedPurchaseButton from '../purchase-button/purchase-button';
+import TouchableBtn from '../touchable-btn/touchable-btn';
+import Layout from 'src/constants/Layout';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
@@ -297,14 +299,14 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 			<View style={styles.row}>
 				{interestState === InterestStates.SHOW_INTEREST && (
 					<ConnectedPurchaseButton label="Purchase plan to send Interest">
-						<TouchableNativeFeedback onPress={() => this.showInterest()}>
+						<TouchableBtn onPress={() => this.showInterest()}>
 							<View style={styles.column}>
 								<View style={styles.btnContainer}>
 									<Ionicons name="md-flash" size={20} color="white" />
 									<Text style={styles.text}>Show Interest</Text>
 								</View>
 							</View>
-						</TouchableNativeFeedback>
+						</TouchableBtn>
 					</ConnectedPurchaseButton>
 				)}
 				{interestState !== InterestStates.SHOW_INTEREST && (
@@ -313,31 +315,31 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				{interestState === InterestStates.RECV_PENDING && (
 					<View style={styles.row}>
 						<View style={styles.column}>
-							<TouchableNativeFeedback onPress={() => this.saveInterest(true)}>
+							<TouchableBtn onPress={() => this.saveInterest(true)}>
 								<View style={styles.interestAction}>
 									<Text style={styles.text}>Accept</Text>
 								</View>
-							</TouchableNativeFeedback>
+							</TouchableBtn>
 						</View>
 						<View style={styles.column}>
-							<TouchableNativeFeedback onPress={() => this.saveInterest(false)}>
+							<TouchableBtn onPress={() => this.saveInterest(false)}>
 								<View style={styles.interestAction}>
 									<Text style={styles.text}>Decline</Text>
 								</View>
-							</TouchableNativeFeedback>
+							</TouchableBtn>
 						</View>
 					</View>
 				)}
 				{(interestState === InterestStates.SENT_ACCEPTED ||
 					interestState === InterestStates.RECV_ACCEPTED) && (
-					<TouchableNativeFeedback onPress={() => this.startMessaging()}>
+					<TouchableBtn onPress={() => this.startMessaging()}>
 						<View style={styles.column}>
 							<View style={styles.btnContainer}>
 								<Ionicons name="md-chatboxes" size={20} color="white" />
 								<Text style={styles.text}>Message</Text>
 							</View>
 						</View>
-					</TouchableNativeFeedback>
+					</TouchableBtn>
 				)}
 			</View>
 		);
@@ -363,8 +365,20 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 const styles = StyleSheet.create({
 	container: {
 		borderTopWidth: 0,
-		elevation: 10,
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+		...Platform.select({
+			ios: {
+				shadowOpacity: 0.2,
+				shadowRadius: 1,
+				shadowOffset: {
+					height: 0,
+					width: 0
+				}
+			},
+			android: {
+				elevation: 10
+			}
+		})
 	},
 	barContainer: {
 		flexDirection: 'row'

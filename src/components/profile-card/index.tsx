@@ -27,6 +27,7 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import Layout from 'src/constants/Layout.js';
 import ProfileImageCarousel from '../profile-image-carousel/profile-image-carousel';
 import { ProfileTableHeightOptions } from '../collapsible-table/profile-table';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
@@ -108,14 +109,14 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 				<View style={styles.profileSummaryContainer}>
 					<View style={[GlobalStyles.row, GlobalStyles.expand]}>
 						{!isSelfProfile && (
-							<TouchableNativeFeedback onPress={this.setUserProfileFavourite}>
+							<TouchableBtn onPress={this.setUserProfileFavourite}>
 								<Ionicons
 									style={styles.profileActionIcon}
 									name={heartIcon}
 									size={24}
 									color={heartColor}
 								/>
-							</TouchableNativeFeedback>
+							</TouchableBtn>
 						)}
 						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 							<Ionicons
@@ -129,9 +130,9 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						{/*<Text style={styles.premiumProfileText}>Premium Profile</Text>*/}
 						<View style={GlobalStyles.expand} />
 						{isSelfProfile && (
-							<TouchableNativeFeedback onPress={this.openProfileImageGallery}>
+							<TouchableBtn onPress={this.openProfileImageGallery}>
 								<Ionicons name="md-camera" size={24} color={Colors.black} />
-							</TouchableNativeFeedback>
+							</TouchableBtn>
 						)}
 					</View>
 					<View>
