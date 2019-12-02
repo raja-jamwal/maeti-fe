@@ -6,7 +6,8 @@ import {
 	StyleSheet,
 	TouchableNativeFeedback,
 	ScrollView,
-	StatusBar
+	StatusBar,
+	SafeAreaView
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import { IRootState } from '../../store/index';
@@ -15,6 +16,7 @@ import { Tag } from '../../store/reducers/account-defination';
 import { find, isEmpty, keys, map } from 'lodash';
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ITagSelectorProps {
 	tags: Array<Tag>;
@@ -102,30 +104,48 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 					}}
 				>
 					<View style={styles.flexContainer}>
-						<StatusBar
-							backgroundColor={Color.primaryDarkColor}
-							barStyle="light-content"
-						/>
-						<View style={[styles.container]}>
-							<Text style={styles.title}>{title || 'No Title'}</Text>
-							<ScrollView>
-								{tags.map(tag => {
-									return (
-										<CheckBox
-											style={{ flex: 1, padding: 20 }}
-											onClick={() => {
-												this.toggleTagSelect(tag.id);
-											}}
-											checkBoxColor={Color.primaryDarkColor}
-											isChecked={!!selectedTags[tag.id]}
-											key={tag.id}
-											rightText={tag.value}
-											rightTextStyle={styles.optionLabel}
+						<SafeAreaView>
+							<StatusBar
+								backgroundColor={Color.primaryDarkColor}
+								barStyle="light-content"
+							/>
+							<View style={[styles.container]}>
+								<View
+									style={{
+										flexDirection: 'row',
+										alignItems: 'center',
+										marginRight: 16
+									}}
+								>
+									<Text style={styles.title}>{title || 'No Title'}</Text>
+									<View style={{ flex: 1 }} />
+									<TouchableBtn onPress={() => this.toggleShowModal()}>
+										<Ionicons
+											name="md-close"
+											size={26}
+											color={Color.offWhite}
 										/>
-									);
-								})}
-							</ScrollView>
-						</View>
+									</TouchableBtn>
+								</View>
+								<ScrollView>
+									{tags.map(tag => {
+										return (
+											<CheckBox
+												style={{ flex: 1, padding: 20 }}
+												onClick={() => {
+													this.toggleTagSelect(tag.id);
+												}}
+												checkBoxColor={Color.primaryDarkColor}
+												isChecked={!!selectedTags[tag.id]}
+												key={tag.id}
+												rightText={tag.value}
+												rightTextStyle={styles.optionLabel}
+											/>
+										);
+									})}
+								</ScrollView>
+							</View>
+						</SafeAreaView>
 					</View>
 				</Modal>
 			</View>

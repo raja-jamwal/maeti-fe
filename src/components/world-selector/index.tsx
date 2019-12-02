@@ -1,14 +1,5 @@
 import * as React from 'react';
-import {
-	View,
-	Text,
-	FlatList,
-	TouchableOpacity,
-	StyleSheet,
-	TouchableNativeFeedback,
-	Modal,
-	TextInput
-} from 'react-native';
+import { View, Text, FlatList, StyleSheet, Modal, TextInput, SafeAreaView } from 'react-native';
 import { ApiRequest } from '../../utils';
 import { API } from '../../config/API';
 import { getLogger } from '../../utils/logger';
@@ -16,6 +7,8 @@ import { Throbber } from '../throbber/throbber';
 import { City, Country, Region, WorldEntity } from '../../store/reducers/account-defination';
 import { includes } from 'lodash';
 import Color from '../../constants/Colors';
+import TouchableBtn from '../touchable-btn/touchable-btn';
+import { Ionicons } from '@expo/vector-icons';
 
 export enum WORLD_OPTION {
 	COUNTRY = 'country',
@@ -32,6 +25,7 @@ export interface SelectionResult {
 interface IWorldSelectorProps {
 	options: WORLD_OPTION[];
 	onSelect: (selection: SelectionResult) => void;
+	toggleShowModal: () => any;
 }
 
 interface IWorldSelectorState {
@@ -46,11 +40,11 @@ interface IWorldSelectorState {
 
 function Item({ id, name, onSelect }) {
 	return (
-		<TouchableNativeFeedback onPress={() => onSelect({ id, name })}>
+		<TouchableBtn onPress={() => onSelect({ id, name })}>
 			<View style={styles.item}>
 				<Text>{name}</Text>
 			</View>
-		</TouchableNativeFeedback>
+		</TouchableBtn>
 	);
 }
 
@@ -189,22 +183,36 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 
 	render() {
 		const { screen, loading, filterText } = this.state;
+		const { toggleShowModal } = this.props;
 		const data = this.getData();
 		return (
-			<View>
-				<Text style={styles.title}>Select {screen}</Text>
+			<SafeAreaView>
+				<View
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						marginRight: 16
+					}}
+				>
+					{/*<Text style={styles.title}>{title || 'No Title'}</Text>*/}
+					<Text style={styles.title}>Select {screen}</Text>
+					<View style={{ flex: 1 }} />
+					<TouchableBtn onPress={() => toggleShowModal()}>
+						<Ionicons name="md-close" size={26} color={Color.offWhite} />
+					</TouchableBtn>
+				</View>
 				{!loading && (
 					<View style={styles.textField}>
 						<TextInput
 							onChangeText={text => this.setState({ filterText: text })}
 							value={filterText}
-							style={styles.fieldText}
+							// style={styles.fieldText}
 						/>
 					</View>
 				)}
 				{!!loading && <Throbber size="large" />}
 				{!loading && this.renderList(screen, data)}
-			</View>
+			</SafeAreaView>
 		);
 	}
 }
@@ -242,14 +250,13 @@ class WorldSelectorField extends React.Component<
 		const { options, onSelect, value } = this.props;
 		return (
 			<View>
-				<TouchableNativeFeedback onPress={() => this.toggleShowModal()}>
+				<TouchableBtn onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
 						<Text style={styles.label}>{value || ' '}</Text>
 					</View>
-				</TouchableNativeFeedback>
+				</TouchableBtn>
 				<Modal
 					animationType="slide"
-					// transparent={true}
 					visible={showModal}
 					onRequestClose={() => {
 						this.toggleShowModal();
@@ -262,6 +269,7 @@ class WorldSelectorField extends React.Component<
 								onSelect(selection);
 								this.toggleShowModal();
 							}}
+							toggleShowModal={() => this.toggleShowModal()}
 						/>
 					</View>
 				</Modal>

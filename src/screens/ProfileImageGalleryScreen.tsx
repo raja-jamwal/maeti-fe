@@ -23,6 +23,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import Layout from 'src/constants/Layout.js';
 import { MediaTypeOptions } from 'expo-image-picker';
 import { IS_IOS } from '../utils';
+import TouchableBtn from '../components/touchable-btn/touchable-btn';
 
 enum PHOTO_ACTIONS {
 	PRIMARY = 0,
@@ -77,11 +78,15 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 					'Need Permission',
 					'Sorry, we need camera roll permissions to make this work!'
 				);
+				return false;
 			}
 		}
+		return true;
 	};
 
 	_pickImage = async () => {
+		const permitted = await this.getPermissionAsync();
+		if (!permitted) return;
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: MediaTypeOptions.Images,
 			allowsEditing: true,
@@ -120,14 +125,14 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 		const tileHeight = tileWidth;
 		return this.getPhotos().map((photo, i) => {
 			return (
-				<TouchableNativeFeedback key={i} onPress={() => this.showImageActions(i)}>
+				<TouchableBtn key={i} onPress={() => this.showImageActions(i)}>
 					<View style={styles.imageContainer}>
 						<Image
 							source={{ uri: photo.url, width: tileWidth, height: tileHeight }}
 							style={{ width: tileWidth, height: tileHeight }}
 						/>
 					</View>
-				</TouchableNativeFeedback>
+				</TouchableBtn>
 			);
 		});
 	}
@@ -163,11 +168,11 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 					<View style={styles.tilesContainer}>{this.getPhotoTiles()}</View>
 				</ScrollView>
 				<View style={styles.addBtnContainer}>
-					<TouchableNativeFeedback onPress={this._pickImage}>
+					<TouchableBtn onPress={this._pickImage}>
 						<View style={styles.addIconContainer}>
 							<Ionicons name="md-add" size={30} color="white" />
 						</View>
-					</TouchableNativeFeedback>
+					</TouchableBtn>
 				</View>
 				<ActionSheet
 					ref={o => (this.imageActionSheet = o)}
@@ -211,7 +216,9 @@ const styles = StyleSheet.create({
 		right: 30,
 		bottom: 30,
 		backgroundColor: Colors.primaryDarkColor,
-		borderRadius: 30,
+		borderRadius: 50,
+		width: 50,
+		height: 50,
 		elevation: 6,
 		zIndex: 1
 	},

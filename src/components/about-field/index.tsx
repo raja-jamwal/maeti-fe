@@ -1,15 +1,8 @@
 import * as React from 'react';
-import {
-	View,
-	Text,
-	TouchableNativeFeedback,
-	Modal,
-	StyleSheet,
-	TextInput,
-	StatusBar
-} from 'react-native';
+import { View, Text, Modal, StyleSheet, TextInput, StatusBar, SafeAreaView } from 'react-native';
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import { Ionicons } from '@expo/vector-icons';
 
 interface IAboutFieldProps {
 	value: string;
@@ -42,30 +35,42 @@ class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState>
 			<View>
 				<TouchableBtn onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
-						<Text style={styles.label}>{value || ''}</Text>
+						<Text style={[styles.label, !value ? { color: Color.offWhite } : {}]}>
+							{value || 'Write your story...'}
+						</Text>
 					</View>
 				</TouchableBtn>
 				<Modal
 					animationType="slide"
-					// transparent={true}
 					visible={showModal}
 					onRequestClose={() => {
 						this.toggleShowModal();
 					}}
 				>
-					<StatusBar backgroundColor={Color.primaryDarkColor} barStyle="light-content" />
-					<View style={styles.container}>
-						<Text style={styles.title}>About</Text>
-						<View style={styles.editorContainer}>
-							<TextInput
-								onChangeText={text => onChangeText(text)}
-								value={value}
-								multiline={true}
-								placeholder={'Click here and start typing...'}
-								style={styles.editBox}
-							/>
+					<SafeAreaView>
+						<StatusBar
+							backgroundColor={Color.primaryDarkColor}
+							barStyle="light-content"
+						/>
+						<View style={styles.container}>
+							<View style={{ flexDirection: 'row' }}>
+								<Text style={styles.title}>About</Text>
+								<View style={{ flex: 1 }} />
+								<TouchableBtn onPress={() => this.toggleShowModal()}>
+									<Ionicons name="md-close" size={26} color={Color.offWhite} />
+								</TouchableBtn>
+							</View>
+							<View style={styles.editorContainer}>
+								<TextInput
+									onChangeText={text => onChangeText(text)}
+									value={value}
+									multiline={true}
+									placeholder={'Click here and start typing...'}
+									style={styles.editBox}
+								/>
+							</View>
 						</View>
-					</View>
+					</SafeAreaView>
 				</Modal>
 			</View>
 		);
@@ -74,11 +79,9 @@ class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState>
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		flexDirection: 'column'
+		margin: 16
 	},
 	editorContainer: {
-		flex: 1,
 		flexDirection: 'column'
 	},
 	editBox: {

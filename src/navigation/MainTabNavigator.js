@@ -54,16 +54,7 @@ const ExploreStack = createStackNavigator(
 
 ExploreStack.navigationOptions = {
 	tabBarLabel: 'Explore',
-	tabBarIcon: ({ focused }) => (
-		<TabBarIcon
-			focused={focused}
-			name={
-				Platform.OS === 'ios'
-					? `ios-information-circle${focused ? '' : '-outline'}`
-					: 'md-search'
-			}
-		/>
-	)
+	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-search" />
 };
 
 const MessagesStack = createStackNavigator(
@@ -76,16 +67,7 @@ const MessagesStack = createStackNavigator(
 
 MessagesStack.navigationOptions = ({ navigation }) => ({
 	tabBarLabel: 'Messages',
-	tabBarIcon: ({ focused }) => (
-		<TabBarIcon
-			focused={focused}
-			name={
-				Platform.OS === 'ios'
-					? `ios-information-circle${focused ? '' : '-outline'}`
-					: 'md-chatboxes'
-			}
-		/>
-	),
+	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-chatboxes" />,
 	tabBarVisible: navigation.state.index === 0
 });
 
@@ -99,16 +81,7 @@ const FavouritesStack = createStackNavigator(
 
 FavouritesStack.navigationOptions = {
 	tabBarLabel: 'Favourites',
-	tabBarIcon: ({ focused }) => (
-		<TabBarIcon
-			focused={focused}
-			name={
-				Platform.OS === 'ios'
-					? `ios-information-circle${focused ? '' : '-outline'}`
-					: `md-heart`
-			}
-		/>
-	)
+	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-heart" />
 };
 
 const InterestTabs = createMaterialTopTabNavigator(
@@ -153,16 +126,7 @@ const InterestsStack = createStackNavigator(
 
 InterestsStack.navigationOptions = {
 	tabBarLabel: 'Interests',
-	tabBarIcon: ({ focused }) => (
-		<TabBarIcon
-			focused={focused}
-			name={
-				Platform.OS === 'ios'
-					? `ios-information-circle${focused ? '' : '-outline'}`
-					: 'md-flash'
-			}
-		/>
-	)
+	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-flash" />
 };
 
 const MoreStack = createStackNavigator(
@@ -175,14 +139,7 @@ const MoreStack = createStackNavigator(
 MoreStack.navigationOptions = {
 	tabBarLabel: 'More',
 	tabBarIcon: ({ focused }) => (
-		<TabBarIcon
-			focused={focused}
-			name={
-				Platform.OS === 'ios'
-					? `ios-information-circle${focused ? '' : '-outline'}`
-					: `md-information${focused ? '-circle' : ''}`
-			}
-		/>
+		<TabBarIcon focused={focused} name={`md-information${focused ? '-circle' : ''}`} />
 	)
 };
 

@@ -11,7 +11,8 @@ import {
 	StyleSheet,
 	TextInput,
 	TimePickerAndroid,
-	View
+	View,
+	DatePickerIOS
 } from 'react-native';
 import GlobalStyles from '../styles/global';
 import Text, { Value } from '../components/text/index';
@@ -19,14 +20,15 @@ import TagSelector from '../components/tag-selector/tag-selector';
 import { Tag } from '../store/reducers/account-defination';
 import { Throbber } from '../components/throbber/throbber';
 import { getLogger } from '../utils/logger';
-import { formatDate, formatDateTime } from '../utils';
+import { formatDate, formatDateTime, IS_IOS } from '../utils';
 import { Country, getAllCountries } from 'react-native-country-picker-modal';
-import { find } from 'lodash';
+import { find, isEmpty } from 'lodash';
 import RNPickerSelect from 'react-native-picker-select';
 import { WORLD_OPTION, WorldSelectorField } from '../components/world-selector';
 import Color from '../constants/Colors';
 import AboutField from '../components/about-field';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
+import DateTimeIos from '../components/date-time-ios/date-time-ios';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
@@ -164,6 +166,41 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		return (country.name && country.name.common) || 'Unknown country';
 	}
 
+	renderDateTimePicker(field: string, renderString: string, dateOnly: boolean = true) {
+		if (IS_IOS) {
+			let date = new Date(1993, 0, 1);
+			if (!!renderString) {
+				// unix epoch to ts
+				date = new Date(parseInt(renderString) * 1000);
+			}
+			return (
+				<DateTimeIos
+					epoch={date.getTime() / 1000}
+					dateOnly={dateOnly}
+					field={field}
+					updateFieldValue={(field, epoch) => this.updateFieldValue(field, epoch)}
+				/>
+			);
+		}
+		return (
+			<TouchableBtn
+				onPress={async () => {
+					if (dateOnly) {
+						return await this.setDateField(field);
+					}
+					return await this.setDateTimeField(field);
+				}}
+			>
+				<View style={styles.labelContainer}>
+					{!renderString && <Text style={styles.label}>&nbsp;</Text>}
+					{!!renderString && (
+						<Text style={styles.label}>{formatDate(parseInt(renderString))}</Text>
+					)}
+				</View>
+			</TouchableBtn>
+		);
+	}
+
 	renderFields() {
 		const { object, mapping } = this.state;
 		const fields = Object.keys(mapping).map(field => {
@@ -260,46 +297,50 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 					)}
 					{isBooleanField && (
 						<View style={styles.choiceField}>
-							<Picker
-								selectedValue={!!value}
+							<RNPickerSelect
+								value={!!value}
+								useNativeAndroidPickerStyle={false}
 								onValueChange={itemValue => this.updateFieldValue(field, itemValue)}
-							>
-								<Picker.Item key="no" label="No" value={false} />
-								<Picker.Item key="yes" label="Yes" value={true} />
-							</Picker>
+								items={[
+									{
+										label: 'Yes',
+										value: true
+									},
+									{
+										label: 'No',
+										value: false
+									}
+								]}
+								textInputProps={{
+									style: {
+										color: 'black',
+										height: 50,
+										padding: 8,
+										fontSize: 16
+									}
+								}}
+								placeholderTextColor={Color.primaryDarkColor}
+							/>
 						</View>
 					)}
-					{isDateField && (
-						<TouchableBtn onPress={() => this.setDateField(field)}>
-							<View style={styles.labelContainer}>
-								{!renderString && <Text style={styles.label}>&nbsp;</Text>}
-								{!!renderString && (
-									<Text style={styles.label}>
-										{formatDate(parseInt(renderString))}
-									</Text>
-								)}
-							</View>
-						</TouchableBtn>
-					)}
-					{isDateTimeField && (
-						<TouchableBtn onPress={() => this.setDateTimeField(field)}>
-							<View style={styles.labelContainer}>
-								{!renderString && <Text style={styles.label}>&nbsp;</Text>}
-								{!!renderString && (
-									<Text style={styles.label}>
-										{formatDateTime(parseInt(renderString))}
-									</Text>
-								)}
-							</View>
-						</TouchableBtn>
-					)}
+					{isDateField && this.renderDateTimePicker(field, renderString, true)}
+					{isDateTimeField && this.renderDateTimePicker(field, renderString, false)}
 					{isChoiceField && (
 						<View style={styles.choiceField}>
 							<RNPickerSelect
 								value={value}
-								useNativeAndroidPickerStyle={true}
+								useNativeAndroidPickerStyle={false}
 								onValueChange={itemValue => this.updateFieldValue(field, itemValue)}
 								items={choiceOptions}
+								textInputProps={{
+									style: {
+										color: 'black',
+										height: 50,
+										padding: 8,
+										fontSize: 16
+									}
+								}}
+								placeholderTextColor={Color.primaryDarkColor}
 							/>
 						</View>
 					)}
@@ -424,8 +465,14 @@ const styles = StyleSheet.create({
 	choiceField: {
 		borderColor: Color.borderColor,
 		borderWidth: 1,
-		paddingLeft: 2,
-		borderRadius: 4
+
+		// paddingLeft: 8,
+		// paddingRight: 8,
+		borderRadius: 4,
+
+		// height: 55,
+		flexDirection: 'column',
+		justifyContent: 'center'
 	},
 	submissionFooter: {
 		backgroundColor: 'white',

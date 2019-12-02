@@ -172,7 +172,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				<View style={styles.formContainer}>
 					<View style={styles.countryContainer}>
 						<CountryPicker
-							closeable={false}
+							closeable={true}
 							filterable={true}
 							showCallingCode={true}
 							cca2={this.state.cca}

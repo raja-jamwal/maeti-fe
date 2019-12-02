@@ -422,7 +422,10 @@ const styles = StyleSheet.create({
 		paddingTop: 5,
 		paddingBottom: 5,
 		marginRight: 5,
-		borderRadius: 10
+		borderRadius: 10,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 

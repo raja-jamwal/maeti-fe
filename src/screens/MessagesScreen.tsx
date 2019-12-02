@@ -11,6 +11,7 @@ import { fetchChannels } from '../store/reducers/channel-reducer';
 import { Throbber } from '../components/throbber/throbber';
 import { toArray, sortBy } from 'lodash';
 import Color from '../constants/Colors';
+import TouchableBtn from '../components/touchable-btn/touchable-btn';
 
 interface IMessageScreenMapStateToProps {
 	channels: Array<Channel>;
@@ -72,7 +73,7 @@ class MessagesScreen extends React.PureComponent<
 
 	renderChannel(channel: Channel) {
 		return (
-			<TouchableNativeFeedback
+			<TouchableBtn
 				onPress={() => this.openChatView(channel.channelIdentity.id)}
 				key={channel.channelIdentity.id}
 			>
@@ -82,7 +83,7 @@ class MessagesScreen extends React.PureComponent<
 						latestMessage={channel.latestMessage}
 					/>
 				</View>
-			</TouchableNativeFeedback>
+			</TouchableBtn>
 		);
 	}
 
