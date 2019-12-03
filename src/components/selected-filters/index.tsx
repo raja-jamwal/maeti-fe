@@ -10,6 +10,7 @@ import { isEmpty } from 'lodash';
 import Colors from 'src/constants/Colors';
 import { getSelectedScreen } from '../../store/reducers/explore-reducer';
 import { bindActionCreators } from 'redux';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 interface ISelectedFilterMapStateToProps {
 	filters: any;
@@ -62,10 +63,7 @@ class SelectedFilter extends React.Component<ISelectedFilterProps> {
 
 	renderFilterButton(breadCrum: IFilterBreadCrum) {
 		return (
-			<TouchableNativeFeedback
-				key={breadCrum.key}
-				onPress={() => this.removeFilter(breadCrum.key)}
-			>
+			<TouchableBtn key={breadCrum.key} onPress={() => this.removeFilter(breadCrum.key)}>
 				<View style={[GlobalStyles.row, styles.filterBreadCrumContainer]}>
 					<Text style={styles.filterBreadCrumText}>{breadCrum.filter.label}</Text>
 					<Ionicons
@@ -75,7 +73,7 @@ class SelectedFilter extends React.Component<ISelectedFilterProps> {
 						color="black"
 					/>
 				</View>
-			</TouchableNativeFeedback>
+			</TouchableBtn>
 		);
 	}
 
@@ -100,6 +98,9 @@ const styles = StyleSheet.create({
 	filterBreadCrumContainer: {
 		backgroundColor: Colors.primaryDarkColor,
 		padding: 10,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 		marginRight: 10,
 		borderRadius: 20
 	},
