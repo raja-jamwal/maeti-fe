@@ -3,7 +3,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import { IRootState } from '../../../store/index';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { fetchIncomingInterests } from '../../../store/reducers/interest-reducer';
+import {
+	fetchIncomingInterests,
+	setIncomingInterestRefreshing
+} from '../../../store/reducers/interest-reducer';
 import { Interest } from '../../../store/reducers/account-defination';
 import VirtualProfileList from '../../virtual-profile-list/index';
 import { toArray, sortBy } from 'lodash';
@@ -17,6 +20,7 @@ interface IIncomingTabMapStateToProps {
 
 interface IIncomingTabMapDispatchToProps {
 	fetchIncomingInterests: () => any;
+	setIncomingInterestRefreshing: () => any;
 }
 
 class IncomingTab extends React.PureComponent<
@@ -51,9 +55,15 @@ class IncomingTab extends React.PureComponent<
 		);
 	}
 
-	_handleMore() {
+	async _handleMore() {
 		const { fetchIncomingInterests } = this.props;
 		fetchIncomingInterests();
+	}
+
+	async handleRefreshing() {
+		const { setIncomingInterestRefreshing } = this.props;
+		await setIncomingInterestRefreshing();
+		await this._handleMore();
 	}
 
 	render() {
@@ -65,6 +75,7 @@ class IncomingTab extends React.PureComponent<
 				profileIdExtractor={this.profileIdExtractor}
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
+				handleRefresh={() => this.handleRefreshing()}
 			/>
 		);
 	}
@@ -92,7 +103,8 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		fetchIncomingInterests: bindActionCreators(fetchIncomingInterests, dispatch)
+		fetchIncomingInterests: bindActionCreators(fetchIncomingInterests, dispatch),
+		setIncomingInterestRefreshing: bindActionCreators(setIncomingInterestRefreshing, dispatch)
 	};
 };
 

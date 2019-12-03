@@ -10,6 +10,7 @@ interface IVirtualProfileListProps {
 	data: Array<any>;
 	headerComponent: any;
 	handleMore: () => any;
+	handleRefresh: () => any;
 }
 
 class VirtualProfileList extends React.PureComponent<
@@ -47,7 +48,7 @@ class VirtualProfileList extends React.PureComponent<
 	}
 
 	render() {
-		const { fetching, profileIdExtractor, data, headerComponent } = this.props;
+		const { fetching, profileIdExtractor, data, headerComponent, handleRefresh } = this.props;
 		const loaderClasses = [styles.loading, styles.loaderTop];
 
 		console.log('re-render flat-list');
@@ -61,6 +62,8 @@ class VirtualProfileList extends React.PureComponent<
 					renderItem={({ item }) => this.renderProfileCard(item)}
 					onEndReached={this._handleMore}
 					onEndReachedThreshold={100}
+					refreshing={fetching}
+					onRefresh={handleRefresh}
 				/>
 				{!!fetching && (
 					<View style={loaderClasses}>

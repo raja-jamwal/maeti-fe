@@ -6,7 +6,8 @@ import {
 	getFavouriteFetching,
 	getFavouriteProfiles,
 	getTotalElements,
-	IFavouriteState
+	IFavouriteState,
+	setFavouriteRefreshing
 } from '../../store/reducers/favourite-reducer';
 import { connect } from 'react-redux';
 import { IRootState } from '../../store';
@@ -27,6 +28,7 @@ interface IFavouriteContainerMapStateToProps {
 
 interface IFavouriteContainerMapDispatchToProps {
 	fetchFavouriteProfile: (id: number) => any;
+	setFavouriteRefreshing: () => any;
 }
 
 type IFavouriteContainerProps = NavigationInjectedProps &
@@ -63,10 +65,10 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 		return favourite.favouriteUserProfile.id;
 	}
 
-	_handleMore() {
+	async _handleMore() {
 		const { userProfileId, fetchFavouriteProfile } = this.props;
 		if (userProfileId) {
-			fetchFavouriteProfile(userProfileId);
+			await fetchFavouriteProfile(userProfileId);
 		}
 	}
 
@@ -84,6 +86,12 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 		return <Text style={styles.lightText}>You've not added any favourites</Text>;
 	}
 
+	async handleRefresh() {
+		const { setFavouriteRefreshing } = this.props;
+		await setFavouriteRefreshing();
+		await this._handleMore();
+	}
+
 	render() {
 		const { fetching } = this.props;
 		const profiles = this.getFavouriteProfiles();
@@ -97,6 +105,7 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 						data={profiles}
 						headerComponent={this.totalCount()}
 						handleMore={this._handleMore}
+						handleRefresh={() => this.handleRefresh()}
 					/>
 				)}
 				{isEmpty(profiles) && this.noFavourites()}
@@ -138,7 +147,8 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		fetchFavouriteProfile: bindActionCreators(fetchFavouriteProfile, dispatch)
+		fetchFavouriteProfile: bindActionCreators(fetchFavouriteProfile, dispatch),
+		setFavouriteRefreshing: bindActionCreators(setFavouriteRefreshing, dispatch)
 	};
 };
 

@@ -32,64 +32,54 @@ export interface IInterestState {
 	};
 }
 
-const defaultInterestState: IInterestState = {
-	incoming: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	accepted: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
-	},
-	sent: {
-		profiles: {},
-		fetching: false,
-		pageable: {
-			last: false,
-			totalPages: 0,
-			number: -1,
-			totalElements: 0
-		}
+const defaultInterestTabState = {
+	profiles: {},
+	fetching: false,
+	pageable: {
+		last: false,
+		totalPages: 0,
+		number: -1,
+		totalElements: 0
 	}
+};
+
+const defaultInterestState: IInterestState = {
+	incoming: defaultInterestTabState,
+	accepted: defaultInterestTabState,
+	sent: defaultInterestTabState
 };
 
 const ADD_INCOMING_INTEREST = 'ADD_INCOMING_INTEREST';
 const BULK_ADD_INCOMING_INTEREST = 'BULK_ADD_INCOMING_INTEREST';
 const ADD_INCOMING_INTEREST_PAGE = 'ADD_INCOMING_INTEREST_PAGE';
 const SET_INCOMING_INTEREST_FETCHING = 'SET_INCOMING_INTEREST_FETCHING';
+const SET_INCOMING_INTEREST_REFRESHING = 'SET_INCOMING_INTEREST_REFRESHING';
 
 const ADD_ACCEPTED_INTEREST = 'ADD_ACCEPTED_INTEREST';
 const ADD_ACCEPTED_INTEREST_PAGE = 'ADD_ACCEPTED_INTEREST_PAGE';
 const SET_ACCEPTED_INTEREST_FETCHING = 'SET_ACCEPTED_INTEREST_FETCHING';
+const SET_ACCEPTED_INTEREST_REFRESHING = 'SET_ACCEPTED_INTEREST_REFRESHING';
 
 const ADD_SENT_INTEREST = 'ADD_SENT_INTEREST';
 const ADD_SENT_INTEREST_PAGE = 'ADD_SENT_INTEREST_PAGE';
 const SET_SENT_INTEREST_FETCHING = 'SET_SENT_INTEREST_FETCHING';
+const SET_SEND_INTEREST_REFRESHING = 'SET_SEND_INTEREST_REFRESHING';
 
 export const addIncomingInterest = createAction<Interest>(ADD_INCOMING_INTEREST);
 export const bulkAddIncomingInterest = createAction<Array<Interest>>(BULK_ADD_INCOMING_INTEREST);
 export const addIncomingInterestPage = createAction<Pageable>(ADD_INCOMING_INTEREST_PAGE);
 export const setIncomingInterestFetching = createAction<boolean>(SET_INCOMING_INTEREST_FETCHING);
+export const setIncomingInterestRefreshing = createAction(SET_INCOMING_INTEREST_REFRESHING);
 
 export const addAcceptedInterest = createAction<Interest>(ADD_ACCEPTED_INTEREST);
 export const addAcceptedInterestPage = createAction<Pageable>(ADD_ACCEPTED_INTEREST_PAGE);
 export const setAcceptedInterestFetching = createAction<boolean>(SET_ACCEPTED_INTEREST_FETCHING);
+export const setAcceptedInterestRefreshing = createAction(SET_ACCEPTED_INTEREST_REFRESHING);
 
 export const addSentInterest = createAction<Interest>(ADD_SENT_INTEREST);
 export const addSentInterestPage = createAction<Pageable>(ADD_SENT_INTEREST_PAGE);
 export const setSentInterestFetching = createAction<boolean>(SET_SENT_INTEREST_FETCHING);
+export const setSentInterestRefreshing = createAction(SET_SEND_INTEREST_REFRESHING);
 
 export const fetchIncomingInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
@@ -317,6 +307,24 @@ export const interestReducer = handleActions<IInterestState>(
 					...state.sent,
 					fetching: fetching
 				}
+			};
+		},
+		[SET_INCOMING_INTEREST_REFRESHING]: (state, { payload }) => {
+			return {
+				...state,
+				incoming: defaultInterestTabState
+			};
+		},
+		[SET_ACCEPTED_INTEREST_REFRESHING]: (state, { payload }) => {
+			return {
+				...state,
+				accepted: defaultInterestTabState
+			};
+		},
+		[SET_SEND_INTEREST_REFRESHING]: (state, { payload }) => {
+			return {
+				...state,
+				sent: defaultInterestTabState
 			};
 		}
 	},

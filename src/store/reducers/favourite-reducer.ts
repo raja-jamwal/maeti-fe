@@ -62,6 +62,7 @@ const REMOVE_FAVOURITE = 'REMOVE_FAVOURITE';
 // super performant to reduce render cycles
 const BULK_ADD_FAVOURITE_RESPONSE = 'BULK_ADD_FAVOURITE_RESPONSE';
 const SET_FAVOURITE_FETCHING = 'SET_FAVOURITE_FETCHING';
+const SET_FAVOURITE_REFRESHING = 'SET_FAVOURITE_REFRESHING';
 
 export const addFavourite = createAction<Favourite>(ADD_FAVOURITE);
 export const bulkAddFavourite = createAction<Array<Favourite>>(BULK_ADD_FAVOURITE);
@@ -70,6 +71,7 @@ export const bulkAddFavouriteResponse = createAction<IBulkAddFavouriteResponse>(
 );
 export const addFavouritePage = createAction<Pageable>(ADD_FAVOURITE_PAGE);
 export const setFavouriteFetching = createAction<boolean>(SET_FAVOURITE_FETCHING);
+export const setFavouriteRefreshing = createAction(SET_FAVOURITE_REFRESHING);
 export const removeFavourite = createAction<Favourite>(REMOVE_FAVOURITE);
 
 export const setUserProfileFavourite = function(userProfile: UserProfile, isFavourite: boolean) {
@@ -216,6 +218,11 @@ export const favouriteReducer = handleActions<IFavouriteState>(
 		[SET_FAVOURITE_FETCHING]: (state, { payload }) => {
 			const fetching = !!payload;
 			return setFavouriteFetchingEffect(state, fetching);
+		},
+		[SET_FAVOURITE_REFRESHING]: (_state, { payload }) => {
+			return {
+				...defaultFavouriteState
+			};
 		},
 		[BULK_ADD_FAVOURITE_RESPONSE]: (state, { payload }) => {
 			const response = (payload as any) as IBulkAddFavouriteResponse;

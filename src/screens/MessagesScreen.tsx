@@ -7,7 +7,7 @@ import { IRootState } from '../store/index';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Channel } from '../store/reducers/account-defination';
-import { fetchChannels } from '../store/reducers/channel-reducer';
+import { fetchChannels, setChannelRefreshing } from '../store/reducers/channel-reducer';
 import { Throbber } from '../components/throbber/throbber';
 import { toArray, sortBy } from 'lodash';
 import Color from '../constants/Colors';
@@ -21,6 +21,7 @@ interface IMessageScreenMapStateToProps {
 
 interface IMessageScreenMapDispatchToProps {
 	fetchChannels: () => any;
+	setChannelRefreshing: () => any;
 }
 
 interface IMessageScreenState {
@@ -95,6 +96,12 @@ class MessagesScreen extends React.PureComponent<
 		});
 	}
 
+	async _handleRefresh() {
+		const { fetchChannels, setChannelRefreshing } = this.props;
+		await setChannelRefreshing();
+		await fetchChannels();
+	}
+
 	render() {
 		const { fetching } = this.props;
 		const { isFetchingMore } = this.state;
@@ -111,6 +118,8 @@ class MessagesScreen extends React.PureComponent<
 						renderItem={({ item }) => this.renderChannel(item)}
 						onEndReached={this._handleMore}
 						onEndReachedThreshold={100}
+						refreshing={fetching}
+						onRefresh={() => this._handleRefresh()}
 					/>
 				)}
 				{isEmptyInbox && !fetching && (
@@ -176,7 +185,8 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		fetchChannels: bindActionCreators(fetchChannels, dispatch)
+		fetchChannels: bindActionCreators(fetchChannels, dispatch),
+		setChannelRefreshing: bindActionCreators(setChannelRefreshing, dispatch)
 	};
 };
 

@@ -42,10 +42,12 @@ export const getChannelForId = createSelector(
 const ADD_CHANNEL = 'ADD_CHANNEL';
 const SET_CHANNEL_FETCHING = 'SET_CHANNEL_FETCHING';
 const ADD_CHANNEL_PAGE = 'ADD_CHANNEL_PAGE';
+const SET_CHANNEL_REFRESHING = 'SET_CHANNEL_REFRESHING';
 
 export const addChannel = createAction<Channel>(ADD_CHANNEL);
 export const addChannelPage = createAction<Pageable>(ADD_CHANNEL_PAGE);
 export const setChannelFetching = createAction<boolean>(SET_CHANNEL_FETCHING);
+export const setChannelRefreshing = createAction(SET_CHANNEL_REFRESHING);
 
 export const fetchChannels = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
@@ -109,6 +111,11 @@ export const channelReducer = handleActions<IChannelState>(
 			return {
 				...state,
 				fetching
+			};
+		},
+		[SET_CHANNEL_REFRESHING]: (_state, { payload }) => {
+			return {
+				...defaultChannelState
 			};
 		},
 		[ADD_CHANNEL_PAGE]: (state, { payload }) => {

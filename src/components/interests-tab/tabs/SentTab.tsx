@@ -2,7 +2,10 @@ import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { IRootState } from '../../../store/index';
 import { bindActionCreators, Dispatch } from 'redux';
-import { fetchSentInterests } from '../../../store/reducers/interest-reducer';
+import {
+	fetchSentInterests,
+	setSentInterestRefreshing
+} from '../../../store/reducers/interest-reducer';
 import { connect } from 'react-redux';
 import { Interest } from '../../../store/reducers/account-defination';
 import { toArray, sortBy } from 'lodash';
@@ -17,6 +20,7 @@ interface ISentTabMapStateToProps {
 
 interface ISentTabMapDispatchToProps {
 	fetchSentInterests: () => any;
+	setSentInterestRefreshing: () => any;
 }
 
 class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispatchToProps> {
@@ -50,9 +54,15 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 		);
 	}
 
-	_handleMore() {
+	async _handleMore() {
 		const { fetchSentInterests } = this.props;
-		fetchSentInterests();
+		await fetchSentInterests();
+	}
+
+	async handleRefreshing() {
+		const { setSentInterestRefreshing } = this.props;
+		await setSentInterestRefreshing();
+		await this._handleMore();
 	}
 
 	render() {
@@ -64,6 +74,7 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 				profileIdExtractor={this.profileIdExtractor}
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
+				handleRefresh={() => this.handleRefreshing()}
 			/>
 		);
 	}
@@ -91,7 +102,8 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		fetchSentInterests: bindActionCreators(fetchSentInterests, dispatch)
+		fetchSentInterests: bindActionCreators(fetchSentInterests, dispatch),
+		setSentInterestRefreshing: bindActionCreators(setSentInterestRefreshing, dispatch)
 	};
 };
 

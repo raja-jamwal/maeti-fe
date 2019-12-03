@@ -4,7 +4,10 @@ import { Interest } from '../../../store/reducers/account-defination';
 import { toArray, sortBy } from 'lodash';
 import { IRootState } from '../../../store/index';
 import { bindActionCreators, Dispatch } from 'redux';
-import { fetchAcceptedInterests } from '../../../store/reducers/interest-reducer';
+import {
+	fetchAcceptedInterests,
+	setAcceptedInterestRefreshing
+} from '../../../store/reducers/interest-reducer';
 import { connect } from 'react-redux';
 import VirtualProfileList from '../../virtual-profile-list/index';
 import { Value } from '../../text';
@@ -17,6 +20,7 @@ interface IAcceptedTabMapStateToProps {
 
 interface IAcceptedTabDispatchToProps {
 	fetchAcceptedInterests: () => any;
+	setAcceptedInterestRefreshing: () => any;
 }
 
 class AcceptedTab extends React.Component<
@@ -52,9 +56,15 @@ class AcceptedTab extends React.Component<
 		);
 	}
 
-	_handleMore() {
+	async _handleMore() {
 		const { fetchAcceptedInterests } = this.props;
-		fetchAcceptedInterests();
+		await fetchAcceptedInterests();
+	}
+
+	async handleRefreshing() {
+		const { setAcceptedInterestRefreshing } = this.props;
+		await setAcceptedInterestRefreshing();
+		await this._handleMore();
 	}
 
 	render() {
@@ -66,6 +76,7 @@ class AcceptedTab extends React.Component<
 				profileIdExtractor={this.profileIdExtractor}
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
+				handleRefresh={() => this.handleRefreshing()}
 			/>
 		);
 	}
@@ -93,7 +104,8 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		fetchAcceptedInterests: bindActionCreators(fetchAcceptedInterests, dispatch)
+		fetchAcceptedInterests: bindActionCreators(fetchAcceptedInterests, dispatch),
+		setAcceptedInterestRefreshing: bindActionCreators(setAcceptedInterestRefreshing, dispatch)
 	};
 };
 
