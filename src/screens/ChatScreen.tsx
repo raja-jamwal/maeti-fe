@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { GiftedChat, IChatMessage, User, IMessage, Bubble, Send } from 'react-native-gifted-chat';
+import {
+	GiftedChat,
+	IChatMessage,
+	User,
+	IMessage,
+	Bubble,
+	Send,
+	InputToolbar
+} from 'react-native-gifted-chat';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -7,10 +15,11 @@ import { connect } from 'react-redux';
 import { Channel, Message, UserProfile } from '../store/reducers/account-defination';
 import { fetchMessages, postMessage } from '../store/reducers/message-reducer';
 import { toArray, map, keys, sortBy, head, isEmpty } from 'lodash';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, SafeAreaView, View } from 'react-native';
 import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
 import { getLogger } from '../utils/logger';
+import { IS_IOS } from '../utils';
 
 const messageToChatMessage = (message: Message): IChatMessage => {
 	return {
@@ -159,56 +168,29 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		const { currentUserProfile, fetching, isLastPage } = this.props;
 		if (!currentUserProfile) return;
 		return (
-			<GiftedChat
-				messages={this.state.messages}
-				onSend={messages => this.onSend(messages)}
-				user={userProfileToUser(currentUserProfile)}
-				renderBubble={this.renderBubble}
-				renderSend={this.renderSend}
-				alwaysShowSend={true}
-				loadEarlier={!isLastPage}
-				isLoadingEarlier={fetching}
-				onLoadEarlier={this._hasMore}
-				listViewProps={{
-					onEndReached: this._hasMore,
-					onEndReachedThreshold: 50
-				}}
-				extraData={{ length: this.state.messages.length }}
-			/>
+			<View style={{ flexDirection: 'column', flex: 1 }}>
+				<View style={{ flex: 1 }}>
+					<GiftedChat
+						messages={this.state.messages}
+						onSend={messages => this.onSend(messages)}
+						user={userProfileToUser(currentUserProfile)}
+						renderBubble={this.renderBubble}
+						alwaysShowSend={true}
+						loadEarlier={!isLastPage}
+						isLoadingEarlier={fetching}
+						onLoadEarlier={this._hasMore}
+						listViewProps={{
+							onEndReached: this._hasMore,
+							onEndReachedThreshold: 50
+						}}
+						extraData={{ length: this.state.messages.length }}
+					/>
+				</View>
+				{IS_IOS && <View style={{ height: 36, backgroundColor: 'white' }} />}
+			</View>
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	loader: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		zIndex: 1
-	},
-	messageView: {
-		marginTop: 5,
-		marginBottom: 5,
-		marginRight: 10
-	},
-	messageContainer: {
-		borderWidth: 1,
-		borderColor: '#eee',
-		padding: 10,
-		borderRadius: 10
-	},
-	avatarContainerStyle: {
-		backgroundColor: Colors.primaryDarkColor
-	},
-	leftMessage: {
-		padding: 10
-		// backgroundColor: Colors.offWhite
-	},
-	rightMessage: {
-		flexDirection: 'row-reverse'
-		// backgroundColor: Colors.primaryDarkColor
-	}
-});
 
 const mapStateToProps = (state: IRootState, ownProps: any) => {
 	const currentUserProfile = getSelfUserProfile(state);

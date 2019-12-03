@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import { View, StyleSheet, AsyncStorage } from 'react-native';
 import Text from '../components/text/index';
 import Colors from '../constants/Colors';
 import ConnectedPaymentModal from '../components/payment-modal/payment-modal';
@@ -9,6 +9,8 @@ import { getAccount, getCurrentUserProfileId } from '../store/reducers/account-r
 import { getUserProfileForId } from '../store/reducers/user-profile-reducer';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { Value } from '../components/text';
+import { Updates } from 'expo';
 
 class MoreScreen extends React.Component {
 	static navigationOptions = {
@@ -45,24 +47,37 @@ class MoreScreen extends React.Component {
 		const isPaid = payment.selectedPackage === 'paid';
 		const isExpired = this.getCurrentTsInSecond() > payment.expiryDate;
 		return (
-			<View>
-				<Text>Plan {isPaid ? 'Paid' : 'Free'}</Text>
+			<View
+				style={{
+					flexDirection: 'column',
+					justifyContents: 'center',
+					alignItems: 'center',
+					paddingTop: 20
+				}}
+			>
+				<Value>{isPaid ? 'Paid' : 'Free'} Plan</Value>
 				{isPaid && (
 					<View>
-						<Text>
+						<Value>
 							Expires on:
 							{moment(this.getDate(payment.expiryDate || 0)).format(
 								'dddd, MMMM Do YYYY'
 							)}
-						</Text>
-						<Text>Receipt Number: {payment.receiptNumber}</Text>
+						</Value>
+						<Value>Receipt Number: {payment.receiptNumber}</Value>
 					</View>
 				)}
 				{(!isPaid || isExpired) && (
 					<Button label="Purchase plan" onPress={() => this.toggleStartPayment()} />
 				)}
+				<Button label="Logout" onPress={() => this.doLogout()} />
 			</View>
 		);
+	}
+
+	async doLogout() {
+		await AsyncStorage.removeItem('accountId');
+		await Updates.reloadFromCache();
 	}
 
 	render() {

@@ -17,7 +17,6 @@ import { addSentInterest } from '../../store/reducers/interest-reducer';
 import { Value } from '../text';
 import ConnectedPurchaseButton from '../purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
-import Layout from 'src/constants/Layout';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
@@ -234,7 +233,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				case InterestStates.RECV_ACCEPTED:
 					return (
 						<Value style={styles.statusText}>
-							You accepted interest at{' '}
+							You accepted blah blah blah blah blah interest at{' '}
 							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
 						</Value>
 					);
@@ -299,12 +298,10 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 			<View style={styles.row}>
 				{interestState === InterestStates.SHOW_INTEREST && (
 					<ConnectedPurchaseButton label="Purchase plan to send Interest">
-						<TouchableBtn onPress={() => this.showInterest()}>
-							<View style={styles.column}>
-								<View style={styles.btnContainer}>
-									<Ionicons name="md-flash" size={20} color="white" />
-									<Text style={styles.text}>Show Interest</Text>
-								</View>
+						<TouchableBtn style={{ flex: 1 }} onPress={() => this.showInterest()}>
+							<View style={styles.btnContainer}>
+								<Ionicons name="md-flash" size={20} color="white" />
+								<Text style={styles.text}>Show Interest</Text>
 							</View>
 						</TouchableBtn>
 					</ConnectedPurchaseButton>
@@ -313,31 +310,25 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 					<View style={styles.statusContainer}>{this.renderInterestStatus()}</View>
 				)}
 				{interestState === InterestStates.RECV_PENDING && (
-					<View style={styles.row}>
-						<View style={styles.column}>
-							<TouchableBtn onPress={() => this.saveInterest(true)}>
-								<View style={styles.interestAction}>
-									<Text style={styles.text}>Accept</Text>
-								</View>
-							</TouchableBtn>
+					<TouchableBtn onPress={() => this.saveInterest(true)}>
+						<View style={styles.interestAction}>
+							<Text style={styles.text}>Accept</Text>
 						</View>
-						<View style={styles.column}>
-							<TouchableBtn onPress={() => this.saveInterest(false)}>
-								<View style={styles.interestAction}>
-									<Text style={styles.text}>Decline</Text>
-								</View>
-							</TouchableBtn>
+					</TouchableBtn>
+				)}
+				{interestState === InterestStates.RECV_PENDING && (
+					<TouchableBtn onPress={() => this.saveInterest(false)}>
+						<View style={styles.interestAction}>
+							<Text style={styles.text}>Decline</Text>
 						</View>
-					</View>
+					</TouchableBtn>
 				)}
 				{(interestState === InterestStates.SENT_ACCEPTED ||
 					interestState === InterestStates.RECV_ACCEPTED) && (
 					<TouchableBtn onPress={() => this.startMessaging()}>
-						<View style={styles.column}>
-							<View style={styles.btnContainer}>
-								<Ionicons name="md-chatboxes" size={20} color="white" />
-								<Text style={styles.text}>Message</Text>
-							</View>
+						<View style={styles.btnContainer}>
+							<Ionicons name="md-chatboxes" size={20} color="white" />
+							<Text style={styles.text}>Message</Text>
 						</View>
 					</TouchableBtn>
 				)}
@@ -391,22 +382,26 @@ const styles = StyleSheet.create({
 		paddingLeft: 15
 	},
 	btnContainer: {
+		flex: 1,
 		flexDirection: 'row',
 		backgroundColor: Colors.primaryDarkColor,
 		margin: 8,
 		padding: 5,
 		paddingLeft: 15,
+		paddingRight: 15,
 		borderRadius: 10,
-		justifyContent: 'center'
-	},
-	column: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	row: {
 		flex: 1,
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'center',
+		...Platform.select({
+			ios: {
+				minHeight: 50
+			}
+		})
 	},
 	text: {
 		color: 'white',
@@ -415,12 +410,14 @@ const styles = StyleSheet.create({
 	statusText: {
 		textAlign: 'center',
 		color: Colors.black,
-		fontWeight: '500'
+		fontWeight: '500',
+		flexWrap: 'wrap'
 	},
 	interestAction: {
 		backgroundColor: Colors.primaryDarkColor,
 		paddingTop: 5,
 		paddingBottom: 5,
+		paddingRight: 5,
 		marginRight: 5,
 		borderRadius: 10,
 		flexDirection: 'row',

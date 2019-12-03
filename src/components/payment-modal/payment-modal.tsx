@@ -1,5 +1,15 @@
 import * as React from 'react';
-import { View, Text, Modal, WebView, StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
+import {
+	View,
+	Text,
+	Modal,
+	WebView,
+	StyleSheet,
+	Image,
+	ScrollView,
+	StatusBar,
+	SafeAreaView
+} from 'react-native';
 import { getRazor } from '../../utils/payment-wrapper';
 import { connect } from 'react-redux';
 import { fetchAccount, getAccount } from '../../store/reducers/account-reducer';
@@ -12,6 +22,8 @@ import Button from '../button/button';
 import { ApiRequest } from '../../utils';
 import { API } from '../../config/API';
 import { bindActionCreators, Dispatch } from 'redux';
+import { Ionicons } from '@expo/vector-icons';
+import TouchableBtn from '../touchable-btn/touchable-btn';
 
 const icon = require('src/assets/images/icon.png');
 
@@ -78,7 +90,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 		'Mutual match'
 	];
 
-	handleNavigationChange(e: any) {
+	async handleNavigationChange(e: any) {
 		const { fetchAccount, account, requestClose } = this.props;
 		const { pgOrderId } = this.state;
 
@@ -88,8 +100,9 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 
 		if (!e.url.startsWith('data:text/html') && e.url.includes('order.success')) {
 			this.logger.log('try to mark as paid');
-			fetchAccount(account.id as any, true);
-			requestClose();
+			await fetchAccount(account.id as any, true);
+			setTimeout(() => this.requestClose(), 2 * 1000);
+			// requestClose();
 		}
 
 		if (!e.url.startsWith('data:text/html') && e.url.includes('order.error')) {
@@ -106,6 +119,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 			return null;
 		}
 		this.logger.log('starting payment session');
+		const statusBarColor = !showRazor ? Colors.primaryDarkColor : '#3a99d8';
 		return (
 			<View>
 				<Modal
@@ -116,8 +130,20 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 						this.requestClose();
 					}}
 				>
-					<StatusBar backgroundColor={Colors.primaryDarkColor} barStyle="light-content" />
-					<View style={{ flex: 1 }}>
+					<SafeAreaView style={{ flex: 1, backgroundColor: statusBarColor }}>
+						<StatusBar backgroundColor={statusBarColor} barStyle="light-content" />
+						{!showRazor && (
+							<View style={{ flexDirection: 'row-reverse' }}>
+								<TouchableBtn onPress={() => this.requestClose()}>
+									<Ionicons
+										name="md-close"
+										style={{ padding: 16 }}
+										size={26}
+										color={Colors.white}
+									/>
+								</TouchableBtn>
+							</View>
+						)}
 						{!showRazor && (
 							<View style={{ flex: 1 }}>
 								<View style={styles.paymentPlansContainer} />
@@ -161,6 +187,10 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 										</View>
 										<View>
 											<Button
+												style={{
+													borderTopLeftRadius: 0,
+													borderTopRightRadius: 0
+												}}
 												label="Purchase Plan - ₹500/yr"
 												onPress={() => this.startPayment()}
 											/>
@@ -185,7 +215,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 								onNavigationStateChange={e => this.handleNavigationChange(e)}
 							/>
 						)}
-					</View>
+					</SafeAreaView>
 				</Modal>
 			</View>
 		);
@@ -206,7 +236,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flex: 1,
-		borderRadius: 20
+		borderRadius: 20,
+		borderBottomLeftRadius: 0,
+		borderBottomRightRadius: 0
 	},
 	featureLine: {
 		textAlign: 'center',

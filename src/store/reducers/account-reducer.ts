@@ -1,5 +1,5 @@
 // import * as AccountFixture from '../../fixtures/account.json';
-import { Account as ILocalAccount, Account } from './account-defination';
+import { Account as ILocalAccount, Account, Payment } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { Dispatch } from 'redux';
 import { API } from '../../config/API';
@@ -12,6 +12,7 @@ import * as Permissions from 'expo-permissions';
 import { IRootState } from '../index';
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
+import { cloneDeep } from 'lodash';
 
 export interface IAccountState extends ILocalAccount {}
 
@@ -49,7 +50,9 @@ export const getCurrentUserProfileId = createSelector(
 );
 
 const ADD_ACCOUNT = 'ADD_ACCOUNT';
+const ADD_PAYMENT = 'ADD_PAYMENT';
 export const addAccount = createAction(ADD_ACCOUNT);
+export const addPayment = createAction<Payment>(ADD_PAYMENT);
 
 export const markAccountAsPaid = function(orderId: string) {
 	const logger = getLogger(markAccountAsPaid);
@@ -153,6 +156,7 @@ export const fetchAccount = function(id: number, skipPushingToken?: boolean) {
 				const account: ILocalAccount = json as ILocalAccount;
 				const profile = account.userProfile;
 				dispatch(addAccount(account));
+				dispatch(addPayment(account.payment));
 				dispatch(addSelfProfile(profile));
 				dispatch(addProfile(profile));
 				logger.log('addProfile dispatched');
@@ -173,6 +177,15 @@ export const accountReducer = handleActions<IAccountState>(
 		[ADD_ACCOUNT]: (_state, { payload }) => {
 			const account = (payload as any) as ILocalAccount;
 			return { ...account };
+		},
+		[ADD_PAYMENT]: (state, { payload }) => {
+			const payment = (payload as any) as Payment;
+			return {
+				...state,
+				payment: {
+					...payment
+				}
+			};
 		}
 	},
 	defaultAccountState

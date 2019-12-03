@@ -189,30 +189,24 @@ export default class ProfileInfoTab extends React.Component<
 							style={GlobalStyles.expand}
 							onPress={() => this._handleRouteChange('personal')}
 						>
-							<View style={GlobalStyles.expand}>
-								<Text style={[styles.tabLink, this.activeRoute('personal')]}>
-									Personal
-								</Text>
+							<View style={[GlobalStyles.expand, this.activeRoute('personal')]}>
+								<Text style={styles.tabLink}>Personal</Text>
 							</View>
 						</TouchableBtn>
 						<TouchableBtn
 							style={GlobalStyles.expand}
 							onPress={() => this._handleRouteChange('family')}
 						>
-							<View style={GlobalStyles.expand}>
-								<Text style={[styles.tabLink, this.activeRoute('family')]}>
-									Family
-								</Text>
+							<View style={[GlobalStyles.expand, this.activeRoute('family')]}>
+								<Text style={styles.tabLink}>Family</Text>
 							</View>
 						</TouchableBtn>
 						<TouchableBtn
 							style={GlobalStyles.expand}
 							onPress={() => this._handleRouteChange('expectations')}
 						>
-							<View style={GlobalStyles.expand}>
-								<Value style={[styles.tabLink, this.activeRoute('expectations')]}>
-									Expectations
-								</Value>
+							<View style={[GlobalStyles.expand, this.activeRoute('expectations')]}>
+								<Value style={styles.tabLink}>Expectations</Value>
 							</View>
 						</TouchableBtn>
 					</View>
