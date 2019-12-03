@@ -233,7 +233,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				case InterestStates.RECV_ACCEPTED:
 					return (
 						<Value style={styles.statusText}>
-							You accepted blah blah blah blah blah interest at{' '}
+							You accepted interest at{' '}
 							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
 						</Value>
 					);
