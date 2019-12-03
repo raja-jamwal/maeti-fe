@@ -22,9 +22,11 @@ import { IUserProfileState } from '../store/reducers/user-profile-reducer';
 import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import {
+	clearSearchResultForScreen,
 	EXPLORE_SCREENS,
 	isPaidScreen,
-	mayBeFetchSearchResult
+	mayBeFetchSearchResult,
+	setSearchResultForScreen
 } from '../store/reducers/explore-reducer';
 import { toArray, sortBy, head, isEmpty, includes } from 'lodash';
 import { applyGlobalFilter, getSearchFilter } from '../store/reducers/filter-reducer';
@@ -46,6 +48,7 @@ interface IExploreScreenProps {
 	fetching: boolean;
 	selectedScreen: string;
 	mayBeFetchSearchResult: (screen: string) => any;
+	clearSearchResultForScreen: (screen: string) => any;
 	selectedFilter: any;
 	isAccountPaid: boolean;
 	isPaidScreen: boolean;
@@ -211,18 +214,25 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 		}
 	}
 
-	_handleMore() {
+	async _handleMore() {
 		this.logger.log('Trying to load more');
 		const { mayBeFetchSearchResult, selectedScreen, isPaidScreen, isAccountPaid } = this.props;
 		if (isPaidScreen && !isAccountPaid) return;
 		if (!mayBeFetchSearchResult) return;
-		mayBeFetchSearchResult(selectedScreen);
+		await mayBeFetchSearchResult(selectedScreen);
+	}
+
+	async handleRefreshing() {
+		const { clearSearchResultForScreen, selectedScreen } = this.props;
+		await clearSearchResultForScreen(selectedScreen);
+		await this._handleMore();
 	}
 
 	cycles = 0;
 
 	render() {
 		// console.log('explore re-rendering ', this.cycles++);
+		const { fetching } = this.props;
 		return (
 			<View>
 				<StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -232,6 +242,8 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 					renderItem={({ item }) => this.renderItem(item)}
 					onEndReached={this._handleMore}
 					onEndReachedThreshold={0.5}
+					refreshing={fetching}
+					onRefresh={() => this.handleRefreshing()}
 				/>
 			</View>
 		);
@@ -289,7 +301,8 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		mayBeFetchSearchResult: bindActionCreators(mayBeFetchSearchResult, dispatch)
+		mayBeFetchSearchResult: bindActionCreators(mayBeFetchSearchResult, dispatch),
+		clearSearchResultForScreen: bindActionCreators(clearSearchResultForScreen, dispatch)
 	};
 };
 
