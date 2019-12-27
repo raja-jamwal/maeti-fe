@@ -31,7 +31,7 @@ export default class Table extends React.Component {
 			if (mapping.type === 'choice') {
 				const options = (mapping.choice && mapping.choice.options) || [];
 				const option = find(options, { value });
-				return !!option ? option.label || value : value;
+				return !!option ? option.label || value : '';
 			}
 
 			if (includes(['country', 'state', 'city'], mapping.type)) {

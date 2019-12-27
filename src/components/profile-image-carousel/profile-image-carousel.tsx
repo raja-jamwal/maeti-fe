@@ -32,6 +32,7 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 		return (
 			<TouchableHighlight onPress={() => onPress && onPress()}>
 				<Image
+					progressiveRenderingEnabled={true}
 					source={{
 						uri: image.url,
 						width: Layout.window.width

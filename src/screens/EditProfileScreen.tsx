@@ -108,7 +108,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 	}
 
 	updateFieldValue(field: string, value: any) {
-		if (field && value !== null) {
+		if (field) {
 			const { object } = this.state;
 			object[field] = value;
 			this.setState({
@@ -226,6 +226,14 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			const isTagArray = type === 'tag-array';
 			const tagType = isTagArray && fieldDefinition.tagType;
 
+			const choiceFieldLabel = fieldDefinition.label;
+			const isChoiceFieldValuePlaceholder =
+				isChoiceField && (!value || value === choiceFieldLabel);
+
+			if (isChoiceField) {
+				console.log(choiceFieldLabel, isChoiceFieldValuePlaceholder);
+			}
+
 			let renderString = null;
 			let stringEditable = false;
 
@@ -334,13 +342,20 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 								items={choiceOptions}
 								textInputProps={{
 									style: {
-										color: 'black',
+										color: isChoiceFieldValuePlaceholder
+											? Color.borderColor
+											: Color.black,
 										height: 50,
 										padding: 8,
 										fontSize: 16
 									}
 								}}
-								placeholderTextColor={Color.primaryDarkColor}
+								placeholder={{
+									label: choiceFieldLabel,
+									value: choiceFieldLabel,
+									color: Color.offWhite
+								}}
+								placeholderTextColor={Color.offWhite}
 							/>
 						</View>
 					)}
