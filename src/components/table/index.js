@@ -42,6 +42,7 @@ export default class Table extends React.Component {
 		// Phase out dynamic type check
 
 		if (_.isString(value) || _.isNumber(value)) {
+			if (value === '0' || value === 0) return null;
 			return value;
 		}
 		if (_.isBoolean(value)) {
