@@ -230,10 +230,6 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			const isChoiceFieldValuePlaceholder =
 				isChoiceField && (!value || value === choiceFieldLabel);
 
-			if (isChoiceField) {
-				console.log(choiceFieldLabel, isChoiceFieldValuePlaceholder);
-			}
-
 			let renderString = null;
 			let stringEditable = false;
 
