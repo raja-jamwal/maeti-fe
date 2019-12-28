@@ -10,6 +10,7 @@ import {
 	updateFamily,
 	updateFamilyOtherInformation
 } from '../../store/reducers/user-profile-reducer';
+import { GenderOptions } from './profile-table';
 
 interface IFamilyTableProps {
 	userProfileId: number;
@@ -123,22 +124,48 @@ class FamilyTable extends React.Component<
 		},
 		interCasteParents: {
 			label: 'Inter caste marriage of Parents?',
-			type: 'bool'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					}
+				]
+			}
 		},
 		parentsLivingSeperately: {
 			label: 'Parents living separately?',
-			type: 'bool'
+			type: 'choice',
+			choice: {
+				options: [
+					{
+						label: 'Yes',
+						value: 'yes'
+					},
+					{
+						label: 'No',
+						value: 'no'
+					}
+				]
+			}
 		}
 	};
 
 	otherInfoMapping = {
 		familyValues: {
-			label: 'Family Values',
-			type: 'string'
+			label: 'Family values',
+			tagType: 'family_value',
+			type: 'tag-array'
 		},
 		familyFinancialBackground: {
 			label: 'Family Financial Background',
-			type: 'string'
+			tagType: 'financial_background',
+			type: 'tag-array'
 		},
 		familyAnnualIncome: {
 			label: "Family's Annual Income",

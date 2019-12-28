@@ -70,7 +70,9 @@ class MoreScreen extends React.Component {
 				{(!isPaid || isExpired) && (
 					<Button label="Purchase plan" onPress={() => this.toggleStartPayment()} />
 				)}
-				<Button label="Logout" onPress={() => this.doLogout()} />
+				<View style={{ paddingTop: 10 }}>
+					<Button label="Logout" onPress={() => this.doLogout()} />
+				</View>
 			</View>
 		);
 	}

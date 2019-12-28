@@ -34,6 +34,7 @@ const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 export interface IProfileProps {
 	userProfile: UserProfile;
 	isSelfProfile: boolean;
+	isAccountPaid: boolean;
 	hideSelfDescription: boolean;
 	setUserProfileFavourite: (userProfile: UserProfile, setFavourite: boolean) => void;
 	onPhotoPress?: () => any;
@@ -74,11 +75,23 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 	}
 
 	render() {
-		const { userProfile, hideSelfDescription, isSelfProfile, onPhotoPress } = this.props;
+		const {
+			userProfile,
+			hideSelfDescription,
+			isSelfProfile,
+			isAccountPaid,
+			onPhotoPress
+		} = this.props;
 		if (isEmpty(userProfile)) return null;
 		const { horoscope, education, profession, family } = { ...userProfile };
+		const userProfileName = isAccountPaid || isSelfProfile ? userProfile.fullName : 'xxxxxxx';
 		const professionLocation = ['workCity', 'workState', 'workCountry']
 			.map(e => get(profession, e))
+			.map(o => o && o.name)
+			.filter(o => !!o)
+			.join(', ');
+		const familyLocation = ['familyCity', 'familyState', 'familyCountry']
+			.map(e => get(family, e))
 			.map(o => o && o.name)
 			.filter(o => !!o)
 			.join(', ');
@@ -137,7 +150,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 					</View>
 					<View>
 						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
-							{userProfile.fullName || 'unknown name'} - U{userProfile.id}
+							{userProfileName || 'unknown name'} - U{userProfile.id}
 						</Text>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
@@ -169,16 +182,16 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 							</Value>
 						)}
 					</View>
-					{!!family.familyLocation && (
-						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
-							<Value style={GlobalStyles.bold}>Home</Value>
-							<Value>- {family.familyLocation || 'unknown location'}</Value>
-						</View>
-					)}
 					{!!professionLocation && (
 						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 							<Value style={GlobalStyles.bold}>Work</Value>
 							<Value>- {professionLocation || 'Work location not available'}</Value>
+						</View>
+					)}
+					{!!familyLocation && (
+						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
+							<Value style={GlobalStyles.bold}>Family</Value>
+							<Value>- {familyLocation || 'Family location not available'}</Value>
 						</View>
 					)}
 					{userProfile.describeMyself && !hideSelfDescription && (

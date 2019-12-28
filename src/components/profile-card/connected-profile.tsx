@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { IRootState } from '../../store/index';
 import { getLogger } from '../../utils/logger';
-import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+import { getCurrentUserProfileId, isAccountPaid } from '../../store/reducers/account-reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import { setUserProfileFavourite } from '../../store/reducers/favourite-reducer';
 
@@ -29,10 +29,10 @@ const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 	const currentProfileId = getCurrentUserProfileId(state);
 
 	const isSelfProfile = !isEmpty(userProfile) && userProfile.id === currentProfileId;
-
 	return {
 		userProfile,
-		isSelfProfile
+		isSelfProfile,
+		isAccountPaid: isAccountPaid(state)
 	};
 };
 

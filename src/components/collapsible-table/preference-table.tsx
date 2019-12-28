@@ -471,12 +471,12 @@ class PreferenceTable extends React.Component<
 		otherExpectations: {
 			label: 'Other Expectations',
 			type: 'string'
-		},
-		// we need to visit this again
-		hideProfileFrom: {
-			label: 'Do not Show Profile to',
-			type: 'string'
 		}
+		// we need to visit this again
+		// hideProfileFrom: {
+		// 	label: 'Do not Show Profile to',
+		// 	type: 'string'
+		// }
 	};
 
 	render() {

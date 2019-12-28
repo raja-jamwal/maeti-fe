@@ -15,7 +15,7 @@ export const addTags = createAction(ADD_TAGS);
 
 export const fetchTags = () => {
 	return (dispatch: Dispatch<any>) => {
-		return fetch(`${API.TAGS}?size=200`)
+		return fetch(`${API.TAGS}?size=300`)
 			.then(response => response.json())
 			.then(embedded => {
 				const tags = embedded._embedded.tags;

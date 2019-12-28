@@ -119,7 +119,12 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 								>
 									<Text style={styles.title}>{title || 'No Title'}</Text>
 									<View style={{ flex: 1 }} />
-									<TouchableBtn onPress={() => this.toggleShowModal()}>
+									<TouchableBtn
+										onPress={() => {
+											this.onRequestClose();
+											this.toggleShowModal();
+										}}
+									>
 										<Ionicons
 											name="md-close"
 											size={26}
@@ -188,9 +193,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: IRootState, props: ITagSelectorProps) => {
-	const tagType = props.tagType || 'test';
+	const tagType = props.tagType;
 	return {
-		tags: state.tags[tagType] || []
+		tags: (tagType && state.tags[tagType]) || []
 	};
 };
 
