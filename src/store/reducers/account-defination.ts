@@ -138,9 +138,9 @@ export interface Horoscope extends DAO {
 }
 
 export interface Investments extends DAO {
-	home: string;
-	realEstate: string;
-	vehicle: string;
+	home: Array<Tag>;
+	realEstate: Array<Tag>;
+	vehicle: Array<Tag>;
 	investments: Array<Tag>;
 }
 

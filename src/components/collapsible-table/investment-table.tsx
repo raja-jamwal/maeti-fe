@@ -25,15 +25,18 @@ class InvestmentTable extends React.Component<
 	mappings = {
 		home: {
 			label: 'Home',
-			type: 'string'
+			tagType: 'home_type',
+			type: 'tag-array'
 		},
 		realEstate: {
 			label: 'Real Estate',
-			type: 'string'
+			tagType: 'real_estate',
+			type: 'tag-array'
 		},
 		vehicle: {
 			label: 'Vehicle',
-			type: 'string'
+			tagType: 'vehicle_type',
+			type: 'tag-array'
 		},
 		investments: {
 			label: 'Investments',
