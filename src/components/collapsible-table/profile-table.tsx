@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface IProfileTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 interface IProfileTableMapStateToProps {
 	userProfile?: UserProfile;
@@ -540,7 +541,7 @@ class ProfileTable extends React.Component<
 	};
 
 	render() {
-		const { userProfile, userProfileId, updateUserProfile } = this.props;
+		const { userProfile, userProfileId, updateUserProfile, editable } = this.props;
 		return (
 			<CollapsibleTable
 				title="Basic Information"
@@ -548,6 +549,7 @@ class ProfileTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateUserProfile}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

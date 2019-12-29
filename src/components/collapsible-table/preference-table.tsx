@@ -10,6 +10,7 @@ import { MaritalStatusOptions } from './profile-table';
 
 interface IPreferenceTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 interface IPreferenceTableStateToProps {
 	preference?: Preference;
@@ -480,7 +481,7 @@ class PreferenceTable extends React.Component<
 	};
 
 	render() {
-		const { preference, userProfileId, updatePreference } = this.props;
+		const { preference, userProfileId, updatePreference, editable } = this.props;
 		if (!preference) return null;
 		return (
 			<CollapsibleTable
@@ -489,6 +490,7 @@ class PreferenceTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updatePreference}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

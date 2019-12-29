@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface IProfessionTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 interface IProfessionTableMapStateToProps {
 	profession?: Profession;
@@ -307,7 +308,7 @@ class ProfessionTable extends React.Component<
 	};
 
 	render() {
-		const { profession, userProfileId, updateProfession } = this.props;
+		const { profession, userProfileId, updateProfession, editable } = this.props;
 		if (!profession) return null;
 		return (
 			<CollapsibleTable
@@ -316,6 +317,7 @@ class ProfessionTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateProfession}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

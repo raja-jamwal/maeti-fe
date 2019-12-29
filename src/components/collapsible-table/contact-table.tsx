@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface IContactTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 
 interface IContactTableMapStateToProps {
@@ -86,7 +87,12 @@ class ContactTable extends React.Component<
 	};
 
 	render() {
-		const { contactInformation, userProfileId, updateContactInformation } = this.props;
+		const {
+			contactInformation,
+			userProfileId,
+			updateContactInformation,
+			editable
+		} = this.props;
 		if (!contactInformation) return null;
 		return (
 			<CollapsibleTable
@@ -95,6 +101,7 @@ class ContactTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateContactInformation}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

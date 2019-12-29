@@ -103,7 +103,7 @@ export default class ProfileInfoTab extends React.Component<
 		);
 	}
 
-	maybeRenderContactTable() {
+	maybeRenderContactTable(isSelfProfile: boolean) {
 		const { loadingViewedMyContact, isViewedMyContact } = this.state;
 		const { userProfileId } = this.props;
 
@@ -112,7 +112,7 @@ export default class ProfileInfoTab extends React.Component<
 		}
 
 		return isViewedMyContact ? (
-			<ContactTable userProfileId={userProfileId} />
+			<ContactTable userProfileId={userProfileId} editable={isSelfProfile} />
 		) : (
 			this.markContactAsViewedBtn()
 		);
@@ -120,26 +120,30 @@ export default class ProfileInfoTab extends React.Component<
 
 	_renderScene() {
 		const { route, loadingViewedMyContact, isViewedMyContact } = this.state;
-		const { userProfileId } = this.props;
+		const { userProfileId, selfProfileId } = this.props;
+		const isSelfProfile = userProfileId === selfProfileId;
 		let tab = null;
 		switch (route) {
 			case 'personal':
 				tab = (
 					<View style={styles.scene}>
-						<VerificationTable userProfileId={userProfileId} />
-						<ProfileTable userProfileId={userProfileId} />
-						<EducationTable userProfileId={userProfileId} />
-						<ProfessionTable userProfileId={userProfileId} />
-						<HoroscopeTable userProfileId={userProfileId} />
-						<InvestmentTable userProfileId={userProfileId} />
-						<LifestyleTable userProfileId={userProfileId} />
+						<VerificationTable userProfileId={userProfileId} editable={false} />
+						<ProfileTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<EducationTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<ProfessionTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<HoroscopeTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<InvestmentTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<LifestyleTable userProfileId={userProfileId} editable={isSelfProfile} />
 
 						<ConnectedPurchaseButton label="Purchase plan to see Contact Information">
-							{this.maybeRenderContactTable()}
+							{this.maybeRenderContactTable(isSelfProfile)}
 						</ConnectedPurchaseButton>
 
 						<ConnectedPurchaseButton label="Purchase plan to see References">
-							<ReferenceTable userProfileId={userProfileId} />
+							<ReferenceTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
 						</ConnectedPurchaseButton>
 					</View>
 				);
@@ -147,14 +151,14 @@ export default class ProfileInfoTab extends React.Component<
 			case 'family':
 				tab = (
 					<View>
-						<FamilyTable userProfileId={userProfileId} />
+						<FamilyTable userProfileId={userProfileId} editable={isSelfProfile} />
 					</View>
 				);
 				break;
 			case 'expectations':
 				tab = (
 					<View>
-						<PreferenceTable userProfileId={userProfileId} />
+						<PreferenceTable userProfileId={userProfileId} editable={isSelfProfile} />
 					</View>
 				);
 				break;

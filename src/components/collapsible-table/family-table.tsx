@@ -14,6 +14,7 @@ import { GenderOptions } from './profile-table';
 
 interface IFamilyTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 
 interface IFamilyTableMapStateToProps {
@@ -215,7 +216,13 @@ class FamilyTable extends React.Component<
 	};
 
 	render() {
-		const { family, userProfileId, updateFamily, updateFamilyOtherInformation } = this.props;
+		const {
+			family,
+			userProfileId,
+			updateFamily,
+			updateFamilyOtherInformation,
+			editable
+		} = this.props;
 		if (!family) return null;
 		return (
 			<View>
@@ -225,6 +232,7 @@ class FamilyTable extends React.Component<
 					mapping={this.mapping}
 					updateAction={updateFamily}
 					userProfileId={userProfileId}
+					editable={editable}
 				/>
 				<CollapsibleTable
 					title="Other Information"
@@ -232,6 +240,7 @@ class FamilyTable extends React.Component<
 					mapping={this.otherInfoMapping}
 					updateAction={updateFamilyOtherInformation}
 					userProfileId={userProfileId}
+					editable={editable}
 				/>
 			</View>
 		);

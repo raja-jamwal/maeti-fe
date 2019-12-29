@@ -16,6 +16,7 @@ interface ICollapsibleTableProps {
 	mapping: any;
 	userProfileId: number;
 	updateAction: (a: any) => any;
+	editable: boolean;
 }
 
 interface ICollapsibleTableState {
@@ -53,7 +54,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 	}
 
 	render() {
-		const { title, object, mapping } = this.props;
+		const { title, object, mapping, editable } = this.props;
 		const { expanded } = this.state;
 		const caretIconName = expanded ? 'md-arrow-dropup' : 'md-arrow-dropdown';
 		return (
@@ -70,14 +71,16 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 							<Text style={[GlobalStyles.large, GlobalStyles.expand, styles.title]}>
 								{title}
 							</Text>
-							<TouchableBtn onPress={this.editTable}>
-								<Ionicons
-									name="md-create"
-									size={20}
-									style={styles.headerIcon}
-									color={Colors.primaryDarkColor}
-								/>
-							</TouchableBtn>
+							{!!editable && (
+								<TouchableBtn onPress={this.editTable}>
+									<Ionicons
+										name="md-create"
+										size={20}
+										style={styles.headerIcon}
+										color={Colors.primaryDarkColor}
+									/>
+								</TouchableBtn>
+							)}
 							<Ionicons
 								style={styles.headerIcon}
 								color={Colors.primaryDarkColor}

@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface IVerificationTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 
 interface IVerificationTableMapStateToProps {
@@ -39,7 +40,7 @@ class VerificationTable extends React.Component<
 	};
 
 	render() {
-		const { verification, userProfileId, updateVerification } = this.props;
+		const { verification, userProfileId, updateVerification, editable } = this.props;
 		if (!verification) return null;
 		return (
 			<CollapsibleTable
@@ -48,6 +49,7 @@ class VerificationTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateVerification}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface IReferenceTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 interface IReferenceTableMapStateToProps {
 	userReference?: UserReference;
@@ -40,7 +41,7 @@ class ReferenceTable extends React.Component<
 	};
 
 	render() {
-		const { userReference, userProfileId, updateUserReference } = this.props;
+		const { userReference, userProfileId, updateUserReference, editable } = this.props;
 		if (!userReference) return null;
 		return (
 			<CollapsibleTable
@@ -49,6 +50,7 @@ class ReferenceTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateUserReference}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

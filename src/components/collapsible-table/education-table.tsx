@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface IEducationTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 
 interface IEducationTableMapStateToProps {
@@ -158,7 +159,7 @@ class EducationTable extends React.Component<
 	};
 
 	render() {
-		const { education, userProfileId, updateEducation } = this.props;
+		const { education, userProfileId, updateEducation, editable } = this.props;
 		if (!education) return null;
 		return (
 			<CollapsibleTable
@@ -167,6 +168,7 @@ class EducationTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateEducation}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

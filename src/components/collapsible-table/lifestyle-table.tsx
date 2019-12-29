@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface ILifestyleTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 interface ILifestyleTableMapStateToProps {
 	lifestyle?: Lifestyle;
@@ -179,7 +180,7 @@ class LifestyleTable extends React.Component<
 	};
 
 	render() {
-		const { lifestyle, userProfileId, updateLifestyle } = this.props;
+		const { lifestyle, userProfileId, updateLifestyle, editable } = this.props;
 		if (!lifestyle) return null;
 		return (
 			<CollapsibleTable
@@ -188,6 +189,7 @@ class LifestyleTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateLifestyle}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

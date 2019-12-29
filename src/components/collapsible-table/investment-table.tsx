@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface IInvestmentTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 
 interface IInvestmentTableMapStateToProps {
@@ -46,7 +47,7 @@ class InvestmentTable extends React.Component<
 	};
 
 	render() {
-		const { investments, userProfileId, updateInvestment } = this.props;
+		const { investments, userProfileId, updateInvestment, editable } = this.props;
 		if (!investments) return null;
 		return (
 			<CollapsibleTable
@@ -55,6 +56,7 @@ class InvestmentTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateInvestment}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}

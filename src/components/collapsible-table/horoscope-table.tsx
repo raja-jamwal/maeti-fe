@@ -9,6 +9,7 @@ import { Action } from 'redux-actions';
 
 interface IHoroscopeTableProps {
 	userProfileId: number;
+	editable: boolean;
 }
 
 interface IHoroscopeTableMapStateToProps {
@@ -88,7 +89,7 @@ class HoroscopeTable extends React.Component<
 	};
 
 	render() {
-		const { horoscope, userProfileId, updateHoroscope } = this.props;
+		const { horoscope, userProfileId, updateHoroscope, editable } = this.props;
 		if (!horoscope) return null;
 		return (
 			<CollapsibleTable
@@ -97,6 +98,7 @@ class HoroscopeTable extends React.Component<
 				mapping={this.mappings}
 				updateAction={updateHoroscope}
 				userProfileId={userProfileId}
+				editable={editable}
 			/>
 		);
 	}
