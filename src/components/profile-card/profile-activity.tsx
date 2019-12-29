@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { IRootState } from '../../store';
 import { getUserProfileForId } from '../../store/reducers/user-profile-reducer';
 import { UserProfile } from '../../store/reducers/account-defination';
-import { formatDate, formatDuration } from '../../utils';
+import { formatDate, formatDuration, formatTsAsDuration } from '../../utils';
 
 interface IProfileActivityProps {
 	userProfileId: number;
@@ -39,7 +39,7 @@ class ProfileActivity extends React.Component<IProfileActivityMapStateToProps> {
 						source={require('../../assets/images/icons/response_time.png')}
 					/>
 					<Value style={[styles.iconLabel, GlobalStyles.bold]}>
-						{formatDuration(userProfile.responseTime)}
+						{formatTsAsDuration(userProfile.responseTime)}
 					</Value>
 					<Value style={styles.iconLabel}>Response Time</Value>
 				</View>

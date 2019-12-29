@@ -78,6 +78,14 @@ const formatDuration = (ts: number) => {
 	return moment.duration(currentTs - ts).humanize() + ' ago';
 };
 
+/**
+ *
+ * @param diff
+ */
+const formatTsAsDuration = (diff: number) => {
+	return moment.duration(diff).humanize();
+};
+
 const getCurrentUnixEpoch = () => {
 	return Math.floor(new Date().getTime() / 1000);
 };
@@ -95,6 +103,7 @@ export {
 	formatDate,
 	formatDateTime,
 	formatDuration,
+	formatTsAsDuration,
 	getCurrentUnixEpoch,
 	IS_IOS,
 	IS_ANDROID
