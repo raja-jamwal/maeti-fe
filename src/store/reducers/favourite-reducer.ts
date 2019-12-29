@@ -98,16 +98,11 @@ export const setUserProfileFavourite = function(userProfile: UserProfile, isFavo
 				//
 				// Finally add changes to the favourite profile list
 				//
-				// Update local page
-				const page = getFavouritePage(getState());
 				if (isFavourite) {
-					page.totalElements += 1;
 					dispatch(addFavourite(favourite));
 				} else {
-					page.totalElements -= 1;
 					dispatch(removeFavourite(favourite));
 				}
-				dispatch(addFavouritePage(page));
 			})
 			.catch(err => {
 				logger.log('error while changing favourite ', err);
@@ -192,22 +187,36 @@ export const favouriteReducer = handleActions<IFavouriteState>(
 		[ADD_FAVOURITE]: (state, { payload }) => {
 			const favourite = (payload as any) as Favourite;
 			const existingFavs = state.favourites;
+			const pageable = state.pageable;
 			return {
 				...state,
 				favourites: {
 					...existingFavs,
 					[favourite.favouriteIdentity.favouriteProfileId]: favourite
+				},
+				pageable: {
+					...pageable,
+					totalElements: pageable.totalElements + 1
 				}
 			};
 		},
 		[REMOVE_FAVOURITE]: (state, { payload }) => {
 			const favourite = (payload as any) as Favourite;
 			const existingFavs = { ...state.favourites };
+			const pageable = state.pageable;
+			let updatedTotalCount = pageable.totalElements;
+			if (existingFavs[favourite.favouriteIdentity.favouriteProfileId]) {
+				updatedTotalCount -= 1;
+			}
 			delete existingFavs[favourite.favouriteIdentity.favouriteProfileId];
 			return {
 				...state,
 				favourites: {
 					...existingFavs
+				},
+				pageable: {
+					...pageable,
+					totalElements: updatedTotalCount
 				}
 			};
 		},
