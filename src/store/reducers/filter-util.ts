@@ -2,8 +2,27 @@ import { TypesOfFilter } from '../../components/search-filters';
 import { isEmpty, get, isArray } from 'lodash';
 import { Tag, UserProfile } from './account-defination';
 
+export const buildDefaultSearchFilter = (currentUserProfile: UserProfile) => {
+	return {
+		bool: {
+			must_not: [
+				{
+					term: {
+						id: currentUserProfile.id
+					}
+				},
+				{
+					term: {
+						gender: currentUserProfile.gender
+					}
+				}
+			]
+		}
+	};
+};
+
 // probably memoize this function
-export const buildSearchFilter = (filters: any, currentProfileId: number) => {
+export const buildSearchFilter = (filters: any, currentProfile: UserProfile) => {
 	/*
 		For each filter in filters (selected from FilterScreen)
 		find the definition from TypeOfFilter &
@@ -29,11 +48,18 @@ export const buildSearchFilter = (filters: any, currentProfileId: number) => {
 	const query = {
 		bool: {
 			must: mustFilters,
-			must_not: {
-				term: {
-					id: currentProfileId
+			must_not: [
+				{
+					term: {
+						id: currentProfile.id
+					}
+				},
+				{
+					term: {
+						gender: currentProfile.gender
+					}
 				}
-			}
+			]
 		}
 	};
 
@@ -110,7 +136,19 @@ export const buildLocationFilter = (userProfile: UserProfile) => {
 
 	return {
 		bool: {
-			should: filters
+			should: filters,
+			must_not: [
+				{
+					term: {
+						id: userProfile.id
+					}
+				},
+				{
+					term: {
+						gender: userProfile.gender
+					}
+				}
+			]
 		}
 	};
 };
@@ -139,7 +177,19 @@ export const buildCommunityFilter = (userProfile: UserProfile) => {
 
 	return {
 		bool: {
-			should: filters
+			should: filters,
+			must_not: [
+				{
+					term: {
+						id: userProfile.id
+					}
+				},
+				{
+					term: {
+						gender: userProfile.gender
+					}
+				}
+			]
 		}
 	};
 };
@@ -249,7 +299,19 @@ export const buildNewMatchesFilter = (userProfile: UserProfile) => {
 
 	return {
 		bool: {
-			must: mustFilters
+			must: mustFilters,
+			must_not: [
+				{
+					term: {
+						id: userProfile.id
+					}
+				},
+				{
+					term: {
+						gender: userProfile.gender
+					}
+				}
+			]
 		}
 	};
 };

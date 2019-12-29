@@ -123,7 +123,9 @@ export const savePushToken = function(id: number) {
 			// Get the token that uniquely identifies this device
 			token = await Notifications.getExpoPushTokenAsync();
 			logger.log('push token ', token);
-		} catch (err) {}
+		} catch (err) {
+			logger.log('unable to get push token ', err);
+		}
 
 		if (!token) return;
 

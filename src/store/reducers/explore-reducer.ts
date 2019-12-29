@@ -9,6 +9,7 @@ import { getLogger } from '../../utils/logger';
 import {
 	buildAddedToFavouriteFilter,
 	buildCommunityFilter,
+	buildDefaultSearchFilter,
 	buildLocationFilter,
 	buildNewMatchesFilter,
 	buildSearchFilter,
@@ -206,10 +207,7 @@ export const fetchSearchResult = function() {
 			switch (selectedScreen) {
 				case 'search':
 					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
-					searchQuery = buildSearchFilter(
-						getState().filter.filters,
-						currentUserProfileId
-					);
+					searchQuery = buildSearchFilter(getState().filter.filters, currentUserProfile);
 					break;
 				case 'new_matches':
 					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
@@ -235,6 +233,7 @@ export const fetchSearchResult = function() {
 					searchQuery = buildViewedMyProfileFilter(currentUserProfileId);
 					break;
 				case 'discover':
+					searchQuery = buildDefaultSearchFilter(currentUserProfile);
 				default:
 					break;
 			}
