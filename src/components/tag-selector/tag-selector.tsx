@@ -90,7 +90,9 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 			<View>
 				<TouchableBtn onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
-						{isEmpty(currentTags) && <Text style={styles.label}>&nbsp;</Text>}
+						{isEmpty(currentTags) && (
+							<Text style={[styles.label, styles.placeholder]}>{title}</Text>
+						)}
 						{!isEmpty(currentTags) && <Text style={styles.label}>{label}</Text>}
 					</View>
 				</TouchableBtn>
@@ -186,6 +188,9 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		fontSize: 16
+	},
+	placeholder: {
+		color: Color.borderColor
 	},
 	optionLabel: {
 		fontSize: 20

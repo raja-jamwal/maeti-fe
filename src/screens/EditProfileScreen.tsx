@@ -192,7 +192,11 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 				}}
 			>
 				<View style={styles.labelContainer}>
-					{!renderString && <Text style={styles.label}>&nbsp;</Text>}
+					{!renderString && (
+						<Text style={[styles.label, styles.placeholder]}>
+							{dateOnly ? 'Date' : 'Date and Time'}
+						</Text>
+					)}
 					{!!renderString && (
 						<Text style={styles.label}>{formatDate(parseInt(renderString))}</Text>
 					)}
@@ -512,5 +516,8 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		fontSize: 16
+	},
+	placeholder: {
+		color: Color.borderColor
 	}
 });
