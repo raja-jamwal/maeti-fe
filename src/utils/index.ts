@@ -71,12 +71,11 @@ const formatDateTime = (ts: number) => {
 
 /**
  *
- * @param tsm - epoch in milliseconds
+ * @param ts - epoch in milliseconds
  */
-const formatDuration = (tsm: number) => {
-	const ts = tsm / 1000;
-	const currentTs = Math.floor(new Date().getTime() / 1000);
-	return moment.duration(Math.floor(currentTs - ts)).humanize() + ' ago';
+const formatDuration = (ts: number) => {
+	const currentTs = new Date().getTime();
+	return moment.duration(currentTs - ts).humanize() + ' ago';
 };
 
 const getCurrentUnixEpoch = () => {
