@@ -65,11 +65,11 @@ class VirtualProfileList extends React.PureComponent<
 					refreshing={fetching}
 					onRefresh={handleRefresh}
 				/>
-				{!!fetching && (
+				{/*{!!fetching && (
 					<View style={loaderClasses}>
 						<Throbber />
 					</View>
-				)}
+				)}*/}
 			</View>
 		);
 	}

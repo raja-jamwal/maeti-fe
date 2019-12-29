@@ -128,11 +128,6 @@ class MessagesScreen extends React.PureComponent<
 						<Text style={styles.lightText}>Send interests to begin messaging</Text>
 					</View>
 				)}
-				{!!fetching && (
-					<View style={loaderClasses}>
-						<Throbber />
-					</View>
-				)}
 			</View>
 		);
 	}

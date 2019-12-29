@@ -174,12 +174,12 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 			}
 		}
 
-		if (fetching) {
-			items.push({
-				type: 'loader',
-				key: 'loader'
-			});
-		}
+		// if (fetching) {
+		// 	items.push({
+		// 		type: 'loader',
+		// 		key: 'loader'
+		// 	});
+		// }
 
 		return items;
 	}

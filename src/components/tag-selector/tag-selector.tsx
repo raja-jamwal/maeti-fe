@@ -131,6 +131,10 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 											name="md-close"
 											size={26}
 											color={Color.offWhite}
+											style={{
+												paddingLeft: 10,
+												paddingRight: 10
+											}}
 										/>
 									</TouchableBtn>
 								</View>

@@ -108,7 +108,7 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 						handleRefresh={() => this.handleRefresh()}
 					/>
 				)}
-				{isEmpty(profiles) && this.noFavourites()}
+				{isEmpty(profiles) && !fetching && this.noFavourites()}
 			</View>
 		);
 	}
