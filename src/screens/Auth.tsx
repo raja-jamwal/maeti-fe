@@ -23,10 +23,10 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { getLogger } from '../utils/logger';
 import { connectRTM } from '../store/middleware/rtm-middleware';
 import Button from '../components/button/button';
-import * as Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { MediaTypeOptions } from 'expo-image-picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -54,6 +54,7 @@ interface IAuthState {
 	activeScreen: LOGIN_SCREENS | null;
 	number: number | null;
 	fullName: string | null;
+	gender: string;
 	otp: number | null;
 	action: ACTION;
 }
@@ -71,6 +72,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			activeScreen: null,
 			number: null,
 			fullName: null,
+			gender: 'male',
 			otp: null,
 			action: ACTION.LOGIN
 		};
@@ -346,7 +348,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	};
 
 	async _startPhotoUpload() {
-		const { number, fullName, callingCode } = this.state;
+		const { number, fullName, callingCode, gender } = this.state;
 		try {
 			const permitted = await this.getPermissionAsync();
 			if (permitted) {
@@ -373,7 +375,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 					const account: Account = (await ApiRequest(API.ACCOUNT.CREATE, {
 						phoneNumber: `${callingCode}-${number}`,
 						fullName: fullName,
-						photoUrl: uploadedImage.url
+						photoUrl: uploadedImage.url,
+						gender
 					})) as Account;
 					await AsyncStorage.setItem('accountId', `${account.id}`);
 					await this._tryAuth();
@@ -389,9 +392,35 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	renderUploadPhoto() {
+		const { gender } = this.state;
 		return (
 			<View>
 				<Button label="Upload your Best Photo" onPress={this._startPhotoUpload} />
+				<View style={styles.choiceField}>
+					<RNPickerSelect
+						value={gender}
+						useNativeAndroidPickerStyle={false}
+						onValueChange={itemValue => this.setState({ gender: itemValue })}
+						items={[
+							{
+								label: 'Male',
+								value: 'male'
+							},
+							{
+								label: 'Female',
+								value: 'female'
+							}
+						]}
+						textInputProps={{
+							style: {
+								color: 'black',
+								height: 50,
+								padding: 8,
+								fontSize: 16
+							}
+						}}
+					/>
+				</View>
 			</View>
 		);
 	}
@@ -442,6 +471,16 @@ const styles = StyleSheet.create({
 	},
 	countryContainer: {
 		padding: 10
+	},
+	choiceField: {
+		borderColor: Colors.borderColor,
+		borderWidth: 1,
+
+		marginTop: 8,
+		borderRadius: 4,
+
+		flexDirection: 'column',
+		justifyContent: 'center'
 	},
 	textInput: {
 		marginLeft: 10,

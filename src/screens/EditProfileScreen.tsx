@@ -217,6 +217,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 
 			const type = fieldDefinition.type;
 
+			const isFieldDisabled = field === 'phoneNumber';
 			const isBooleanField = type === 'bool';
 			const isAboutField = type === 'about';
 			const isStringField = type === 'string';
@@ -271,6 +272,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 								placeholder={fieldDefinition.label}
 								value={renderString}
 								style={styles.fieldText}
+								editable={!isFieldDisabled}
 							/>
 						</View>
 					)}
