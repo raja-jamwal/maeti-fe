@@ -1,4 +1,6 @@
-import * as config from './config.json';
+import { getConfig } from './config';
+
+const config = getConfig();
 
 export const API = {
 	ACCOUNTS: `${config.server}/api/accounts`,

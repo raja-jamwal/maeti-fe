@@ -126,3 +126,12 @@ expo push:android:upload --api-key <your-token-here>
 
 - Update `android version code` in app.json under `expo.android.versionCode`
 - `expo build:android -t app-bundle`
+
+## With release channel
+
+- `expo build:android -t app-bundle --release-channel staging`
+- `expo build:android -t app-bundle --release-channel prod`
+
+## Publish JS updates
+
+- `expo publish --release-channel <staging|prod>`

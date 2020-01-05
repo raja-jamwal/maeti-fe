@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Value } from '../components/text';
 import { Updates } from 'expo';
+import { getEnvironment } from '../utils/environment';
 
 class MoreScreen extends React.Component {
 	static navigationOptions = {
@@ -72,6 +73,9 @@ class MoreScreen extends React.Component {
 				)}
 				<View style={{ paddingTop: 10 }}>
 					<Button label="Logout" onPress={() => this.doLogout()} />
+				</View>
+				<View style={{ paddingTop: 10 }}>
+					<Value>{getEnvironment()}</Value>
 				</View>
 			</View>
 		);
