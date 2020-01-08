@@ -12,6 +12,7 @@ import moment from 'moment';
 import { Value } from '../components/text';
 import { Updates } from 'expo';
 import { getEnvironment } from '../utils/environment';
+import { getConfig } from '../config/config';
 
 class MoreScreen extends React.Component {
 	static navigationOptions = {
@@ -74,9 +75,6 @@ class MoreScreen extends React.Component {
 				<View style={{ paddingTop: 10 }}>
 					<Button label="Logout" onPress={() => this.doLogout()} />
 				</View>
-				<View style={{ paddingTop: 10 }}>
-					<Value>{getEnvironment()}</Value>
-				</View>
 			</View>
 		);
 	}
@@ -89,14 +87,23 @@ class MoreScreen extends React.Component {
 	render() {
 		const { showPayment } = this.state;
 		const { currentUserProfile, account } = this.props;
+		const otaVersion = getConfig().ota_version || 0;
 		return (
 			<View style={styles.container}>
-				<Text style={[styles.title]}>Rishto v0.1</Text>
-				<Text style={styles.offWhite}>Sindhyun jo Sindhyun sa</Text>
+				<Text style={[styles.title]}>Maeti</Text>
+				<Text style={styles.offWhite}>Shindiyun Lae Sindhi Rishta</Text>
 				<Text style={styles.offWhite}>For support & help contact</Text>
 				<Text style={styles.offWhite}>feedback@domain.com</Text>
 
 				{this.renderPlanInformation()}
+
+				<View style={{ paddingTop: 10 }}>
+					<Value>{getEnvironment()}</Value>
+				</View>
+
+				<View style={{ paddingTop: 10 }}>
+					<Value>OTA version : {otaVersion}</Value>
+				</View>
 
 				<ConnectedPaymentModal
 					show={showPayment}
