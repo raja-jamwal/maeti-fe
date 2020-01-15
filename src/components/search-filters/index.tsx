@@ -448,6 +448,38 @@ export const TypesOfFilter: ITypesOfFilter = {
 			};
 		}
 	},
+	homeType: {
+		label: 'Home type',
+		choices: (store: IRootState) => {
+			const HomeTypeTags = store.tags['home_type'] || [];
+			return HomeTypeTags.map((homeType: Tag) => {
+				return {
+					label: homeType.value,
+					value: homeType.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			const queryBase = {
+				bool: {
+					should: [
+						'family.familyOtherInformation.homeType.value.keyword',
+						'investments.home.value.keyword'
+					].map(field => {
+						return {
+							terms: {
+								[field]: Object.keys(userSelections).filter(
+									u => !!userSelections[u]
+								)
+							}
+						};
+					})
+				}
+			};
+			return queryBase;
+		}
+	},
 
 	/*
 		Lifestyle options
