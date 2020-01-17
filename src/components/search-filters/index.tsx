@@ -480,6 +480,38 @@ export const TypesOfFilter: ITypesOfFilter = {
 			return queryBase;
 		}
 	},
+	vehicleType: {
+		label: 'Vehicle type',
+		choices: (store: IRootState) => {
+			const HomeTypeTags = store.tags['vehicle_type'] || [];
+			return HomeTypeTags.map((homeType: Tag) => {
+				return {
+					label: homeType.value,
+					value: homeType.value
+				};
+			});
+		},
+		component: ChoiceFilter,
+		getSearchFilter: userSelections => {
+			const queryBase = {
+				bool: {
+					should: [
+						'family.familyOtherInformation.vehicleType.value.keyword',
+						'investments.vehicle.value.keyword'
+					].map(field => {
+						return {
+							terms: {
+								[field]: Object.keys(userSelections).filter(
+									u => !!userSelections[u]
+								)
+							}
+						};
+					})
+				}
+			};
+			return queryBase;
+		}
+	},
 
 	/*
 		Lifestyle options
