@@ -483,11 +483,11 @@ export const TypesOfFilter: ITypesOfFilter = {
 	vehicleType: {
 		label: 'Vehicle type',
 		choices: (store: IRootState) => {
-			const HomeTypeTags = store.tags['vehicle_type'] || [];
-			return HomeTypeTags.map((homeType: Tag) => {
+			const vehicleTypeTags = store.tags['vehicle_type'] || [];
+			return vehicleTypeTags.map((vehicleType: Tag) => {
 				return {
-					label: homeType.value,
-					value: homeType.value
+					label: vehicleType.value,
+					value: vehicleType.value
 				};
 			});
 		},
