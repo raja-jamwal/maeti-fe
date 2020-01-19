@@ -130,7 +130,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 						this.requestClose();
 					}}
 				>
-					<SafeAreaView style={{ flex: 1, backgroundColor: statusBarColor }}>
+					<SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
 						<StatusBar backgroundColor={statusBarColor} barStyle="light-content" />
 						{!showRazor && (
 							<View style={{ flexDirection: 'row-reverse' }}>
@@ -168,6 +168,11 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 												resizeMode="contain"
 												style={{ height: 100, margin: 16 }}
 											/>
+											<View>
+												<Text style={styles.tagLine}>
+													Shindiyun Lae Sindhi Rishta
+												</Text>
+											</View>
 											<View style={{ flex: 1 }}>
 												<ScrollView showsVerticalScrollIndicator={true}>
 													{this.features.map((feature, i) => {
@@ -182,14 +187,20 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 													})}
 												</ScrollView>
 											</View>
-											<Text style={styles.priceOld}>₹1,500/yr</Text>
+											<Text>Now pay</Text>
+
 											<Text style={styles.priceNew}>₹500/yr</Text>
+											<Text>instead of</Text>
+											<Text style={styles.priceOld}>₹1,500/yr</Text>
 										</View>
 										<View>
 											<Button
 												style={{
-													borderTopLeftRadius: 0,
-													borderTopRightRadius: 0
+													borderRadius: 30,
+													marginLeft: 40,
+													width: 300,
+													backgroundColor: statusBarColor,
+													textColor: 'white'
 												}}
 												label="Purchase Plan - ₹500/yr"
 												onPress={() => this.startPayment()}
@@ -224,8 +235,8 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 
 const styles = StyleSheet.create({
 	paymentPlansContainer: {
-		height: Layout.window.height / 2,
-		backgroundColor: Colors.primaryDarkColor,
+		height: Layout.window.height / 20,
+		backgroundColor: Colors.white,
 		flexDirection: 'row',
 		justifyContent: 'center',
 		zIndex: 0
@@ -243,7 +254,7 @@ const styles = StyleSheet.create({
 	featureLine: {
 		textAlign: 'center',
 		color: Colors.offWhite,
-		padding: 4
+		padding: 1
 	},
 	priceOld: {
 		fontSize: 20,
@@ -255,6 +266,15 @@ const styles = StyleSheet.create({
 	priceNew: {
 		fontSize: 30,
 		fontWeight: 'bold'
+	},
+	tagLine: {
+		textAlign: 'center',
+		color: Colors.black,
+		fontSize: 35,
+		fontWeight: 'bold',
+		marginLeft: 10,
+		position: 'relative',
+		top: -40
 	}
 });
 
