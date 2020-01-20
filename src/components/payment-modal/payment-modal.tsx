@@ -119,34 +119,60 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 			return null;
 		}
 		this.logger.log('starting payment session');
-		const statusBarColor = !showRazor ? Colors.primaryDarkColor : '#3a99d8';
+		const statusBarColor = !showRazor ? Colors.white : Colors.primaryDarkColor;
 		return (
 			<View>
 				<Modal
 					// animationType="slide"
-					transparent={false}
+					transparent={true}
 					visible={show}
 					onRequestClose={() => {
 						this.requestClose();
 					}}
 				>
 					<SafeAreaView style={{ flex: 1, backgroundColor: statusBarColor }}>
-						<StatusBar backgroundColor={statusBarColor} barStyle="light-content" />
-						{!showRazor && (
-							<View style={{ flexDirection: 'row-reverse' }}>
-								<TouchableBtn onPress={() => this.requestClose()}>
-									<Ionicons
-										name="md-close"
-										style={{ padding: 16 }}
-										size={26}
-										color={Colors.white}
-									/>
-								</TouchableBtn>
-							</View>
-						)}
+						<StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
+						<View style={{ flexDirection: 'row-reverse' }}>
+							{!showRazor && (
+								<View
+									style={{
+										flexDirection: 'row-reverse',
+
+										flex: 1
+									}}
+								>
+									<View>
+										<TouchableBtn onPress={() => this.requestClose()}>
+											<Ionicons
+												name="md-close"
+												style={{ padding: 16 }}
+												size={26}
+												color={Colors.offWhite}
+											/>
+										</TouchableBtn>
+									</View>
+									<View
+										style={{
+											flex: 1,
+											justifyContent: 'center'
+										}}
+									>
+										<Image
+											source={icon}
+											resizeMode="contain"
+											style={{
+												height: 100,
+												margin: 16,
+												marginRight: -30,
+												alignSelf: 'center'
+											}}
+										/>
+									</View>
+								</View>
+							)}
+						</View>
 						{!showRazor && (
 							<View style={{ flex: 1 }}>
-								<View style={styles.paymentPlansContainer} />
 								<View
 									style={{
 										position: 'absolute',
@@ -156,45 +182,53 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 									<View
 										style={{
 											flex: 1,
-											height: Layout.window.height - 100,
 											padding: 16,
 											flexDirection: 'column',
 											justifyContents: 'center'
 										}}
 									>
-										<View style={styles.advt}>
-											<Image
-												source={icon}
-												resizeMode="contain"
-												style={{ height: 100, margin: 16 }}
-											/>
-											<View style={{ flex: 1 }}>
-												<ScrollView showsVerticalScrollIndicator={true}>
-													{this.features.map((feature, i) => {
-														return (
-															<Text
-																key={i}
-																style={styles.featureLine}
-															>
-																{feature}
-															</Text>
-														);
-													})}
-												</ScrollView>
-											</View>
-											<Text style={styles.priceOld}>₹1,500/yr</Text>
-											<Text style={styles.priceNew}>₹500/yr</Text>
-										</View>
 										<View>
-											<Button
-												style={{
-													borderTopLeftRadius: 0,
-													borderTopRightRadius: 0
-												}}
-												label="Purchase Plan - ₹500/yr"
-												onPress={() => this.startPayment()}
-											/>
+											<Text style={styles.tagLine}>
+												Shindiyun Lae Sindhi Rishta
+											</Text>
 										</View>
+										<View style={{ flex: 1 }}>
+											<ScrollView showsVerticalScrollIndicator={true}>
+												{this.features.map((feature, i) => {
+													return (
+														<Text key={i} style={styles.featureLine}>
+															{feature}
+														</Text>
+													);
+												})}
+											</ScrollView>
+										</View>
+										<View
+											style={{
+												flex: 1,
+												alignItems: 'center'
+											}}
+										>
+											<Text style={styles.priceNew}>₹500/yr</Text>
+											<Text style={styles.priceOld}>₹1,500/yr</Text>
+										</View>
+									</View>
+									<View>
+										<Button
+											style={{
+												borderTopLeftRadius: 5,
+												borderTopRightRadius: 5,
+												marginLeft: 40,
+												marginRight: 50,
+												backgroundColor: Colors.primaryDarkColor,
+												Color: Colors.white
+											}}
+											labelStyle={{
+												color: 'white'
+											}}
+											label="Buy for ₹500/yr"
+											onPress={() => this.startPayment()}
+										/>
 									</View>
 								</View>
 							</View>
@@ -223,13 +257,6 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 }
 
 const styles = StyleSheet.create({
-	paymentPlansContainer: {
-		height: Layout.window.height / 2,
-		backgroundColor: Colors.primaryDarkColor,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		zIndex: 0
-	},
 	advt: {
 		backgroundColor: 'white',
 		flexDirection: 'column',
@@ -243,7 +270,7 @@ const styles = StyleSheet.create({
 	featureLine: {
 		textAlign: 'center',
 		color: Colors.offWhite,
-		padding: 4
+		padding: 1
 	},
 	priceOld: {
 		fontSize: 20,
@@ -255,6 +282,15 @@ const styles = StyleSheet.create({
 	priceNew: {
 		fontSize: 30,
 		fontWeight: 'bold'
+	},
+	tagLine: {
+		textAlign: 'center',
+		color: Colors.black,
+		fontSize: 35,
+		fontWeight: 'bold',
+		marginLeft: 10,
+		position: 'relative',
+		top: -40
 	}
 });
 
