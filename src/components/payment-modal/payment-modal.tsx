@@ -119,7 +119,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 			return null;
 		}
 		this.logger.log('starting payment session');
-		const statusBarColor = !showRazor ? Colors.primaryDarkColor : '#3a99d8';
+		const statusBarColor = !showRazor ? Colors.primaryDarkColor : Colors.white;
 		return (
 			<View>
 				<Modal
@@ -196,7 +196,8 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 										<View>
 											<Button
 												style={{
-													borderRadius: 30,
+													borderTopLeftRadius: 5,
+													borderTopRightRadius: 5,
 													marginLeft: 40,
 													width: 300,
 													backgroundColor: statusBarColor,
