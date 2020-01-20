@@ -131,9 +131,9 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 					}}
 				>
 					<SafeAreaView style={{ flex: 1, backgroundColor: statusBarColor }}>
-						<StatusBar backgroundColor={'white'} barStyle="dark-content" />
+						<StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
 						<View style={{ flexDirection: 'row-reverse' }}>
-							{!showRazor && true && (
+							{!showRazor && (
 								<View
 									style={{
 										flexDirection: 'row-reverse',
@@ -182,19 +182,11 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 									<View
 										style={{
 											flex: 1,
-											// height: Layout.window.height - 100,
 											padding: 16,
 											flexDirection: 'column',
 											justifyContents: 'center'
 										}}
 									>
-										{/*<View*/}
-										{/*style={{*/}
-										{/*backgroundColor: 'red'*/}
-										{/*}}*/}
-										{/*>*/}
-										{/*<View />*/}
-
 										<View>
 											<Text style={styles.tagLine}>
 												Shindiyun Lae Sindhi Rishta
@@ -218,7 +210,6 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 											}}
 										>
 											<Text style={styles.priceNew}>₹500/yr</Text>
-
 											<Text style={styles.priceOld}>₹1,500/yr</Text>
 										</View>
 									</View>
@@ -242,7 +233,6 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 								</View>
 							</View>
 						)}
-
 						{!!showRazor && pgOrderId && (
 							<WebView
 								useWebKit={true}
