@@ -137,11 +137,11 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 								<View
 									style={{
 										flexDirection: 'row-reverse',
-										backgroundColor: 'pink',
+
 										flex: 1
 									}}
 								>
-									<View style={{ backgroundColor: 'purple' }}>
+									<View>
 										<TouchableBtn onPress={() => this.requestClose()}>
 											<Ionicons
 												name="md-close"
@@ -154,8 +154,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 									<View
 										style={{
 											flex: 1,
-											justifyContent: 'center',
-											backgroundColor: 'yellow'
+											justifyContent: 'center'
 										}}
 									>
 										<Image
@@ -173,12 +172,11 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 							)}
 						</View>
 						{!showRazor && (
-							<View style={{ flex: 1, backgroundColor: 'red' }}>
+							<View style={{ flex: 1 }}>
 								<View
 									style={{
 										position: 'absolute',
-										width: Layout.window.width,
-										backgroundColor: 'blue'
+										width: Layout.window.width
 									}}
 								>
 									<View
@@ -187,8 +185,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 											// height: Layout.window.height - 100,
 											padding: 16,
 											flexDirection: 'column',
-											justifyContents: 'center',
-											backgroundColor: 'orange'
+											justifyContents: 'center'
 										}}
 									>
 										{/*<View*/}
@@ -203,7 +200,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 												Shindiyun Lae Sindhi Rishta
 											</Text>
 										</View>
-										<View style={{ flex: 1, backgroundColor: 'purple' }}>
+										<View style={{ flex: 1 }}>
 											<ScrollView showsVerticalScrollIndicator={true}>
 												{this.features.map((feature, i) => {
 													return (
@@ -217,14 +214,11 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 										<View
 											style={{
 												flex: 1,
-												alignItems: 'center',
-												backgroundColor: 'green'
+												alignItems: 'center'
 											}}
 										>
-											<Text>Now pay</Text>
-
 											<Text style={styles.priceNew}>₹500/yr</Text>
-											<Text>instead of</Text>
+
 											<Text style={styles.priceOld}>₹1,500/yr</Text>
 										</View>
 									</View>
