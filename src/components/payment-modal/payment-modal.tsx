@@ -119,98 +119,136 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 			return null;
 		}
 		this.logger.log('starting payment session');
-		const statusBarColor = !showRazor ? Colors.primaryDarkColor : Colors.white;
+		const statusBarColor = !showRazor ? Colors.white : Colors.primaryDarkColor;
 		return (
 			<View>
 				<Modal
 					// animationType="slide"
-					transparent={false}
+					transparent={true}
 					visible={show}
 					onRequestClose={() => {
 						this.requestClose();
 					}}
 				>
-					<SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
-						<StatusBar backgroundColor={statusBarColor} barStyle="light-content" />
+					<SafeAreaView style={{ flex: 1, backgroundColor: statusBarColor }}>
+						<StatusBar backgroundColor={'white'} barStyle="dark-content" />
+						<View style={{ flexDirection: 'row-reverse' }}>
+							{!showRazor && true && (
+								<View
+									style={{
+										flexDirection: 'row-reverse',
+										backgroundColor: 'pink',
+										flex: 1
+									}}
+								>
+									<View style={{ backgroundColor: 'purple' }}>
+										<TouchableBtn onPress={() => this.requestClose()}>
+											<Ionicons
+												name="md-close"
+												style={{ padding: 16 }}
+												size={26}
+												color={Colors.offWhite}
+											/>
+										</TouchableBtn>
+									</View>
+									<View
+										style={{
+											flex: 1,
+											justifyContent: 'center',
+											backgroundColor: 'yellow'
+										}}
+									>
+										<Image
+											source={icon}
+											resizeMode="contain"
+											style={{
+												height: 100,
+												margin: 16,
+												marginRight: -30,
+												alignSelf: 'center'
+											}}
+										/>
+									</View>
+								</View>
+							)}
+						</View>
 						{!showRazor && (
-							<View style={{ flexDirection: 'row-reverse' }}>
-								<TouchableBtn onPress={() => this.requestClose()}>
-									<Ionicons
-										name="md-close"
-										style={{ padding: 16 }}
-										size={26}
-										color={Colors.white}
-									/>
-								</TouchableBtn>
-							</View>
-						)}
-						{!showRazor && (
-							<View style={{ flex: 1 }}>
-								<View style={styles.paymentPlansContainer} />
+							<View style={{ flex: 1, backgroundColor: 'red' }}>
 								<View
 									style={{
 										position: 'absolute',
-										width: Layout.window.width
+										width: Layout.window.width,
+										backgroundColor: 'blue'
 									}}
 								>
 									<View
 										style={{
 											flex: 1,
-											height: Layout.window.height - 100,
+											// height: Layout.window.height - 100,
 											padding: 16,
 											flexDirection: 'column',
-											justifyContents: 'center'
+											justifyContents: 'center',
+											backgroundColor: 'orange'
 										}}
 									>
-										<View style={styles.advt}>
-											<Image
-												source={icon}
-												resizeMode="contain"
-												style={{ height: 100, margin: 16 }}
-											/>
-											<View>
-												<Text style={styles.tagLine}>
-													Shindiyun Lae Sindhi Rishta
-												</Text>
-											</View>
-											<View style={{ flex: 1 }}>
-												<ScrollView showsVerticalScrollIndicator={true}>
-													{this.features.map((feature, i) => {
-														return (
-															<Text
-																key={i}
-																style={styles.featureLine}
-															>
-																{feature}
-															</Text>
-														);
-													})}
-												</ScrollView>
-											</View>
+										{/*<View*/}
+										{/*style={{*/}
+										{/*backgroundColor: 'red'*/}
+										{/*}}*/}
+										{/*>*/}
+										{/*<View />*/}
+
+										<View>
+											<Text style={styles.tagLine}>
+												Shindiyun Lae Sindhi Rishta
+											</Text>
+										</View>
+										<View style={{ flex: 1, backgroundColor: 'purple' }}>
+											<ScrollView showsVerticalScrollIndicator={true}>
+												{this.features.map((feature, i) => {
+													return (
+														<Text key={i} style={styles.featureLine}>
+															{feature}
+														</Text>
+													);
+												})}
+											</ScrollView>
+										</View>
+										<View
+											style={{
+												flex: 1,
+												alignItems: 'center',
+												backgroundColor: 'green'
+											}}
+										>
 											<Text>Now pay</Text>
 
 											<Text style={styles.priceNew}>₹500/yr</Text>
 											<Text>instead of</Text>
 											<Text style={styles.priceOld}>₹1,500/yr</Text>
 										</View>
-										<View>
-											<Button
-												style={{
-													borderTopLeftRadius: 5,
-													borderTopRightRadius: 5,
-													marginLeft: 40,
-													width: 300,
-													backgroundColor: statusBarColor,
-													textColor: 'white'
-												}}
-												label="Purchase Plan - ₹500/yr"
-												onPress={() => this.startPayment()}
-											/>
-										</View>
+									</View>
+									<View>
+										<Button
+											style={{
+												borderTopLeftRadius: 5,
+												borderTopRightRadius: 5,
+												marginLeft: 40,
+												marginRight: 50,
+												backgroundColor: Colors.primaryDarkColor,
+												Color: Colors.white
+											}}
+											labelStyle={{
+												color: 'white'
+											}}
+											label="Buy for ₹500/yr"
+											onPress={() => this.startPayment()}
+										/>
 									</View>
 								</View>
 							</View>
 						)}
+
 						{!!showRazor && pgOrderId && (
 							<WebView
 								useWebKit={true}
@@ -235,13 +273,6 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 }
 
 const styles = StyleSheet.create({
-	paymentPlansContainer: {
-		height: Layout.window.height / 20,
-		backgroundColor: Colors.white,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		zIndex: 0
-	},
 	advt: {
 		backgroundColor: 'white',
 		flexDirection: 'column',
