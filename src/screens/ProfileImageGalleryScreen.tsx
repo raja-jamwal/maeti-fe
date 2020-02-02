@@ -162,14 +162,14 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 	render() {
 		const isDeleteAllowed = this.getPhotos().length > 1;
 		let cancelButton = 1;
-		let options = [];
+		const options = [];
 		if (isDeleteAllowed) {
 			options.push('Make it primary', 'Delete photo', 'Cancel');
 			cancelButton = PHOTO_ACTIONS.CANCEL;
 		} else {
 			options.push('Make it primary', 'Cancel');
 		}
-		console.log(`This is   ${options}`);
+		this.logger.log(`Options   ${options}`);
 		const { userProfile, isCurrentProfileUpdating } = this.props;
 		if (!userProfile) return null;
 		return (
