@@ -153,13 +153,23 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 			updatePhoto(updatedPhotoArray);
 		}
 
-		if (action === PHOTO_ACTIONS.DELETE) {
+		if (action === PHOTO_ACTIONS.DELETE && this.getPhotos().length > 1) {
 			this.logger.log('deleting photo');
 			updatePhoto(photoArrayWithoutSelected);
 		}
 	}
 
 	render() {
+		const isDeleteAllowed = this.getPhotos().length > 1;
+		let cancelButton = 1;
+		let options = [];
+		if (isDeleteAllowed) {
+			options.push('Make it primary', 'Delete photo', 'Cancel');
+			cancelButton = PHOTO_ACTIONS.CANCEL;
+		} else {
+			options.push('Make it primary', 'Cancel');
+		}
+		console.log(`This is   ${options}`);
 		const { userProfile, isCurrentProfileUpdating } = this.props;
 		if (!userProfile) return null;
 		return (
@@ -177,8 +187,8 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 				<ActionSheet
 					ref={o => (this.imageActionSheet = o)}
 					// title={'Perform action'}
-					options={['Make it primary', 'Delete photo', 'Cancel']}
-					cancelButtonIndex={PHOTO_ACTIONS.CANCEL}
+					options={options}
+					cancelButtonIndex={cancelButton}
 					destructiveButtonIndex={PHOTO_ACTIONS.DELETE}
 					onPress={index => {
 						this.logger.log(index);
