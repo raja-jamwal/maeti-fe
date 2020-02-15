@@ -299,13 +299,28 @@ class ProfessionTable extends React.Component<
 		},
 		workState: {
 			label: 'Work State',
-			type: 'state'
+			type: 'state',
+			shouldShow: (object: any) => this.shouldShowWorkState(object)
 		},
 		workCity: {
 			label: 'Work City',
 			type: 'city'
 		}
 	};
+
+	shouldShowWorkState = function(object) {
+		if (object.country != null) {
+			return true;
+		}
+
+		return false;
+	};
+
+	/// componentDidMount() {
+	// if (profession.country is no null) {
+	//  this.mappings.workState.show
+	//   }
+	/// }
 
 	render() {
 		const { profession, userProfileId, updateProfession, editable } = this.props;
