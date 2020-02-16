@@ -304,12 +304,20 @@ class ProfessionTable extends React.Component<
 		},
 		workCity: {
 			label: 'Work City',
-			type: 'city'
+			type: 'city',
+			shouldShow: (object: any) => this.shouldShowWorkCity(object)
 		}
 	};
 
 	shouldShowWorkState = function(object) {
-		if (object.country != null) {
+		if (object.workCountry != null) {
+			return true;
+		}
+
+		return false;
+	};
+	shouldShowWorkCity = function(object) {
+		if (object.workState != null) {
 			return true;
 		}
 
