@@ -218,9 +218,11 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			const type = fieldDefinition.type;
 
 			const showShowFunction = fieldDefinition['shouldShow'];
-			let shouldShow = true;
+			let shouldShowState,
+				shouldShowCity = false;
 			if (showShowFunction) {
-				shouldShow = showShowFunction(this.state.object);
+				shouldShowState = showShowFunction(object);
+				shouldShowCity = showShowFunction(object);
 			}
 
 			const isFieldDisabled = field === 'phoneNumber';
@@ -367,10 +369,21 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 							/>
 						</View>
 					)}
-
-					{isStateField && shouldShow && (
+					{isCountryField && (
 						<WorldSelectorField
-							options={[WORLD_OPTION.COUNTRY, WORLD_OPTION.STATE]}
+							options={[WORLD_OPTION.COUNTRY]}
+							onSelect={selection => {
+								if (!selection || !selection.country) {
+									return;
+								}
+								this.updateFieldValue(field, selection.country);
+							}}
+							value={renderWorldValue}
+						/>
+					)}
+					{isStateField && shouldShowState && (
+						<WorldSelectorField
+							options={[WORLD_OPTION.STATE]}
 							onSelect={selection => {
 								if (!selection || !selection.state) {
 									return;
@@ -380,9 +393,9 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 							value={renderWorldValue}
 						/>
 					)}
-					{isCityField && shouldShow && (
+					{isCityField && shouldShowCity && (
 						<WorldSelectorField
-							options={[WORLD_OPTION.COUNTRY, WORLD_OPTION.STATE, WORLD_OPTION.CITY]}
+							options={[WORLD_OPTION.CITY]}
 							onSelect={selection => {
 								if (!selection || !selection.city) {
 									return;
