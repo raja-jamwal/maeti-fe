@@ -117,11 +117,15 @@ class FamilyTable extends React.Component<
 		},
 		familyState: {
 			label: 'Family state',
-			type: 'state'
+			type: 'state',
+			showState: (object: any) => this.shouldShowWorkState(object),
+			countryId: (object: any) => this.countryId(object)
 		},
 		familyCity: {
 			label: 'Family city',
-			type: 'city'
+			type: 'city',
+			showCity: (object: any) => this.shouldShowWorkCity(object),
+			stateId: (object: any) => this.stateId(object)
 		},
 		interCasteParents: {
 			label: 'Inter caste marriage of Parents?',
@@ -156,6 +160,38 @@ class FamilyTable extends React.Component<
 			}
 		}
 	};
+	shouldShowWorkState = function(object) {
+		if (object.familyCountry != null) {
+			return { setCountry: true };
+		}
+
+		return false;
+	};
+	shouldShowWorkCity = function(object) {
+		if (object.familyState != null) {
+			return { setState: true };
+		}
+
+		return false;
+	};
+	countryId(object) {
+		if (object.familyCountry) {
+			return {
+				countryId: object.familyCountry.id
+			};
+		} else {
+			return {};
+		}
+	}
+	stateId(object) {
+		if (object.familyState) {
+			return {
+				stateId: object.familyState.id
+			};
+		} else {
+			return {};
+		}
+	}
 
 	otherInfoMapping = {
 		familyValues: {

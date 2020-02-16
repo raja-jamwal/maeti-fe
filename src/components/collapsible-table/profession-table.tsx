@@ -300,30 +300,49 @@ class ProfessionTable extends React.Component<
 		workState: {
 			label: 'Work State',
 			type: 'state',
-			shouldShow: (object: any) => this.shouldShowWorkState(object)
+			showState: (object: any) => this.shouldShowWorkState(object),
+			countryId: (object: any) => this.countryId(object)
 		},
 		workCity: {
 			label: 'Work City',
 			type: 'city',
-			shouldShow: (object: any) => this.shouldShowWorkCity(object)
+			showCity: (object: any) => this.shouldShowWorkCity(object),
+			stateId: (object: any) => this.stateId(object)
 		}
 	};
 
 	shouldShowWorkState = function(object) {
 		if (object.workCountry != null) {
-			return true;
+			return { setCountry: true };
 		}
 
 		return false;
 	};
 	shouldShowWorkCity = function(object) {
 		if (object.workState != null) {
-			return true;
+			return { setState: true };
 		}
 
 		return false;
 	};
-
+	countryId(object) {
+		if (object.workCountry) {
+			return {
+				countryId: object.workCountry.id
+			};
+		} else {
+			return {};
+		}
+	}
+	stateId(object) {
+		if (object.workState) {
+			return {
+				stateId: object.workState.id
+			};
+		} else {
+			return {};
+		}
+	}
 	/// componentDidMount() {
 	// if (profession.country is no null) {
 	//  this.mappings.workState.show

@@ -5,10 +5,12 @@ import { API } from '../../config/API';
 import { getLogger } from '../../utils/logger';
 import { Throbber } from '../throbber/throbber';
 import { City, Country, Region, WorldEntity } from '../../store/reducers/account-defination';
-import { includes } from 'lodash';
+import { includes, head } from 'lodash';
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+import EditProfileScreen from '../../screens/EditProfileScreen';
 
 export enum WORLD_OPTION {
 	COUNTRY = 'country',
@@ -26,6 +28,10 @@ interface IWorldSelectorProps {
 	options: WORLD_OPTION[];
 	onSelect: (selection: SelectionResult) => void;
 	toggleShowModal: () => any;
+	countryId?: number;
+	stateId?: number;
+	setState?: boolean;
+	setCountry?: boolean;
 }
 
 interface IWorldSelectorState {
@@ -59,13 +65,19 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 			regions: [],
 			cities: [],
 			selection: {},
-			screen: WORLD_OPTION.COUNTRY,
+			screen: head(this.props.options),
 			filterText: ''
 		};
 	}
 
 	componentDidMount() {
-		this.mayBeFetchCountryList();
+		if (this.props.stateId && this.props.setState) {
+			return this.mayBeFetchCities(this.props.stateId);
+		} else if (this.props.countryId && this.props.setCountry) {
+			return this.mayBeFetchRegions(this.props.countryId);
+		} else {
+			return this.mayBeFetchCountryList();
+		}
 	}
 
 	mayBeFetchCountryList() {
@@ -153,15 +165,15 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 
 	getData() {
 		const { countries, regions, cities, screen, filterText } = this.state;
-		switch (screen) {
-			case WORLD_OPTION.COUNTRY:
-				return this.maybeFilter(countries, filterText);
-			case WORLD_OPTION.STATE:
-				return this.maybeFilter(regions, filterText);
-			case WORLD_OPTION.CITY:
-				return this.maybeFilter(cities, filterText);
-			default:
-				return [];
+
+		const selectedScreen = head(this.props.options);
+		if (!selectedScreen) return [];
+		if (selectedScreen === 'city') {
+			return this.maybeFilter(cities, filterText);
+		} else if (selectedScreen === 'country') {
+			return this.maybeFilter(countries, filterText);
+		} else {
+			return this.maybeFilter(regions, filterText);
 		}
 	}
 
@@ -217,10 +229,20 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 	}
 }
 
+const mapStateToProps = state => {
+	return { object: state.object };
+};
+
+export default connect(mapStateToProps)(WorldSelector);
+
 interface IWorldSelectorFieldProps {
 	options: WORLD_OPTION[];
 	onSelect: (selection: SelectionResult) => void;
 	value: string;
+	stateId?: number;
+	countryId?: number;
+	setState?: boolean;
+	setCountry?: boolean;
 }
 
 interface IWorldSelectorFieldState {
@@ -247,7 +269,7 @@ class WorldSelectorField extends React.Component<
 
 	render() {
 		const { showModal } = this.state;
-		const { options, onSelect, value } = this.props;
+		const { options, onSelect, value, countryId, stateId, setState, setCountry } = this.props;
 		return (
 			<View>
 				<TouchableBtn onPress={() => this.toggleShowModal()}>
@@ -270,6 +292,10 @@ class WorldSelectorField extends React.Component<
 								this.toggleShowModal();
 							}}
 							toggleShowModal={() => this.toggleShowModal()}
+							countryId={this.props.countryId}
+							stateId={this.props.stateId}
+							setState={this.props.setState}
+							setCountry={this.props.setCountry}
 						/>
 					</View>
 				</Modal>
