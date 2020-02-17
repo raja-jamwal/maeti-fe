@@ -306,10 +306,9 @@ class ProfessionTable extends React.Component<
 			label: 'Work State',
 			type: 'state',
 			props: (object: any) => {
-				let props = { countryId: '' };
+				let props = {};
 				if (object.workCountry) {
 					props = Object.assign({}, props, {
-						setCountry: true,
 						countryId: object.workCountry.id
 					});
 				}
@@ -321,10 +320,9 @@ class ProfessionTable extends React.Component<
 			label: 'Work City',
 			type: 'city',
 			props: (object: any) => {
-				let props = { stateId: '' };
+				let props = {};
 				if (object.workState) {
 					props = Object.assign({}, props, {
-						setState: true,
 						stateId: object.workState.id
 					});
 				}

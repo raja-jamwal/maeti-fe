@@ -124,10 +124,9 @@ class FamilyTable extends React.Component<
 			label: 'Family state',
 			type: 'state',
 			props: (object: any) => {
-				let props = { setCountry: 'false', countryId: '' };
+				let props = {};
 				if (object.familyCountry) {
 					props = Object.assign({}, props, {
-						setCountry: true,
 						countryId: object.familyCountry.id
 					});
 				}
@@ -139,10 +138,9 @@ class FamilyTable extends React.Component<
 			label: 'Family city',
 			type: 'city',
 			props: (object: any) => {
-				let props = { setState: 'false', stateId: '' };
+				let props = {};
 				if (object.familyState) {
 					props = Object.assign({}, props, {
-						setState: true,
 						stateId: object.familyState.id
 					});
 				}

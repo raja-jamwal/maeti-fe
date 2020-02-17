@@ -225,10 +225,10 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 
 			const onUpdateFunc = fieldDefinition['onUpdate'];
 			const propsFunction = fieldDefinition['props'];
-			let shouldShow = fieldDefinition['shouldShow'];
-			let showShow = 'true';
-			if (shouldShow) {
-				showShow = shouldShow(object);
+			let shouldShowFunction = fieldDefinition['shouldShow'];
+			let shouldShow = 'true';
+			if (shouldShowFunction) {
+				shouldShow = shouldShowFunction(object);
 			}
 
 			if (propsFunction) {
@@ -393,7 +393,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 							{...additionalProps}
 						/>
 					)}
-					{isStateField && showShow && (
+					{isStateField && shouldShow && (
 						<WorldSelectorField
 							options={[WORLD_OPTION.STATE]}
 							onSelect={selection => {
@@ -406,7 +406,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 							{...additionalProps}
 						/>
 					)}
-					{isCityField && showShow && (
+					{isCityField && shouldShow && (
 						<WorldSelectorField
 							options={[WORLD_OPTION.CITY]}
 							onSelect={selection => {
