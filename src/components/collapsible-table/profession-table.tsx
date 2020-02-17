@@ -295,54 +295,42 @@ class ProfessionTable extends React.Component<
 		},
 		workCountry: {
 			label: 'Work Country',
-			type: 'country'
+			type: 'country',
+			onUpdate: (object: any, value: any) => {
+				object['workState'] = null;
+				object['workCity'] = null;
+				return object;
+			}
 		},
 		workState: {
 			label: 'Work State',
 			type: 'state',
-			showState: (object: any) => this.shouldShowWorkState(object),
-			countryId: (object: any) => this.countryId(object)
+			props: (object: any) => {
+				let props = { setCountry: 'false', countryId: '' };
+				if (object.workCountry) {
+					props = Object.assign({}, props, {
+						setCountry: true,
+						countryId: object.workCountry.id
+					});
+				}
+				return props;
+			}
 		},
 		workCity: {
 			label: 'Work City',
 			type: 'city',
-			showCity: (object: any) => this.shouldShowWorkCity(object),
-			stateId: (object: any) => this.stateId(object)
-		}
-	};
-
-	shouldShowWorkState = function(object) {
-		if (object.workCountry != null) {
-			return { setCountry: true };
-		}
-
-		return false;
-	};
-	shouldShowWorkCity = function(object) {
-		if (object.workState != null) {
-			return { setState: true };
+			props: (object: any) => {
+				let props = { setState: 'false', stateId: '' };
+				if (object.workState) {
+					props = Object.assign({}, props, {
+						setState: true,
+						stateId: object.workState.id
+					});
+				}
+				return props;
+			}
 		}
 
-		return false;
-	};
-	countryId(object) {
-		if (object.workCountry) {
-			return {
-				countryId: object.workCountry.id
-			};
-		} else {
-			return {};
-		}
-	}
-	stateId(object) {
-		if (object.workState) {
-			return {
-				stateId: object.workState.id
-			};
-		} else {
-			return {};
-		}
-	}
 	/// componentDidMount() {
 	// if (profession.country is no null) {
 	//  this.mappings.workState.show

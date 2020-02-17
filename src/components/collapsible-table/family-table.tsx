@@ -113,19 +113,40 @@ class FamilyTable extends React.Component<
 		},
 		familyCountry: {
 			label: 'Family country',
-			type: 'country'
+			type: 'country',
+			onUpdate: (object: any, value: any) => {
+				object['familyState'] = null;
+				object['familyCity'] = null;
+				return object;
+			}
 		},
 		familyState: {
 			label: 'Family state',
 			type: 'state',
-			showState: (object: any) => this.shouldShowWorkState(object),
-			countryId: (object: any) => this.countryId(object)
+			props: (object: any) => {
+				let props = { setCountry: 'false', countryId: '' };
+				if (object.familyCountry) {
+					props = Object.assign({}, props, {
+						setCountry: true,
+						countryId: object.familyCountry.id
+					});
+				}
+				return props;
+			}
 		},
 		familyCity: {
 			label: 'Family city',
 			type: 'city',
-			showCity: (object: any) => this.shouldShowWorkCity(object),
-			stateId: (object: any) => this.stateId(object)
+			props: (object: any) => {
+				let props = { setState: 'false', stateId: '' };
+				if (object.familyState) {
+					props = Object.assign({}, props, {
+						setState: true,
+						stateId: object.familyState.id
+					});
+				}
+				return props;
+			}
 		},
 		interCasteParents: {
 			label: 'Inter caste marriage of Parents?',
@@ -160,38 +181,6 @@ class FamilyTable extends React.Component<
 			}
 		}
 	};
-	shouldShowWorkState = function(object) {
-		if (object.familyCountry != null) {
-			return { setCountry: true };
-		}
-
-		return false;
-	};
-	shouldShowWorkCity = function(object) {
-		if (object.familyState != null) {
-			return { setState: true };
-		}
-
-		return false;
-	};
-	countryId(object) {
-		if (object.familyCountry) {
-			return {
-				countryId: object.familyCountry.id
-			};
-		} else {
-			return {};
-		}
-	}
-	stateId(object) {
-		if (object.familyState) {
-			return {
-				stateId: object.familyState.id
-			};
-		} else {
-			return {};
-		}
-	}
 
 	otherInfoMapping = {
 		familyValues: {

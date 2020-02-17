@@ -107,12 +107,19 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		};
 	}
 
-	updateFieldValue(field: string, value: any) {
+	updateFieldValue(field: string, value: any, onUpdateFunc?: (o: any, v: any) => any) {
 		if (field) {
 			const { object } = this.state;
 			object[field] = value;
+			let updatedObject = { ...object };
+			if (onUpdateFunc) {
+				const updatedResult = onUpdateFunc(updatedObject, value);
+				if (updatedResult) {
+					updatedObject = updatedResult;
+				}
+			}
 			this.setState({
-				object: { ...object }
+				object: { ...updatedObject }
 			});
 		}
 	}
@@ -216,27 +223,14 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			let additionalProps = {};
 			const type = fieldDefinition.type;
 
-			const showStateFunction = fieldDefinition['showState'];
-			const showCityFunction = fieldDefinition['showCity'];
-			const countryId = fieldDefinition['countryId'];
-			const stateId = fieldDefinition['stateId'];
-			let shouldShowState = true;
-			let shouldShowCity = true;
-			if (showStateFunction) {
-				shouldShowState = showStateFunction(object);
-				additionalProps = Object.assign({}, additionalProps, shouldShowState);
-			}
-			if (showCityFunction) {
-				shouldShowCity = showCityFunction(object);
-				additionalProps = Object.assign({}, additionalProps, shouldShowCity);
-			}
-			if (countryId) {
-				const cId = countryId(object);
-				additionalProps = Object.assign({}, additionalProps, cId);
-			}
-			if (stateId) {
-				const sId = stateId(object);
-				additionalProps = Object.assign({}, additionalProps, sId);
+			const onUpdateFunc = fieldDefinition['onUpdate'];
+			const showPropsFunction = fieldDefinition['props'];
+
+			let shouldShow = true;
+
+			if (showPropsFunction) {
+				shouldShow = showPropsFunction(object);
+				additionalProps = Object.assign({}, additionalProps, shouldShow);
 			}
 
 			const isFieldDisabled = field === 'phoneNumber';
@@ -390,7 +384,7 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 								if (!selection || !selection.country) {
 									return;
 								}
-								this.updateFieldValue(field, selection.country);
+								this.updateFieldValue(field, selection.country, onUpdateFunc);
 							}}
 							value={renderWorldValue}
 							{...additionalProps}
