@@ -295,18 +295,57 @@ class ProfessionTable extends React.Component<
 		},
 		workCountry: {
 			label: 'Work Country',
-			type: 'country'
+			type: 'country',
+			onUpdate: (object: any, _value: any) => {
+				object['workState'] = null;
+				object['workCity'] = null;
+				return object;
+			}
 		},
 		workState: {
 			label: 'Work State',
-			type: 'state'
+			type: 'state',
+			props: (object: any) => {
+				let props = {};
+				if (object.workCountry) {
+					props = Object.assign({}, props, {
+						countryId: object.workCountry.id
+					});
+				}
+				return props;
+			},
+			shouldShow: (object: any) => this.shouldShowWorkState(object)
 		},
 		workCity: {
 			label: 'Work City',
-			type: 'city'
+			type: 'city',
+			props: (object: any) => {
+				let props = {};
+				if (object.workState) {
+					props = Object.assign({}, props, {
+						stateId: object.workState.id
+					});
+				}
+				return props;
+			},
+			shouldShow: (object: any) => this.shouldShowWorkCity(object)
 		}
 	};
 
+	shouldShowWorkState = function(object: any) {
+		if (object.workCountry) {
+			return true;
+		}
+
+		return false;
+	};
+	shouldShowWorkCity = function(object: any) {
+		if (object.workState) {
+			return true;
+		}
+
+		return false;
+	};
 	render() {
 		const { profession, userProfileId, updateProfession, editable } = this.props;
 		if (!profession) return null;

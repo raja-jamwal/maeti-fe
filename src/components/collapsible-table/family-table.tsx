@@ -113,15 +113,40 @@ class FamilyTable extends React.Component<
 		},
 		familyCountry: {
 			label: 'Family country',
-			type: 'country'
+			type: 'country',
+			onUpdate: (object: any, value: any) => {
+				object['familyState'] = null;
+				object['familyCity'] = null;
+				return object;
+			}
 		},
 		familyState: {
 			label: 'Family state',
-			type: 'state'
+			type: 'state',
+			props: (object: any) => {
+				let props = {};
+				if (object.familyCountry) {
+					props = Object.assign({}, props, {
+						countryId: object.familyCountry.id
+					});
+				}
+				return props;
+			},
+			shouldShow: (object: any) => this.shouldShowWorkState(object)
 		},
 		familyCity: {
 			label: 'Family city',
-			type: 'city'
+			type: 'city',
+			props: (object: any) => {
+				let props = {};
+				if (object.familyState) {
+					props = Object.assign({}, props, {
+						stateId: object.familyState.id
+					});
+				}
+				return props;
+			},
+			shouldShow: (object: any) => this.shouldShowWorkCity(object)
 		},
 		interCasteParents: {
 			label: 'Inter caste marriage of Parents?',
@@ -213,6 +238,21 @@ class FamilyTable extends React.Component<
 			label: "Family's Medical History",
 			type: 'string'
 		}
+	};
+
+	shouldShowWorkState = function(object: any) {
+		if (object.familyCountry) {
+			return true;
+		}
+
+		return false;
+	};
+	shouldShowWorkCity = function(object: any) {
+		if (object.familyState) {
+			return true;
+		}
+
+		return false;
 	};
 
 	render() {
