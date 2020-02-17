@@ -330,12 +330,7 @@ class ProfessionTable extends React.Component<
 				return props;
 			}
 		}
-
-	/// componentDidMount() {
-	// if (profession.country is no null) {
-	//  this.mappings.workState.show
-	//   }
-	/// }
+	};
 
 	render() {
 		const { profession, userProfileId, updateProfession, editable } = this.props;
