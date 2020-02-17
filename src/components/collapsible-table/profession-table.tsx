@@ -296,7 +296,7 @@ class ProfessionTable extends React.Component<
 		workCountry: {
 			label: 'Work Country',
 			type: 'country',
-			onUpdate: (object: any, value: any) => {
+			onUpdate: (object: any, _value: any) => {
 				object['workState'] = null;
 				object['workCity'] = null;
 				return object;
@@ -332,14 +332,14 @@ class ProfessionTable extends React.Component<
 		}
 	};
 
-	shouldShowWorkState = function(object) {
+	shouldShowWorkState = function(object: any) {
 		if (object.workCountry) {
 			return true;
 		}
 
 		return false;
 	};
-	shouldShowWorkCity = function(object) {
+	shouldShowWorkCity = function(object: any) {
 		if (object.workState) {
 			return true;
 		}

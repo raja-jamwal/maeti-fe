@@ -9,8 +9,6 @@ import { includes, head } from 'lodash';
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { Ionicons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
-import EditProfileScreen from '../../screens/EditProfileScreen';
 
 export enum WORLD_OPTION {
 	COUNTRY = 'country',
@@ -30,8 +28,6 @@ interface IWorldSelectorProps {
 	toggleShowModal: () => any;
 	countryId?: number;
 	stateId?: number;
-	setState?: boolean;
-	setCountry?: boolean;
 }
 
 interface IWorldSelectorState {
@@ -40,7 +36,7 @@ interface IWorldSelectorState {
 	regions: Region[];
 	cities: City[];
 	selection: SelectionResult;
-	screen: WORLD_OPTION;
+	screen?: WORLD_OPTION;
 	filterText: string;
 }
 
@@ -164,7 +160,7 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 	}
 
 	getData() {
-		const { countries, regions, cities, screen, filterText } = this.state;
+		const { countries, regions, cities, filterText } = this.state;
 
 		const selectedScreen = head(this.props.options);
 		if (!selectedScreen) return [];
@@ -261,7 +257,7 @@ class WorldSelectorField extends React.Component<
 
 	render() {
 		const { showModal } = this.state;
-		const { options, onSelect, value, countryId, stateId, setState, setCountry } = this.props;
+		const { options, onSelect, value, countryId, stateId } = this.props;
 		return (
 			<View>
 				<TouchableBtn onPress={() => this.toggleShowModal()}>
@@ -284,10 +280,8 @@ class WorldSelectorField extends React.Component<
 								this.toggleShowModal();
 							}}
 							toggleShowModal={() => this.toggleShowModal()}
-							countryId={this.props.countryId}
-							stateId={this.props.stateId}
-							setState={this.props.setState}
-							setCountry={this.props.setCountry}
+							countryId={countryId}
+							stateId={stateId}
 						/>
 					</View>
 				</Modal>

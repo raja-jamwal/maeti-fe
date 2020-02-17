@@ -240,14 +240,14 @@ class FamilyTable extends React.Component<
 		}
 	};
 
-	shouldShowWorkState = function(object) {
+	shouldShowWorkState = function(object: any) {
 		if (object.familyCountry) {
 			return true;
 		}
 
 		return false;
 	};
-	shouldShowWorkCity = function(object) {
+	shouldShowWorkCity = function(object: any) {
 		if (object.familyState) {
 			return true;
 		}
