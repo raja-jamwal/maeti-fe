@@ -132,7 +132,8 @@ class FamilyTable extends React.Component<
 					});
 				}
 				return props;
-			}
+			},
+			shouldShow: (object: any) => this.shouldShowWorkState(object)
 		},
 		familyCity: {
 			label: 'Family city',
@@ -146,7 +147,8 @@ class FamilyTable extends React.Component<
 					});
 				}
 				return props;
-			}
+			},
+			shouldShow: (object: any) => this.shouldShowWorkCity(object)
 		},
 		interCasteParents: {
 			label: 'Inter caste marriage of Parents?',
@@ -238,6 +240,21 @@ class FamilyTable extends React.Component<
 			label: "Family's Medical History",
 			type: 'string'
 		}
+	};
+
+	shouldShowWorkState = function(object) {
+		if (object.familyCountry) {
+			return true;
+		}
+
+		return false;
+	};
+	shouldShowWorkCity = function(object) {
+		if (object.familyState) {
+			return true;
+		}
+
+		return false;
 	};
 
 	render() {

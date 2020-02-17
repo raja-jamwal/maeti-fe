@@ -71,9 +71,9 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 	}
 
 	componentDidMount() {
-		if (this.props.stateId && this.props.setState) {
+		if (this.props.stateId) {
 			return this.mayBeFetchCities(this.props.stateId);
-		} else if (this.props.countryId && this.props.setCountry) {
+		} else if (this.props.countryId) {
 			return this.mayBeFetchRegions(this.props.countryId);
 		} else {
 			return this.mayBeFetchCountryList();
@@ -229,20 +229,12 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 	}
 }
 
-const mapStateToProps = state => {
-	return { object: state.object };
-};
-
-export default connect(mapStateToProps)(WorldSelector);
-
 interface IWorldSelectorFieldProps {
 	options: WORLD_OPTION[];
 	onSelect: (selection: SelectionResult) => void;
 	value: string;
 	stateId?: number;
 	countryId?: number;
-	setState?: boolean;
-	setCountry?: boolean;
 }
 
 interface IWorldSelectorFieldState {

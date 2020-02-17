@@ -306,7 +306,7 @@ class ProfessionTable extends React.Component<
 			label: 'Work State',
 			type: 'state',
 			props: (object: any) => {
-				let props = { setCountry: 'false', countryId: '' };
+				let props = { countryId: '' };
 				if (object.workCountry) {
 					props = Object.assign({}, props, {
 						setCountry: true,
@@ -314,13 +314,14 @@ class ProfessionTable extends React.Component<
 					});
 				}
 				return props;
-			}
+			},
+			shouldShow: (object: any) => this.shouldShowWorkState(object)
 		},
 		workCity: {
 			label: 'Work City',
 			type: 'city',
 			props: (object: any) => {
-				let props = { setState: 'false', stateId: '' };
+				let props = { stateId: '' };
 				if (object.workState) {
 					props = Object.assign({}, props, {
 						setState: true,
@@ -328,10 +329,25 @@ class ProfessionTable extends React.Component<
 					});
 				}
 				return props;
-			}
+			},
+			shouldShow: (object: any) => this.shouldShowWorkCity(object)
 		}
 	};
 
+	shouldShowWorkState = function(object) {
+		if (object.workCountry) {
+			return true;
+		}
+
+		return false;
+	};
+	shouldShowWorkCity = function(object) {
+		if (object.workState) {
+			return true;
+		}
+
+		return false;
+	};
 	render() {
 		const { profession, userProfileId, updateProfession, editable } = this.props;
 		if (!profession) return null;
