@@ -31,7 +31,7 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 	render() {
 		const { label, children, isAccountPaid } = this.props;
 		const { showPayment } = this.state;
-		if (isAccountPaid) {
+		if (true) {
 			return children;
 		}
 

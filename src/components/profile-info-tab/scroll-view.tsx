@@ -20,6 +20,7 @@ import { getLogger } from '../../utils/logger';
 import ProfileActivity from '../profile-card/profile-activity';
 import ConnectedPurchaseButton from 'src/components/purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import { ApiRequest } from '../../utils';
 
 interface IProfileInfoTabProps {
 	userProfileId: number;
@@ -32,6 +33,7 @@ interface IProfileInfoTabState {
 	route: string;
 	loadingViewedMyContact: boolean;
 	isViewedMyContact: boolean;
+	userObj: boolean;
 }
 
 export default class ProfileInfoTab extends React.Component<
@@ -45,12 +47,31 @@ export default class ProfileInfoTab extends React.Component<
 		this.state = {
 			route: 'personal',
 			loadingViewedMyContact: true,
-			isViewedMyContact: false
+			isViewedMyContact: false,
+			userObj: false
 		};
 		this._handleRouteChange = this._handleRouteChange.bind(this);
 		this._renderScene = this._renderScene.bind(this);
+		//let userObj = this.chan();
 	}
+	async chan() {
+		let chan = null;
 
+		// fetch channel from API
+		try {
+			const { userProfileId, selfProfileId } = this.props;
+			console.log('#########################', selfProfileId);
+			chan = await ApiRequest(API.CHANNEL.GET, {
+				fromUserId: selfProfileId,
+				toUserId: userProfileId
+			});
+		} catch (er) {
+			console.log('No channel exists for these 2 users');
+			return this.setState({ userObj: false });
+		}
+
+		return this.setState({ userObj: true });
+	}
 	async componentDidMount() {
 		const { userProfileId, selfProfileId, getViewedMyContact } = this.props;
 		if (!!userProfileId && !!selfProfileId && userProfileId === selfProfileId) {
@@ -63,6 +84,8 @@ export default class ProfileInfoTab extends React.Component<
 		/*
 			This will never fail, resolves in all cases
 		 */
+		//const userObj =  this.chan().toUser === userProfileId ? true : false;
+
 		const isContactViewed = await getViewedMyContact(userProfileId);
 		this.setState({
 			loadingViewedMyContact: false,
@@ -125,29 +148,79 @@ export default class ProfileInfoTab extends React.Component<
 		let tab = null;
 		switch (route) {
 			case 'personal':
-				tab = (
-					<View style={styles.scene}>
-						<VerificationTable userProfileId={userProfileId} editable={false} />
-						<ProfileTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<EducationTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<ProfessionTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<HoroscopeTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<InvestmentTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<LifestyleTable userProfileId={userProfileId} editable={isSelfProfile} />
-
-						<ConnectedPurchaseButton label="Purchase plan to see Contact Information">
-							{this.maybeRenderContactTable(isSelfProfile)}
-						</ConnectedPurchaseButton>
-
-						<ConnectedPurchaseButton label="Purchase plan to see References">
-							<ReferenceTable
+				if (this.state.userObj == true) {
+					tab = (
+						<View style={styles.scene}>
+							<VerificationTable userProfileId={userProfileId} editable={false} />
+							<ProfileTable userProfileId={userProfileId} editable={isSelfProfile} />
+							<EducationTable
 								userProfileId={userProfileId}
 								editable={isSelfProfile}
 							/>
-						</ConnectedPurchaseButton>
-					</View>
-				);
-				break;
+							<ProfessionTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+							<HoroscopeTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+							<InvestmentTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+							<LifestyleTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+							<ConnectedPurchaseButton label="Purchase plan to see Contact Information">
+								{this.maybeRenderContactTable(isSelfProfile)}
+							</ConnectedPurchaseButton>
+							<ConnectedPurchaseButton label="Purchase plan to see References">
+								<ReferenceTable
+									userProfileId={userProfileId}
+									editable={isSelfProfile}
+								/>
+							</ConnectedPurchaseButton>
+						</View>
+					);
+					break;
+				} else {
+					tab = (
+						<View style={styles.scene}>
+							<VerificationTable userProfileId={userProfileId} editable={false} />
+							<ProfileTable userProfileId={userProfileId} editable={isSelfProfile} />
+							<EducationTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+							<ProfessionTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+							<HoroscopeTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+							<InvestmentTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+							<LifestyleTable
+								userProfileId={userProfileId}
+								editable={isSelfProfile}
+							/>
+
+							<ConnectedPurchaseButton label="Purchase plan to see References">
+								<ReferenceTable
+									userProfileId={userProfileId}
+									editable={isSelfProfile}
+								/>
+							</ConnectedPurchaseButton>
+						</View>
+					);
+					break;
+				}
 			case 'family':
 				tab = (
 					<View>
@@ -178,6 +251,8 @@ export default class ProfileInfoTab extends React.Component<
 	render() {
 		const { userProfileId } = this.props;
 		if (!userProfileId) return null;
+		this.chan();
+
 		return (
 			<ScrollView
 				stickyHeaderIndices={[1]}
