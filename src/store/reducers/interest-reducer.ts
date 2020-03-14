@@ -7,6 +7,7 @@ import { API } from '../../config/API';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
 import { addProfile, bulkAddProfile } from './user-profile-reducer';
 import { getCurrentUserProfileId } from './self-profile-reducer';
+import { getLogger } from '../../utils/logger';
 
 export interface IInterestState {
 	incoming: {
@@ -149,6 +150,36 @@ export const fetchAcceptedInterests = function() {
 			});
 	};
 };
+// 1 -> 2 interest accepted
+// 2 -> 1 interest or accepted
+
+export const isInterestAccepted = function(fromUserId: number, toUserId: number) {
+	return async (_dispatch: Dispatch<any>, getState: () => IRootState) => {
+		console.log('^^^^^^^^^^^^^^^^^^', fromUserId);
+
+		// let firstInterest;
+		// try {
+		// 	firstInterest = await ApiRequest(API.INTEREST.GET, {});
+		// } catch (err) {
+		// 	firstInterest = err;
+		// }
+		//
+		// return firstInterest;
+	};
+};
+
+//console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', firstInterest);
+//const secondInterest =
+// ||
+// if response status is accepted
+// return Promise.reject(false);
+
+//return new Promise(resolve => {
+//resolve("abc");
+
+//
+// return API..calll (interest.get) {
+// status -> accpted
 
 export const fetchSentInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {

@@ -21,6 +21,7 @@ import ProfileActivity from '../profile-card/profile-activity';
 import ConnectedPurchaseButton from 'src/components/purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { ApiRequest } from '../../utils';
+import { isInterestAccepted } from '../../store/reducers/interest-reducer';
 
 interface IProfileInfoTabProps {
 	userProfileId: number;
@@ -148,79 +149,28 @@ export default class ProfileInfoTab extends React.Component<
 		let tab = null;
 		switch (route) {
 			case 'personal':
-				if (this.state.userObj == true) {
-					tab = (
-						<View style={styles.scene}>
-							<VerificationTable userProfileId={userProfileId} editable={false} />
-							<ProfileTable userProfileId={userProfileId} editable={isSelfProfile} />
-							<EducationTable
+				tab = (
+					<View style={styles.scene}>
+						<VerificationTable userProfileId={userProfileId} editable={false} />
+						<ProfileTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<EducationTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<ProfessionTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<HoroscopeTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<InvestmentTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<LifestyleTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<ConnectedPurchaseButton label="Purchase plan to see Contact Information">
+							{this.maybeRenderContactTable(isSelfProfile)}
+						</ConnectedPurchaseButton>
+						<ConnectedPurchaseButton label="Purchase plan to see References">
+							<ReferenceTable
 								userProfileId={userProfileId}
 								editable={isSelfProfile}
 							/>
-							<ProfessionTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
-							<HoroscopeTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
-							<InvestmentTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
-							<LifestyleTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
-							<ConnectedPurchaseButton label="Purchase plan to see Contact Information">
-								{this.maybeRenderContactTable(isSelfProfile)}
-							</ConnectedPurchaseButton>
-							<ConnectedPurchaseButton label="Purchase plan to see References">
-								<ReferenceTable
-									userProfileId={userProfileId}
-									editable={isSelfProfile}
-								/>
-							</ConnectedPurchaseButton>
-						</View>
-					);
-					break;
-				} else {
-					tab = (
-						<View style={styles.scene}>
-							<VerificationTable userProfileId={userProfileId} editable={false} />
-							<ProfileTable userProfileId={userProfileId} editable={isSelfProfile} />
-							<EducationTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
-							<ProfessionTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
-							<HoroscopeTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
-							<InvestmentTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
-							<LifestyleTable
-								userProfileId={userProfileId}
-								editable={isSelfProfile}
-							/>
+						</ConnectedPurchaseButton>
+					</View>
+				);
+				break;
 
-							<ConnectedPurchaseButton label="Purchase plan to see References">
-								<ReferenceTable
-									userProfileId={userProfileId}
-									editable={isSelfProfile}
-								/>
-							</ConnectedPurchaseButton>
-						</View>
-					);
-					break;
-				}
 			case 'family':
 				tab = (
 					<View>
@@ -249,10 +199,12 @@ export default class ProfileInfoTab extends React.Component<
 	}
 
 	render() {
-		const { userProfileId } = this.props;
+		const { userProfileId, selfProfileId } = this.props;
 		if (!userProfileId) return null;
-		this.chan();
+		//this.chan();
 
+		let a = isInterestAccepted(selfProfileId, userProfileId);
+		console.log('#####################', a());
 		return (
 			<ScrollView
 				stickyHeaderIndices={[1]}
