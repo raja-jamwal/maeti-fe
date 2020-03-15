@@ -7,6 +7,7 @@ import { API } from '../../config/API';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
 import { addProfile, bulkAddProfile } from './user-profile-reducer';
 import { getCurrentUserProfileId } from './self-profile-reducer';
+import { getLogger } from '../../utils/logger';
 
 export interface IInterestState {
 	incoming: {
@@ -84,12 +85,13 @@ export const setSentInterestRefreshing = createAction(SET_SEND_INTEREST_REFRESHI
 export const fetchIncomingInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		const state = getState();
+		const logger = getLogger(fetchIncomingInterests);
 		const currentUserId = getCurrentUserProfileId(state);
 		const currentPage = getState().interests.incoming.pageable;
 
 		if (!currentUserId || currentPage.last) return;
 
-		console.log('fetching incoming');
+		logger.log('fetching incoming');
 		dispatch(setIncomingInterestFetching(true));
 
 		const pageToRequest = currentPage.number + 1;
@@ -108,7 +110,7 @@ export const fetchIncomingInterests = function() {
 				dispatch(setIncomingInterestFetching(false));
 			})
 			.catch(err => {
-				console.log('fetch failed for incoming interests ', err);
+				logger.log('fetch failed for incoming interests ', err);
 				dispatch(setIncomingInterestFetching(false));
 			});
 	};
@@ -117,12 +119,13 @@ export const fetchIncomingInterests = function() {
 export const fetchAcceptedInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		const state = getState();
+		const logger = getLogger(fetchAcceptedInterests);
 		const currentUserId = getCurrentUserProfileId(state);
 		const currentPage = getState().interests.accepted.pageable;
 
 		if (!currentUserId || currentPage.last) return;
 
-		console.log('fetching accepted');
+		logger.log('fetching accepted');
 		dispatch(setAcceptedInterestFetching(true));
 
 		const pageToRequest = currentPage.number + 1;
@@ -144,21 +147,57 @@ export const fetchAcceptedInterests = function() {
 				dispatch(setAcceptedInterestFetching(false));
 			})
 			.catch(err => {
-				console.log('err fetching accepted ', err);
+				logger.log('err fetching accepted ', err);
 				dispatch(setAcceptedInterestFetching(false));
 			});
+	};
+};
+
+export const isInterestAccepted = function(fromUserId: number, toUserId: number) {
+	const logger = getLogger(isInterestAccepted);
+
+	return async (_dispatch: Dispatch<any>, _getState: () => IRootState) => {
+		logger.log('fetching isInterestAccepted');
+
+		try {
+			const interestFromUser = (await ApiRequest(API.INTEREST.GET, {
+				fromUserId,
+				toUserId
+			})) as Interest;
+			if (interestFromUser.status === 'accepted') {
+				return Promise.resolve(true);
+			}
+		} catch (err) {
+			logger.log(err);
+		}
+
+		try {
+			const interestToUser = (await ApiRequest(API.INTEREST.GET, {
+				fromUserId: toUserId,
+				toUserId: fromUserId
+			})) as Interest;
+
+			if (interestToUser.status === 'accepted') {
+				return Promise.resolve(true);
+			}
+		} catch (err) {
+			logger.log(err);
+		}
+
+		return Promise.resolve(false);
 	};
 };
 
 export const fetchSentInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		const state = getState();
+		const logger = getLogger(fetchSentInterests);
 		const currentUserId = getCurrentUserProfileId(state);
 		const currentPage = getState().interests.sent.pageable;
 
 		if (!currentUserId || currentPage.last) return;
 
-		console.log('fetching sent');
+		logger.log('fetching sent');
 		dispatch(setSentInterestFetching(true));
 
 		const pageToRequest = currentPage.number + 1;
@@ -179,7 +218,7 @@ export const fetchSentInterests = function() {
 				dispatch(setSentInterestFetching(false));
 			})
 			.catch(err => {
-				console.log('fetch failed for sent interests ', err);
+				logger.log('fetch failed for sent interests ', err);
 				dispatch(setSentInterestFetching(false));
 			});
 	};

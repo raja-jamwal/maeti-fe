@@ -26,12 +26,14 @@ interface IProfileInfoTabProps {
 	selfProfileId: number;
 	getViewedMyContact: (userProfileId: number) => any;
 	saveViewedMyContact: (userProfileId: number) => any;
+	isInterestAccepted: (fromUserId: number, toUserId: number) => any;
 }
 
 interface IProfileInfoTabState {
 	route: string;
 	loadingViewedMyContact: boolean;
 	isViewedMyContact: boolean;
+	isInterestAccepted: boolean;
 }
 
 export default class ProfileInfoTab extends React.Component<
@@ -45,14 +47,15 @@ export default class ProfileInfoTab extends React.Component<
 		this.state = {
 			route: 'personal',
 			loadingViewedMyContact: true,
-			isViewedMyContact: false
+			isViewedMyContact: false,
+			isInterestAccepted: false
 		};
 		this._handleRouteChange = this._handleRouteChange.bind(this);
 		this._renderScene = this._renderScene.bind(this);
 	}
 
 	async componentDidMount() {
-		const { userProfileId, selfProfileId, getViewedMyContact } = this.props;
+		const { userProfileId, selfProfileId, getViewedMyContact, isInterestAccepted } = this.props;
 		if (!!userProfileId && !!selfProfileId && userProfileId === selfProfileId) {
 			return this.setState({
 				loadingViewedMyContact: false,
@@ -63,10 +66,13 @@ export default class ProfileInfoTab extends React.Component<
 		/*
 			This will never fail, resolves in all cases
 		 */
+		const isAccepted = await isInterestAccepted(selfProfileId, userProfileId);
 		const isContactViewed = await getViewedMyContact(userProfileId);
+
 		this.setState({
 			loadingViewedMyContact: false,
-			isViewedMyContact: isContactViewed
+			isViewedMyContact: isContactViewed,
+			isInterestAccepted: isAccepted
 		});
 	}
 
@@ -94,24 +100,35 @@ export default class ProfileInfoTab extends React.Component<
 	}
 
 	markContactAsViewedBtn() {
-		return (
-			<TouchableBtn onPress={() => this.markContactAsViewed()}>
-				<View style={styles.contactActionBtn}>
-					<Text style={styles.btnLabel}>View Contact</Text>
+		if (this.state.isInterestAccepted === true) {
+			return (
+				<TouchableBtn
+					onPress={() => {
+						this.markContactAsViewed();
+					}}
+				>
+					<View style={styles.contactActionBtn}>
+						<Text style={styles.btnLabel}>View Contact</Text>
+					</View>
+				</TouchableBtn>
+			);
+		} else {
+			return (
+				<View>
+					<Text>Your interest must be accepted to view contact</Text>
 				</View>
-			</TouchableBtn>
-		);
+			);
+		}
 	}
 
 	maybeRenderContactTable(isSelfProfile: boolean) {
-		const { loadingViewedMyContact, isViewedMyContact } = this.state;
+		const { loadingViewedMyContact } = this.state;
 		const { userProfileId } = this.props;
 
 		if (loadingViewedMyContact) {
 			return <Throbber size="small" />;
 		}
-
-		return isViewedMyContact ? (
+		return this.state.isViewedMyContact && this.state.isInterestAccepted ? (
 			<ContactTable userProfileId={userProfileId} editable={isSelfProfile} />
 		) : (
 			this.markContactAsViewedBtn()
@@ -119,7 +136,7 @@ export default class ProfileInfoTab extends React.Component<
 	}
 
 	_renderScene() {
-		const { route, loadingViewedMyContact, isViewedMyContact } = this.state;
+		const { route } = this.state;
 		const { userProfileId, selfProfileId } = this.props;
 		const isSelfProfile = userProfileId === selfProfileId;
 		let tab = null;

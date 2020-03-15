@@ -13,6 +13,7 @@ import {
 	markProfileAsViewed,
 	saveViewedMyContact
 } from '../store/reducers/user-profile-reducer';
+import { isInterestAccepted } from '../store/reducers/interest-reducer';
 
 interface IProfileScreenMapStateToProps {
 	selfProfileId?: number | null;
@@ -22,6 +23,7 @@ interface IProfileScreenMapDispatchToProps {
 	markProfileAsViewed: (userProfileId: number) => any;
 	saveViewedMyContact: (userProfileId: number) => any;
 	getViewedMyContact: (userProfileId: number) => any;
+	isInterestAccepted: (fromUserId: number, toUserId: number) => any;
 }
 
 type IProfileScreenProps = NavigationInjectedProps &
@@ -46,7 +48,13 @@ class ProfileScreen extends React.Component<IProfileScreenProps> {
 	}
 
 	render() {
-		const { navigation, selfProfileId, saveViewedMyContact, getViewedMyContact } = this.props;
+		const {
+			navigation,
+			selfProfileId,
+			saveViewedMyContact,
+			getViewedMyContact,
+			isInterestAccepted
+		} = this.props;
 		const userProfileId = navigation.getParam('userProfileId');
 		if (!userProfileId || !selfProfileId) return null;
 		const showInterestMessageBar = !!selfProfileId && userProfileId !== selfProfileId;
@@ -57,6 +65,7 @@ class ProfileScreen extends React.Component<IProfileScreenProps> {
 					selfProfileId={selfProfileId}
 					saveViewedMyContact={saveViewedMyContact}
 					getViewedMyContact={getViewedMyContact}
+					isInterestAccepted={isInterestAccepted}
 				/>
 				{showInterestMessageBar && <InterestMessageBar userProfileId={userProfileId} />}
 			</View>
@@ -75,7 +84,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
 		markProfileAsViewed: bindActionCreators(markProfileAsViewed, dispatch),
 		saveViewedMyContact: bindActionCreators(saveViewedMyContact, dispatch),
-		getViewedMyContact: bindActionCreators(getViewedMyContact, dispatch)
+		getViewedMyContact: bindActionCreators(getViewedMyContact, dispatch),
+		isInterestAccepted: bindActionCreators(isInterestAccepted, dispatch)
 	};
 };
 
