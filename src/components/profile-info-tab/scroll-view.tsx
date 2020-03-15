@@ -20,21 +20,20 @@ import { getLogger } from '../../utils/logger';
 import ProfileActivity from '../profile-card/profile-activity';
 import ConnectedPurchaseButton from 'src/components/purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
-import { ApiRequest } from '../../utils';
-import { isInterestAccepted } from '../../store/reducers/interest-reducer';
 
 interface IProfileInfoTabProps {
 	userProfileId: number;
 	selfProfileId: number;
 	getViewedMyContact: (userProfileId: number) => any;
 	saveViewedMyContact: (userProfileId: number) => any;
+	isInterestAccepted: (fromUserId: number, toUserId: number) => any;
 }
 
 interface IProfileInfoTabState {
 	route: string;
 	loadingViewedMyContact: boolean;
 	isViewedMyContact: boolean;
-	userObj: boolean;
+	isInterestAccepted: boolean;
 }
 
 export default class ProfileInfoTab extends React.Component<
@@ -49,30 +48,12 @@ export default class ProfileInfoTab extends React.Component<
 			route: 'personal',
 			loadingViewedMyContact: true,
 			isViewedMyContact: false,
-			userObj: false
+			isInterestAccepted: false
 		};
 		this._handleRouteChange = this._handleRouteChange.bind(this);
 		this._renderScene = this._renderScene.bind(this);
-		//let userObj = this.chan();
 	}
-	async chan() {
-		let chan = null;
 
-		// fetch channel from API
-		try {
-			const { userProfileId, selfProfileId } = this.props;
-			console.log('#########################', selfProfileId);
-			chan = await ApiRequest(API.CHANNEL.GET, {
-				fromUserId: selfProfileId,
-				toUserId: userProfileId
-			});
-		} catch (er) {
-			console.log('No channel exists for these 2 users');
-			return this.setState({ userObj: false });
-		}
-
-		return this.setState({ userObj: true });
-	}
 	async componentDidMount() {
 		const { userProfileId, selfProfileId, getViewedMyContact } = this.props;
 		if (!!userProfileId && !!selfProfileId && userProfileId === selfProfileId) {
@@ -85,12 +66,14 @@ export default class ProfileInfoTab extends React.Component<
 		/*
 			This will never fail, resolves in all cases
 		 */
-		//const userObj =  this.chan().toUser === userProfileId ? true : false;
+		const isAccepted = await this.props.isInterestAccepted(selfProfileId, userProfileId);
 
 		const isContactViewed = await getViewedMyContact(userProfileId);
+
 		this.setState({
 			loadingViewedMyContact: false,
-			isViewedMyContact: isContactViewed
+			isViewedMyContact: isContactViewed,
+			isInterestAccepted: await isAccepted()
 		});
 	}
 
@@ -118,24 +101,35 @@ export default class ProfileInfoTab extends React.Component<
 	}
 
 	markContactAsViewedBtn() {
-		return (
-			<TouchableBtn onPress={() => this.markContactAsViewed()}>
-				<View style={styles.contactActionBtn}>
-					<Text style={styles.btnLabel}>View Contact</Text>
+		if (this.state.isInterestAccepted === true) {
+			return (
+				<TouchableBtn
+					onPress={() => {
+						this.markContactAsViewed();
+					}}
+				>
+					<View style={styles.contactActionBtn}>
+						<Text style={styles.btnLabel}>View Contact</Text>
+					</View>
+				</TouchableBtn>
+			);
+		} else {
+			return (
+				<View>
+					<Text>Your interest must be accepted to view contact</Text>
 				</View>
-			</TouchableBtn>
-		);
+			);
+		}
 	}
 
 	maybeRenderContactTable(isSelfProfile: boolean) {
-		const { loadingViewedMyContact, isViewedMyContact } = this.state;
+		const { loadingViewedMyContact } = this.state;
 		const { userProfileId } = this.props;
 
 		if (loadingViewedMyContact) {
 			return <Throbber size="small" />;
 		}
-
-		return isViewedMyContact ? (
+		return this.state.isViewedMyContact && this.state.isInterestAccepted ? (
 			<ContactTable userProfileId={userProfileId} editable={isSelfProfile} />
 		) : (
 			this.markContactAsViewedBtn()
@@ -143,7 +137,7 @@ export default class ProfileInfoTab extends React.Component<
 	}
 
 	_renderScene() {
-		const { route, loadingViewedMyContact, isViewedMyContact } = this.state;
+		const { route } = this.state;
 		const { userProfileId, selfProfileId } = this.props;
 		const isSelfProfile = userProfileId === selfProfileId;
 		let tab = null;
@@ -158,9 +152,11 @@ export default class ProfileInfoTab extends React.Component<
 						<HoroscopeTable userProfileId={userProfileId} editable={isSelfProfile} />
 						<InvestmentTable userProfileId={userProfileId} editable={isSelfProfile} />
 						<LifestyleTable userProfileId={userProfileId} editable={isSelfProfile} />
+
 						<ConnectedPurchaseButton label="Purchase plan to see Contact Information">
 							{this.maybeRenderContactTable(isSelfProfile)}
 						</ConnectedPurchaseButton>
+
 						<ConnectedPurchaseButton label="Purchase plan to see References">
 							<ReferenceTable
 								userProfileId={userProfileId}
@@ -170,7 +166,6 @@ export default class ProfileInfoTab extends React.Component<
 					</View>
 				);
 				break;
-
 			case 'family':
 				tab = (
 					<View>
@@ -199,12 +194,8 @@ export default class ProfileInfoTab extends React.Component<
 	}
 
 	render() {
-		const { userProfileId, selfProfileId } = this.props;
+		const { userProfileId } = this.props;
 		if (!userProfileId) return null;
-		//this.chan();
-
-		let a = isInterestAccepted(selfProfileId, userProfileId);
-		console.log('#####################', a());
 		return (
 			<ScrollView
 				stickyHeaderIndices={[1]}

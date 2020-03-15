@@ -1,13 +1,11 @@
 import * as React from 'react';
 import CollapsibleTable from './index';
-import { Channel, ContactInformation } from '../../store/reducers/account-defination';
+import { ContactInformation } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store/index';
 import { connect } from 'react-redux';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateContactInformation } from '../../store/reducers/user-profile-reducer';
 import { Action } from 'redux-actions';
-import { ApiRequest } from '../../utils';
-import { API } from '../../config/API';
 
 interface IContactTableProps {
 	userProfileId: number;
@@ -96,7 +94,6 @@ class ContactTable extends React.Component<
 			editable
 		} = this.props;
 		if (!contactInformation) return null;
-
 		return (
 			<CollapsibleTable
 				title="Contact Information"

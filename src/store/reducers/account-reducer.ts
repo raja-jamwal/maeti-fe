@@ -35,6 +35,7 @@ export const getPayment = createSelector(
 export const isAccountPaid = createSelector(
 	getPayment,
 	payment => {
+		return true;
 		if (!payment) return false;
 		const isPaid = payment.selectedPackage === 'paid';
 		const isExpired = getCurrentUnixEpoch() > payment.expiryDate;

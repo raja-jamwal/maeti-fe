@@ -297,14 +297,14 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 		return (
 			<View style={styles.row}>
 				{interestState === InterestStates.SHOW_INTEREST && (
-					//<ConnectedPurchaseButton label="Purchase plan to send Interest">
-					<TouchableBtn style={{ flex: 1 }} onPress={() => this.showInterest()}>
-						<View style={styles.btnContainer}>
-							<Ionicons name="md-flash" size={20} color="white" />
-							<Text style={styles.text}>Show Interest</Text>
-						</View>
-					</TouchableBtn>
-					//</ConnectedPurchaseButton>
+					<ConnectedPurchaseButton label="Purchase plan to send Interest">
+						<TouchableBtn style={{ flex: 1 }} onPress={() => this.showInterest()}>
+							<View style={styles.btnContainer}>
+								<Ionicons name="md-flash" size={20} color="white" />
+								<Text style={styles.text}>Show Interest</Text>
+							</View>
+						</TouchableBtn>
+					</ConnectedPurchaseButton>
 				)}
 				{interestState !== InterestStates.SHOW_INTEREST && (
 					<View style={styles.statusContainer}>{this.renderInterestStatus()}</View>

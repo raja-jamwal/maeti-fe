@@ -150,36 +150,42 @@ export const fetchAcceptedInterests = function() {
 			});
 	};
 };
-// 1 -> 2 interest accepted
-// 2 -> 1 interest or accepted
 
 export const isInterestAccepted = function(fromUserId: number, toUserId: number) {
-	return async (_dispatch: Dispatch<any>, getState: () => IRootState) => {
-		console.log('^^^^^^^^^^^^^^^^^^', fromUserId);
+	const logger = getLogger(isInterestAccepted);
+	logger.log('fetching isInterestAccepted');
 
-		// let firstInterest;
-		// try {
-		// 	firstInterest = await ApiRequest(API.INTEREST.GET, {});
-		// } catch (err) {
-		// 	firstInterest = err;
-		// }
-		//
-		// return firstInterest;
+	return async (_disatch: Dispatch<any>, getState: () => IRootState) => {
+		console.log('fetching isInterestAccepted');
+
+		try {
+			const interestFromUser = (await ApiRequest(API.INTEREST.GET, {
+				fromUserId,
+				toUserId
+			})) as Interest;
+			if (interestFromUser.status === 'accepted') {
+				return Promise.resolve(true);
+			}
+		} catch (err) {
+			logger.log(err);
+		}
+
+		try {
+			const interestToUser = (await ApiRequest(API.INTEREST.GET, {
+				fromUserId: toUserId,
+				toUserId: fromUserId
+			})) as Interest;
+
+			if (interestToUser.status === 'accepted') {
+				return Promise.resolve(true);
+			}
+		} catch (err) {
+			logger.log(err);
+		}
+
+		return Promise.resolve(false);
 	};
 };
-
-//console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', firstInterest);
-//const secondInterest =
-// ||
-// if response status is accepted
-// return Promise.reject(false);
-
-//return new Promise(resolve => {
-//resolve("abc");
-
-//
-// return API..calll (interest.get) {
-// status -> accpted
 
 export const fetchSentInterests = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
