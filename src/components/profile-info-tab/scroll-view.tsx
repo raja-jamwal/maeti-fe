@@ -55,7 +55,7 @@ export default class ProfileInfoTab extends React.Component<
 	}
 
 	async componentDidMount() {
-		const { userProfileId, selfProfileId, getViewedMyContact } = this.props;
+		const { userProfileId, selfProfileId, getViewedMyContact, isInterestAccepted } = this.props;
 		if (!!userProfileId && !!selfProfileId && userProfileId === selfProfileId) {
 			return this.setState({
 				loadingViewedMyContact: false,
@@ -66,14 +66,13 @@ export default class ProfileInfoTab extends React.Component<
 		/*
 			This will never fail, resolves in all cases
 		 */
-		const isAccepted = await this.props.isInterestAccepted(selfProfileId, userProfileId);
-
+		const isAccepted = await isInterestAccepted(selfProfileId, userProfileId);
 		const isContactViewed = await getViewedMyContact(userProfileId);
 
 		this.setState({
 			loadingViewedMyContact: false,
 			isViewedMyContact: isContactViewed,
-			isInterestAccepted: await isAccepted()
+			isInterestAccepted: isAccepted
 		});
 	}
 

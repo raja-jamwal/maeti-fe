@@ -48,7 +48,13 @@ class ProfileScreen extends React.Component<IProfileScreenProps> {
 	}
 
 	render() {
-		const { navigation, selfProfileId, saveViewedMyContact, getViewedMyContact } = this.props;
+		const {
+			navigation,
+			selfProfileId,
+			saveViewedMyContact,
+			getViewedMyContact,
+			isInterestAccepted
+		} = this.props;
 		const userProfileId = navigation.getParam('userProfileId');
 		if (!userProfileId || !selfProfileId) return null;
 		const showInterestMessageBar = !!selfProfileId && userProfileId !== selfProfileId;
