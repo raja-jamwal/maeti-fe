@@ -384,7 +384,10 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			}
 		} catch (err) {
 			this.logger.log(err);
-			simpleAlert('Error', `Unable to upload your photo, Please contact support - ${err}`);
+			simpleAlert(
+				'Error',
+				`Unable create account, please check if already created with existing number!`
+			);
 			this.setState({
 				activeScreen: LOGIN_SCREENS.PICK_IMAGE
 			});
