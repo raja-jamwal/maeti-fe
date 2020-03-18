@@ -370,7 +370,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						}
 					})) as any;
 					if (!uploadedImage) {
-						throw new Error('unable to upload photo');
+						throw new Error('Unable create account, please check if already created!');
 					}
 					const account: Account = (await ApiRequest(API.ACCOUNT.CREATE, {
 						phoneNumber: `${callingCode}-${number}`,
