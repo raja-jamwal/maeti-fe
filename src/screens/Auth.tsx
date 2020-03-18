@@ -370,7 +370,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						}
 					})) as any;
 					if (!uploadedImage) {
-						throw new Error('Unable create account, please check if already created!');
+						throw new Error('unable to upload photo');
 					}
 					const account: Account = (await ApiRequest(API.ACCOUNT.CREATE, {
 						phoneNumber: `${callingCode}-${number}`,
@@ -384,7 +384,10 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			}
 		} catch (err) {
 			this.logger.log(err);
-			simpleAlert('Error', `Unable to upload your photo, Please contact support - ${err}`);
+			simpleAlert(
+				'Error',
+				`Unable create account, please check if already created with existing number!`
+			);
 			this.setState({
 				activeScreen: LOGIN_SCREENS.PICK_IMAGE
 			});
