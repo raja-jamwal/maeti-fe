@@ -30,7 +30,9 @@ function VerificationModal(
 				throw new Error('no account passed');
 			}
 			await SlackPostMessage(
-				`${account.id} is requesting verification callback, React with :eyes:`
+				`${
+					account.id
+				} is requesting verification callback. Agent looking into this, react with :eyes:`
 			);
 			setIsRequested(true);
 		} catch (err) {
