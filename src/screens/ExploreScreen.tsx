@@ -208,7 +208,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 			case 'empty-result':
 				return <EmptyResult />;
 			case 'purchase-button':
-				return <ConnectedPurchaseButton label="Premium feature purchase plan" />;
+				return <ConnectedPurchaseButton label="Premium feature Verify account" />;
 			default:
 				return null;
 		}

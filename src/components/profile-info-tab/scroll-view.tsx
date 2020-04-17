@@ -152,11 +152,11 @@ export default class ProfileInfoTab extends React.Component<
 						<InvestmentTable userProfileId={userProfileId} editable={isSelfProfile} />
 						<LifestyleTable userProfileId={userProfileId} editable={isSelfProfile} />
 
-						<ConnectedPurchaseButton label="Purchase plan to see Contact Information">
+						<ConnectedPurchaseButton label="Verify account to see Contact Information">
 							{this.maybeRenderContactTable(isSelfProfile)}
 						</ConnectedPurchaseButton>
 
-						<ConnectedPurchaseButton label="Purchase plan to see References">
+						<ConnectedPurchaseButton label="Verify account to see References">
 							<ReferenceTable
 								userProfileId={userProfileId}
 								editable={isSelfProfile}

@@ -13,6 +13,7 @@ import { Value } from '../components/text';
 import { Updates } from 'expo';
 import { getEnvironment } from '../utils/environment';
 import { getConfig } from '../config/config';
+import ConnectedVerificationModal from 'src/components/verification-modal/verification-modal';
 
 class MoreScreen extends React.Component {
 	static navigationOptions = {
@@ -70,7 +71,7 @@ class MoreScreen extends React.Component {
 					</View>
 				)}
 				{(!isPaid || isExpired) && (
-					<Button label="Purchase plan" onPress={() => this.toggleStartPayment()} />
+					<Button label="Verify account" onPress={() => this.toggleStartPayment()} />
 				)}
 				<View style={{ paddingTop: 10 }}>
 					<Button label="Logout" onPress={() => this.doLogout()} />
@@ -93,7 +94,7 @@ class MoreScreen extends React.Component {
 				<Text style={[styles.title]}>Maeti</Text>
 				<Text style={styles.offWhite}>Shindiyun Lae Sindhi Rishta</Text>
 				<Text style={styles.offWhite}>For support & help contact</Text>
-				<Text style={styles.offWhite}>feedback@domain.com</Text>
+				<Text style={styles.offWhite}>support@maeti.com</Text>
 
 				{this.renderPlanInformation()}
 
@@ -105,7 +106,13 @@ class MoreScreen extends React.Component {
 					<Value>OTA version : {otaVersion}</Value>
 				</View>
 
-				<ConnectedPaymentModal
+				{false && (
+					<ConnectedPaymentModal
+						show={showPayment}
+						requestClose={() => this.toggleStartPayment()}
+					/>
+				)}
+				<ConnectedVerificationModal
 					show={showPayment}
 					requestClose={() => this.toggleStartPayment()}
 				/>
