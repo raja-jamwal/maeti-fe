@@ -12,7 +12,6 @@ import * as Permissions from 'expo-permissions';
 import { IRootState } from '../index';
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
-import { cloneDeep } from 'lodash';
 
 export interface IAccountState extends ILocalAccount {}
 
@@ -35,7 +34,6 @@ export const getPayment = createSelector(
 export const isAccountPaid = createSelector(
 	getPayment,
 	payment => {
-		return true;
 		if (!payment) return false;
 		const isPaid = payment.selectedPackage === 'paid';
 		const isExpired = getCurrentUnixEpoch() > payment.expiryDate;

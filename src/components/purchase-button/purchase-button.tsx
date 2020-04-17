@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableNativeFeedback, Platform } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { IRootState } from '../../store';
 import { isAccountPaid } from '../../store/reducers/account-reducer';
 import Colors from 'src/constants/Colors';
 import ConnectedPaymentModal from '../payment-modal/payment-modal';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import ConnectedVerificationModal from 'src/components/verification-modal/verification-modal';
 
 interface IPurchaseButtonProps {
 	children: any;
@@ -39,7 +40,13 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 			<TouchableBtn style={{ flex: 1 }} onPress={() => this.toggleStartPayment()}>
 				<View style={styles.contactActionBtn}>
 					<Text style={styles.btnLabel}>{label}</Text>
-					<ConnectedPaymentModal
+					{false && (
+						<ConnectedPaymentModal
+							show={showPayment}
+							requestClose={() => this.toggleStartPayment()}
+						/>
+					)}
+					<ConnectedVerificationModal
 						show={showPayment}
 						requestClose={() => this.toggleStartPayment()}
 					/>
