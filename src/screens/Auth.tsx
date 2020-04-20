@@ -267,11 +267,12 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	renderVerificationScreen() {
-		const { action } = this.state;
+		const { action, otp } = this.state;
 		return (
 			<View>
 				<View style={styles.formContainer}>
 					<View style={styles.fieldContainer}>
+						{otp && <Text>OTP: {otp}</Text>}
 						<TextInput
 							style={styles.textInput}
 							onChange={e => this.validateVerificationCode(e.nativeEvent.text)}
