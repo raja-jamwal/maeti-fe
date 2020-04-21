@@ -6,7 +6,8 @@ import {
 	StyleSheet,
 	Text,
 	TextInput,
-	View
+	View,
+	StatusBar
 } from 'react-native';
 import GlobalStyle from '../styles/global';
 import { connect } from 'react-redux';
@@ -27,6 +28,7 @@ import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { MediaTypeOptions } from 'expo-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import AppTour from 'src/components/app-tour/app-tour';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -34,6 +36,7 @@ interface IAuthDispatchProps {
 }
 
 enum LOGIN_SCREENS {
+	TOUR,
 	LOGIN_SIGNUP,
 	SIGNUP,
 	VERIFY,
@@ -80,6 +83,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		this._tryAuth = this._tryAuth.bind(this);
 		this._forceLogin = this._forceLogin.bind(this);
 		this._startPhotoUpload = this._startPhotoUpload.bind(this);
+		this.skipTourScreen = this.skipTourScreen.bind(this);
 	}
 
 	async componentDidMount() {
@@ -106,7 +110,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				this.changeScreen(LOGIN_SCREENS.ERROR);
 			}
 		} else {
-			this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+			this.changeScreen(LOGIN_SCREENS.TOUR);
 		}
 	}
 
@@ -429,10 +433,20 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		);
 	}
 
+	skipTourScreen() {
+		this.setState({
+			activeScreen: LOGIN_SCREENS.LOGIN_SIGNUP
+		});
+	}
+
 	render() {
 		const { activeScreen } = this.state;
+		if (activeScreen === LOGIN_SCREENS.TOUR) {
+			return <AppTour onSkip={this.skipTourScreen} />;
+		}
 		return (
 			<View style={[GlobalStyle.expand, styles.container]}>
+				<StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
 				<Image source={require('../assets/images/icon.png')} style={styles.logo} />
 				{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
 				{activeScreen === LOGIN_SCREENS.SIGNUP && this.renderSignUp()}
