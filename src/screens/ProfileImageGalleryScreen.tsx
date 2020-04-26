@@ -18,7 +18,7 @@ import {
 	getCurrentUserProfile,
 	getIsCurrentProfileUpdating
 } from '../store/reducers/self-profile-reducer';
-import { uploadPhoto, updatePhoto } from 'src/store/reducers/user-profile-reducer.ts';
+import { uploadPhoto, updatePhoto } from 'src/store/reducers/user-profile-reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import Layout from 'src/constants/Layout.js';
 import { MediaTypeOptions } from 'expo-image-picker';

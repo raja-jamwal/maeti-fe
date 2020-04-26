@@ -71,7 +71,8 @@ export const markAccountAsPaid = function(orderId: string) {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Authorization: account.token
 			},
 			body: JSON.stringify(updatedAccount)
 		})
@@ -143,6 +144,41 @@ export const savePushToken = function(id: number) {
 	};
 };
 
+export const fetchAccountByToken = function(token: string, skipPushingToken?: boolean) {
+	const logger = getLogger(fetchAccountByToken);
+	return (dispatch: Dispatch<any>, getState: () => any) => {
+		if (!token) {
+			logger.log('no token passed');
+			return;
+		}
+		return ApiRequest(API.ACCOUNT.GET_BY_TOKEN, {
+			token
+		})
+			.then((json: Account) => {
+				const account: ILocalAccount = json as ILocalAccount;
+				const profile = account.userProfile;
+				dispatch(addAccount(account));
+				dispatch(addPayment(account.payment));
+				dispatch(addSelfProfile(profile));
+				dispatch(addProfile(profile));
+				logger.log('addProfile dispatched');
+				if (!skipPushingToken) {
+					dispatch(savePushToken(profile.id));
+					dispatch(fetchTags());
+				}
+				return account;
+			})
+			.catch((err: any) => {
+				logger.log('err happened while fetch ', err);
+			});
+	};
+};
+
+/**
+ * @deprecated
+ * @param id
+ * @param skipPushingToken
+ */
 export const fetchAccount = function(id: number, skipPushingToken?: boolean) {
 	const logger = getLogger(fetchAccount);
 	return (dispatch: Dispatch<any>, getState: () => any) => {

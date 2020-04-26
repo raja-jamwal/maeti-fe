@@ -19,7 +19,8 @@ import {
 import { createSelector } from 'reselect';
 import { getCurrentUserProfileId } from './self-profile-reducer';
 import { extractPageableResponse } from '../../utils/extract-pageable-response';
-import { includes } from 'lodash';
+import { includes, isEmpty } from 'lodash';
+import { getAccount } from './account-reducer';
 
 export interface IScreenData {
 	profiles: {
@@ -150,7 +151,12 @@ export const mayBeFetchSearchResult = function(screen: string) {
 
 export const fetchSearchResult = function() {
 	const logger = getLogger(fetchSearchResult);
-	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+	return async (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		// If we've token, add Authorization header
+		const account = getAccount(getState());
+		if (isEmpty(account) || isEmpty(account.token)) {
+			return logger.log('need account & token to search');
+		}
 		const selectedScreen = getState().explore.selected_screen;
 		if (!selectedScreen) return;
 
@@ -257,7 +263,8 @@ export const fetchSearchResult = function() {
 			method: 'post',
 			headers: {
 				Accept: 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Authorization: account.token
 			},
 			body: JSON.stringify(query)
 		})
@@ -295,7 +302,7 @@ export const fetchSearchResult = function() {
 				dispatch(setFetchingForScreen({ fetching: false, screen: selectedScreen }));
 			})
 			.catch(err => {
-				logger.log('err ', err);
+				err.then((e: any) => logger.log('error search ', e));
 				dispatch(setFetchingForScreen({ fetching: false, screen: selectedScreen }));
 			});
 	};

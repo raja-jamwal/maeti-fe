@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 		bottom: 10
 	},
 	lightText: {
-		color: Color.borderColor,
+		color: Color.offWhite,
 		fontSize: 18
 	}
 });

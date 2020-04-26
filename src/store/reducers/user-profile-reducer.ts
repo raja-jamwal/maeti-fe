@@ -28,7 +28,7 @@ import {
 } from './self-profile-reducer';
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
-
+import { isEmpty } from 'lodash';
 export interface IUserProfileState {
 	[id: number]: UserProfile;
 }
@@ -151,14 +151,15 @@ export const uploadPhoto = function(file: any) {
 	};
 };
 
-const patchEntity = (entityUrl: string, object: any, entityId?: number) => {
+const patchEntity = (entityUrl: string, object: any, entityId?: number, token?: string) => {
 	const url = entityId ? `${entityUrl}/${entityId}` : entityUrl;
 	const method = entityId ? 'PATCH' : 'POST';
 	return fetch(url, {
 		method: method,
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			Authorization: token || ''
 		},
 		body: JSON.stringify(object)
 	})
@@ -182,9 +183,15 @@ const updateLocalAndServer = function<T extends DAO>(
 	const logger = getLogger(updateLocalAndServer);
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		if (!userProfileId) return null;
+		// not using rule in account-reducer
+		// because of cyclic dependancy
+		const account = getState().account;
+		if (isEmpty(account) || isEmpty(account.token)) {
+			return logger.log('need account & token to update profile');
+		}
 		const entityId = direct ? undefined : entity.id;
 		logger.log(`entityId ${entityId} ${entityUrl}`);
-		return patchEntity(entityUrl, entity, entityId)
+		return patchEntity(entityUrl, entity, entityId, account.token)
 			.then((updatedServerEntity: T) => {
 				const userProfile = getState().userProfiles[userProfileId];
 				const clonedProfile = { ...userProfile };

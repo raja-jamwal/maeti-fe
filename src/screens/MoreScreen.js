@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Value } from '../components/text';
 import { Updates } from 'expo';
+import { logoutAccount } from '../utils';
 import { getEnvironment } from '../utils/environment';
 import { getConfig } from '../config/config';
 import ConnectedVerificationModal from 'src/components/verification-modal/verification-modal';
@@ -81,8 +82,7 @@ class MoreScreen extends React.Component {
 	}
 
 	async doLogout() {
-		await AsyncStorage.removeItem('accountId');
-		await Updates.reloadFromCache();
+		await logoutAccount();
 	}
 
 	render() {

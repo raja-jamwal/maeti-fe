@@ -3,7 +3,9 @@ import { createAction, handleActions } from 'redux-actions';
 import { API } from '../../config/API';
 import { groupBy } from 'lodash';
 import { Dispatch } from 'redux';
-
+import { IRootState } from '../index';
+import { isEmpty } from 'lodash';
+import { getLogger } from '../../utils/logger';
 export interface ITagsState {
 	[tag_type: string]: Array<Tag>;
 }
@@ -14,8 +16,20 @@ const ADD_TAGS = 'ADD_TAGS';
 export const addTags = createAction(ADD_TAGS);
 
 export const fetchTags = () => {
-	return (dispatch: Dispatch<any>) => {
-		return fetch(`${API.TAGS}?size=300`)
+	const logger = getLogger(fetchTags);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		// not using rule in account-reducer
+		// because of cyclic dependancy
+		const account = getState().account;
+		if (isEmpty(account) || isEmpty(account.token)) {
+			return logger.log('need account & token to search');
+		}
+		return fetch(`${API.TAGS}?size=300`, {
+			method: 'GET',
+			headers: {
+				Authorization: account.token
+			}
+		})
 			.then(response => response.json())
 			.then(embedded => {
 				const tags = embedded._embedded.tags;

@@ -1,5 +1,9 @@
 import { Platform } from 'react-native';
 import { isEmpty, forOwn } from 'lodash';
+import { AsyncStorage } from 'react-native';
+import { Updates } from 'expo';
+import { simpleAlert } from '../components/alert/index';
+import { getLogger } from './logger';
 
 const moment = require('moment');
 const secondsInYear = 60 * 60 * 24 * 365;
@@ -24,7 +28,13 @@ const humanizeCurrency = function(value: number, prefix: string) {
 	return `${prefix ? prefix : ''} ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
 };
 
-const ApiRequest = function(url, params) {
+export const logoutAccount = async () => {
+	await AsyncStorage.removeItem('token');
+	await Updates.reloadFromCache();
+};
+
+const ApiRequest = function(url: string, params: any) {
+	const logger = getLogger(ApiRequest);
 	const formData = new FormData();
 
 	forOwn(params, (value, key) => {
@@ -35,7 +45,7 @@ const ApiRequest = function(url, params) {
 	const delay = 0;
 
 	return new Promise((resolve, reject) => {
-		setTimeout(function() {
+		setTimeout(async function() {
 			const fetchOptions: any = {
 				method: 'POST'
 			};
@@ -45,12 +55,29 @@ const ApiRequest = function(url, params) {
 				};
 				fetchOptions['body'] = formData;
 			}
+			// If we've token, add Authorization header
+			const token = await AsyncStorage.getItem('token');
+			if (!isEmpty(token)) {
+				if (!fetchOptions['headers']) {
+					fetchOptions['headers'] = {};
+				}
+				fetchOptions['headers']['Authorization'] = token;
+			} else {
+				logger.log('unauthorized request ', url);
+			}
 			fetch(url, fetchOptions)
-				.then(response => {
+				.then(async response => {
+					if (response.status === 401) {
+						logger.log('logging out unauthorized ', url);
+						return simpleAlert('Unauthorized', 'Please login again', async () => {
+							await logoutAccount();
+							resolve({});
+						});
+					}
 					if (response.status !== 200) throw response.json();
 					resolve(response.json());
 				})
-				.catch(err => reject(err));
+				.catch(err => err.then((e: any) => reject(e)));
 		}, delay);
 	});
 };

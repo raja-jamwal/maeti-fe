@@ -19,7 +19,7 @@ import { API } from '../config/API';
 import { simpleAlert } from '../components/alert';
 import { Account } from '../store/reducers/account-defination';
 import { bindActionCreators } from 'redux';
-import { fetchAccount } from '../store/reducers/account-reducer';
+import { fetchAccount, fetchAccountByToken } from '../store/reducers/account-reducer';
 import { NavigationInjectedProps } from 'react-navigation';
 import { getLogger } from '../utils/logger';
 import { connectRTM } from '../store/middleware/rtm-middleware';
@@ -32,6 +32,7 @@ import AppTour from 'src/components/app-tour/app-tour';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
+	fetchAccountByToken: (token: string) => any;
 	connectRTM: () => any;
 }
 
@@ -91,15 +92,13 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	async _tryAuth() {
-		const { fetchAccount, navigation, connectRTM } = this.props;
-		// Just in case we want to for - re - login
-		// await AsyncStorage.removeItem('accountId');
-		const accountId = await AsyncStorage.getItem('accountId');
-		this.logger.log(`accountId from storage ${accountId}`);
+		const { fetchAccountByToken, navigation, connectRTM } = this.props;
+		const token = await AsyncStorage.getItem('token');
+		this.logger.log(`token from storage ${token}`);
 
-		if (accountId) {
+		if (token) {
 			try {
-				const account = await fetchAccount(accountId);
+				const account = await fetchAccountByToken(token);
 				if (!account) {
 					throw new Error('Unable to fetch account');
 				}
@@ -115,7 +114,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	async _forceLogin() {
-		await AsyncStorage.removeItem('accountId');
+		await AsyncStorage.removeItem('token');
 		await this._tryAuth();
 	}
 
@@ -155,7 +154,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			simpleAlert('', error);
 		} else {
 			ApiRequest(API.OTP.SEND, {
-				phoneNumber: `${callingCode}${number}`
+				phoneNumber: `${callingCode}-${number}`
 			})
 				.then((response: any) => {
 					this.logger.log('OTP', response);
@@ -251,10 +250,11 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 					});
 				}
 				try {
-					const account: Account = (await ApiRequest(API.ACCOUNT.GET, {
-						phoneNumber: `${callingCode}-${number}`
+					const account: Account = (await ApiRequest(API.AUTH.SIGNIN, {
+						phoneNumber: `${callingCode}-${number}`,
+						otpCode: code
 					})) as Account;
-					await AsyncStorage.setItem('accountId', `${account.id}`);
+					await AsyncStorage.setItem('token', `${account.token}`);
 					await this._tryAuth();
 				} catch (er) {
 					this.logger.log('account create error ', er);
@@ -541,6 +541,7 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch: any) {
 	return {
+		fetchAccountByToken: bindActionCreators(fetchAccountByToken, dispatch),
 		fetchAccount: bindActionCreators(fetchAccount, dispatch),
 		connectRTM: bindActionCreators(connectRTM, dispatch)
 	};

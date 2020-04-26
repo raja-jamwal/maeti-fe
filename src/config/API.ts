@@ -5,6 +5,10 @@ const config = getConfig();
 export const API = {
 	ACCOUNTS: `${config.server}/api/accounts`,
 
+	AUTH: {
+		SIGNIN: `${config.server}/api/auth.signin`
+	},
+
 	VERIFICATION: {
 		SAVE: `${config.server}/api/verification.save`
 	},
@@ -101,6 +105,7 @@ export const API = {
 	ACCOUNT: {
 		CREATE: `${config.server}/api/account.create`,
 		GET: `${config.server}/api/account.get`,
+		GET_BY_TOKEN: `${config.server}/api/account.getByToken`,
 		SAVE: `${config.server}/api/account.save`
 	},
 

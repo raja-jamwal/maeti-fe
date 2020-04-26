@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	lightText: {
-		color: Color.borderColor,
+		color: Color.offWhite,
 		fontSize: 18
 	},
 	totalCountContainer: {
