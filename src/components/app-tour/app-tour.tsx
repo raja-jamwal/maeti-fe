@@ -135,7 +135,12 @@ export default function AppTour({ onSkip } = { onSkip: noop }) {
 					renderItem={renderItem}
 					sliderWidth={Layout.window.width}
 					itemWidth={Layout.window.width}
-					onSnapToItem={index => setActiveIndex(index)}
+					onSnapToItem={index => {
+						if (index === tour.length - 1) {
+							setTimeout(onSkip, 1000);
+						}
+						setActiveIndex(index);
+					}}
 				/>
 				<Pagination
 					dotsLength={tour.length}

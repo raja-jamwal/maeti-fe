@@ -17,7 +17,7 @@ import Layout from '../constants/Layout';
 import { ApiRequest, IS_IOS } from '../utils';
 import { API } from '../config/API';
 import { simpleAlert } from '../components/alert';
-import { Account } from '../store/reducers/account-defination';
+import { Account, PendingAccount } from '../store/reducers/account-defination';
 import { bindActionCreators } from 'redux';
 import { fetchAccount, fetchAccountByToken } from '../store/reducers/account-reducer';
 import { NavigationInjectedProps } from 'react-navigation';
@@ -29,6 +29,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { MediaTypeOptions } from 'expo-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import AppTour from 'src/components/app-tour/app-tour';
+import { Throbber } from '../components/throbber/throbber';
+import { isEmpty } from 'lodash';
+import {
+	setAccountRequestFromPendingAccount,
+	getAccountRequest,
+	removeAccountRequest
+} from '../utils/account-request';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -44,7 +51,8 @@ enum LOGIN_SCREENS {
 	VERIFYING,
 	PICK_IMAGE,
 	PLANS,
-	ERROR
+	ERROR,
+	REVIEW
 }
 
 enum ACTION {
@@ -65,6 +73,53 @@ interface IAuthState {
 
 type IAuthProps = NavigationInjectedProps & IAuthDispatchProps;
 
+function TryLogin({ changeScreen }: { changeScreen: (screen: LOGIN_SCREENS) => any }) {
+	const logger = getLogger(TryLogin);
+	const [isChecking, setIsChecking] = React.useState(false);
+	const [isSubmitted, setIsSubmitted] = React.useState(false);
+
+	const tryRequesting = async () => {
+		setIsChecking(true);
+		try {
+			const { phoneNumber, fullName, photoUrl, dob, gender } = await getAccountRequest();
+			await ApiRequest(API.ACCOUNT.MAYBE_CREATE, {
+				phoneNumber,
+				fullName: fullName,
+				photoUrl,
+				dob,
+				gender
+			});
+			setIsSubmitted(true);
+		} catch (er) {
+			logger.log(er);
+			return setTimeout(() => changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP));
+		}
+		setIsChecking(false);
+		return changeScreen(LOGIN_SCREENS.REVIEW);
+	};
+	return (
+		<View
+			style={{
+				paddingTop: 16,
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center'
+			}}
+		>
+			{!isChecking && !isSubmitted && <Button label="Try Login" onPress={tryRequesting} />}
+			{isChecking && <Throbber size="small" />}
+			{isSubmitted && (
+				<Text style={{ color: Colors.offWhite }}>Account is still under review</Text>
+			)}
+			{isSubmitted && (
+				<Text style={{ color: Colors.offWhite }}>
+					You'll receive SMS when account is activated
+				</Text>
+			)}
+		</View>
+	);
+}
+
 class Auth extends React.Component<IAuthProps, IAuthState> {
 	private logger = getLogger(Auth);
 
@@ -84,6 +139,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		this._tryAuth = this._tryAuth.bind(this);
 		this._forceLogin = this._forceLogin.bind(this);
 		this._startPhotoUpload = this._startPhotoUpload.bind(this);
+		this.changeScreen = this.changeScreen.bind(this);
 		this.skipTourScreen = this.skipTourScreen.bind(this);
 	}
 
@@ -93,6 +149,16 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 
 	async _tryAuth() {
 		const { fetchAccountByToken, navigation, connectRTM } = this.props;
+		try {
+			const accountRequest = await getAccountRequest();
+			if (!isEmpty(accountRequest)) {
+				this.logger.log('account request not empty ', accountRequest);
+				return this.changeScreen(LOGIN_SCREENS.REVIEW);
+			}
+		} catch (err) {
+			this.logger.log(err);
+		}
+
 		const token = await AsyncStorage.getItem('token');
 		this.logger.log(`token from storage ${token}`);
 
@@ -110,6 +176,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			}
 		} else {
 			this.changeScreen(LOGIN_SCREENS.TOUR);
+			// this.changeScreen(LOGIN_SCREENS.REVIEW);
 		}
 	}
 
@@ -255,6 +322,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						otpCode: code
 					})) as Account;
 					await AsyncStorage.setItem('token', `${account.token}`);
+					await removeAccountRequest();
 					await this._tryAuth();
 				} catch (er) {
 					this.logger.log('account create error ', er);
@@ -377,14 +445,29 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 					if (!uploadedImage) {
 						throw new Error('unable to upload photo');
 					}
-					const account: Account = (await ApiRequest(API.ACCOUNT.CREATE, {
-						phoneNumber: `${callingCode}-${number}`,
-						fullName: fullName,
-						photoUrl: uploadedImage.url,
-						gender
-					})) as Account;
-					await AsyncStorage.setItem('accountId', `${account.id}`);
-					await this._tryAuth();
+
+					// may be create account
+					try {
+						const pendingAccount: PendingAccount = (await ApiRequest(
+							API.ACCOUNT.MAYBE_CREATE,
+							{
+								phoneNumber: `${callingCode}-${number}`,
+								fullName: fullName,
+								photoUrl: uploadedImage.url,
+								dob: 0,
+								gender
+							}
+						)) as PendingAccount;
+
+						if (!isEmpty(pendingAccount)) {
+							await setAccountRequestFromPendingAccount(pendingAccount);
+							return this.changeScreen(LOGIN_SCREENS.REVIEW);
+						}
+					} catch (er) {
+						// if error on pending request, account most
+						// likely already there
+						this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+					}
 				}
 			}
 		} catch (err) {
@@ -439,11 +522,28 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		});
 	}
 
+	renderAccountReview() {
+		return (
+			<View
+				style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+			>
+				<Text style={{ color: Colors.offWhite, fontSize: 18 }}>Under Review</Text>
+				<Text style={{ color: Colors.offWhite, fontSize: 16 }}>
+					Your request is under review
+				</Text>
+				<TryLogin changeScreen={this.changeScreen} />
+			</View>
+		);
+	}
+
 	render() {
 		const { activeScreen } = this.state;
 		if (activeScreen === LOGIN_SCREENS.TOUR) {
 			return <AppTour onSkip={this.skipTourScreen} />;
 		}
+
+		const year = new Date().getFullYear();
+
 		return (
 			<View style={[GlobalStyle.expand, styles.container]}>
 				<StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
@@ -455,12 +555,13 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				{activeScreen === LOGIN_SCREENS.VERIFYING && (
 					<ActivityIndicator color={Colors.primaryDarkColor} />
 				)}
+				{activeScreen === LOGIN_SCREENS.REVIEW && this.renderAccountReview()}
 				{activeScreen === LOGIN_SCREENS.PLANS && this.renderPlans()}
 				{activeScreen === LOGIN_SCREENS.ERROR && this.renderError()}
 				{!!activeScreen && activeScreen !== LOGIN_SCREENS.ERROR && (
 					<Text style={styles.tos}>
-						Copyright (c) 2019 DataGrid Softwares LLP. All rights reserved. Use of this
-						software is under Terms and conditions
+						Copyright (c) {year} DataGrid Softwares LLP. All rights reserved. Use of
+						this software is under Terms and conditions
 					</Text>
 				)}
 			</View>

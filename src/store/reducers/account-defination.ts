@@ -317,6 +317,20 @@ export interface Order extends DAO {
 	pgOrderId: string;
 }
 
+export interface PendingAccount extends DAO {
+	phoneNumber: string;
+	status: string;
+	request: string;
+}
+
+export interface AccountRequest {
+	phoneNumber: string;
+	fullName: string;
+	photoUrl: string;
+	dob: number;
+	gender: string;
+}
+
 export interface Pageable {
 	last: boolean;
 	totalPages: number; // total page count

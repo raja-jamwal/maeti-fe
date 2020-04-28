@@ -103,10 +103,11 @@ export const API = {
 	},
 
 	ACCOUNT: {
-		CREATE: `${config.server}/api/account.create`,
+		// CREATE: `${config.server}/api/account.create`,
 		GET: `${config.server}/api/account.get`,
 		GET_BY_TOKEN: `${config.server}/api/account.getByToken`,
-		SAVE: `${config.server}/api/account.save`
+		SAVE: `${config.server}/api/account.save`,
+		MAYBE_CREATE: `${config.server}/api/account.maybe.create`
 	},
 
 	PHOTO: {
