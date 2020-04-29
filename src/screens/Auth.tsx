@@ -7,14 +7,15 @@ import {
 	Text,
 	TextInput,
 	View,
-	StatusBar
+	StatusBar,
+	DatePickerAndroid
 } from 'react-native';
 import GlobalStyle from '../styles/global';
 import { connect } from 'react-redux';
 import Colors from '../constants/Colors';
 import CountryPicker, { CCA2Code } from 'react-native-country-picker-modal';
 import Layout from '../constants/Layout';
-import { ApiRequest, IS_IOS } from '../utils';
+import { ApiRequest, IS_IOS, formatDate } from '../utils';
 import { API } from '../config/API';
 import { simpleAlert } from '../components/alert';
 import { Account, PendingAccount } from '../store/reducers/account-defination';
@@ -30,12 +31,13 @@ import { MediaTypeOptions } from 'expo-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import AppTour from 'src/components/app-tour/app-tour';
 import { Throbber } from '../components/throbber/throbber';
-import { isEmpty } from 'lodash';
+import { isEmpty, noop } from 'lodash';
 import {
 	setAccountRequestFromPendingAccount,
 	getAccountRequest,
 	removeAccountRequest
 } from '../utils/account-request';
+import DateTimeIos from 'src/components/date-time-ios/date-time-ios';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -65,7 +67,9 @@ interface IAuthState {
 	callingCode: number;
 	activeScreen: LOGIN_SCREENS | null;
 	number: number | null;
+	photoUrl: string;
 	fullName: string | null;
+	dob: string;
 	gender: string;
 	otp: number | null;
 	action: ACTION;
@@ -120,6 +124,45 @@ function TryLogin({ changeScreen }: { changeScreen: (screen: LOGIN_SCREENS) => a
 	);
 }
 
+function DateOfBirth(
+	{ setDob, dob }: { setDob: (epoch: number) => any; dob: string } = { setDob: noop, dob: '' }
+) {
+	// handle case for ios
+	if (IS_IOS) {
+		let date = new Date(1970, 0, 1);
+		if (!!dob) {
+			// unix epoch to ts
+			date = new Date(parseInt(dob) * 1000);
+		}
+		return (
+			<DateTimeIos
+				epoch={date.getTime() / 1000}
+				dateOnly={true}
+				field={'field'}
+				updateFieldValue={(_field: any, epoch: number) => setDob(epoch)}
+			/>
+		);
+	}
+
+	// handle case for android
+	const AndroidDateTime = async () => {
+		try {
+			const { action, year, month, day } = await DatePickerAndroid.open({
+				date: new Date(1993, 0, 1)
+			});
+			if (action !== DatePickerAndroid.dismissedAction) {
+				const date = new Date(year, month, day);
+				// epoch in seconds
+				const ts = Math.floor(date.getTime() / 1000);
+				setDob(ts);
+			}
+		} catch (err) {}
+	};
+
+	const renderedString = (!!dob && formatDate(parseInt(dob))) || 'Choose Date Of Birth';
+	return <Button label={renderedString} onPress={AndroidDateTime} />;
+}
+
 class Auth extends React.Component<IAuthProps, IAuthState> {
 	private logger = getLogger(Auth);
 
@@ -130,7 +173,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			callingCode: 91,
 			activeScreen: null,
 			number: null,
+			photoUrl: '',
 			fullName: null,
+			dob: '',
 			gender: 'male',
 			otp: null,
 			action: ACTION.LOGIN
@@ -141,6 +186,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		this._startPhotoUpload = this._startPhotoUpload.bind(this);
 		this.changeScreen = this.changeScreen.bind(this);
 		this.skipTourScreen = this.skipTourScreen.bind(this);
+		this.setDob = this.setDob.bind(this);
+		this.createAccount = this.createAccount.bind(this);
 	}
 
 	async componentDidMount() {
@@ -176,7 +223,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			}
 		} else {
 			this.changeScreen(LOGIN_SCREENS.TOUR);
-			// this.changeScreen(LOGIN_SCREENS.REVIEW);
+			// this.changeScreen(LOGIN_SCREENS.PICK_IMAGE);
 		}
 	}
 
@@ -195,6 +242,34 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			activeScreen: screen,
 			action
 		});
+	}
+
+	async createAccount() {
+		const { number, fullName, callingCode, gender, dob, photoUrl } = this.state;
+		const invalidParam = [number, fullName, callingCode, gender, dob, photoUrl].filter(p => !p);
+		if (invalidParam.length) {
+			return simpleAlert('Required', 'Please provide all required information');
+		}
+		// may be create account
+		try {
+			this.changeScreen(LOGIN_SCREENS.VERIFYING);
+			const pendingAccount: PendingAccount = (await ApiRequest(API.ACCOUNT.MAYBE_CREATE, {
+				phoneNumber: `${callingCode}-${number}`,
+				fullName: fullName,
+				photoUrl: photoUrl,
+				dob,
+				gender
+			})) as PendingAccount;
+
+			if (!isEmpty(pendingAccount)) {
+				await setAccountRequestFromPendingAccount(pendingAccount);
+				return this.changeScreen(LOGIN_SCREENS.REVIEW);
+			}
+		} catch (er) {
+			// if error on pending request, account most
+			// likely already there
+			this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+		}
 	}
 
 	sendVerificationSMS(shouldLogin: boolean = false) {
@@ -421,7 +496,6 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	};
 
 	async _startPhotoUpload() {
-		const { number, fullName, callingCode, gender } = this.state;
 		try {
 			const permitted = await this.getPermissionAsync();
 			if (permitted) {
@@ -435,38 +509,28 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 					this.setState({
 						activeScreen: LOGIN_SCREENS.VERIFYING
 					});
-					const uploadedImage = (await ApiRequest(API.PHOTO.UPLOAD, {
-						file: {
-							uri: image.uri,
-							name: 'image.jpg',
-							type: 'image/jpeg'
-						}
-					})) as any;
-					if (!uploadedImage) {
-						throw new Error('unable to upload photo');
-					}
 
-					// may be create account
 					try {
-						const pendingAccount: PendingAccount = (await ApiRequest(
-							API.ACCOUNT.MAYBE_CREATE,
-							{
-								phoneNumber: `${callingCode}-${number}`,
-								fullName: fullName,
-								photoUrl: uploadedImage.url,
-								dob: 0,
-								gender
+						const uploadedImage = (await ApiRequest(API.PHOTO.UPLOAD, {
+							file: {
+								uri: image.uri,
+								name: 'image.jpg',
+								type: 'image/jpeg'
 							}
-						)) as PendingAccount;
-
-						if (!isEmpty(pendingAccount)) {
-							await setAccountRequestFromPendingAccount(pendingAccount);
-							return this.changeScreen(LOGIN_SCREENS.REVIEW);
+						})) as any;
+						if (!uploadedImage) {
+							throw new Error('unable to upload photo');
 						}
+
+						this.setState({
+							photoUrl: uploadedImage.url
+						});
 					} catch (er) {
-						// if error on pending request, account most
-						// likely already there
-						this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+						this.logger.log(er);
+					} finally {
+						this.setState({
+							activeScreen: LOGIN_SCREENS.PICK_IMAGE
+						});
 					}
 				}
 			}
@@ -482,11 +546,21 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		}
 	}
 
+	setDob(epoch: number) {
+		if (!epoch) return;
+		this.setState({
+			dob: String(epoch)
+		});
+	}
+
 	renderUploadPhoto() {
-		const { gender } = this.state;
+		const { gender, dob, photoUrl } = this.state;
 		return (
 			<View>
-				<Button label="Upload your Best Photo" onPress={this._startPhotoUpload} />
+				<Button
+					label={photoUrl ? '✅ Change photo' : 'Upload your Best Photo'}
+					onPress={this._startPhotoUpload}
+				/>
 				<View style={styles.choiceField}>
 					<RNPickerSelect
 						value={gender}
@@ -505,13 +579,17 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						textInputProps={{
 							style: {
 								color: 'black',
-								height: 50,
+								height: 40,
 								padding: 8,
 								fontSize: 16
 							}
 						}}
 					/>
 				</View>
+				<View style={{ paddingBottom: 8 }}>
+					<DateOfBirth setDob={this.setDob} dob={dob} />
+				</View>
+				<Button label="Create Account" onPress={this.createAccount} />
 			</View>
 		);
 	}
@@ -596,6 +674,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 
 		marginTop: 8,
+		marginBottom: 8,
 		borderRadius: 4,
 
 		flexDirection: 'column',
