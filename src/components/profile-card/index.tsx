@@ -7,14 +7,7 @@
 //
 
 import * as React from 'react';
-import {
-	View,
-	Image,
-	StyleSheet,
-	Dimensions,
-	TouchableNativeFeedback,
-	TouchableHighlight
-} from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
 import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency } from '../../utils/index';
@@ -83,7 +76,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			onPhotoPress
 		} = this.props;
 		if (isEmpty(userProfile)) return null;
-		const { horoscope, education, profession, family } = { ...userProfile };
+		const { education, profession, family } = { ...userProfile };
 		const userProfileName = isAccountPaid || isSelfProfile ? userProfile.fullName : 'xxxxxxx';
 		const professionLocation = ['workCity', 'workState', 'workCountry']
 			.map(e => get(profession, e))
@@ -97,7 +90,26 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			.join(', ');
 		const heartIcon = userProfile.isFavourite ? 'md-heart' : 'md-heart-empty';
 		const heartColor = userProfile.isFavourite ? Colors.pink : Colors.black;
-		const primaryUserProfilePhoto = !isEmpty(userProfile.photo) && head(userProfile.photo).url;
+		const primaryUserProfilePhoto = (() => {
+			if (isEmpty(userProfile.photo)) {
+				return null;
+			}
+			let approvedPhotos = [];
+			// if it's a self profile we can show
+			// any photo as primary photo
+			if (isSelfProfile) {
+				approvedPhotos = userProfile.photo;
+			} else {
+				approvedPhotos = userProfile.photo.filter(p => !!p.isApproved);
+			}
+
+			if (!isEmpty(approvedPhotos)) {
+				return head(approvedPhotos);
+			}
+
+			return null;
+		})();
+
 		return (
 			<View style={styles.profileCard}>
 				<View style={styles.profileImageContainer}>
@@ -105,6 +117,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						<ProfileImageCarousel
 							onPress={() => onPhotoPress && onPhotoPress()}
 							userProfile={userProfile}
+							isSelfProfile={isSelfProfile}
 						/>
 					)}
 					{!primaryUserProfilePhoto && (

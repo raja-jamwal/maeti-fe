@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserProfile } from '../../store/reducers/account-defination';
-import { Image, StyleSheet, TouchableHighlight, TouchableNativeFeedback, View } from 'react-native';
+import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import Layout from 'src/constants/Layout.js';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { getLogger } from '../../utils/logger';
@@ -8,6 +8,7 @@ import { getLogger } from '../../utils/logger';
 interface IProps {
 	userProfile?: UserProfile;
 	onPress?: () => any;
+	isSelfProfile?: Boolean;
 }
 
 interface IState {
@@ -47,14 +48,17 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 	};
 
 	render() {
-		const { userProfile } = this.props;
+		const { userProfile, isSelfProfile } = this.props;
 		const { activeIndex } = this.state;
 		if (!userProfile) return null;
 		this.logger.log('userProfile', userProfile.photo.length);
+		const approvedPhotos = isSelfProfile
+			? userProfile.photo
+			: userProfile.photo.filter(p => !!p.isApproved);
 		return (
 			<View>
 				<Carousel
-					data={userProfile.photo}
+					data={approvedPhotos}
 					renderItem={this.renderItem}
 					sliderWidth={Layout.window.width}
 					itemWidth={Layout.window.width}

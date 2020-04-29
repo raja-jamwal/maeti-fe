@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { getLogger } from '../utils/logger';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import * as Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { simpleAlert } from '../components/alert';
 import ActionSheet from 'react-native-actionsheet';
@@ -24,11 +23,11 @@ import Layout from 'src/constants/Layout.js';
 import { MediaTypeOptions } from 'expo-image-picker';
 import { IS_IOS } from '../utils';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
+import { sortBy } from 'lodash';
 
 enum PHOTO_ACTIONS {
-	PRIMARY = 0,
-	DELETE = 1,
-	CANCEL = 2
+	DELETE = 0,
+	CANCEL = 1
 }
 
 interface IPassedInProps extends NavigationInjectedProps {}
@@ -123,7 +122,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 	getPhotoTiles() {
 		const tileWidth = Layout.window.width / 2 - 20;
 		const tileHeight = tileWidth;
-		return this.getPhotos().map((photo, i) => {
+		return sortBy(this.getPhotos(), photo => photo.createdOn).map((photo, i) => {
 			return (
 				<TouchableBtn key={i} onPress={() => this.showImageActions(i)}>
 					<View style={styles.imageContainer}>
@@ -147,11 +146,11 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 		if (!selectedPhoto) return;
 		remove(photoArrayWithoutSelected, selectedPhoto);
 
-		if (action === PHOTO_ACTIONS.PRIMARY) {
-			this.logger.log('Making photo primary');
-			const updatedPhotoArray = [selectedPhoto].concat(photoArrayWithoutSelected);
-			updatePhoto(updatedPhotoArray);
-		}
+		// if (action === PHOTO_ACTIONS.PRIMARY) {
+		// 	this.logger.log('Making photo primary');
+		// 	const updatedPhotoArray = [selectedPhoto].concat(photoArrayWithoutSelected);
+		// 	updatePhoto(updatedPhotoArray);
+		// }
 
 		if (action === PHOTO_ACTIONS.DELETE && this.getPhotos().length > 1) {
 			this.logger.log('deleting photo');
@@ -164,10 +163,11 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 		let cancelButton = 1;
 		const options = [];
 		if (isDeleteAllowed) {
-			options.push('Make it primary', 'Delete photo', 'Cancel');
+			options.push('Delete photo', 'Cancel');
 			cancelButton = PHOTO_ACTIONS.CANCEL;
 		} else {
-			options.push('Make it primary', 'Cancel');
+			options.push('Cancel');
+			cancelButton = 0;
 		}
 		this.logger.log(`Options   ${options}`);
 		const { userProfile, isCurrentProfileUpdating } = this.props;
@@ -186,7 +186,6 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 				</View>
 				<ActionSheet
 					ref={o => (this.imageActionSheet = o)}
-					// title={'Perform action'}
 					options={options}
 					cancelButtonIndex={cancelButton}
 					destructiveButtonIndex={PHOTO_ACTIONS.DELETE}

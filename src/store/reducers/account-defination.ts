@@ -260,6 +260,7 @@ export interface Preference extends DAO {
 
 export interface PhotosEntity extends DAO {
 	url: string;
+	isApproved: boolean;
 }
 
 export interface FavouriteIdentity {

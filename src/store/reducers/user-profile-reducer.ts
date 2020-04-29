@@ -29,6 +29,7 @@ import {
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
 import { isEmpty } from 'lodash';
+import { simpleAlert } from '../../components/alert/index';
 export interface IUserProfileState {
 	[id: number]: UserProfile;
 }
@@ -127,9 +128,9 @@ export const uploadPhoto = function(file: any) {
 		return ApiRequest(API.PHOTO.UPLOAD, {
 			file
 		})
-			.then((response: any) => {
+			.then(async (response: any) => {
 				logger.log('uploaded image', response.url);
-				const photo = { url: response.url } as PhotosEntity;
+				const photo = { url: response.url, isApproved: false } as PhotosEntity;
 				const updatedProfile: UserProfile = {
 					...currentUserProfile,
 					photo: currentUserProfile.photo.concat(photo)
@@ -138,10 +139,10 @@ export const uploadPhoto = function(file: any) {
 				 * Update server, local userProfiles store
 				 * & selfProfile store
 				 */
-				dispatch(
+				const updatedProfileFromServer = (await dispatch(
 					updateUserProfile({ userProfileId: updatedProfile.id, object: updatedProfile })
-				);
-				dispatch(addSelfProfile(updatedProfile));
+				)) as any;
+				dispatch(addSelfProfile(updatedProfileFromServer as UserProfile));
 				dispatch(setSelfProfileUpdating(false));
 			})
 			.catch(err => {

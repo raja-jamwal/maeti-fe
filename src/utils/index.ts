@@ -33,6 +33,17 @@ export const logoutAccount = async () => {
 	await Updates.reloadFromCache();
 };
 
+const memomizedTokenRead = () => {
+	let token: string | null = null;
+	return async () => {
+		if (token) return token;
+		token = await AsyncStorage.getItem('token');
+		return token;
+	};
+};
+
+const readToken = memomizedTokenRead();
+
 const ApiRequest = function(url: string, params: any) {
 	const logger = getLogger(ApiRequest);
 	const formData = new FormData();
@@ -56,7 +67,7 @@ const ApiRequest = function(url: string, params: any) {
 				fetchOptions['body'] = formData;
 			}
 			// If we've token, add Authorization header
-			const token = await AsyncStorage.getItem('token');
+			const token = await readToken();
 			if (!isEmpty(token)) {
 				if (!fetchOptions['headers']) {
 					fetchOptions['headers'] = {};
