@@ -107,7 +107,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 	getPhotos() {
 		const { userProfile } = this.props;
 		if (!userProfile) return [];
-		return userProfile.photo;
+		return sortBy(userProfile.photo || [], photo => photo.createdOn);
 	}
 
 	showImageActions(index: number) {
@@ -122,7 +122,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 	getPhotoTiles() {
 		const tileWidth = Layout.window.width / 2 - 20;
 		const tileHeight = tileWidth;
-		return sortBy(this.getPhotos(), photo => photo.createdOn).map((photo, i) => {
+		return this.getPhotos().map((photo, i) => {
 			return (
 				<TouchableBtn key={i} onPress={() => this.showImageActions(i)}>
 					<View style={styles.imageContainer}>
@@ -142,7 +142,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 		if (!userProfile || selectedIndex === -1) return;
 
 		const photoArrayWithoutSelected = ([] as PhotosEntity[]).concat(userProfile.photo);
-		const selectedPhoto = userProfile.photo[selectedIndex];
+		const selectedPhoto = this.getPhotos()[selectedIndex];
 		if (!selectedPhoto) return;
 		remove(photoArrayWithoutSelected, selectedPhoto);
 
@@ -154,7 +154,10 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 
 		if (action === PHOTO_ACTIONS.DELETE && this.getPhotos().length > 1) {
 			this.logger.log('deleting photo');
+			// selectedPhoto.deletedOn = new Date().getTime();
+			// const updatedPhotoArray = [selectedPhoto].concat(photoArrayWithoutSelected);
 			updatePhoto(photoArrayWithoutSelected);
+			// updatePhoto(updatedPhotoArray);
 		}
 	}
 
