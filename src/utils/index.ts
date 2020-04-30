@@ -29,8 +29,29 @@ const humanizeCurrency = function(value: number, prefix: string) {
 };
 
 export const logoutAccount = async () => {
+	await AsyncStorage.removeItem('cea');
 	await AsyncStorage.removeItem('token');
 	await Updates.reloadFromCache();
+};
+
+const memomizedCERead = () => {
+	let cea: string | null = null;
+	return async () => {
+		try {
+			if (cea) return cea;
+			cea = await AsyncStorage.getItem('cea');
+			return cea;
+		} catch (er) {
+			return null;
+		}
+		return null;
+	};
+};
+
+export const getCeStatus = memomizedCERead();
+
+export const setCeStatus = async () => {
+	await AsyncStorage.setItem('cea', 'true');
 };
 
 const memomizedTokenRead = () => {

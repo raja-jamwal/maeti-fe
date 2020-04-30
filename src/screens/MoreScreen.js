@@ -1,28 +1,36 @@
 import React from 'react';
-import { View, StyleSheet, AsyncStorage } from 'react-native';
-import Text from '../components/text/index';
-import Colors from '../constants/Colors';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import ConnectedPaymentModal from '../components/payment-modal/payment-modal';
-import Button from '../components/button/button';
-import ConnectedProfile from '../components/profile-card/connected-profile';
 import { getAccount, getCurrentUserProfileId } from '../store/reducers/account-reducer';
 import { getUserProfileForId } from '../store/reducers/user-profile-reducer';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Value } from '../components/text';
-import { Updates } from 'expo';
-import { logoutAccount } from '../utils';
+import { logoutAccount, getCeStatus, setCeStatus } from '../utils';
 import { getEnvironment } from '../utils/environment';
 import { getConfig } from '../config/config';
 import ConnectedVerificationModal from 'src/components/verification-modal/verification-modal';
+import {
+	SettingTitle,
+	SettingDivider,
+	SettingRow,
+	SettingBlock,
+	SettingPara
+} from '../components/settings/settings';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Prompt from 'react-native-input-prompt';
 
 class MoreScreen extends React.Component {
 	static navigationOptions = {
-		title: 'More'
+		title: 'Settings'
 	};
 
+	copyrightClickCount = 0;
+
 	state = {
-		showPayment: false
+		showPayment: false,
+		showCePrompt: false,
+		isCeMode: false
 	};
 
 	toggleStartPayment() {
@@ -31,80 +39,124 @@ class MoreScreen extends React.Component {
 		}));
 	}
 
-	openProfileScreen(userProfileId, profileName) {
-		const { navigation } = this.props;
-		navigation.push('ProfileScreen', { userProfileId, profileName });
-	}
-
 	// given a ts (unix epoch in seconds)
 	getDate(epoch) {
 		return new Date(epoch * 1000);
-	}
-
-	getCurrentTsInSecond() {
-		return Math.floor(new Date().getTime() / 1000);
-	}
-
-	renderPlanInformation() {
-		const { account } = this.props;
-		const payment = account.payment;
-		const isPaid = payment.selectedPackage === 'paid';
-		const isExpired = this.getCurrentTsInSecond() > payment.expiryDate;
-		return (
-			<View
-				style={{
-					flexDirection: 'column',
-					justifyContents: 'center',
-					alignItems: 'center',
-					paddingTop: 20
-				}}
-			>
-				<Value>{isPaid ? 'Paid' : 'Free'} Plan</Value>
-				{isPaid && (
-					<View>
-						<Value>
-							Expires on:
-							{moment(this.getDate(payment.expiryDate || 0)).format(
-								'dddd, MMMM Do YYYY'
-							)}
-						</Value>
-						<Value>Receipt Number: {payment.receiptNumber}</Value>
-					</View>
-				)}
-				{(!isPaid || isExpired) && (
-					<Button label="Verify account" onPress={() => this.toggleStartPayment()} />
-				)}
-				<View style={{ paddingTop: 10 }}>
-					<Button label="Logout" onPress={() => this.doLogout()} />
-				</View>
-			</View>
-		);
 	}
 
 	async doLogout() {
 		await logoutAccount();
 	}
 
+	onCopyrightClickCount() {
+		if (this.copyrightClickCount >= 10) {
+			this.setState({
+				showCePrompt: true
+			});
+		} else {
+			this.copyrightClickCount++;
+		}
+	}
+
+	async componentDidMount() {
+		try {
+			const isCeMode = await getCeStatus();
+			this.setState({
+				isCeMode
+			});
+		} catch (er) {}
+	}
+
 	render() {
-		const { showPayment } = this.state;
+		const { showPayment, showCePrompt, isCeMode } = this.state;
 		const { currentUserProfile, account } = this.props;
+		const payment = account.payment;
+		const isPaid = payment.selectedPackage === 'paid';
 		const otaVersion = getConfig().ota_version || 0;
 		return (
-			<View style={styles.container}>
-				<Text style={[styles.title]}>Maeti</Text>
-				<Text style={styles.offWhite}>Shindiyun Lae Sindhi Rishta</Text>
-				<Text style={styles.offWhite}>For support & help contact</Text>
-				<Text style={styles.offWhite}>support@maeti.com</Text>
+			<ScrollView style={styles.container}>
+				<SettingTitle label={'Payments'} />
+				<SettingBlock>
+					<SettingRow label="Plan" value={isPaid ? 'Paid' : 'Free'} />
+					{!isPaid && (
+						<SettingPara>
+							You are currently on promotional free account, you will get unlimited
+							full account access for 3 months after verification. You can verify your
+							account for free.
+						</SettingPara>
+					)}
+				</SettingBlock>
 
-				{this.renderPlanInformation()}
+				{isPaid && (
+					<SettingBlock>
+						<SettingDivider />
+						<SettingRow
+							label="Expires on"
+							value={moment(this.getDate(payment.expiryDate || 0)).format(
+								'dddd, MMMM Do YYYY'
+							)}
+						/>
+						<SettingDivider />
+						<SettingRow label="Receipt Number" value={payment.receiptNumber} />
+					</SettingBlock>
+				)}
 
-				<View style={{ paddingTop: 10 }}>
-					<Value>{getEnvironment()}</Value>
-				</View>
+				<SettingTitle label={'Account'} />
+				<SettingBlock>
+					<SettingRow label="Registered As" value={currentUserProfile.fullName} />
+					<SettingDivider />
+					<SettingRow label="Verify Account" action={() => this.toggleStartPayment()} />
+					<SettingDivider />
+					<SettingRow label="Logout Account" action={() => this.doLogout()} />
+				</SettingBlock>
 
-				<View style={{ paddingTop: 10 }}>
-					<Value>OTA version : {otaVersion}</Value>
-				</View>
+				<SettingTitle label={'Maeti'} />
+				<SettingBlock>
+					<SettingRow label="Environment" value={getEnvironment()} />
+					<SettingDivider />
+					<SettingRow label="OTA Version" value={otaVersion} />
+					<SettingDivider />
+					<SettingRow label="Support" value="support@maeti.com" />
+					<SettingDivider />
+					<SettingRow label="Phone Support" value="+91-73877-78673" />
+					{isCeMode && <SettingRow label="CE mode" value="activated" />}
+				</SettingBlock>
+
+				<ConnectedVerificationModal
+					show={showPayment}
+					requestClose={() => this.toggleStartPayment()}
+				/>
+
+				<TouchableOpacity
+					style={{ padding: 32 }}
+					onPress={() => this.onCopyrightClickCount()}
+				>
+					<Value style={{ textAlign: 'center' }}>
+						© {new Date().getFullYear()} DataGrid Softwares LLP. Use of this software is
+						under Terms and conditions
+					</Value>
+				</TouchableOpacity>
+
+				<Prompt
+					visible={showCePrompt}
+					title="Your ID"
+					placeholder="Your ID"
+					onCancel={() =>
+						this.setState({
+							showCePrompt: false
+						})
+					}
+					onSubmit={async text => {
+						this.copyrightClickCount = 0;
+						if (getConfig().cea === text) {
+							await setCeStatus();
+							this.setState({
+								showCePrompt: false,
+								isCeMode: true
+							});
+						}
+					}}
+				/>
 
 				{false && (
 					<ConnectedPaymentModal
@@ -112,11 +164,7 @@ class MoreScreen extends React.Component {
 						requestClose={() => this.toggleStartPayment()}
 					/>
 				)}
-				<ConnectedVerificationModal
-					show={showPayment}
-					requestClose={() => this.toggleStartPayment()}
-				/>
-			</View>
+			</ScrollView>
 		);
 	}
 }
@@ -124,14 +172,10 @@ class MoreScreen extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center'
+		backgroundColor: 'rgb(229, 235, 240)'
 	},
 	title: {
 		fontSize: 20
-	},
-	offWhite: {
-		color: Colors.offWhite
 	}
 });
 

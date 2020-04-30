@@ -20,6 +20,8 @@ import { getLogger } from '../../utils/logger';
 import ProfileActivity from '../profile-card/profile-activity';
 import ConnectedPurchaseButton from 'src/components/purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import { getCeStatus } from '../../utils';
+import { isEmpty } from 'lodash';
 
 interface IProfileInfoTabProps {
 	userProfileId: number;
@@ -34,6 +36,7 @@ interface IProfileInfoTabState {
 	loadingViewedMyContact: boolean;
 	isViewedMyContact: boolean;
 	isInterestAccepted: boolean;
+	isCeMode: boolean;
 }
 
 export default class ProfileInfoTab extends React.Component<
@@ -48,7 +51,8 @@ export default class ProfileInfoTab extends React.Component<
 			route: 'personal',
 			loadingViewedMyContact: true,
 			isViewedMyContact: false,
-			isInterestAccepted: false
+			isInterestAccepted: false,
+			isCeMode: false
 		};
 		this._handleRouteChange = this._handleRouteChange.bind(this);
 		this._renderScene = this._renderScene.bind(this);
@@ -68,11 +72,12 @@ export default class ProfileInfoTab extends React.Component<
 		 */
 		const isAccepted = await isInterestAccepted(selfProfileId, userProfileId);
 		const isContactViewed = await getViewedMyContact(userProfileId);
-
+		const isCeMode = !isEmpty(await getCeStatus());
 		this.setState({
 			loadingViewedMyContact: false,
 			isViewedMyContact: isContactViewed,
-			isInterestAccepted: isAccepted
+			isInterestAccepted: isAccepted,
+			isCeMode
 		});
 	}
 
@@ -136,21 +141,22 @@ export default class ProfileInfoTab extends React.Component<
 	}
 
 	_renderScene() {
-		const { route } = this.state;
+		const { route, isCeMode } = this.state;
 		const { userProfileId, selfProfileId } = this.props;
 		const isSelfProfile = userProfileId === selfProfileId;
+		const isEditable = isSelfProfile || isCeMode;
 		let tab = null;
 		switch (route) {
 			case 'personal':
 				tab = (
 					<View style={styles.scene}>
-						<VerificationTable userProfileId={userProfileId} editable={false} />
-						<ProfileTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<EducationTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<ProfessionTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<HoroscopeTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<InvestmentTable userProfileId={userProfileId} editable={isSelfProfile} />
-						<LifestyleTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<VerificationTable userProfileId={userProfileId} editable={isCeMode} />
+						<ProfileTable userProfileId={userProfileId} editable={isEditable} />
+						<EducationTable userProfileId={userProfileId} editable={isEditable} />
+						<ProfessionTable userProfileId={userProfileId} editable={isEditable} />
+						<HoroscopeTable userProfileId={userProfileId} editable={isEditable} />
+						<InvestmentTable userProfileId={userProfileId} editable={isEditable} />
+						<LifestyleTable userProfileId={userProfileId} editable={isEditable} />
 
 						{/* <ConnectedPurchaseButton label="Verify account to see Contact Information">
 							{this.maybeRenderContactTable(isSelfProfile)}
