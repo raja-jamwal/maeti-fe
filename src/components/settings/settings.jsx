@@ -56,22 +56,18 @@ const styles = StyleSheet.create({
 	settingValue: {
 		textAlign: 'right',
 		color: Colors.offWhite,
-		fontSize: 17,
 		flex: 1
 	},
 	settingLabel: {
 		color: 'rgb(20, 22, 23)',
-		fontSize: 17,
 		fontWeight: '400'
-		// flex: 1
 	},
 	settingBlock: {
 		backgroundColor: Colors.white
-		// padding: 8
 	},
 	settingTitle: {
 		margin: 16,
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: 'bold',
 		color: 'rgb(100, 120, 133)'
 	}

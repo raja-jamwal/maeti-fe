@@ -154,6 +154,10 @@ class MoreScreen extends React.Component {
 								showCePrompt: false,
 								isCeMode: true
 							});
+						} else {
+							this.setState({
+								showCePrompt: false
+							});
 						}
 					}}
 				/>
