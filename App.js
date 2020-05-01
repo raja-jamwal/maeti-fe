@@ -15,12 +15,12 @@ import * as Sentry from 'sentry-expo';
 import * as config from './src/config/config.json';
 import { getLogger } from './src/utils/logger';
 
-Sentry.setRelease(Constants.manifest.revisionId);
 Sentry.init({
 	dsn: config.sentry_dsn,
-	enableInExpoDevelopment: false,
+	enableInExpoDevelopment: true,
 	debug: true
 });
+Sentry.setRelease(Constants.manifest.revisionId);
 
 /**
  * Polly-fill following for react-native JSC

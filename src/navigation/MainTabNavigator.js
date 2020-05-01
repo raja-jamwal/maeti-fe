@@ -1,10 +1,5 @@
 import React from 'react';
 import { Platform, View, Text, SafeAreaView } from 'react-native';
-import {
-	createStackNavigator,
-	createBottomTabNavigator,
-	createMaterialTopTabNavigator
-} from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import ExploreScreen from '../screens/ExploreScreen';
 import Colors from '../constants/Colors';
@@ -21,12 +16,15 @@ import IncomingTab from '../components/interests-tab/tabs/IncomingTab';
 import AcceptedTab from '../components/interests-tab/tabs/AcceptedTab';
 import SentTab from '../components/interests-tab/tabs/SentTab';
 import ProfileImageGalleryScreen from '../screens/ProfileImageGalleryScreen';
-import TabBarComponent from '../components/tab-bar-component';
+// import TabBarComponent from '../components/tab-bar-component'; // remove the support is added in latest version
+
+import { createStackNavigator } from 'react-navigation-stack';
+import { createMaterialTopTabNavigator, createBottomTabNavigator } from 'react-navigation-tabs'; // investigate these import
 
 const defaultNavigationOptions = {
 	headerStyle: {
 		backgroundColor: 'white',
-		height: 40
+		height: 50
 	},
 	headerTintColor: Colors.offWhite,
 	headerTitleStyle: {
@@ -35,7 +33,8 @@ const defaultNavigationOptions = {
 	},
 	labelStyle: {
 		fontSize: 8
-	}
+	},
+	cardStyle: { backgroundColor: 'white' }
 };
 
 const ExploreStack = createStackNavigator(
@@ -151,9 +150,9 @@ const bottomTabNavigatorOptions = {
 	}
 };
 
-if (Platform.OS === 'android') {
-	bottomTabNavigatorOptions.tabBarComponent = props => <TabBarComponent {...props} />;
-}
+// if (Platform.OS === 'android') {
+// 	bottomTabNavigatorOptions.tabBarComponent = props => <TabBarComponent {...props} />;
+// }
 
 export default createBottomTabNavigator(
 	{

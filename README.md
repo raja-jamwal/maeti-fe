@@ -118,20 +118,24 @@ expo push:android:upload --api-key <your-token-here>
 
 ## Expo upgrade
 
-- use node 12 - `sudo n 12.0.0.1 `
-- use latest expo-cli `sudo npm -g npm` and `sudo npm -g expo-cli`
-- reinstall modules `yarn install`
+-   use node 12 - `sudo n 12.0.0.1`
+-   use latest expo-cli `sudo npm -g npm` and `sudo npm -g expo-cli`
+-   reinstall modules `yarn install`
 
 ## Uploading to store
 
-- Update `android version code` in app.json under `expo.android.versionCode`
-- `expo build:android -t app-bundle`
+-   Update `android version code` in app.json under `expo.android.versionCode`
+-   `expo build:android -t app-bundle`
 
 ## With release channel
 
-- `expo build:android -t app-bundle --release-channel staging`
-- `expo build:android -t app-bundle --release-channel prod`
+-   `expo build:android -t app-bundle --release-channel staging`
+-   `expo build:android -t app-bundle --release-channel prod`
 
 ## Publish JS updates
 
-- `expo publish --release-channel <staging|prod>`
+-   `expo publish --release-channel <staging|prod>`
+
+## ADB logcat
+
+-   `adb logcat *:S ReactNative:V ReactNativeJS:V`
