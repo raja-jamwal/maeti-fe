@@ -139,5 +139,9 @@ export const API = {
 		CREATE: `${config.server}/api/order.create`,
 		SUCCESS: `${config.server}/api/order.success`,
 		ERROR: `${config.server}/api/order.error`
+	},
+
+	CE: {
+		GET: `${config.server}/api/ce.get`
 	}
 };

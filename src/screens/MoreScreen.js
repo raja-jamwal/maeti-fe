@@ -19,6 +19,9 @@ import {
 } from '../components/settings/settings';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Prompt from 'react-native-input-prompt';
+import { ApiRequest } from '../utils';
+import { API } from '../config/API';
+import { isEmpty } from 'lodash';
 
 class MoreScreen extends React.Component {
 	static navigationOptions = {
@@ -65,6 +68,29 @@ class MoreScreen extends React.Component {
 				isCeMode
 			});
 		} catch (er) {}
+	}
+
+	async getCeAccessFromStatus(password) {
+		this.copyrightClickCount = 0;
+		if (isEmpty(password)) {
+			return;
+		}
+		try {
+			// if the request goes through
+			// we've a valid CE
+			await ApiRequest(API.CE.GET, {
+				password
+			});
+			await setCeStatus();
+			this.setState({
+				showCePrompt: false,
+				isCeMode: true
+			});
+		} catch (er) {
+			this.setState({
+				showCePrompt: false
+			});
+		}
 	}
 
 	render() {
@@ -146,20 +172,7 @@ class MoreScreen extends React.Component {
 							showCePrompt: false
 						})
 					}
-					onSubmit={async text => {
-						this.copyrightClickCount = 0;
-						if (getConfig().cea === text) {
-							await setCeStatus();
-							this.setState({
-								showCePrompt: false,
-								isCeMode: true
-							});
-						} else {
-							this.setState({
-								showCePrompt: false
-							});
-						}
-					}}
+					onSubmit={async text => await this.getCeAccessFromStatus(text)}
 				/>
 
 				{false && (
