@@ -131,8 +131,13 @@ class MoreScreen extends React.Component {
 				<SettingBlock>
 					<SettingRow label="Registered As" value={currentUserProfile.fullName} />
 					<SettingDivider />
-					<SettingRow label="Verify Account" action={() => this.toggleStartPayment()} />
-					<SettingDivider />
+					{!isPaid && (
+						<SettingRow
+							label="Verify Account"
+							action={() => this.toggleStartPayment()}
+						/>
+					)}
+					{!isPaid && <SettingDivider />}
 					<SettingRow label="Logout Account" action={() => this.doLogout()} />
 				</SettingBlock>
 

@@ -24,7 +24,14 @@ import { createMaterialTopTabNavigator, createBottomTabNavigator } from 'react-n
 const defaultNavigationOptions = {
 	headerStyle: {
 		backgroundColor: 'white',
-		height: 50
+		...Platform.select({
+			ios: {
+				height: 100
+			},
+			android: {
+				height: 50
+			}
+		})
 	},
 	headerTintColor: Colors.offWhite,
 	headerTitleStyle: {
