@@ -142,7 +142,7 @@ class MoreScreen extends React.Component {
 					<SettingDivider />
 					<SettingRow label="OTA Version" value={otaVersion} />
 					<SettingDivider />
-					<SettingRow label="Support" value="support@maeti.com" />
+					<SettingRow label="Support" value="support@datagrids.in" />
 					<SettingDivider />
 					<SettingRow label="Phone Support" value="+91-73877-78673" />
 					{isCeMode && <SettingRow label="CE mode" value="activated" />}
