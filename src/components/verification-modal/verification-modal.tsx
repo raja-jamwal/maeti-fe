@@ -9,8 +9,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { noop } from 'lodash';
 import { SlackPostMessage } from 'src/utils/slack';
 import { Throbber } from '../throbber/throbber';
+import Button from '../button/button';
 import { getLogger } from '../../utils/logger';
 import { getAccount } from 'src/store/reducers/account-reducer';
+// import { Camera } from 'expo-camera';
 
 function VerificationModal(
 	{ account, show, requestClose } = {
@@ -20,8 +22,15 @@ function VerificationModal(
 	}
 ) {
 	const logger = getLogger(VerificationModal);
+	const [hasPermission, setHasPermission] = React.useState(false);
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [isRequested, setIsRequested] = React.useState(false);
+	React.useEffect(() => {
+		(async () => {
+			//   const { status } = await Camera.requestPermissionsAsync();
+			//   setHasPermission(status === 'granted');
+		})();
+	}, []);
 	const sendSlackRequest = async () => {
 		setIsLoading(true);
 		setIsRequested(false);
@@ -74,7 +83,6 @@ function VerificationModal(
 								marginTop: -12
 							}}
 						>
-							<Text style={[styles.label, { fontSize: 50 }]}>✅</Text>
 							<Text style={styles.label}>Get verified for FREE</Text>
 							<Text style={styles.label}>Get full account access for 4 months</Text>
 							<Text style={styles.label}>We'll call you on your number</Text>
@@ -82,18 +90,15 @@ function VerificationModal(
 						</View>
 
 						{!isLoading && !isRequested && (
-							<TouchableBtn
+							<Button
 								style={{
-									backgroundColor: Colors.primaryDarkColor,
+									// backgroundColor: Colors.primaryDarkColor,
 									padding: 16,
 									borderRadius: 8
 								}}
+								label="Request Verification Callback"
 								onPress={sendSlackRequest}
-							>
-								<Text style={{ color: Colors.white }}>
-									Request Verification Callback
-								</Text>
-							</TouchableBtn>
+							/>
 						)}
 						{isLoading && <Throbber size={'small'} />}
 						{isRequestReceived && (
