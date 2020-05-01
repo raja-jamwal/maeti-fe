@@ -50,7 +50,7 @@ class MessagesScreen extends React.PureComponent<
 		fetchChannels();
 	}
 
-	componentWillReceiveProps(nextProps: any) {
+	UNSAFE_componentWillReceiveProps(nextProps: any) {
 		if (!nextProps.fetching) {
 			this.setState({
 				isFetchingMore: false

@@ -35,7 +35,7 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 		return new Date(epoch * 1000); // unix time to ts
 	}
 
-	componentWillReceiveProps(nextProps: IDateTimeIosProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IDateTimeIosProps) {
 		const { epoch } = nextProps;
 		this.setState({
 			date: this.getDefaultDate(epoch)

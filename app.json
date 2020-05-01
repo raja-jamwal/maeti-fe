@@ -3,7 +3,7 @@
 		"name": "maeti",
 		"slug": "matrimony",
 		"privacy": "public",
-		"sdkVersion": "34.0.0",
+		"sdkVersion": "37.0.0",
 		"platforms": ["ios", "android"],
 		"primaryColor": "#fff",
 		"version": "1.0.0",

@@ -82,7 +82,7 @@ export default class RangeFilter extends React.Component<IRangeFilterProps, IRan
 		};
 	}
 
-	componentWillReceiveProps(nextProps: Readonly<IRangeFilterProps>): void {
+	UNSAFE_componentWillReceiveProps(nextProps: Readonly<IRangeFilterProps>): void {
 		const ranges = RangeFilter.getRanges(nextProps);
 		const isRangeValueSupplied =
 			nextProps.rangeValue && nextProps.rangeValue.from && nextProps.rangeValue.to;

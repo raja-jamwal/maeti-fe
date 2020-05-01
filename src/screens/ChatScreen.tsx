@@ -114,7 +114,7 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		this.props.navigation.setParams({ title: channel.toUser.fullName });
 	}
 
-	componentWillReceiveProps(nextProps: IChatScreenProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IChatScreenProps) {
 		this.mayBeUpdateMessages(nextProps.messages);
 	}
 

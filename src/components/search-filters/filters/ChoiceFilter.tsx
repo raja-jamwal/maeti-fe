@@ -30,7 +30,7 @@ class ChoiceFilter extends React.PureComponent<IChoiceFilterProps, IChoiceFilter
 		}
 	}
 
-	componentWillReceiveProps(nextProps: IChoiceFilterProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IChoiceFilterProps) {
 		if (this.props.choicesValue !== nextProps.choicesValue) {
 			this.setState({
 				filtersUpdated: this.state.filtersUpdated + 1
