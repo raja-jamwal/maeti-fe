@@ -1,41 +1,45 @@
-import { Ionicons } from '@expo/vector-icons';
-import { head, isEmpty, sortBy, toArray } from 'lodash';
 import * as React from 'react';
 import {
-	FlatList,
 	Image,
-	SafeAreaView,
-	StatusBar,
 	StyleSheet,
 	TextInput,
-	View
+	View,
+	TouchableNativeFeedback,
+	FlatList,
+	StatusBar,
+	TouchableOpacity,
+	SafeAreaView
 } from 'react-native';
-import { NavigationInjectedProps } from 'react-navigation';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
-import EmptyResult from '../components/empty-result';
-import ConnectedProfile from '../components/profile-card/connected-profile';
-import ConnectedPurchaseButton from '../components/purchase-button/purchase-button';
-import SelectedFilter from '../components/selected-filters';
-import TabbedFilters from '../components/tabbed-filters/index';
-import { Throbber } from '../components/throbber/throbber';
-import TouchableBtn from '../components/touchable-btn/touchable-btn';
 import Colors from '../constants/Colors';
+import GlobalStyles from '../styles/global';
+import ConnectedProfile from '../components/profile-card/connected-profile';
+import { Ionicons } from '@expo/vector-icons';
+import TabbedFilters from '../components/tabbed-filters/index';
+import { connect } from 'react-redux';
+import { Throbber } from '../components/throbber/throbber';
+import { NavigationInjectedProps } from 'react-navigation';
+import { IUserProfileState } from '../store/reducers/user-profile-reducer';
 import { IRootState } from '../store';
-import { isAccountPaid } from '../store/reducers/account-reducer';
+import { bindActionCreators, Dispatch } from 'redux';
 import {
 	clearSearchResultForScreen,
+	EXPLORE_SCREENS,
 	isPaidScreen,
-	mayBeFetchSearchResult
+	mayBeFetchSearchResult,
+	setSearchResultForScreen
 } from '../store/reducers/explore-reducer';
+import { toArray, sortBy, head, isEmpty, includes } from 'lodash';
 import { applyGlobalFilter, getSearchFilter } from '../store/reducers/filter-reducer';
+import { getLogger } from '../utils/logger';
 import {
 	getCurrentUserProfile,
 	getCurrentUserProfileId
 } from '../store/reducers/self-profile-reducer';
-import { IUserProfileState } from '../store/reducers/user-profile-reducer';
-import GlobalStyles from '../styles/global';
-import { getLogger } from '../utils/logger';
+import SelectedFilter from '../components/selected-filters';
+import EmptyResult from '../components/empty-result';
+import ConnectedPurchaseButton from '../components/purchase-button/purchase-button';
+import { isAccountPaid } from '../store/reducers/account-reducer';
+import TouchableBtn from '../components/touchable-btn/touchable-btn';
 
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
