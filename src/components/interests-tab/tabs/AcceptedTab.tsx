@@ -45,6 +45,9 @@ class AcceptedTab extends React.Component<
 	profileIdExtractor(interest: Interest) {
 		return interest.toUser.id;
 	}
+	profileNameExtractor(interest: Interest) {
+		return interest.toUser.fullName;
+	}
 
 	totalCount() {
 		const { fetching, totalAcceptedInterests } = this.props;
@@ -74,6 +77,7 @@ class AcceptedTab extends React.Component<
 				fetching={fetching}
 				data={this.getAcceptedInterests()}
 				profileIdExtractor={this.profileIdExtractor}
+				profileNameExtractor={this.profileNameExtractor}
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}

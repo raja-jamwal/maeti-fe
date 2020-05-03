@@ -44,7 +44,9 @@ class IncomingTab extends React.PureComponent<
 	profileIdExtractor(interest: Interest) {
 		return interest.fromUser.id;
 	}
-
+	profileNameExtractor(interest: Interest) {
+		return interest.fromUser.fullName;
+	}
 	totalCount() {
 		const { fetching, totalIncomingInterests } = this.props;
 		if (fetching) return null;
@@ -73,6 +75,7 @@ class IncomingTab extends React.PureComponent<
 				fetching={fetching}
 				data={this.getIncomingInterests()}
 				profileIdExtractor={this.profileIdExtractor}
+				profileNameExtractor={this.profileNameExtractor}
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}
