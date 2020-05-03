@@ -56,8 +56,7 @@ class VirtualProfileList extends React.PureComponent<
 		const loaderClasses = [styles.loading, styles.loaderTop];
 
 		console.log('re-render flat-list');
-		// Array of Favourite
-		/// Favourite, Favourite
+
 		return (
 			<View>
 				<FlatList

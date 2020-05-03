@@ -7,8 +7,7 @@ import {
 	getFavouriteProfiles,
 	getTotalElements,
 	IFavouriteState,
-	setFavouriteRefreshing,
-	favouriteReducer
+	setFavouriteRefreshing
 } from '../../store/reducers/favourite-reducer';
 import { connect } from 'react-redux';
 import { IRootState } from '../../store';
