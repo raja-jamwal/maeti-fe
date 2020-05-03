@@ -51,7 +51,6 @@ class ProfileScreen extends React.Component<IProfileScreenProps, IProfileScreenS
 	componentDidMount() {
 		const { selfProfileId, navigation, markProfileAsViewed } = this.props;
 		const userProfileId = navigation.getParam('userProfileId');
-
 		if (!!userProfileId && userProfileId !== selfProfileId) {
 			markProfileAsViewed(userProfileId);
 		}
