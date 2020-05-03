@@ -7,6 +7,7 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 interface IVirtualProfileListProps {
 	fetching?: boolean;
 	profileIdExtractor: (item: any) => number;
+	profileNameExtractor: (item: any) => string;
 	data: Array<any>;
 	headerComponent: any;
 	handleMore: () => any;
@@ -23,20 +24,23 @@ class VirtualProfileList extends React.PureComponent<
 		this.renderProfileCard = this.renderProfileCard.bind(this);
 	}
 
-	openProfileScreen(userProfileId: number) {
+	openProfileScreen(userProfileId: number, profileName: string) {
 		const { navigation } = this.props;
-		navigation.push('ProfileScreen', { userProfileId });
+		navigation.push('ProfileScreen', { userProfileId, profileName });
 	}
 
 	renderProfileCard(item: any) {
-		const { profileIdExtractor } = this.props;
+		const { profileIdExtractor, profileNameExtractor } = this.props;
+
 		if (!item) return null;
 		return (
 			<View style={styles.profileCardContainer}>
 				<ConnectedProfileCard
 					key={profileIdExtractor(item)}
 					userProfileId={profileIdExtractor(item)}
-					onPhotoPress={() => this.openProfileScreen(profileIdExtractor(item))}
+					onPhotoPress={() =>
+						this.openProfileScreen(profileIdExtractor(item), profileNameExtractor(item))
+					}
 				/>
 			</View>
 		);
@@ -52,6 +56,7 @@ class VirtualProfileList extends React.PureComponent<
 		const loaderClasses = [styles.loading, styles.loaderTop];
 
 		console.log('re-render flat-list');
+
 		return (
 			<View>
 				<FlatList

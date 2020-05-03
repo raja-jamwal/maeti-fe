@@ -64,6 +64,9 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 	profileIdExtractor(favourite: Favourite) {
 		return favourite.favouriteUserProfile.id;
 	}
+	profileNameExtractor(favourite: Favourite) {
+		return favourite.favouriteUserProfile.fullName;
+	}
 
 	async _handleMore() {
 		const { userProfileId, fetchFavouriteProfile } = this.props;
@@ -102,6 +105,7 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 					<VirtualProfileList
 						fetching={fetching}
 						profileIdExtractor={this.profileIdExtractor}
+						profileNameExtractor={this.profileNameExtractor}
 						data={profiles}
 						headerComponent={this.totalCount()}
 						handleMore={this._handleMore}

@@ -43,6 +43,9 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 	profileIdExtractor(interest: Interest) {
 		return interest.toUser.id;
 	}
+	profileNameExtractor(interest: Interest) {
+		return interest.toUser.fullName;
+	}
 
 	totalCount() {
 		const { fetching, totalSentInterests } = this.props;
@@ -72,6 +75,7 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 				fetching={fetching}
 				data={this.getSentInterests()}
 				profileIdExtractor={this.profileIdExtractor}
+				profileNameExtractor={this.profileNameExtractor}
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}
