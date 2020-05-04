@@ -278,6 +278,10 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		let error = '';
 		this.logger.log(number, fullName);
 
+		if (number && String(number).length > 10) {
+			error = 'Please use number without calling-code';
+		}
+
 		if (shouldLogin) {
 			if (!number) {
 				error = 'Please provide phone number';
