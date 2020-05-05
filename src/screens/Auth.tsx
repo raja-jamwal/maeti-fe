@@ -111,18 +111,30 @@ function TryLogin({ changeScreen }: { changeScreen: (screen: LOGIN_SCREENS) => a
 			}}
 		>
 			{isChecking && <Throbber size="small" />}
-			{isSubmitted && (
+			{!isChecking && isSubmitted && (
 				<Text style={{ color: Colors.offWhite }}>Account is still under review</Text>
 			)}
-			{isSubmitted && (
-				<Text style={{ color: Colors.offWhite }}>
-					You'll receive SMS when account is activated
-				</Text>
+			{!isChecking && (
+				<View style={{ flexDirection: 'row' }}>
+					<Button style={btnStyles.btn} label="Try Login" onPress={tryRequesting} />
+					<Button
+						style={btnStyles.btn}
+						label="Update Request"
+						onPress={() => {
+							setTimeout(() => changeScreen(LOGIN_SCREENS.SIGNUP));
+						}}
+					/>
+				</View>
 			)}
-			{!isChecking && <Button label="Try Login" onPress={tryRequesting} />}
 		</View>
 	);
 }
+
+const btnStyles = StyleSheet.create({
+	btn: {
+		margin: 8
+	}
+});
 
 function DateOfBirth(
 	{ setDob, dob }: { setDob: (epoch: number) => any; dob: string } = { setDob: noop, dob: '' }
@@ -223,7 +235,6 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			}
 		} else {
 			this.changeScreen(LOGIN_SCREENS.TOUR);
-			// this.changeScreen(LOGIN_SCREENS.REVIEW);
 		}
 	}
 
@@ -268,7 +279,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		} catch (er) {
 			// if error on pending request, account most
 			// likely already there
-			this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+			simpleAlert('Login', 'Try login using your phone number', () =>
+				this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP)
+			);
 		}
 	}
 
@@ -617,6 +630,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				</Text>
 				<Text style={{ color: Colors.offWhite, fontSize: 16, padding: 4 }}>
 					We'll send you SMS when account is approved
+				</Text>
+				<Text style={{ color: Colors.offWhite, fontSize: 16, padding: 4 }}>
+					For help WhatsApp on +91-73877-78673
 				</Text>
 				<TryLogin changeScreen={this.changeScreen} />
 			</View>

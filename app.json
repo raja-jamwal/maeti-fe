@@ -22,7 +22,7 @@
 		"android": {
 			"package": "matrimony.datagrids.in",
 			"googleServicesFile": "./google-services.json",
-			"versionCode": 32
+			"versionCode": 33
 		},
 		"androidStatusBar": {
 			"backgroundColor": "#fff",
