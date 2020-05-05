@@ -616,7 +616,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 					Your request is under review
 				</Text>
 				<Text style={{ color: Colors.offWhite, fontSize: 16, padding: 4 }}>
-					We'll send your SMS when account is approved
+					We'll send you SMS when account is approved
 				</Text>
 				<TryLogin changeScreen={this.changeScreen} />
 			</View>
