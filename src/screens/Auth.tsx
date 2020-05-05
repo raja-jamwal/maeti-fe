@@ -222,8 +222,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				this.changeScreen(LOGIN_SCREENS.ERROR);
 			}
 		} else {
-			// this.changeScreen(LOGIN_SCREENS.TOUR);
-			this.changeScreen(LOGIN_SCREENS.REVIEW);
+			this.changeScreen(LOGIN_SCREENS.TOUR);
+			// this.changeScreen(LOGIN_SCREENS.REVIEW);
 		}
 	}
 
