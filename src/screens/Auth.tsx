@@ -222,8 +222,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				this.changeScreen(LOGIN_SCREENS.ERROR);
 			}
 		} else {
-			this.changeScreen(LOGIN_SCREENS.TOUR);
-			// this.changeScreen(LOGIN_SCREENS.PICK_IMAGE);
+			// this.changeScreen(LOGIN_SCREENS.TOUR);
+			this.changeScreen(LOGIN_SCREENS.REVIEW);
 		}
 	}
 
@@ -609,9 +609,14 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			<View
 				style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
 			>
-				<Text style={{ color: Colors.offWhite, fontSize: 18 }}>Under Review</Text>
-				<Text style={{ color: Colors.offWhite, fontSize: 16 }}>
+				<Text style={{ color: Colors.offWhite, fontSize: 18, padding: 8 }}>
+					Under Review
+				</Text>
+				<Text style={{ color: Colors.offWhite, fontSize: 16, padding: 4 }}>
 					Your request is under review
+				</Text>
+				<Text style={{ color: Colors.offWhite, fontSize: 16, padding: 4 }}>
+					We'll send your SMS when account is approved
 				</Text>
 				<TryLogin changeScreen={this.changeScreen} />
 			</View>
