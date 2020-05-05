@@ -7,13 +7,8 @@ class EmptyResult extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				{/*<Ionicons*/}
-				{/*name="md-cafe"*/}
-				{/*size={50}*/}
-				{/*style={{ marginBottom: 5 }}*/}
-				{/*color={Colors.tabIconDefault}*/}
-				{/*/>*/}
 				<Text style={styles.text}>No match found</Text>
+				<Text style={styles.text}>Pull down to refresh</Text>
 			</View>
 		);
 	}

@@ -317,7 +317,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	renderSignUp(login: boolean = false) {
-		const { number, fullName } = this.state;
+		const { number, fullName, callingCode } = this.state;
 		return (
 			<View>
 				<View style={styles.formContainer}>
@@ -334,6 +334,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 								});
 							}}
 						/>
+						<Text style={styles.callingCodeValue}>+{callingCode}</Text>
 					</View>
 					<View style={styles.fieldContainer}>
 						<TextInput
@@ -670,7 +671,13 @@ const styles = StyleSheet.create({
 		margin: 10
 	},
 	countryContainer: {
-		padding: 10
+		padding: 10,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	callingCodeValue: {
+		padding: 8
 	},
 	choiceField: {
 		borderColor: Colors.borderColor,

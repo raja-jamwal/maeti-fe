@@ -84,7 +84,7 @@ function VerificationModal(
 							}}
 						>
 							<Text style={styles.label}>Get verified for FREE</Text>
-							<Text style={styles.label}>Get full account access for 4 months</Text>
+							<Text style={styles.label}>Get full account access for 3 months</Text>
 							<Text style={styles.label}>We'll call you on your number</Text>
 							<Text style={styles.label}>Please keep proof-of-identity handy</Text>
 						</View>
