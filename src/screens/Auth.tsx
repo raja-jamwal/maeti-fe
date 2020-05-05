@@ -110,7 +110,6 @@ function TryLogin({ changeScreen }: { changeScreen: (screen: LOGIN_SCREENS) => a
 				alignItems: 'center'
 			}}
 		>
-			{!isChecking && !isSubmitted && <Button label="Try Login" onPress={tryRequesting} />}
 			{isChecking && <Throbber size="small" />}
 			{isSubmitted && (
 				<Text style={{ color: Colors.offWhite }}>Account is still under review</Text>
@@ -120,6 +119,7 @@ function TryLogin({ changeScreen }: { changeScreen: (screen: LOGIN_SCREENS) => a
 					You'll receive SMS when account is activated
 				</Text>
 			)}
+			{!isChecking && <Button label="Try Login" onPress={tryRequesting} />}
 		</View>
 	);
 }
