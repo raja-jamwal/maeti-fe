@@ -15,7 +15,7 @@ import { toArray, sortBy, keys, isEmpty } from 'lodash';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { Favourite } from '../../store/reducers/account-defination';
 import VirtualProfileList from '../virtual-profile-list/index';
-import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+import { getCurrentUserProfileId, isAccountPaid } from '../../store/reducers/account-reducer';
 import Color from '../../constants/Colors';
 import { Value } from '../text';
 
@@ -24,6 +24,7 @@ interface IFavouriteContainerMapStateToProps {
 	favouriteProfiles?: IFavouriteState;
 	fetching?: boolean;
 	totalFavourites: number;
+	isAccountPaid: boolean;
 }
 
 interface IFavouriteContainerMapDispatchToProps {
@@ -96,7 +97,7 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 	}
 
 	render() {
-		const { fetching } = this.props;
+		const { fetching, isAccountPaid } = this.props;
 		const profiles = this.getFavouriteProfiles();
 		const style = styles.emptyContainer;
 		return (
@@ -110,6 +111,7 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 						headerComponent={this.totalCount()}
 						handleMore={this._handleMore}
 						handleRefresh={() => this.handleRefresh()}
+						isAccountPaid={isAccountPaid}
 					/>
 				)}
 				{isEmpty(profiles) && !fetching && this.noFavourites()}
@@ -145,7 +147,8 @@ const mapStateToProps = (state: IRootState) => {
 		userProfileId,
 		favouriteProfiles,
 		fetching,
-		totalFavourites
+		totalFavourites,
+		isAccountPaid: isAccountPaid(state)
 	};
 };
 

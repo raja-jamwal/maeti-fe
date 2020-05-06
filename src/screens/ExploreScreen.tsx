@@ -128,7 +128,10 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 	}
 
 	openProfileScreen(userProfileId: number, profileName: string) {
-		const { navigation } = this.props;
+		const { navigation, isAccountPaid } = this.props;
+		if (!isAccountPaid) {
+			profileName = 'Buy membership to view profile name';
+		}
 		navigation.push('ProfileScreen', { userProfileId, profileName });
 	}
 

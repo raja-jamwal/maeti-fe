@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, TouchableNativeFeedback, View } from 'react-nativ
 import { Throbber } from '../throbber/throbber';
 import ConnectedProfileCard from '../profile-card/connected-profile';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { isAccountPaid } from '../../store/reducers/account-reducer';
 
 interface IVirtualProfileListProps {
 	fetching?: boolean;
@@ -12,6 +13,7 @@ interface IVirtualProfileListProps {
 	headerComponent: any;
 	handleMore: () => any;
 	handleRefresh: () => any;
+	isAccountPaid: boolean;
 }
 
 class VirtualProfileList extends React.PureComponent<
@@ -25,7 +27,10 @@ class VirtualProfileList extends React.PureComponent<
 	}
 
 	openProfileScreen(userProfileId: number, profileName: string) {
-		const { navigation } = this.props;
+		const { navigation, isAccountPaid } = this.props;
+		if (!isAccountPaid) {
+			profileName = 'Buy membership to view profile name';
+		}
 		navigation.push('ProfileScreen', { userProfileId, profileName });
 	}
 

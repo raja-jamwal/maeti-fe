@@ -17,6 +17,7 @@ interface ICollapsibleTableProps {
 	userProfileId: number;
 	updateAction: (a: any) => any;
 	editable: boolean;
+	isAccountPaid?: boolean;
 }
 
 interface ICollapsibleTableState {
@@ -54,7 +55,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 	}
 
 	render() {
-		const { title, object, mapping, editable } = this.props;
+		const { title, object, mapping, editable, isAccountPaid } = this.props;
 		const { expanded } = this.state;
 		const caretIconName = expanded ? 'md-arrow-dropup' : 'md-arrow-dropdown';
 		return (
@@ -96,7 +97,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 						// iterationCount="infinite"
 						style={styles.container}
 					>
-						<Table object={object} mapping={mapping} />
+						<Table object={object} mapping={mapping} isAccountPaid={isAccountPaid} />
 					</View>
 				</Collapsible>
 			</View>

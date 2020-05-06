@@ -6,6 +6,7 @@ import { UserProfile } from '../../store/reducers/account-defination';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateUserProfile } from '../../store/reducers/user-profile-reducer';
 import { Action } from 'redux-actions';
+import { isAccountPaid } from '../../store/reducers/account-reducer';
 
 interface IProfileTableProps {
 	userProfileId: number;
@@ -13,6 +14,7 @@ interface IProfileTableProps {
 }
 interface IProfileTableMapStateToProps {
 	userProfile?: UserProfile;
+	isAccountPaid: boolean;
 }
 interface IProfileTableMapDispatchToProps {
 	updateUserProfile: () => any;
@@ -469,7 +471,8 @@ class ProfileTable extends React.Component<
 		},
 		fullName: {
 			label: 'Full Name',
-			type: 'string'
+			type: 'string',
+			isPaidFeature: true
 		},
 		dob: {
 			label: 'Date of Birth',
@@ -541,7 +544,13 @@ class ProfileTable extends React.Component<
 	};
 
 	render() {
-		const { userProfile, userProfileId, updateUserProfile, editable } = this.props;
+		const {
+			userProfile,
+			userProfileId,
+			updateUserProfile,
+			editable,
+			isAccountPaid
+		} = this.props;
 		return (
 			<CollapsibleTable
 				title="Basic Information"
@@ -550,6 +559,7 @@ class ProfileTable extends React.Component<
 				updateAction={updateUserProfile}
 				userProfileId={userProfileId}
 				editable={editable}
+				isAccountPaid={isAccountPaid}
 			/>
 		);
 	}
@@ -558,7 +568,7 @@ class ProfileTable extends React.Component<
 const mapStateToProps = (initialState: IRootState, ownProps: IProfileTableProps) => {
 	const profileId = ownProps.userProfileId;
 	const userProfile = initialState.userProfiles[profileId];
-	return { userProfile };
+	return { userProfile, isAccountPaid: isAccountPaid(initialState) };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {

@@ -9,7 +9,11 @@ import Colors from 'src/constants/Colors';
 
 export default class Table extends React.Component {
 	renderValue(value, mapping) {
+		const { isAccountPaid } = this.props;
 		if (mapping.type) {
+			if (!!mapping.isPaidFeature && !isAccountPaid) {
+				return 'Name is only visible to paid users';
+			}
 			if (mapping.type === 'about') {
 				return value || '';
 			}

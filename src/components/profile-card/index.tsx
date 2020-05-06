@@ -78,6 +78,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		if (isEmpty(userProfile)) return null;
 		const { education, profession, family } = { ...userProfile };
 		const userProfileName = isAccountPaid || isSelfProfile ? userProfile.fullName : 'xxxxxxx';
+
 		const professionLocation = ['workCity', 'workState', 'workCountry']
 			.map(e => get(profession, e))
 			.map(o => o && o.name)
