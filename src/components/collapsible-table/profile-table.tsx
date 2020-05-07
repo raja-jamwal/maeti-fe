@@ -445,6 +445,7 @@ class ProfileTable extends React.Component<
 		gender: {
 			label: 'Gender',
 			type: 'choice',
+			isNotEditable: true,
 			choice: {
 				options: GenderOptions
 			}
