@@ -4,7 +4,7 @@ import { Throbber } from '../throbber/throbber';
 import ConnectedProfileCard from '../profile-card/connected-profile';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { isAccountPaid } from '../../store/reducers/account-reducer';
-
+import { MASKED_PROFILE_NAME } from '../../constants/index';
 interface IVirtualProfileListProps {
 	fetching?: boolean;
 	profileIdExtractor: (item: any) => number;
@@ -29,7 +29,7 @@ class VirtualProfileList extends React.PureComponent<
 	openProfileScreen(userProfileId: number, profileName: string) {
 		const { navigation, isAccountPaid } = this.props;
 		if (!isAccountPaid) {
-			profileName = 'Buy membership to view profile name';
+			profileName = MASKED_PROFILE_NAME;
 		}
 		navigation.push('ProfileScreen', { userProfileId, profileName });
 	}

@@ -12,7 +12,6 @@ import { toArray, sortBy } from 'lodash';
 import VirtualProfileList from '../../virtual-profile-list/index';
 import { Value } from '../../text';
 import { isAccountPaid } from '../../../store/reducers/account-reducer';
-
 interface ISentTabMapStateToProps {
 	sentInterests: Array<Interest>;
 	fetching: boolean;
@@ -99,7 +98,6 @@ const mapStateToProps = (state: IRootState) => {
 	const sentInterests = state.interests.sent.profiles;
 	const fetching = state.interests.sent.fetching;
 	const totalSentInterests = state.interests.sent.pageable.totalElements;
-
 	return {
 		sentInterests,
 		fetching,

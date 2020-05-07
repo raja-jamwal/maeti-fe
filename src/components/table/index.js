@@ -12,7 +12,7 @@ export default class Table extends React.Component {
 		const { isAccountPaid } = this.props;
 		if (mapping.type) {
 			if (!!mapping.isPaidFeature && !isAccountPaid) {
-				return 'Name is only visible to paid users';
+				return 'Visible to paid users';
 			}
 			if (mapping.type === 'about') {
 				return value || '';
