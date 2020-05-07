@@ -11,11 +11,13 @@ import {
 import { connect } from 'react-redux';
 import VirtualProfileList from '../../virtual-profile-list/index';
 import { Value } from '../../text';
+import { isAccountPaid } from '../../../store/reducers/account-reducer';
 
 interface IAcceptedTabMapStateToProps {
 	acceptedInterests: Array<Interest>;
 	fetching: boolean;
 	totalAcceptedInterests: number;
+	isAccountPaid: boolean;
 }
 
 interface IAcceptedTabDispatchToProps {
@@ -71,7 +73,7 @@ class AcceptedTab extends React.Component<
 	}
 
 	render() {
-		const { fetching } = this.props;
+		const { fetching, isAccountPaid } = this.props;
 		return (
 			<VirtualProfileList
 				fetching={fetching}
@@ -81,6 +83,7 @@ class AcceptedTab extends React.Component<
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}
+				isAccountPaid={isAccountPaid}
 			/>
 		);
 	}
@@ -102,7 +105,8 @@ const mapStateToProps = (state: IRootState) => {
 	return {
 		acceptedInterests,
 		fetching,
-		totalAcceptedInterests
+		totalAcceptedInterests,
+		isAccountPaid: isAccountPaid(state)
 	};
 };
 

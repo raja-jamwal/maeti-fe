@@ -40,6 +40,7 @@ import EmptyResult from '../components/empty-result';
 import ConnectedPurchaseButton from '../components/purchase-button/purchase-button';
 import { isAccountPaid } from '../store/reducers/account-reducer';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
+import { MASKED_PROFILE_NAME } from '../constants';
 
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
@@ -128,7 +129,10 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 	}
 
 	openProfileScreen(userProfileId: number, profileName: string) {
-		const { navigation } = this.props;
+		const { navigation, isAccountPaid } = this.props;
+		if (!isAccountPaid) {
+			profileName = MASKED_PROFILE_NAME;
+		}
 		navigation.push('ProfileScreen', { userProfileId, profileName });
 	}
 
