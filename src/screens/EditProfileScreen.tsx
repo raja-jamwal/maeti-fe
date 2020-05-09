@@ -293,7 +293,6 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			return (
 				<View key={field}>
 					<Value style={styles.fieldLabel}>{fieldDefinition.label}</Value>
-
 					{isStringField && (
 						<View style={styles.textField}>
 							<TextInput
@@ -390,7 +389,6 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 							/>
 						</View>
 					)}
-
 					{isCountryField && (
 						<WorldSelectorField
 							options={[WORLD_OPTION.COUNTRY]}
