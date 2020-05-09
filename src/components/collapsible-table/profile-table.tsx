@@ -120,8 +120,8 @@ export const BloodGroupOptions = [
 
 export const ProfileTableMotherTongueOptions = [
 	{
-		label: 'Marathi',
-		value: 'marathi'
+		label: 'Sindhi',
+		value: 'sindhi'
 	},
 	{
 		label: 'Hindi',
@@ -130,90 +130,6 @@ export const ProfileTableMotherTongueOptions = [
 	{
 		label: 'English',
 		value: 'english'
-	},
-	{
-		label: 'Bengali',
-		value: 'bengali'
-	},
-	{
-		label: 'Telugu',
-		value: 'telugu'
-	},
-	{
-		label: 'Tamil',
-		value: 'tamil'
-	},
-	{
-		label: 'Urdu',
-		value: 'urdu'
-	},
-	{
-		label: 'Kannada',
-		value: 'kannada'
-	},
-	{
-		label: 'Gujrati',
-		value: 'gujrati'
-	},
-	{
-		label: 'Odia',
-		value: 'odia'
-	},
-	{
-		label: 'Malayalam',
-		value: 'malayalam'
-	},
-	{
-		label: 'Bhojpuri',
-		value: 'bhojpuri'
-	},
-	{
-		label: 'Punjabi',
-		value: 'punjabi'
-	},
-	{
-		label: 'Rajasthani',
-		value: 'rajasthani'
-	},
-	{
-		label: 'Chhattisgarhi',
-		value: 'chhattisgarhi'
-	},
-	{
-		label: 'Assamese',
-		value: 'assamese'
-	},
-	{
-		label: 'Maithili',
-		value: 'maithili'
-	},
-	{
-		label: 'Haryanvi',
-		value: 'haryanvi'
-	},
-	{
-		label: 'Marwari',
-		value: 'marwari'
-	},
-	{
-		label: 'Santali',
-		value: 'santali'
-	},
-	{
-		label: 'Malvi',
-		value: 'malvi'
-	},
-	{
-		label: 'Kashmiri',
-		value: 'kashmiri'
-	},
-	{
-		label: 'Mewari',
-		value: 'mewari'
-	},
-	{
-		label: 'Kokani',
-		value: 'kokani'
 	}
 ];
 export const BodyComplexionOptions = [
