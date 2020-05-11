@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-function UserProfilePlaceholder(props: any) {
+interface IUserProfilePlaceholderProps {
+	color: string;
+	text?: string;
+}
+function UserProfilePlaceholder(props: IUserProfilePlaceholderProps) {
 	return (
 		<View style={styles.container}>
 			<View style={styles.subContainer}>
 				<View style={[styles.firstCircle, { backgroundColor: props.color }]} />
-				<View style={styles.childContainer}>
+				<View>
 					<View style={[styles.firstRectangularBox, { backgroundColor: props.color }]} />
 					<View style={[styles.secondRectangularBox, { backgroundColor: props.color }]} />
 					<View style={[styles.thirdRectangularBox, { backgroundColor: props.color }]} />
@@ -15,7 +19,7 @@ function UserProfilePlaceholder(props: any) {
 		</View>
 	);
 }
-function EmptyResult(props: any) {
+function EmptyResult(props: IUserProfilePlaceholderProps) {
 	return (
 		<View style={styles.mainContainer}>
 			<UserProfilePlaceholder color={'rgb(180, 180, 180)'} />
@@ -30,59 +34,45 @@ function EmptyResult(props: any) {
 const styles = StyleSheet.create({
 	mainContainer: {
 		alignItems: 'center',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		height: 150
+		justifyContent: 'flex-start'
 	},
 	text: {
-		position: 'relative',
 		fontSize: 16,
 		color: 'rgb(180, 180, 180)'
 	},
 	container: {
 		flexDirection: 'column',
-		justifyContent: 'space-between',
-		height: 50
+		justifyContent: 'flex-start',
+		height: 52
 	},
 	subContainer: {
-		flexDirection: 'row',
-		alignItems: 'stretch',
-		height: 40
-	},
-	childContainer: {
-		flexDirection: 'column',
-		justifyContent: 'space-around',
-		alignSelf: 'flex-end',
-		alignItems: 'stretch',
-		height: 40
+		flexDirection: 'row'
 	},
 	firstCircle: {
 		width: 40,
 		height: 40,
 		borderRadius: 100,
-		alignSelf: 'flex-start',
-		marginLeft: 50,
-		marginRight: 20
+		marginRight: 16
 	},
 
 	firstRectangularBox: {
 		width: 100,
 		height: 10,
-		borderRadius: 4,
-		marginRight: 210
+		borderRadius: 4
 	},
 
 	secondRectangularBox: {
 		width: 200,
 		height: 7,
-		borderRadius: 10
+		borderRadius: 10,
+		marginTop: 4
 	},
 
 	thirdRectangularBox: {
 		width: 60,
 		height: 5,
 		borderRadius: 10,
-		marginRight: 1
+		marginTop: 4
 	}
 });
 export default EmptyResult;
