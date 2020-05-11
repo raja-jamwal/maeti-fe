@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
 		height: 40
 	},
 	childContainer: {
-		backgroundColor: 'white',
 		flexDirection: 'column',
 		justifyContent: 'space-around',
 		alignSelf: 'flex-end',
