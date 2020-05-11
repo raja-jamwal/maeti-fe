@@ -36,7 +36,7 @@ import {
 	getCurrentUserProfileId
 } from '../store/reducers/self-profile-reducer';
 import SelectedFilter from '../components/selected-filters';
-import EmptyResult from '../components/empty-result';
+import EmptyResult from '../components/empty-result/emptyResult';
 import ConnectedPurchaseButton from '../components/purchase-button/purchase-button';
 import { isAccountPaid } from '../store/reducers/account-reducer';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
