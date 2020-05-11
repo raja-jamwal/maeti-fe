@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Colors from 'src/constants/Colors';
 import { View, Text, StyleSheet } from 'react-native';
 
 function UserProfilePlaceholder(props: any) {
