@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
 	mainContainer: {
 		alignItems: 'center',
 		flexDirection: 'column',
-		justifyContent: 'space-between',
-		height: 150
+		justifyContent: 'flex-start'
 	},
 	text: {
 		position: 'relative',
@@ -41,8 +40,8 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flexDirection: 'column',
-		justifyContent: 'space-between',
-		height: 50
+		justifyContent: 'flex-start',
+		height: 52
 	},
 	subContainer: {
 		flexDirection: 'row',
@@ -61,28 +60,27 @@ const styles = StyleSheet.create({
 		height: 40,
 		borderRadius: 100,
 		alignSelf: 'flex-start',
-		marginLeft: 50,
+		marginLeft: 52,
 		marginRight: 20
 	},
 
 	firstRectangularBox: {
 		width: 100,
-		height: 10,
+		height: 12,
 		borderRadius: 4,
-		marginRight: 210
+		marginRight: 212
 	},
 
 	secondRectangularBox: {
 		width: 200,
-		height: 7,
-		borderRadius: 10
+		height: 8,
+		borderRadius: 8
 	},
 
 	thirdRectangularBox: {
 		width: 60,
-		height: 5,
-		borderRadius: 10,
-		marginRight: 1
+		height: 4,
+		borderRadius: 4
 	}
 });
 export default EmptyResult;
