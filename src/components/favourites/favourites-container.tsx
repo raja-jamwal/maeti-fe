@@ -18,6 +18,7 @@ import VirtualProfileList from '../virtual-profile-list/index';
 import { getCurrentUserProfileId, isAccountPaid } from '../../store/reducers/account-reducer';
 import Color from '../../constants/Colors';
 import { Value } from '../text';
+import EmptyResult from '../empty-result/empty-result';
 
 interface IFavouriteContainerMapStateToProps {
 	userProfileId?: number;
@@ -87,7 +88,7 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 	}
 
 	noFavourites() {
-		return <Text style={styles.lightText}>You've not added any favourites</Text>;
+		return <EmptyResult text="You don't have any favourite" />;
 	}
 
 	async handleRefresh() {
