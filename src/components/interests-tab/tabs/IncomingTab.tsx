@@ -11,11 +11,13 @@ import { Interest } from '../../../store/reducers/account-defination';
 import VirtualProfileList from '../../virtual-profile-list/index';
 import { toArray, sortBy } from 'lodash';
 import { Value } from '../../text';
+import { isAccountPaid } from '../../../store/reducers/account-reducer';
 
 interface IIncomingTabMapStateToProps {
 	incomingInterests: Array<Interest>;
 	fetching: boolean;
 	totalIncomingInterests: number;
+	isAccountPaid: boolean;
 }
 
 interface IIncomingTabMapDispatchToProps {
@@ -69,7 +71,7 @@ class IncomingTab extends React.PureComponent<
 	}
 
 	render() {
-		const { fetching } = this.props;
+		const { fetching, isAccountPaid } = this.props;
 		return (
 			<VirtualProfileList
 				fetching={fetching}
@@ -79,6 +81,7 @@ class IncomingTab extends React.PureComponent<
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}
+				isAccountPaid={isAccountPaid}
 			/>
 		);
 	}
@@ -100,7 +103,8 @@ const mapStateToProps = (state: IRootState) => {
 	return {
 		incomingInterests,
 		fetching,
-		totalIncomingInterests
+		totalIncomingInterests,
+		isAccountPaid: isAccountPaid(state)
 	};
 };
 

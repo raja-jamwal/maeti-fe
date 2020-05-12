@@ -282,7 +282,14 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 			}
 
 			const choiceOptions = isChoiceField && fieldDefinition.choice.options;
-
+			if (!!fieldDefinition.isNotEditable) {
+				return (
+					<View key={field}>
+						<Value style={styles.fieldLabel}>{fieldDefinition.label}</Value>
+						<Value style={styles.fieldLabel}>{renderString}</Value>
+					</View>
+				);
+			}
 			return (
 				<View key={field}>
 					<Value style={styles.fieldLabel}>{fieldDefinition.label}</Value>

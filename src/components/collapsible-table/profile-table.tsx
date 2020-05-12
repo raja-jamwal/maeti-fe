@@ -6,6 +6,7 @@ import { UserProfile } from '../../store/reducers/account-defination';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateUserProfile } from '../../store/reducers/user-profile-reducer';
 import { Action } from 'redux-actions';
+import { isAccountPaid } from '../../store/reducers/account-reducer';
 
 interface IProfileTableProps {
 	userProfileId: number;
@@ -13,6 +14,7 @@ interface IProfileTableProps {
 }
 interface IProfileTableMapStateToProps {
 	userProfile?: UserProfile;
+	isAccountPaid: boolean;
 }
 interface IProfileTableMapDispatchToProps {
 	updateUserProfile: () => any;
@@ -118,8 +120,8 @@ export const BloodGroupOptions = [
 
 export const ProfileTableMotherTongueOptions = [
 	{
-		label: 'Marathi',
-		value: 'marathi'
+		label: 'Sindhi',
+		value: 'sindhi'
 	},
 	{
 		label: 'Hindi',
@@ -128,90 +130,6 @@ export const ProfileTableMotherTongueOptions = [
 	{
 		label: 'English',
 		value: 'english'
-	},
-	{
-		label: 'Bengali',
-		value: 'bengali'
-	},
-	{
-		label: 'Telugu',
-		value: 'telugu'
-	},
-	{
-		label: 'Tamil',
-		value: 'tamil'
-	},
-	{
-		label: 'Urdu',
-		value: 'urdu'
-	},
-	{
-		label: 'Kannada',
-		value: 'kannada'
-	},
-	{
-		label: 'Gujrati',
-		value: 'gujrati'
-	},
-	{
-		label: 'Odia',
-		value: 'odia'
-	},
-	{
-		label: 'Malayalam',
-		value: 'malayalam'
-	},
-	{
-		label: 'Bhojpuri',
-		value: 'bhojpuri'
-	},
-	{
-		label: 'Punjabi',
-		value: 'punjabi'
-	},
-	{
-		label: 'Rajasthani',
-		value: 'rajasthani'
-	},
-	{
-		label: 'Chhattisgarhi',
-		value: 'chhattisgarhi'
-	},
-	{
-		label: 'Assamese',
-		value: 'assamese'
-	},
-	{
-		label: 'Maithili',
-		value: 'maithili'
-	},
-	{
-		label: 'Haryanvi',
-		value: 'haryanvi'
-	},
-	{
-		label: 'Marwari',
-		value: 'marwari'
-	},
-	{
-		label: 'Santali',
-		value: 'santali'
-	},
-	{
-		label: 'Malvi',
-		value: 'malvi'
-	},
-	{
-		label: 'Kashmiri',
-		value: 'kashmiri'
-	},
-	{
-		label: 'Mewari',
-		value: 'mewari'
-	},
-	{
-		label: 'Kokani',
-		value: 'kokani'
 	}
 ];
 export const BodyComplexionOptions = [
@@ -445,6 +363,7 @@ class ProfileTable extends React.Component<
 		gender: {
 			label: 'Gender',
 			type: 'choice',
+			isNotEditable: true,
 			choice: {
 				options: GenderOptions
 			}
@@ -469,7 +388,8 @@ class ProfileTable extends React.Component<
 		},
 		fullName: {
 			label: 'Full Name',
-			type: 'string'
+			type: 'string',
+			isPaidFeature: true
 		},
 		dob: {
 			label: 'Date of Birth',
@@ -541,7 +461,13 @@ class ProfileTable extends React.Component<
 	};
 
 	render() {
-		const { userProfile, userProfileId, updateUserProfile, editable } = this.props;
+		const {
+			userProfile,
+			userProfileId,
+			updateUserProfile,
+			editable,
+			isAccountPaid
+		} = this.props;
 		return (
 			<CollapsibleTable
 				title="Basic Information"
@@ -550,6 +476,7 @@ class ProfileTable extends React.Component<
 				updateAction={updateUserProfile}
 				userProfileId={userProfileId}
 				editable={editable}
+				isAccountPaid={isAccountPaid}
 			/>
 		);
 	}
@@ -558,7 +485,7 @@ class ProfileTable extends React.Component<
 const mapStateToProps = (initialState: IRootState, ownProps: IProfileTableProps) => {
 	const profileId = ownProps.userProfileId;
 	const userProfile = initialState.userProfiles[profileId];
-	return { userProfile };
+	return { userProfile, isAccountPaid: isAccountPaid(initialState) };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {

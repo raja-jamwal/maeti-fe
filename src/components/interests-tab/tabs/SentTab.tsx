@@ -11,11 +11,12 @@ import { Interest } from '../../../store/reducers/account-defination';
 import { toArray, sortBy } from 'lodash';
 import VirtualProfileList from '../../virtual-profile-list/index';
 import { Value } from '../../text';
-
+import { isAccountPaid } from '../../../store/reducers/account-reducer';
 interface ISentTabMapStateToProps {
 	sentInterests: Array<Interest>;
 	fetching: boolean;
 	totalSentInterests: number;
+	isAccountPaid: boolean;
 }
 
 interface ISentTabMapDispatchToProps {
@@ -69,7 +70,7 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 	}
 
 	render() {
-		const { fetching } = this.props;
+		const { fetching, isAccountPaid } = this.props;
 		return (
 			<VirtualProfileList
 				fetching={fetching}
@@ -79,6 +80,7 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 				headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}
+				isAccountPaid={isAccountPaid}
 			/>
 		);
 	}
@@ -96,11 +98,11 @@ const mapStateToProps = (state: IRootState) => {
 	const sentInterests = state.interests.sent.profiles;
 	const fetching = state.interests.sent.fetching;
 	const totalSentInterests = state.interests.sent.pageable.totalElements;
-
 	return {
 		sentInterests,
 		fetching,
-		totalSentInterests
+		totalSentInterests,
+		isAccountPaid: isAccountPaid(state)
 	};
 };
 
