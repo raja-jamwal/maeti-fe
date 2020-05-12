@@ -12,6 +12,7 @@ import { Throbber } from '../components/throbber/throbber';
 import { toArray, sortBy } from 'lodash';
 import Color from '../constants/Colors';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
+import EmptyResult from '../components/empty-result/empty-result';
 
 interface IMessageScreenMapStateToProps {
 	channels: Array<Channel>;
@@ -124,8 +125,7 @@ class MessagesScreen extends React.PureComponent<
 				)}
 				{isEmptyInbox && !fetching && (
 					<View style={styles.emptyInbox}>
-						<Text style={styles.lightText}>No messages</Text>
-						<Text style={styles.lightText}>Send interests to begin messaging</Text>
+						<EmptyResult text="You don't have any conversation" />
 					</View>
 				)}
 			</View>

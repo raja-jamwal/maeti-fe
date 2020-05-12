@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Colors from 'src/constants/Colors';
 
 interface IUserProfilePlaceholderProps {
 	color: string;
-	text?: string;
 }
+
 function UserProfilePlaceholder(props: IUserProfilePlaceholderProps) {
 	return (
 		<View style={styles.container}>
@@ -19,13 +20,21 @@ function UserProfilePlaceholder(props: IUserProfilePlaceholderProps) {
 		</View>
 	);
 }
-function EmptyResult(props: IUserProfilePlaceholderProps) {
+
+interface IEmptyResultProps {
+	text?: string;
+}
+
+function EmptyResult(props: IEmptyResultProps) {
 	return (
 		<View style={styles.mainContainer}>
-			<UserProfilePlaceholder color={'rgb(180, 180, 180)'} />
+			<UserProfilePlaceholder color={'rgb(190, 190, 190)'} />
 			<UserProfilePlaceholder color={'rgb(232, 232, 232)'} />
-			<View>
+			<View
+				style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+			>
 				<Text style={styles.text}>{props.text ? props.text : 'No Result Found!'}</Text>
+				<Text style={styles.text}>Pull down to refresh</Text>
 			</View>
 		</View>
 	);
@@ -38,7 +47,8 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 16,
-		color: 'rgb(180, 180, 180)'
+		color: Colors.offWhite,
+		paddingTop: 4
 	},
 	container: {
 		flexDirection: 'column',
