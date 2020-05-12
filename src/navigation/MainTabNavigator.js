@@ -19,7 +19,11 @@ import ProfileImageGalleryScreen from '../screens/ProfileImageGalleryScreen';
 // import TabBarComponent from '../components/tab-bar-component'; // remove the support is added in latest version
 
 import { createStackNavigator } from 'react-navigation-stack';
-import { createMaterialTopTabNavigator, createBottomTabNavigator } from 'react-navigation-tabs'; // investigate these import
+import {
+	createMaterialTopTabNavigator,
+	createBottomTabNavigator,
+	MaterialTopTabBar
+} from 'react-navigation-tabs'; // investigate these import
 
 const defaultNavigationOptions = {
 	headerStyle: {
@@ -90,6 +94,14 @@ FavouritesStack.navigationOptions = {
 	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-heart" />
 };
 
+// for ios the tabbars inside safearea, may be for androids
+// with notch we should utilize same
+const SafeAreaMaterialTopTabBar = ({ ...props }) => (
+	<SafeAreaView>
+		<MaterialTopTabBar {...props} />
+	</SafeAreaView>
+);
+
 const InterestTabs = createMaterialTopTabNavigator(
 	{
 		Incoming: IncomingTab,
@@ -100,8 +112,9 @@ const InterestTabs = createMaterialTopTabNavigator(
 		...Platform.select({
 			ios: {
 				navigationOptions: {
-					header: <SafeAreaView style={{ backgroundColor: Colors.white }} />
-				}
+					header: null
+				},
+				tabBarComponent: props => <SafeAreaMaterialTopTabBar {...props} />
 			},
 			android: {
 				navigationOptions: {

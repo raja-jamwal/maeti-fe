@@ -8,7 +8,7 @@
 		"primaryColor": "#fff",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./src/assets/images/icon.png",
+		"icon": "./src/assets/images/icon_ios.png",
 		"splash": {
 			"backgroundColor": "#fff"
 		},
@@ -17,7 +17,8 @@
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
-			"supportsTablet": true
+			"supportsTablet": true,
+			"bundleIdentifier": "in.datagrids.matrimony"
 		},
 		"android": {
 			"package": "matrimony.datagrids.in",
