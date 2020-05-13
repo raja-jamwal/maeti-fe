@@ -6,7 +6,7 @@
 		"sdkVersion": "37.0.0",
 		"platforms": ["ios", "android"],
 		"primaryColor": "#fff",
-		"version": "1.0.0",
+		"version": "0.29.0",
 		"orientation": "portrait",
 		"icon": "./src/assets/images/icon_ios.png",
 		"splash": {
@@ -18,7 +18,12 @@
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "in.datagrids.matrimony"
+			"bundleIdentifier": "in.datagrids.matrimony",
+			"infoPlist": {
+				"NSCameraUsageDescription": "Maeti requires access to Camera to add a profile picture to your profile",
+				"NSPhotoLibraryAddUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile",
+				"NSPhotoLibraryUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile"
+			}
 		},
 		"android": {
 			"package": "matrimony.datagrids.in",

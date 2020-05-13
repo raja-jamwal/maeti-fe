@@ -31,6 +31,7 @@ export interface IProfileProps {
 	hideSelfDescription: boolean;
 	setUserProfileFavourite: (userProfile: UserProfile, setFavourite: boolean) => void;
 	onPhotoPress?: () => any;
+	showCarousel?: boolean;
 }
 
 type IProfileCardProps = NavigationInjectedProps & IProfileProps;
@@ -73,7 +74,8 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			hideSelfDescription,
 			isSelfProfile,
 			isAccountPaid,
-			onPhotoPress
+			onPhotoPress,
+			showCarousel
 		} = this.props;
 		if (isEmpty(userProfile)) return null;
 		const { education, profession, family } = { ...userProfile };
@@ -118,6 +120,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 							onPress={() => onPhotoPress && onPhotoPress()}
 							userProfile={userProfile}
 							isSelfProfile={isSelfProfile}
+							showCarousel={showCarousel}
 						/>
 					)}
 					{!primaryUserProfilePhoto && (

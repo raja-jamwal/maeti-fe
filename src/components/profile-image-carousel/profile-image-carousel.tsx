@@ -4,11 +4,15 @@ import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import Layout from 'src/constants/Layout.js';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { getLogger } from '../../utils/logger';
+import { IS_IOS } from '../../utils';
+
+const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
 interface IProps {
 	userProfile?: UserProfile;
 	onPress?: () => any;
 	isSelfProfile?: Boolean;
+	showCarousel?: Boolean;
 }
 
 interface IState {
@@ -33,6 +37,7 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 		return (
 			<TouchableHighlight onPress={() => onPress && onPress()}>
 				<Image
+					loadingIndicatorSource={defaultPrimaryPhoto}
 					progressiveRenderingEnabled={true}
 					source={{
 						uri: image.url,
@@ -47,14 +52,56 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 		);
 	};
 
-	render() {
-		const { userProfile, isSelfProfile } = this.props;
+	getApprovedPhotos() {
+		const { userProfile, isSelfProfile, onPress } = this.props;
+		if (!userProfile) return [];
+		return isSelfProfile ? userProfile.photo : userProfile.photo.filter(p => !!p.isApproved);
+	}
+
+	// ios flat list rendering issue
+	mayBeRenderCarousel() {
+		const { showCarousel } = this.props;
+		if (IS_IOS) {
+			if (showCarousel) {
+				return this.renderWithCarousel();
+			} else {
+				return this.renderWithoutCarousel();
+			}
+		}
+
+		// for android we show carousel in list
+		return this.renderWithoutCarousel();
+	}
+
+	renderWithoutCarousel() {
+		const { onPress } = this.props;
+		const approvedPhotos = this.getApprovedPhotos();
+		const image = approvedPhotos.length
+			? { uri: approvedPhotos[0].url, width: Layout.window.width }
+			: defaultPrimaryPhoto;
+		return (
+			<View>
+				<TouchableHighlight onPress={() => onPress && onPress()}>
+					<Image
+						loadingIndicatorSource={defaultPrimaryPhoto}
+						progressiveRenderingEnabled={true}
+						source={image}
+						style={[
+							styles.profileImage,
+							{ width: Layout.window.width, height: Layout.window.height / 2 }
+						]}
+					/>
+				</TouchableHighlight>
+			</View>
+		);
+	}
+
+	renderWithCarousel() {
+		const { userProfile } = this.props;
 		const { activeIndex } = this.state;
 		if (!userProfile) return null;
 		this.logger.log('userProfile', userProfile.photo.length);
-		const approvedPhotos = isSelfProfile
-			? userProfile.photo
-			: userProfile.photo.filter(p => !!p.isApproved);
+		const approvedPhotos = this.getApprovedPhotos();
 		return (
 			<View>
 				<Carousel
@@ -79,6 +126,10 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 				/>
 			</View>
 		);
+	}
+
+	render() {
+		return this.mayBeRenderCarousel();
 	}
 }
 

@@ -207,7 +207,11 @@ export default class ProfileInfoTab extends React.Component<
 				style={[GlobalStyles.expand, styles.scrollViewContainer]}
 			>
 				<View>
-					<ConnectedProfile userProfileId={userProfileId} hideSelfDescription={true} />
+					<ConnectedProfile
+						userProfileId={userProfileId}
+						hideSelfDescription={true}
+						showCarousel={true}
+					/>
 					<ProfileActivity userProfileId={userProfileId} />
 				</View>
 				<View style={styles.tabBar}>
