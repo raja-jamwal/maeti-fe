@@ -6,7 +6,7 @@
 		"sdkVersion": "37.0.0",
 		"platforms": ["ios", "android"],
 		"primaryColor": "#fff",
-		"version": "0.29.0",
+		"version": "0.34.0",
 		"orientation": "portrait",
 		"icon": "./src/assets/images/icon_ios.png",
 		"splash": {
@@ -28,7 +28,7 @@
 		"android": {
 			"package": "matrimony.datagrids.in",
 			"googleServicesFile": "./google-services.json",
-			"versionCode": 33
+			"versionCode": 34
 		},
 		"androidStatusBar": {
 			"backgroundColor": "#fff",
