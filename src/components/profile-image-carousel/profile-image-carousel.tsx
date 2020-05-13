@@ -70,7 +70,7 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 		}
 
 		// for android we show carousel in list
-		return this.renderWithoutCarousel();
+		return this.renderWithCarousel();
 	}
 
 	renderWithoutCarousel() {
