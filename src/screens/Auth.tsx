@@ -8,7 +8,8 @@ import {
 	TextInput,
 	View,
 	StatusBar,
-	DatePickerAndroid
+	DatePickerAndroid,
+	KeyboardAvoidingView
 } from 'react-native';
 import GlobalStyle from '../styles/global';
 import { connect } from 'react-redux';
@@ -648,7 +649,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		const year = new Date().getFullYear();
 
 		return (
-			<View style={[GlobalStyle.expand, styles.container]}>
+			<KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={styles.container}>
 				<StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
 				<Image source={require('../assets/images/icon.png')} style={styles.logo} />
 				{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
@@ -667,7 +668,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						this software is under Terms and conditions
 					</Text>
 				)}
-			</View>
+			</KeyboardAvoidingView>
 		);
 	}
 }
@@ -677,7 +678,8 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white,
 		flexDirection: 'column',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		flex: 1
 	},
 	formContainer: {
 		padding: 10,

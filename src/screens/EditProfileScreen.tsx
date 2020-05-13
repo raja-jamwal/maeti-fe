@@ -12,6 +12,7 @@ import {
 	TextInput,
 	TimePickerAndroid,
 	View,
+	KeyboardAvoidingView,
 	DatePickerIOS
 } from 'react-native';
 import GlobalStyles from '../styles/global';
@@ -29,6 +30,7 @@ import Color from '../constants/Colors';
 import AboutField from '../components/about-field';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
 import DateTimeIos from '../components/date-time-ios/date-time-ios';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
 const CustomProgressBar = ({ visible, label = 'Saving' }) => (
 	<Modal onRequestClose={() => null} visible={visible}>
@@ -468,9 +470,9 @@ export default class EditProfileScreen extends React.Component<any, IEditProfile
 		return (
 			<View style={GlobalStyles.expand}>
 				<StatusBar backgroundColor={Color.white} barStyle="dark-content" />
-				<ScrollView style={[GlobalStyles.expand, styles.formContainer]}>
+				<KeyboardAwareScrollView style={[GlobalStyles.expand, styles.formContainer]}>
 					{this.renderFields()}
-				</ScrollView>
+				</KeyboardAwareScrollView>
 				{showProgress && <CustomProgressBar visible={true} />}
 				{showSubmissionFooter && (
 					<View style={styles.submissionFooter}>
