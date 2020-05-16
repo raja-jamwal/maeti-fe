@@ -14,6 +14,7 @@ import Constants from 'expo-constants';
 import * as Sentry from 'sentry-expo';
 import * as config from './src/config/config.json';
 import { getLogger } from './src/utils/logger';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 Sentry.init({
 	dsn: config.sentry_dsn,
@@ -46,7 +47,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+		if (!this.state.isLoadingComplete) {
 			return (
 				<AppLoading
 					startAsync={this._loadResourcesAsync}
@@ -56,10 +57,12 @@ class App extends React.Component {
 			);
 		} else {
 			return (
-				<View style={styles.container}>
-					{Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-					<AppNavigator />
-				</View>
+				<SafeAreaProvider>
+					<View style={styles.container}>
+						{Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+						<AppNavigator />
+					</View>
+				</SafeAreaProvider>
 			);
 		}
 	}
@@ -90,7 +93,7 @@ class App extends React.Component {
 	};
 
 	_handleFinishLoading = () => {
-		this.setState({ isLoadingComplete: true });
+		// this.setState({ isLoadingComplete: true });
 	};
 }
 

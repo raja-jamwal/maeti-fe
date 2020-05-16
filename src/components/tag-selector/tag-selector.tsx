@@ -106,7 +106,7 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 					}}
 				>
 					<View style={styles.flexContainer}>
-						<SafeAreaView>
+						<SafeAreaView style={{ flex: 1 }}>
 							<StatusBar
 								backgroundColor={Color.primaryDarkColor}
 								barStyle="light-content"

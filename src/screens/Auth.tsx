@@ -9,7 +9,8 @@ import {
 	View,
 	StatusBar,
 	DatePickerAndroid,
-	KeyboardAvoidingView
+	KeyboardAvoidingView,
+	TouchableOpacity
 } from 'react-native';
 import GlobalStyle from '../styles/global';
 import { connect } from 'react-redux';
@@ -39,6 +40,8 @@ import {
 	removeAccountRequest
 } from '../utils/account-request';
 import DateTimeIos from 'src/components/date-time-ios/date-time-ios';
+import { SafeAreaView } from 'react-native';
+import { TosModal } from 'src/components/tos-modal/tos-modal';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -74,6 +77,8 @@ interface IAuthState {
 	gender: string;
 	otp: number | null;
 	action: ACTION;
+	showEula: boolean;
+	showPolicy: boolean;
 }
 
 type IAuthProps = NavigationInjectedProps & IAuthDispatchProps;
@@ -191,7 +196,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			dob: '',
 			gender: 'male',
 			otp: null,
-			action: ACTION.LOGIN
+			action: ACTION.LOGIN,
+			showEula: false,
+			showPolicy: false
 		};
 
 		this._tryAuth = this._tryAuth.bind(this);
@@ -201,6 +208,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		this.skipTourScreen = this.skipTourScreen.bind(this);
 		this.setDob = this.setDob.bind(this);
 		this.createAccount = this.createAccount.bind(this);
+
+		this.toggleEula = this.toggleEula.bind(this);
+		this.togglePolicy = this.togglePolicy.bind(this);
 	}
 
 	async componentDidMount() {
@@ -235,7 +245,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				this.changeScreen(LOGIN_SCREENS.ERROR);
 			}
 		} else {
-			this.changeScreen(LOGIN_SCREENS.TOUR);
+			// this.changeScreen(LOGIN_SCREENS.TOUR);
+			this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
 		}
 	}
 
@@ -254,6 +265,16 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			activeScreen: screen,
 			action
 		});
+	}
+
+	toggleEula() {
+		const { showEula } = this.state;
+		this.setState({ showEula: !showEula });
+	}
+
+	togglePolicy() {
+		const { showPolicy } = this.state;
+		this.setState({ showPolicy: !showPolicy });
 	}
 
 	async createAccount() {
@@ -641,7 +662,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	render() {
-		const { activeScreen } = this.state;
+		const { activeScreen, showEula, showPolicy } = this.state;
 		if (activeScreen === LOGIN_SCREENS.TOUR) {
 			return <AppTour onSkip={this.skipTourScreen} />;
 		}
@@ -649,26 +670,46 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		const year = new Date().getFullYear();
 
 		return (
-			<KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={styles.container}>
+			<SafeAreaView style={GlobalStyle.expand}>
 				<StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
-				<Image source={require('../assets/images/icon.png')} style={styles.logo} />
-				{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
-				{activeScreen === LOGIN_SCREENS.SIGNUP && this.renderSignUp()}
-				{activeScreen === LOGIN_SCREENS.VERIFY && this.renderVerificationScreen()}
-				{activeScreen === LOGIN_SCREENS.PICK_IMAGE && this.renderUploadPhoto()}
-				{activeScreen === LOGIN_SCREENS.VERIFYING && (
-					<ActivityIndicator color={Colors.primaryDarkColor} />
-				)}
-				{activeScreen === LOGIN_SCREENS.REVIEW && this.renderAccountReview()}
-				{activeScreen === LOGIN_SCREENS.PLANS && this.renderPlans()}
-				{activeScreen === LOGIN_SCREENS.ERROR && this.renderError()}
+
+				<KeyboardAvoidingView
+					behavior={IS_IOS ? 'padding' : 'height'}
+					style={styles.container}
+				>
+					<Image source={require('../assets/images/icon.png')} style={styles.logo} />
+					{activeScreen === LOGIN_SCREENS.LOGIN_SIGNUP && this.renderSignUp(true)}
+					{activeScreen === LOGIN_SCREENS.SIGNUP && this.renderSignUp()}
+					{activeScreen === LOGIN_SCREENS.VERIFY && this.renderVerificationScreen()}
+					{activeScreen === LOGIN_SCREENS.PICK_IMAGE && this.renderUploadPhoto()}
+					{activeScreen === LOGIN_SCREENS.VERIFYING && (
+						<ActivityIndicator color={Colors.primaryDarkColor} />
+					)}
+					{activeScreen === LOGIN_SCREENS.REVIEW && this.renderAccountReview()}
+					{activeScreen === LOGIN_SCREENS.PLANS && this.renderPlans()}
+					{activeScreen === LOGIN_SCREENS.ERROR && this.renderError()}
+				</KeyboardAvoidingView>
 				{!!activeScreen && activeScreen !== LOGIN_SCREENS.ERROR && (
-					<Text style={styles.tos}>
-						Copyright (c) {year} DataGrid Softwares LLP. All rights reserved. Use of
-						this software is under Terms and conditions
-					</Text>
+					<View style={[GlobalStyle.alignCenter, GlobalStyle.justifyCenter]}>
+						<Text style={styles.tos}>By signing in or registering. I agree to</Text>
+						<View style={GlobalStyle.row}>
+							<TouchableOpacity onPress={this.toggleEula}>
+								<Text style={styles.tos}>Terms of Use</Text>
+							</TouchableOpacity>
+							<Text style={styles.tos}>&nbsp;|&nbsp;</Text>
+							<TouchableOpacity onPress={this.togglePolicy}>
+								<Text style={styles.tos}>Privacy Policy</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
 				)}
-			</KeyboardAvoidingView>
+				<TosModal showModal={showEula} isEula={true} toggleShowModal={this.toggleEula} />
+				<TosModal
+					showModal={showPolicy}
+					isEula={false}
+					toggleShowModal={this.togglePolicy}
+				/>
+			</SafeAreaView>
 		);
 	}
 }
@@ -724,10 +765,11 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	tos: {
-		textAlign: 'center',
 		color: Colors.offWhite,
-		fontSize: 10,
-		padding: 15
+		fontSize: 14,
+		paddingBottom: 8,
+		paddingLeft: 4,
+		paddingRight: 4
 	},
 	paymentPlanTablet: {
 		backgroundColor: 'white',
