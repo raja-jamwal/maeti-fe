@@ -109,7 +109,13 @@ const ApiRequest = function(url: string, params: any) {
 					if (response.status !== 200) throw response.json();
 					resolve(response.json());
 				})
-				.catch(err => err.then((e: any) => reject(e)));
+				.catch(err => {
+					if (err.then) {
+						err.then((e: any) => reject(e));
+					} else {
+						reject(err);
+					}
+				});
 		}, delay);
 	});
 };

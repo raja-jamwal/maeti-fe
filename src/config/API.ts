@@ -143,5 +143,9 @@ export const API = {
 
 	CE: {
 		GET: `${config.server}/api/ce.get`
+	},
+	BLOCK: {
+		REPORT: `${config.server}/api/block.report`,
+		UNBLOCK: `${config.server}/api/unblock`
 	}
 };

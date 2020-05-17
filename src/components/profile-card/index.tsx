@@ -21,6 +21,8 @@ import Layout from 'src/constants/Layout.js';
 import ProfileImageCarousel from '../profile-image-carousel/profile-image-carousel';
 import { ProfileTableHeightOptions } from '../collapsible-table/profile-table';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { simplePrompt } from '../alert/index';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
@@ -30,8 +32,10 @@ export interface IProfileProps {
 	isAccountPaid: boolean;
 	hideSelfDescription: boolean;
 	setUserProfileFavourite: (userProfile: UserProfile, setFavourite: boolean) => void;
+	markProfileAsBlocked: (userProfile: UserProfile, shouldReport: boolean) => void;
 	onPhotoPress?: () => any;
 	showCarousel?: boolean;
+	isProfileBlocked?: boolean;
 }
 
 type IProfileCardProps = NavigationInjectedProps & IProfileProps;
@@ -68,6 +72,26 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		return heightOption.label;
 	}
 
+	reportProfile() {
+		const { markProfileAsBlocked, userProfile, navigation } = this.props;
+		simplePrompt(
+			'Report and block user',
+			'Report this user to Maeti and block the user from accessing your profile?',
+			() => {
+				markProfileAsBlocked(userProfile, true);
+				navigation.goBack();
+			}
+		);
+	}
+
+	blockProfile() {
+		const { markProfileAsBlocked, userProfile, navigation } = this.props;
+		simplePrompt('Block this user', 'Block this user from accessing your profile?', () => {
+			markProfileAsBlocked(userProfile, false);
+			navigation.goBack();
+		});
+	}
+
 	render() {
 		const {
 			userProfile,
@@ -75,9 +99,11 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			isSelfProfile,
 			isAccountPaid,
 			onPhotoPress,
-			showCarousel
+			showCarousel,
+			isProfileBlocked
 		} = this.props;
 		if (isEmpty(userProfile)) return null;
+		if (isProfileBlocked) return null;
 		const { education, profession, family } = { ...userProfile };
 		const userProfileName = isAccountPaid || isSelfProfile ? userProfile.fullName : 'xxxxxxx';
 		const professionLocation = ['workCity', 'workState', 'workCountry']
@@ -158,6 +184,16 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						</View>
 						{/*<Text style={styles.premiumProfileText}>Premium Profile</Text>*/}
 						<View style={GlobalStyles.expand} />
+						{!isSelfProfile && showCarousel && (
+							<TouchableOpacity onPress={() => this.reportProfile()}>
+								<Text style={styles.report}>REPORT</Text>
+							</TouchableOpacity>
+						)}
+						{!isSelfProfile && showCarousel && (
+							<TouchableOpacity onPress={() => this.blockProfile()}>
+								<Text style={styles.report}>BLOCK</Text>
+							</TouchableOpacity>
+						)}
 						{isSelfProfile && (
 							<TouchableBtn onPress={this.openProfileImageGallery}>
 								<Ionicons name="md-camera" size={24} color={Colors.black} />
@@ -278,5 +314,14 @@ const styles = StyleSheet.create({
 		color: 'white',
 		marginLeft: 10,
 		backgroundColor: Colors.pink
+	},
+	report: {
+		backgroundColor: Colors.borderColor,
+		padding: 4,
+		paddingLeft: 8,
+		paddingRight: 8,
+		marginLeft: 4,
+		fontSize: 12,
+		color: Colors.black
 	}
 });

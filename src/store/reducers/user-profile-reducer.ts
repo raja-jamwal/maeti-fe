@@ -29,7 +29,6 @@ import {
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
 import { isEmpty } from 'lodash';
-import { simpleAlert } from '../../components/alert/index';
 export interface IUserProfileState {
 	[id: number]: UserProfile;
 }
@@ -43,13 +42,36 @@ export const getUserProfileForId = createSelector(
 	getUserProfileFromState,
 	profile => profile || null
 );
+export const isProfileBlocked = (state: IRootState, userProfileId: number) => {
+	const userProfile = state.userProfiles[userProfileId];
+	if (!userProfile) return true;
+	return userProfile.isBlocked;
+};
 
 const defaultProfileState: IUserProfileState = {};
 
 const ADD_PROFILE = 'ADD_PROFILE';
 const BULK_ADD_PROFILE = 'BULK_ADD_PROFILE';
+const BLOCK_PROFILE = 'BLOCK_PROFILE';
 export const addProfile = createAction<UserProfile>(ADD_PROFILE);
 export const bulkAddProfile = createAction<Array<UserProfile>>(BULK_ADD_PROFILE);
+
+export const blockProfile = createAction<UserProfile>(BLOCK_PROFILE);
+export const markProfileAsBlocked = function(userProfile: UserProfile, shouldReport: boolean) {
+	const logger = getLogger(markProfileAsBlocked);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		const currentProfileId = getCurrentUserProfileId(getState());
+		if (!userProfile) return;
+		if (userProfile.id === currentProfileId) return;
+		logger.log(`marking profile Id ${userProfile.id} as blocked`);
+		dispatch(blockProfile(userProfile));
+		return ApiRequest(API.BLOCK.REPORT, {
+			byUserProfileId: currentProfileId,
+			blockedUserProfileId: userProfile.id,
+			shouldReport
+		}).catch(err => logger.log('unable to mark profile as blocked', err));
+	};
+};
 
 interface IUpdateEnityPayload {
 	userProfileId: number;
@@ -401,6 +423,11 @@ export const userProfileReducer = handleActions<IUserProfileState>(
 		},
 		[ADD_PROFILE]: (state, { payload }) => {
 			const profile = (payload as any) as UserProfile;
+			return { ...state, [profile.id]: profile };
+		},
+		[BLOCK_PROFILE]: (state, { payload }) => {
+			const profile = (payload as any) as UserProfile;
+			profile.isBlocked = true;
 			return { ...state, [profile.id]: profile };
 		}
 		// [UPDATE_VERIFICATION]: (state, { payload }) => state

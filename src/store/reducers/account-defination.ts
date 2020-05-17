@@ -78,6 +78,7 @@ export interface UserProfile extends DAO {
 	bloodGroup: string;
 	motherTongue: string;
 	isFavourite: boolean;
+	isBlocked: boolean;
 	pushToken: string;
 
 	specialCases: Array<Tag>;
@@ -330,6 +331,11 @@ export interface AccountRequest {
 	photoUrl: string;
 	dob: number;
 	gender: string;
+}
+
+export interface BlockedProfile extends DAO {
+	byUserProfileId: number;
+	blockedUserProfileId: number;
 }
 
 export interface Pageable {
