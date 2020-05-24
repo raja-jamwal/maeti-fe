@@ -11,6 +11,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import ChatScreen from '../screens/ChatScreen';
 import FilterScreen from '../screens/FilterScreen';
+import { BlockedProfileListScreen } from '../screens/BlockedProfileListScreen';
 
 import IncomingTab from '../components/interests-tab/tabs/IncomingTab';
 import AcceptedTab from '../components/interests-tab/tabs/AcceptedTab';
@@ -150,7 +151,8 @@ InterestsStack.navigationOptions = {
 
 const MoreStack = createStackNavigator(
 	{
-		more: MoreScreen
+		more: MoreScreen,
+		BlockedProfileListScreen: BlockedProfileListScreen
 	},
 	{ defaultNavigationOptions }
 );

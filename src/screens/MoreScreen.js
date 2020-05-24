@@ -95,7 +95,7 @@ class MoreScreen extends React.Component {
 
 	render() {
 		const { showPayment, showCePrompt, isCeMode } = this.state;
-		const { currentUserProfile, account } = this.props;
+		const { currentUserProfile, account, navigation } = this.props;
 		const payment = account.payment;
 		const isPaid = payment.selectedPackage === 'paid';
 		const otaVersion = getConfig().ota_version || 0;
@@ -129,6 +129,11 @@ class MoreScreen extends React.Component {
 
 				<SettingTitle label={'Account'} />
 				<SettingBlock>
+					<SettingRow
+						label="Blocked Accounts"
+						action={() => navigation.push('BlockedProfileListScreen')}
+					/>
+					<SettingDivider />
 					<SettingRow label="Registered As" value={currentUserProfile.fullName} />
 					<SettingDivider />
 					{!isPaid && (

@@ -146,6 +146,7 @@ export const API = {
 	},
 	BLOCK: {
 		REPORT: `${config.server}/api/block.report`,
+		LIST: `${config.server}/api/block.list`,
 		UNBLOCK: `${config.server}/api/unblock`
 	}
 };

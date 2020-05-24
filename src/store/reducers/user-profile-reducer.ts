@@ -53,8 +53,23 @@ const defaultProfileState: IUserProfileState = {};
 const ADD_PROFILE = 'ADD_PROFILE';
 const BULK_ADD_PROFILE = 'BULK_ADD_PROFILE';
 const BLOCK_PROFILE = 'BLOCK_PROFILE';
+const UNBLOCK_PROFILE = 'UNBLOCK_PROFILE';
 export const addProfile = createAction<UserProfile>(ADD_PROFILE);
 export const bulkAddProfile = createAction<Array<UserProfile>>(BULK_ADD_PROFILE);
+
+export const unblockProfile = createAction<UserProfile>(UNBLOCK_PROFILE);
+export const markProfileAsUnBlocked = function(userProfile: UserProfile) {
+	const logger = getLogger(markProfileAsUnBlocked);
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		logger.log(`marking profile Id ${userProfile.id} as unblocked`);
+		const currentUserProfileId = getCurrentUserProfileId(getState());
+		dispatch(unblockProfile(userProfile));
+		return ApiRequest(API.BLOCK.UNBLOCK, {
+			byUserProfileId: currentUserProfileId,
+			blockedUserProfileId: userProfile.id
+		}).catch(err => logger.log('unable to mark profile as unblocked', err));
+	};
+};
 
 export const blockProfile = createAction<UserProfile>(BLOCK_PROFILE);
 export const markProfileAsBlocked = function(userProfile: UserProfile, shouldReport: boolean) {
@@ -433,6 +448,11 @@ export const userProfileReducer = handleActions<IUserProfileState>(
 		[BLOCK_PROFILE]: (state, { payload }) => {
 			const profile = (payload as any) as UserProfile;
 			profile.isBlocked = true;
+			return { ...state, [profile.id]: profile };
+		},
+		[UNBLOCK_PROFILE]: (state, { payload }) => {
+			const profile = (payload as any) as UserProfile;
+			profile.isBlocked = false;
 			return { ...state, [profile.id]: profile };
 		}
 		// [UPDATE_VERIFICATION]: (state, { payload }) => state
