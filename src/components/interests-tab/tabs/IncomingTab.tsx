@@ -78,7 +78,7 @@ class IncomingTab extends React.PureComponent<
 				data={this.getIncomingInterests()}
 				profileIdExtractor={this.profileIdExtractor}
 				profileNameExtractor={this.profileNameExtractor}
-				headerComponent={this.totalCount()}
+				// headerComponent={this.totalCount()} // TODO: how to handle total count when profiles are blocked
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}
 				isAccountPaid={isAccountPaid}

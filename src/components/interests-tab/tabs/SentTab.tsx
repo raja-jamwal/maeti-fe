@@ -77,7 +77,7 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 				data={this.getSentInterests()}
 				profileIdExtractor={this.profileIdExtractor}
 				profileNameExtractor={this.profileNameExtractor}
-				headerComponent={this.totalCount()}
+				// headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}
 				isAccountPaid={isAccountPaid}

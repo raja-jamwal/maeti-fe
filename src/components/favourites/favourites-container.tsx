@@ -97,25 +97,38 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 		await this._handleMore();
 	}
 
+	isEmpty() {
+		const profiles = this.getFavouriteProfiles();
+		if (isEmpty(profiles)) return true;
+		let blocked = true;
+		for (let i = 0; i < profiles.length; i++) {
+			if (!profiles[i].favouriteUserProfile.isBlocked) {
+				blocked = false;
+				break;
+			}
+		}
+		return blocked;
+	}
+
 	render() {
 		const { fetching, isAccountPaid } = this.props;
 		const profiles = this.getFavouriteProfiles();
 		const style = styles.emptyContainer;
 		return (
 			<View style={style}>
-				{!isEmpty(profiles) && (
+				{!this.isEmpty() && (
 					<VirtualProfileList
 						fetching={fetching}
 						profileIdExtractor={this.profileIdExtractor}
 						profileNameExtractor={this.profileNameExtractor}
 						data={profiles}
-						headerComponent={this.totalCount()}
+						// headerComponent={this.totalCount()}
 						handleMore={this._handleMore}
 						handleRefresh={() => this.handleRefresh()}
 						isAccountPaid={isAccountPaid}
 					/>
 				)}
-				{isEmpty(profiles) && !fetching && this.noFavourites()}
+				{this.isEmpty() && !fetching && this.noFavourites()}
 			</View>
 		);
 	}

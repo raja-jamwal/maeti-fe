@@ -7,6 +7,7 @@ import InterestMessageBar from '../components/interest-message-bar/interest-mess
 import { IRootState } from '../store/index';
 import { connect } from 'react-redux';
 import { getCurrentUserProfileId } from '../store/reducers/account-reducer';
+import { isProfileBlocked } from '../store/reducers/user-profile-reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import {
 	getViewedMyContact,
@@ -16,9 +17,9 @@ import {
 import { isInterestAccepted } from '../store/reducers/interest-reducer';
 import { Throbber } from '../components/throbber/throbber';
 import { Value } from '../components/text';
-
 interface IProfileScreenMapStateToProps {
 	selfProfileId?: number | null;
+	isProfileBlocked: boolean;
 }
 
 interface IProfileScreenMapDispatchToProps {
@@ -84,11 +85,27 @@ class ProfileScreen extends React.Component<IProfileScreenProps, IProfileScreenS
 			selfProfileId,
 			saveViewedMyContact,
 			getViewedMyContact,
-			isInterestAccepted
+			isInterestAccepted,
+			isProfileBlocked
 		} = this.props;
 		const userProfileId = navigation.getParam('userProfileId');
 		if (!userProfileId || !selfProfileId) return null;
 		const showInterestMessageBar = !!selfProfileId && userProfileId !== selfProfileId;
+
+		if (isProfileBlocked) {
+			return (
+				<View
+					style={[
+						GlobalStyles.expand,
+						GlobalStyles.alignCenter,
+						GlobalStyles.justifyCenter
+					]}
+				>
+					<Value style={{ fontSize: 20 }}>Profile is not available anymore</Value>
+				</View>
+			);
+		}
+
 		return (
 			<View style={GlobalStyles.expand}>
 				<ProfileInfoTab
@@ -104,10 +121,12 @@ class ProfileScreen extends React.Component<IProfileScreenProps, IProfileScreenS
 	}
 }
 
-const mapStateToProps = (state: IRootState) => {
+const mapStateToProps = (state: IRootState, ownProps: IProfileScreenProps) => {
 	const selfProfileId = getCurrentUserProfileId(state);
+	const userProfileId = ownProps.navigation.getParam('userProfileId');
 	return {
-		selfProfileId
+		selfProfileId,
+		isProfileBlocked: !!isProfileBlocked(state, userProfileId)
 	};
 };
 

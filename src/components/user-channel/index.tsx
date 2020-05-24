@@ -1,21 +1,26 @@
 import * as React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
-import Text, { Value } from '../text/index';
+import { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { Message, UserProfile } from '../../store/reducers/account-defination';
 import { formatDuration } from '../../utils';
 import { isEmpty, head } from 'lodash';
+import { isProfileBlocked } from '../../store/reducers/user-profile-reducer';
+import { IRootState } from '../../store/index';
+import { connect } from 'react-redux';
 
 const defaultProfileImage = require('../../assets/images/placeholder.png');
 
 interface IUserChannelProps {
 	userProfile: UserProfile;
 	latestMessage: Message;
+	isProfileBlocked: boolean;
 }
 
 class UserChannel extends React.Component<IUserChannelProps> {
 	render() {
-		const { userProfile, latestMessage } = this.props;
+		const { userProfile, latestMessage, isProfileBlocked } = this.props;
+		if (isProfileBlocked) return null;
 		const userProfileImage = !isEmpty(userProfile.photo) && head(userProfile.photo).url;
 		return (
 			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.container]}>
@@ -61,4 +66,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default UserChannel;
+const mapStateToProps = (state: IRootState, ownProps: IUserChannelProps) => {
+	return {
+		isProfileBlocked: isProfileBlocked(state, ownProps.userProfile.id)
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	null
+)(UserChannel);

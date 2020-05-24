@@ -107,11 +107,13 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 	}
 
 	componentWillMount() {
-		const { channel, messages } = this.props;
+		const { channel, messages, currentUserProfile } = this.props;
 		this.mayBeLoadMessage();
 		this.mayBeUpdateMessages(messages);
 		if (!channel) return;
-		this.props.navigation.setParams({ title: channel.toUser.fullName });
+		const otherUserProfile =
+			currentUserProfile.id === channel.toUser.id ? channel.fromUser : channel.toUser;
+		this.props.navigation.setParams({ title: otherUserProfile.fullName });
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: IChatScreenProps) {
@@ -168,7 +170,7 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		const { currentUserProfile, fetching, isLastPage } = this.props;
 		if (!currentUserProfile) return;
 		return (
-			<View style={{ flexDirection: 'column', flex: 1 }}>
+			<SafeAreaView style={{ flexDirection: 'column', flex: 1 }}>
 				<View style={{ flex: 1 }}>
 					<GiftedChat
 						messages={this.state.messages}
@@ -186,8 +188,7 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 						extraData={{ length: this.state.messages.length }}
 					/>
 				</View>
-				{IS_IOS && <View style={{ height: 36, backgroundColor: 'white' }} />}
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

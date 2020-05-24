@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { FlatList, StyleSheet, TouchableNativeFeedback, View } from 'react-native';
-import { Throbber } from '../throbber/throbber';
+import { FlatList, StyleSheet, View } from 'react-native';
 import ConnectedProfileCard from '../profile-card/connected-profile';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { isAccountPaid } from '../../store/reducers/account-reducer';
 import { MASKED_PROFILE_NAME } from '../../constants/index';
 interface IVirtualProfileListProps {
 	fetching?: boolean;
 	profileIdExtractor: (item: any) => number;
 	profileNameExtractor: (item: any) => string;
 	data: Array<any>;
-	headerComponent: any;
+	headerComponent?: any;
 	handleMore: () => any;
 	handleRefresh: () => any;
 	isAccountPaid: boolean;
@@ -68,7 +66,7 @@ class VirtualProfileList extends React.PureComponent<
 					keyExtractor={item => profileIdExtractor(item).toString()}
 					data={data}
 					initialNumToRender={5}
-					ListHeaderComponent={headerComponent}
+					ListHeaderComponent={headerComponent || null}
 					renderItem={({ item }) => this.renderProfileCard(item)}
 					onEndReached={this._handleMore}
 					onEndReachedThreshold={100}
@@ -99,9 +97,9 @@ const styles = StyleSheet.create({
 		bottom: 10
 	},
 	profileCardContainer: {
-		// elevation: 10,
-		marginBottom: 10,
-		borderColor: 'black'
+		// elevation: 10
+		// marginBottom: 10,
+		// borderColor: 'black'
 	}
 });
 

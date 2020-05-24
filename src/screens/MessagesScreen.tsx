@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableNativeFeedback, FlatList, StyleSheet, Text } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import UserChannel from '../components/user-channel/index';
 import { isEmpty } from 'lodash';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
@@ -8,7 +8,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Channel } from '../store/reducers/account-defination';
 import { fetchChannels, setChannelRefreshing } from '../store/reducers/channel-reducer';
-import { Throbber } from '../components/throbber/throbber';
+import { getCurrentUserProfileId } from '../store/reducers/self-profile-reducer';
 import { toArray, sortBy } from 'lodash';
 import Color from '../constants/Colors';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
@@ -18,6 +18,7 @@ interface IMessageScreenMapStateToProps {
 	channels: Array<Channel>;
 	fetching: boolean;
 	totalChannels: number;
+	currentProfileId: number;
 }
 
 interface IMessageScreenMapDispatchToProps {
@@ -74,6 +75,9 @@ class MessagesScreen extends React.PureComponent<
 	}
 
 	renderChannel(channel: Channel) {
+		const { currentProfileId } = this.props;
+		const otherUserProfile =
+			channel.toUser.id === currentProfileId ? channel.fromUser : channel.toUser;
 		return (
 			<TouchableBtn
 				onPress={() => this.openChatView(channel.channelIdentity.id)}
@@ -81,7 +85,7 @@ class MessagesScreen extends React.PureComponent<
 			>
 				<View>
 					<UserChannel
-						userProfile={channel.toUser}
+						userProfile={otherUserProfile}
 						latestMessage={channel.latestMessage}
 					/>
 				</View>
@@ -170,11 +174,12 @@ const mapStateToProps = (state: IRootState) => {
 	const channels = state.channels.channels;
 	const fetching = state.channels.fetching;
 	const totalChannels = state.channels.pageable.totalElements;
-
+	const currentProfileId = getCurrentUserProfileId(state);
 	return {
 		channels,
 		fetching,
-		totalChannels
+		totalChannels,
+		currentProfileId
 	};
 };
 

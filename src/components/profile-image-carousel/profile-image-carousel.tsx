@@ -112,7 +112,7 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 					onSnapToItem={index => this.setState({ activeIndex: index })}
 				/>
 				<Pagination
-					dotsLength={userProfile.photo.length}
+					dotsLength={approvedPhotos.length}
 					activeDotIndex={activeIndex}
 					containerStyle={styles.paginationContainer}
 					dotStyle={{

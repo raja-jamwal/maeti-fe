@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Interest } from '../../../store/reducers/account-defination';
 import { toArray, sortBy } from 'lodash';
 import { IRootState } from '../../../store/index';
@@ -80,7 +80,7 @@ class AcceptedTab extends React.Component<
 				data={this.getAcceptedInterests()}
 				profileIdExtractor={this.profileIdExtractor}
 				profileNameExtractor={this.profileNameExtractor}
-				headerComponent={this.totalCount()}
+				// headerComponent={this.totalCount()}
 				handleMore={this._handleMore}
 				handleRefresh={() => this.handleRefreshing()}
 				isAccountPaid={isAccountPaid}

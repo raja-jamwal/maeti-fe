@@ -393,6 +393,11 @@ export const updatePreference = function({ userProfileId, object }: IUpdateEnity
 	);
 };
 
+/**
+ * @deprecated This should not be used anywhere.
+ * This will return non-decorated user profiles. You should use search functions instead
+ * Talk to @rjamwal first
+ */
 export const fetchUserProfiles = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		console.log('userProfile.list');
