@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-	GiftedChat,
-	IChatMessage,
-	User,
-	IMessage,
-	Bubble,
-	Send,
-	InputToolbar
-} from 'react-native-gifted-chat';
+import { GiftedChat, IChatMessage, User, IMessage, Bubble, Send } from 'react-native-gifted-chat';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -15,11 +7,10 @@ import { connect } from 'react-redux';
 import { Channel, Message, UserProfile } from '../store/reducers/account-defination';
 import { fetchMessages, postMessage } from '../store/reducers/message-reducer';
 import { toArray, map, keys, sortBy, head, isEmpty } from 'lodash';
-import { StyleSheet, SafeAreaView, View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
 import { getLogger } from '../utils/logger';
-import { IS_IOS } from '../utils';
 
 const messageToChatMessage = (message: Message): IChatMessage => {
 	return {
@@ -107,13 +98,11 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 	}
 
 	componentWillMount() {
-		const { channel, messages, currentUserProfile } = this.props;
+		const { channel, messages } = this.props;
 		this.mayBeLoadMessage();
 		this.mayBeUpdateMessages(messages);
 		if (!channel) return;
-		const otherUserProfile =
-			currentUserProfile.id === channel.toUser.id ? channel.fromUser : channel.toUser;
-		this.props.navigation.setParams({ title: otherUserProfile.fullName });
+		this.props.navigation.setParams({ title: channel.toUser.fullName });
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: IChatScreenProps) {

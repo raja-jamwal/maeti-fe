@@ -148,8 +148,8 @@ class MoreScreen extends React.Component {
 
 				<SettingTitle label={'Maeti'} />
 				<SettingBlock>
-					<SettingRow label="Environment" value={getEnvironment()} />
-					<SettingDivider />
+					{/* <SettingRow label="Environment" value={getEnvironment()} />
+					<SettingDivider /> */}
 					<SettingRow label="OTA Version" value={otaVersion} />
 					<SettingDivider />
 					<SettingRow label="Support" value="support@datagrids.in" />

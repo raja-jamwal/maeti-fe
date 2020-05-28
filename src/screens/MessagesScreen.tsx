@@ -75,9 +75,6 @@ class MessagesScreen extends React.PureComponent<
 	}
 
 	renderChannel(channel: Channel) {
-		const { currentProfileId } = this.props;
-		const otherUserProfile =
-			channel.toUser.id === currentProfileId ? channel.fromUser : channel.toUser;
 		return (
 			<TouchableBtn
 				onPress={() => this.openChatView(channel.channelIdentity.id)}
@@ -85,7 +82,7 @@ class MessagesScreen extends React.PureComponent<
 			>
 				<View>
 					<UserChannel
-						userProfile={otherUserProfile}
+						userProfile={channel.toUser}
 						latestMessage={channel.latestMessage}
 					/>
 				</View>

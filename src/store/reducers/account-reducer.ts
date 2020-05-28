@@ -115,7 +115,7 @@ export const savePushToken = function(id: number) {
 
 		// Stop here if the user did not grant permissions
 		if (finalStatus !== 'granted') {
-			return;
+			// return; // let it go, so we can log lastLogin
 		}
 
 		let token = null;
@@ -127,7 +127,9 @@ export const savePushToken = function(id: number) {
 			logger.log('unable to get push token ', err);
 		}
 
-		if (!token) return;
+		if (!token) {
+			token = '';
+		}
 
 		const lastLogin = new Date().getTime();
 		return ApiRequest(API.TOKEN.SAVE, {
