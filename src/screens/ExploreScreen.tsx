@@ -158,7 +158,10 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 		}
 
 		if (toArray(userProfiles).length) {
-			sortBy(toArray(userProfiles), 'updatedOn')
+			// if we do sort on updateOn, the list will bump
+			// because meanwhile the profile might have updated
+			// and thus changed position between subsequent fetch
+			sortBy(toArray(userProfiles), 'createdOn')
 				.reverse()
 				.forEach(userProfile => {
 					const userProfileId = userProfile.id;
@@ -245,7 +248,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 					data={this.getItems()}
 					renderItem={({ item }) => this.renderItem(item)}
 					onEndReached={this._handleMore}
-					onEndReachedThreshold={0.5}
+					onEndReachedThreshold={5}
 					refreshing={fetching}
 					onRefresh={() => this.handleRefreshing()}
 				/>

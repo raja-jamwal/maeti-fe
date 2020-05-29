@@ -23,6 +23,7 @@ import { ProfileTableHeightOptions } from '../collapsible-table/profile-table';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { simplePrompt } from '../alert/index';
+import { encodeProfileId } from '../../utils/profile-id-encoder';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
@@ -90,6 +91,10 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			markProfileAsBlocked(userProfile, false);
 			navigation.goBack();
 		});
+	}
+
+	userMagazineId(profileId: number) {
+		return encodeProfileId(profileId);
 	}
 
 	render() {
@@ -202,7 +207,8 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 					</View>
 					<View>
 						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
-							{userProfileName || 'unknown name'} - U{userProfile.id}
+							{userProfileName || 'unknown name'} - U
+							{this.userMagazineId(userProfile.id)}
 						</Text>
 					</View>
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>

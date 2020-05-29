@@ -188,7 +188,7 @@ export const fetchSearchResult = function() {
 			size: 10,
 			sort: [
 				{
-					updatedOn: {
+					createdOn: {
 						order: 'desc'
 					}
 				}
