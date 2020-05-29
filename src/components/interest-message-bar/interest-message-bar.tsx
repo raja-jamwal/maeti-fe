@@ -205,42 +205,42 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				case InterestStates.SENT_PENDING:
 					return (
 						<Value style={styles.statusText}>
-							You sent a interest at{' '}
+							You sent a interest{' '}
 							{sentInterest && formatDuration(sentInterest.updatedOn)}
 						</Value>
 					);
 				case InterestStates.SENT_ACCEPTED:
 					return (
 						<Value style={styles.statusText}>
-							Your interest was accepted at{' '}
+							Your interest was accepted{' '}
 							{sentInterest && formatDuration(sentInterest.updatedOn)}
 						</Value>
 					);
 				case InterestStates.SENT_DECLINED:
 					return (
 						<Value style={styles.statusText}>
-							Your interest was declined at{' '}
+							Your interest was declined{' '}
 							{sentInterest && formatDuration(sentInterest.updatedOn)}
 						</Value>
 					);
 				case InterestStates.RECV_PENDING:
 					return (
 						<Value style={styles.statusText}>
-							Your received interest at{' '}
+							Your received interest{' '}
 							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
 						</Value>
 					);
 				case InterestStates.RECV_ACCEPTED:
 					return (
 						<Value style={styles.statusText}>
-							You accepted interest at{' '}
+							You accepted interest{' '}
 							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
 						</Value>
 					);
 				case InterestStates.RECV_DECLINED:
 					return (
 						<Value style={styles.statusText}>
-							You declined interest at{' '}
+							You declined interest{' '}
 							{incomingInterest && formatDuration(incomingInterest.updatedOn)}
 						</Value>
 					);

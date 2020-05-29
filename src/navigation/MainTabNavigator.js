@@ -71,7 +71,8 @@ ExploreStack.navigationOptions = {
 const MessagesStack = createStackNavigator(
 	{
 		Messages: MessagesScreen,
-		ChatScreen: ChatScreen
+		ChatScreen: ChatScreen,
+		ProfileScreen: ProfileScreen
 	},
 	{ defaultNavigationOptions }
 );
