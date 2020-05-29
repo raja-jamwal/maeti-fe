@@ -10,6 +10,7 @@ import {
 	TouchableOpacity,
 	SafeAreaView
 } from 'react-native';
+import { Notifications } from 'expo';
 import Colors from '../constants/Colors';
 import GlobalStyles from '../styles/global';
 import ConnectedProfile from '../components/profile-card/connected-profile';
@@ -114,6 +115,24 @@ const ConnectedHeader = connect(
 	}
 )(ExploreScreenHeader);
 
+const handleNotification = navigation => {
+	return notification => {
+		if (!notification || !navigation) return;
+		const data = notification.data;
+		const origin = notification.origin;
+		if (!data || !origin) return;
+		switch (data.type) {
+			case 'message':
+				if (origin === 'selected') {
+					const channelId = data.channelId;
+					navigation.push('ChatScreen', { channelId });
+				}
+				break;
+		}
+		return;
+	};
+};
+
 class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExploreScreenProps> {
 	private logger = getLogger(ExploreScreen);
 
@@ -126,6 +145,13 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 		super(props);
 		this.openProfileScreen = this.openProfileScreen.bind(this);
 		this._handleMore = this._handleMore.bind(this);
+	}
+
+	static getDerivedStateFromProps(props, state) {
+		if (props.navigation) {
+			Notifications.addListener(handleNotification(props.navigation));
+		}
+		return null;
 	}
 
 	openProfileScreen(userProfileId: number, profileName: string) {
