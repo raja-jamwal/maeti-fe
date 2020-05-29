@@ -1,0 +1,22 @@
+name: Build and publish to staging
+
+on:
+    push:
+        branches:
+            - production
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+            - uses: expo/expo-github-action@v5
+              with:
+                  expo-version: 3.x
+                  expo-username: linux.experi@gmail.com
+                  expo-password: good.old.code
+            - run: yarn install
+            - run: expo publish --release-channel staging
