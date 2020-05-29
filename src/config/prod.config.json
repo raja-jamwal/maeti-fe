@@ -1,4 +1,3 @@
 {
-	"server": "http://matri.prod.datagrids.in",
-	"ota_version": 4
+	"server": "http://matri.prod.datagrids.in"
 }

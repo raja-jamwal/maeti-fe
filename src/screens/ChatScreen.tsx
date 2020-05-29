@@ -71,6 +71,7 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 			messages: [] as IMessage[]
 		};
 		this._hasMore = this._hasMore.bind(this);
+		this.onPressAvatar = this.onPressAvatar.bind(this);
 	}
 
 	mayBeLoadMessage() {
@@ -155,28 +156,35 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		fetchMessages(channel.channelIdentity.id);
 	}
 
+	onPressAvatar(user) {
+		const { navigation } = this.props;
+		navigation.push('ProfileScreen', {
+			userProfileId: user._id,
+			profileName: user.name
+		});
+	}
+
 	render() {
 		const { currentUserProfile, fetching, isLastPage } = this.props;
 		if (!currentUserProfile) return;
 		return (
 			<SafeAreaView style={{ flexDirection: 'column', flex: 1 }}>
-				<View style={{ flex: 1 }}>
-					<GiftedChat
-						messages={this.state.messages}
-						onSend={messages => this.onSend(messages)}
-						user={userProfileToUser(currentUserProfile)}
-						renderBubble={this.renderBubble}
-						alwaysShowSend={true}
-						loadEarlier={!isLastPage}
-						isLoadingEarlier={fetching}
-						onLoadEarlier={this._hasMore}
-						listViewProps={{
-							onEndReached: this._hasMore,
-							onEndReachedThreshold: 50
-						}}
-						extraData={{ length: this.state.messages.length }}
-					/>
-				</View>
+				<GiftedChat
+					messages={this.state.messages}
+					onSend={messages => this.onSend(messages)}
+					user={userProfileToUser(currentUserProfile)}
+					renderBubble={this.renderBubble}
+					alwaysShowSend={false}
+					loadEarlier={!isLastPage}
+					isLoadingEarlier={fetching}
+					onLoadEarlier={this._hasMore}
+					onPressAvatar={this.onPressAvatar}
+					listViewProps={{
+						onEndReached: this._hasMore,
+						onEndReachedThreshold: 50
+					}}
+					extraData={{ length: this.state.messages.length }}
+				/>
 			</SafeAreaView>
 		);
 	}
