@@ -65,7 +65,7 @@ class VirtualProfileList extends React.PureComponent<
 				<FlatList
 					keyExtractor={item => profileIdExtractor(item).toString()}
 					data={data}
-					initialNumToRender={5}
+					// initialNumToRender={5}
 					ListHeaderComponent={headerComponent || null}
 					renderItem={({ item }) => this.renderProfileCard(item)}
 					onEndReached={this._handleMore}
