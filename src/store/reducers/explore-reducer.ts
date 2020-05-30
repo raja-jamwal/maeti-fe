@@ -186,13 +186,6 @@ export const fetchSearchResult = function() {
 		let query: any = {
 			from: storeItemsCount,
 			size: 10,
-			sort: [
-				{
-					createdOn: {
-						order: 'desc'
-					}
-				}
-			],
 			query: {}
 		};
 
@@ -206,6 +199,7 @@ export const fetchSearchResult = function() {
 				match_all: {}
 			};
 
+			let shouldSortOnCreatedOn = false;
 			//
 			// TODO: all filter builders should include must_not for the current user profile
 			//
@@ -214,17 +208,21 @@ export const fetchSearchResult = function() {
 				case 'search':
 					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
 					searchQuery = buildSearchFilter(getState().filter.filters, currentUserProfile);
+					shouldSortOnCreatedOn = true;
 					break;
 				case 'new_matches':
 					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
 					searchQuery = buildNewMatchesFilter(currentUserProfile);
+					shouldSortOnCreatedOn = true;
 				case 'community_matches':
 					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
 					searchQuery = buildCommunityFilter(currentUserProfile);
+					shouldSortOnCreatedOn = true;
 					break;
 				case 'location_matches':
 					searchUrl = `${API.SEARCH.GET}/${currentUserProfileId}`;
 					searchQuery = buildLocationFilter(currentUserProfile);
+					shouldSortOnCreatedOn = true;
 					break;
 				case 'added_me':
 					searchUrl = `${API.ADDED_TO_FAVOURITE.SEARCH}/${currentUserProfileId}`;
@@ -240,11 +238,29 @@ export const fetchSearchResult = function() {
 					break;
 				case 'discover':
 					searchQuery = buildDefaultSearchFilter(currentUserProfile);
+					shouldSortOnCreatedOn = true;
 				default:
 					break;
 			}
 
 			query.query = searchQuery;
+			if (shouldSortOnCreatedOn) {
+				query.sort = [
+					{
+						createdOn: {
+							order: 'desc'
+						}
+					}
+				];
+			} else {
+				query.sort = [
+					{
+						updatedOn: {
+							order: 'desc'
+						}
+					}
+				];
+			}
 			logger.log('Search Filter', query.query);
 			logger.log(JSON.stringify(query.query));
 		} else {
