@@ -37,6 +37,7 @@ export interface IProfileProps {
 	onPhotoPress?: () => any;
 	showCarousel?: boolean;
 	isProfileBlocked?: boolean;
+	isProfileDeleted?: boolean;
 }
 
 type IProfileCardProps = NavigationInjectedProps & IProfileProps;
@@ -105,10 +106,12 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			isAccountPaid,
 			onPhotoPress,
 			showCarousel,
-			isProfileBlocked
+			isProfileBlocked,
+			isProfileDeleted
 		} = this.props;
 		if (isEmpty(userProfile)) return null;
 		if (isProfileBlocked) return null;
+		if (isProfileDeleted) return null;
 		const { education, profession, family } = { ...userProfile };
 		const userProfileName = isAccountPaid || isSelfProfile ? userProfile.fullName : 'xxxxxxx';
 		const professionLocation = ['workCity', 'workState', 'workCountry']

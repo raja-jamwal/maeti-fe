@@ -48,6 +48,11 @@ export const isProfileBlocked = (state: IRootState, userProfileId: number) => {
 	return userProfile.isBlocked;
 };
 
+export const isProfileDeleted = createSelector(
+	getUserProfileFromState,
+	profile => !!profile.deletedOn
+);
+
 const defaultProfileState: IUserProfileState = {};
 
 const ADD_PROFILE = 'ADD_PROFILE';

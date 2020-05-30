@@ -6,7 +6,11 @@ import { getLogger } from '../../utils/logger';
 import { getCurrentUserProfileId, isAccountPaid } from '../../store/reducers/account-reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import { setUserProfileFavourite } from '../../store/reducers/favourite-reducer';
-import { markProfileAsBlocked, isProfileBlocked } from '../../store/reducers/user-profile-reducer';
+import {
+	markProfileAsBlocked,
+	isProfileBlocked,
+	isProfileDeleted
+} from '../../store/reducers/user-profile-reducer';
 
 const logger = getLogger('ConnectedProfile');
 
@@ -34,7 +38,8 @@ const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 		userProfile,
 		isSelfProfile,
 		isAccountPaid: isAccountPaid(state),
-		isProfileBlocked: isProfileBlocked(state, userProfile.id)
+		isProfileBlocked: isProfileBlocked(state, userProfile.id),
+		isProfileDeleted: isProfileDeleted(state, userProfile.id)
 	};
 };
 
