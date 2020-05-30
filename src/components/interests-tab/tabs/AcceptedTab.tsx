@@ -41,7 +41,7 @@ class AcceptedTab extends React.Component<
 
 	getAcceptedInterests(): Array<Interest> {
 		const { acceptedInterests } = this.props;
-		return sortBy(toArray(acceptedInterests), 'updatedOn');
+		return sortBy(toArray(acceptedInterests), 'createdOn').reverse();
 	}
 
 	profileIdExtractor(interest: Interest) {

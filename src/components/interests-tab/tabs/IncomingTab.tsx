@@ -40,7 +40,7 @@ class IncomingTab extends React.PureComponent<
 
 	getIncomingInterests(): Array<Interest> {
 		const { incomingInterests } = this.props;
-		return sortBy(toArray(incomingInterests), 'updatedOn');
+		return sortBy(toArray(incomingInterests), 'createdOn').reverse();
 	}
 
 	profileIdExtractor(interest: Interest) {

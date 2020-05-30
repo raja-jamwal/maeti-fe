@@ -38,7 +38,7 @@ class SentTab extends React.Component<ISentTabMapStateToProps & ISentTabMapDispa
 
 	getSentInterests(): Array<Interest> {
 		const { sentInterests } = this.props;
-		return sortBy(toArray(sentInterests), 'updatedOn');
+		return sortBy(toArray(sentInterests), 'createdOn').reverse();
 	}
 
 	profileIdExtractor(interest: Interest) {

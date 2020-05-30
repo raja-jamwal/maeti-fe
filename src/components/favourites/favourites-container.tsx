@@ -60,7 +60,7 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 
 	getFavouriteProfiles(): Array<Favourite> {
 		const { favouriteProfiles } = this.props;
-		return sortBy(toArray(favouriteProfiles), 'updatedOn');
+		return sortBy(toArray(favouriteProfiles), 'createdOn').reverse();
 	}
 
 	profileIdExtractor(favourite: Favourite) {
