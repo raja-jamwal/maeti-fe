@@ -71,6 +71,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 
 	async updateInterestState() {
 		const { currentUserProfileId, userProfileId } = this.props;
+		return; // open messaging for everyone for limited while
 		this.setState({
 			fetchingInterest: true
 		});
@@ -306,9 +307,10 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 						</TouchableBtn>
 					</ConnectedPurchaseButton>
 				)}
-				{interestState !== InterestStates.SHOW_INTEREST && (
-					<View style={styles.statusContainer}>{this.renderInterestStatus()}</View>
-				)}
+				{interestState !== InterestStates.SHOW_INTEREST &&
+					interestState !== InterestStates.NONE && (
+						<View style={styles.statusContainer}>{this.renderInterestStatus()}</View>
+					)}
 				{interestState === InterestStates.RECV_PENDING && (
 					<TouchableBtn onPress={() => this.saveInterest(true)}>
 						<View style={styles.interestAction}>
@@ -326,6 +328,15 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				{(interestState === InterestStates.SENT_ACCEPTED ||
 					interestState === InterestStates.RECV_ACCEPTED) && (
 					<TouchableBtn onPress={() => this.startMessaging()}>
+						<View style={styles.btnContainer}>
+							<Ionicons name="md-chatboxes" size={20} color="white" />
+							<Text style={styles.text}>Message</Text>
+						</View>
+					</TouchableBtn>
+				)}
+				{/* open messaing for all */}
+				{interestState === InterestStates.NONE && (
+					<TouchableBtn style={{ flex: 1 }} onPress={() => this.startMessaging()}>
 						<View style={styles.btnContainer}>
 							<Ionicons name="md-chatboxes" size={20} color="white" />
 							<Text style={styles.text}>Message</Text>
