@@ -192,11 +192,11 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						</View>
 						{/*<Text style={styles.premiumProfileText}>Premium Profile</Text>*/}
 						<View style={GlobalStyles.expand} />
-						{!isSelfProfile && showCarousel && (
+						{/* {!isSelfProfile && showCarousel && (
 							<TouchableOpacity onPress={() => this.reportProfile()}>
 								<Text style={styles.report}>REPORT</Text>
 							</TouchableOpacity>
-						)}
+						)} */}
 						{!isSelfProfile && showCarousel && (
 							<TouchableOpacity onPress={() => this.blockProfile()}>
 								<Text style={styles.report}>BLOCK</Text>
