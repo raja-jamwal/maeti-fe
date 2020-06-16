@@ -182,7 +182,7 @@ export default createBottomTabNavigator(
 		ExploreStack,
 		MessagesStack,
 		FavouritesStack,
-		InterestsStack,
+		// InterestsStack,
 		MoreStack
 	},
 	bottomTabNavigatorOptions
