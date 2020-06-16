@@ -71,7 +71,7 @@ class MessagesScreen extends React.PureComponent<
 
 	getChannels(): Array<Channel> {
 		const { channels } = this.props;
-		return sortBy(toArray(channels), 'updatedOn');
+		return sortBy(toArray(channels), 'latestMessage.createdOn').reverse();
 	}
 
 	renderChannel(channel: Channel) {
