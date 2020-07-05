@@ -174,14 +174,14 @@ export default class ProfileInfoTab extends React.Component<
 			case 'family':
 				tab = (
 					<View>
-						<FamilyTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<FamilyTable userProfileId={userProfileId} editable={isEditable} />
 					</View>
 				);
 				break;
 			case 'expectations':
 				tab = (
 					<View>
-						<PreferenceTable userProfileId={userProfileId} editable={isSelfProfile} />
+						<PreferenceTable userProfileId={userProfileId} editable={isEditable} />
 					</View>
 				);
 				break;

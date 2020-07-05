@@ -6,11 +6,13 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Channel, Message, UserProfile } from '../store/reducers/account-defination';
 import { fetchMessages, postMessage } from '../store/reducers/message-reducer';
+import { getToUserProfileInChannel } from '../store/reducers/channel-reducer';
 import { toArray, map, keys, sortBy, head, isEmpty } from 'lodash';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
 import { getLogger } from '../utils/logger';
+import { ProfileSummary } from '../components/profile-summary';
 
 const messageToChatMessage = (message: Message): IChatMessage => {
 	return {
@@ -39,6 +41,7 @@ const userProfileToUser = (userProfile: UserProfile): User => {
 interface IChatScreenMapStateToProps {
 	channel: Channel;
 	currentUserProfile: UserProfile;
+	toUserProfile: UserProfile;
 	fetching: boolean;
 	messages: Array<Message>;
 	isLastPage: boolean;
@@ -165,10 +168,11 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 	}
 
 	render() {
-		const { currentUserProfile, fetching, isLastPage } = this.props;
+		const { currentUserProfile, fetching, isLastPage, toUserProfile } = this.props;
 		if (!currentUserProfile) return;
 		return (
 			<SafeAreaView style={{ flexDirection: 'column', flex: 1 }}>
+				<ProfileSummary userProfile={toUserProfile} />
 				<GiftedChat
 					messages={this.state.messages}
 					onSend={messages => this.onSend(messages)}
@@ -194,6 +198,7 @@ const mapStateToProps = (state: IRootState, ownProps: any) => {
 	const currentUserProfile = getSelfUserProfile(state);
 	const channelId = ownProps.navigation.getParam('channelId');
 	const channel = channelId && state.channels.channels[channelId];
+	const toUserProfile = getToUserProfileInChannel(state, channel);
 	const messageState = channelId && state.messages[channelId];
 	const fetching = (messageState && messageState.fetching) || false;
 	const messages = (messageState && messageState.messages) || {};
@@ -201,6 +206,7 @@ const mapStateToProps = (state: IRootState, ownProps: any) => {
 	return {
 		channel,
 		currentUserProfile,
+		toUserProfile,
 		fetching,
 		messages,
 		isLastPage

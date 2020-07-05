@@ -49,6 +49,13 @@ export const addChannelPage = createAction<Pageable>(ADD_CHANNEL_PAGE);
 export const setChannelFetching = createAction<boolean>(SET_CHANNEL_FETCHING);
 export const setChannelRefreshing = createAction(SET_CHANNEL_REFRESHING);
 
+export const getToUserProfileInChannel = function(state: IRootState, channel: Channel) {
+	if (!state || !channel) return null;
+	const currentUserProfileId = getCurrentUserProfileId(state);
+	if (!currentUserProfileId) return null;
+	return channel.fromUser.id === currentUserProfileId ? channel.toUser : channel.fromUser;
+};
+
 export const fetchChannels = function() {
 	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
 		const state = getState();
