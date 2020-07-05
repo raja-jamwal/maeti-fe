@@ -8,9 +8,7 @@ import { isEmpty, head } from 'lodash';
 import { isProfileBlocked } from '../../store/reducers/user-profile-reducer';
 import { IRootState } from '../../store/index';
 import { connect } from 'react-redux';
-
-const defaultProfileImage = require('../../assets/images/placeholder.png');
-
+import { Avatar } from '../avatar';
 interface IUserChannelProps {
 	userProfile: UserProfile;
 	latestMessage: Message;
@@ -21,21 +19,12 @@ class UserChannel extends React.Component<IUserChannelProps> {
 	render() {
 		const { userProfile, latestMessage, isProfileBlocked } = this.props;
 		if (isProfileBlocked) return null;
-		const userProfileImage = !isEmpty(userProfile.photo) && head(userProfile.photo).url;
+		const userProfileImage =
+			(!isEmpty(userProfile.photo) && head(userProfile.photo).url) || undefined;
 		return (
 			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.container]}>
 				<View style={GlobalStyles.paddedRight}>
-					{!!userProfileImage && (
-						<Image
-							source={{
-								uri: userProfileImage
-							}}
-							style={styles.avatar}
-						/>
-					)}
-					{!userProfileImage && (
-						<Image source={defaultProfileImage} style={styles.avatar} />
-					)}
+					<Avatar userProfileImage={userProfileImage} />
 				</View>
 				<View style={GlobalStyles.expand}>
 					<View style={GlobalStyles.row}>
