@@ -23,7 +23,10 @@ class UserChannel extends React.Component<IUserChannelProps> {
 		if (isProfileBlocked) return null;
 		const userProfileImage =
 			(!isEmpty(userProfile.photo) && head(userProfile.photo).url) || undefined;
-		const isLatestMessageFromOther = latestMessage.fromUser.id !== currentProfileId;
+		const isLatestMessageFromOther =
+			latestMessage &&
+			latestMessage.fromUser &&
+			latestMessage.fromUser.id !== currentProfileId;
 		return (
 			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.container]}>
 				<View style={GlobalStyles.paddedRight}>
