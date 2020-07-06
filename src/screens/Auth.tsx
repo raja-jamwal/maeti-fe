@@ -405,6 +405,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 
 	renderSignUp(login: boolean = false) {
 		const { number, fullName, callingCode } = this.state;
+		const { navigation } = this.props;
 		return (
 			<View>
 				<View style={styles.formContainer}>
@@ -457,7 +458,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 							</View>
 							<Button
 								label="New User"
-								onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}
+								onPress={() => navigation.navigate('Register')}
+								// onPress={() => this.changeScreen(LOGIN_SCREENS.SIGNUP)}
 							/>
 						</View>
 					)}
