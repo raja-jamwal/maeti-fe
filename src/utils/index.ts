@@ -9,6 +9,7 @@ const moment = require('moment');
 const secondsInYear = 60 * 60 * 24 * 365;
 const LAKH_RUPEE = 100000;
 const CRORE_RUPEE = 100 * LAKH_RUPEE;
+const TOTAL_SMS_LIMIT_IN_DAY = 4;
 
 /**
  * return the age from the timestamp
@@ -64,6 +65,57 @@ const memomizedTokenRead = () => {
 };
 
 const readToken = memomizedTokenRead();
+
+export const markSmsSent = async () => {
+	const record = await getSmsCountToday();
+	try {
+		record.count += 1;
+		record.time = new Date().getTime();
+		await AsyncStorage.setItem('sms_count', JSON.stringify(record));
+	} catch (err) {
+		return record;
+	}
+	return record;
+};
+
+export const isSmsAllowed = async () => {
+	const sms = await getSmsCountToday();
+	console.log('sms', sms);
+	if (sms.count >= TOTAL_SMS_LIMIT_IN_DAY) return false;
+	return true;
+};
+
+export const getSmsCountToday = async () => {
+	const midNight = new Date();
+	midNight.setHours(0);
+	midNight.setMinutes(0);
+	midNight.setSeconds(0);
+	midNight.setMilliseconds(0);
+	const time = midNight.getTime();
+	const record = {
+		count: 0,
+		time: time
+	};
+	try {
+		const jsonObject = await AsyncStorage.getItem('sms_count');
+		if (!jsonObject) return record;
+		const parsed = JSON.parse(jsonObject);
+		// if the last recorded time is before the midnight
+		// give new bucket to the user
+		if (parsed.time < time) {
+			return record;
+		}
+		if (parsed.count) {
+			record.count = parsed.count;
+		}
+		if (parsed.time) {
+			record.time = parsed.time;
+		}
+	} catch (er) {
+		return record;
+	}
+	return record;
+};
 
 const ApiRequest = function(url: string, params: any) {
 	const logger = getLogger(ApiRequest);
