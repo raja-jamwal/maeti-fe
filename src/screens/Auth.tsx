@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import Colors from '../constants/Colors';
 import CountryPicker, { CCA2Code } from 'react-native-country-picker-modal';
 import Layout from '../constants/Layout';
-import { ApiRequest, IS_IOS, formatDate } from '../utils';
+import { ApiRequest, IS_IOS, formatDate, isSmsAllowed } from '../utils';
 import { API } from '../config/API';
 import { simpleAlert } from '../components/alert';
 import { Account, PendingAccount } from '../store/reducers/account-defination';
@@ -42,6 +42,7 @@ import {
 import DateTimeIos from 'src/components/date-time-ios/date-time-ios';
 import { SafeAreaView } from 'react-native';
 import { TosModal } from 'src/components/tos-modal/tos-modal';
+import { markSmsSent } from '../utils/index';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -181,6 +182,32 @@ function DateOfBirth(
 	return <Button label={renderedString} onPress={AndroidDateTime} />;
 }
 
+function SlowAppear({ children }: any) {
+	const [secondsLeft, setSecondsLeft] = React.useState(2 * 60);
+	React.useEffect(() => {
+		const timer = setInterval(() => {
+			if (secondsLeft <= 0) {
+				clearInterval(timer);
+			} else {
+				setSecondsLeft(s => s - 1);
+			}
+		}, 1 * 1000);
+		return () => {
+			if (timer) {
+				clearInterval(timer);
+			}
+		};
+	}, []);
+	if (secondsLeft > 0) {
+		return (
+			<Text style={{ textAlign: 'center', margin: 4 }}>
+				Please wait for {secondsLeft}s before retrying
+			</Text>
+		);
+	}
+	return children;
+}
+
 class Auth extends React.Component<IAuthProps, IAuthState> {
 	private logger = getLogger(Auth);
 
@@ -306,11 +333,21 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		}
 	}
 
-	sendVerificationSMS(shouldLogin: boolean = false) {
+	async sendVerificationSMS(shouldLogin: boolean = false) {
+		if (!(await isSmsAllowed())) {
+			return simpleAlert(
+				'Limit exceeded',
+				'You exceeded your limit to verify phone number. Please try again tomorrow.'
+			);
+		}
 		const { number, fullName, callingCode } = this.state;
 
 		let error = '';
 		this.logger.log(number, fullName);
+
+		if (number && String(number).length < 6) {
+			error = 'Please provide valid phone number';
+		}
 
 		if (number && String(number).length > 10) {
 			error = 'Please use number without calling-code';
@@ -333,20 +370,29 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		if (error) {
 			simpleAlert('', error);
 		} else {
-			ApiRequest(API.OTP.SEND, {
-				phoneNumber: `${callingCode}-${number}`
-			})
-				.then((response: any) => {
-					this.logger.log('OTP', response);
-					this.setState({
-						otp: response.code,
-						activeScreen: LOGIN_SCREENS.VERIFY
-					});
-				})
-				.catch((err: any) => {
-					this.logger.log('OTP error ', err);
-					simpleAlert('Error', 'Unable to process');
-				});
+			const phoneNumber = `${callingCode}-${number}`;
+			simpleAlert(
+				'Verification',
+				`Are you sure you want to verify +${phoneNumber}?`,
+				() => {
+					ApiRequest(API.OTP.SEND, {
+						phoneNumber
+					})
+						.then((response: any) => {
+							markSmsSent();
+							this.logger.log('OTP', response);
+							this.setState({
+								otp: response.code,
+								activeScreen: LOGIN_SCREENS.VERIFY
+							});
+						})
+						.catch((err: any) => {
+							this.logger.log('OTP error ', err);
+							simpleAlert('Error', 'Unable to process');
+						});
+				},
+				true
+			);
 		}
 	}
 
@@ -390,7 +436,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 									this.setState({ fullName: e.nativeEvent.text });
 								}}
 								spellCheck={false}
-								placeholder="Your name"
+								placeholder="Your full name"
 							/>
 						</View>
 					)}
@@ -409,7 +455,10 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						</View>
 					)}
 					{!login && (
-						<Button label="Sign up" onPress={() => this.sendVerificationSMS()} />
+						<Button
+							label="Verify Phone Number"
+							onPress={() => this.sendVerificationSMS()}
+						/>
 					)}
 				</View>
 			</View>
@@ -465,16 +514,18 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 							placeholder="Enter verification code sent in SMS"
 						/>
 					</View>
-					<Button
-						label="Change Phone Number"
-						onPress={() => {
-							if (action === ACTION.SIGN_UP) {
-								this.changeScreen(LOGIN_SCREENS.SIGNUP);
-							} else {
-								this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
-							}
-						}}
-					/>
+					<SlowAppear>
+						<Button
+							label="Retry again"
+							onPress={() => {
+								if (action === ACTION.SIGN_UP) {
+									this.changeScreen(LOGIN_SCREENS.SIGNUP);
+								} else {
+									this.changeScreen(LOGIN_SCREENS.LOGIN_SIGNUP);
+								}
+							}}
+						/>
+					</SlowAppear>
 				</View>
 			</View>
 		);
