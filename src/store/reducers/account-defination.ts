@@ -118,9 +118,9 @@ export interface Profession extends DAO {
 	annualIncome: number;
 	loans: Array<Tag>;
 	otherLoans: string;
-	workCountry: Country;
-	workState: Region;
-	workCity: City;
+	workCountry: Country | null;
+	workState: Region | null;
+	workCity: City | null;
 }
 
 export interface Horoscope extends DAO {
@@ -206,9 +206,9 @@ export interface Family extends DAO {
 	noOfSisters: number;
 	sistersMarried: number;
 	aboutFamily: string;
-	familyCountry: Country;
-	familyState: Region;
-	familyCity: City;
+	familyCountry: Country | null;
+	familyState: Region | null;
+	familyCity: City | null;
 	interCasteParents: boolean;
 	parentsLivingSeperately: boolean;
 	familyOtherInformation: FamilyOtherInformation;
@@ -240,12 +240,12 @@ export interface Preference extends DAO {
 	mediumOfEducation: string;
 	workingPartner: string;
 	occupation: string;
-	workCountry: Country;
-	workState: Region;
-	workCity: City;
-	parentCountry: Country;
-	parentState: Region;
-	parentCity: City;
+	workCountry: Country | null;
+	workState: Region | null;
+	workCity: City | null;
+	parentCountry: Country | null;
+	parentState: Region | null;
+	parentCity: City | null;
 	diet: string;
 	smoke: string;
 	drink: string;

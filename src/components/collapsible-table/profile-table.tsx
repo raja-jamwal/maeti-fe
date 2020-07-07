@@ -356,110 +356,110 @@ export const ProfileTableBodyTypeOptions = [
 	}
 ];
 
+export const ProfileMapping = {
+	gender: {
+		label: 'Gender',
+		type: 'choice',
+		isNotEditable: true,
+		choice: {
+			options: GenderOptions
+		}
+	},
+	about: {
+		label: 'About',
+		type: 'about'
+	},
+	createdBy: {
+		label: 'Profile created by',
+		type: 'choice',
+		choice: {
+			options: CreatedByOptions
+		}
+	},
+	salutation: {
+		label: 'Salutation',
+		type: 'choice',
+		choice: {
+			options: SalutationOptions
+		}
+	},
+	fullName: {
+		label: 'Full Name',
+		type: 'string',
+		isPaidFeature: true
+	},
+	dob: {
+		label: 'Date of Birth',
+		type: 'date'
+	},
+	maritalStatus: {
+		label: 'Marital Status',
+		type: 'choice',
+		choice: {
+			options: MaritalStatusOptions
+		}
+	},
+	height: {
+		label: 'Height(in Feet)',
+		type: 'choice',
+		choice: {
+			options: ProfileTableHeightOptions
+		}
+	},
+	weight: {
+		label: 'Weight(in KG)',
+		type: 'number'
+	},
+	bodyType: {
+		label: 'Body Type',
+		type: 'choice',
+		choice: {
+			options: ProfileTableBodyTypeOptions
+		}
+	},
+	bodyComplexion: {
+		label: 'Body Complexion',
+		type: 'choice',
+		choice: {
+			options: BodyComplexionOptions
+		}
+	},
+	lenses: {
+		label: 'Spect / Lenses',
+		type: 'choice',
+		choice: {
+			options: ProfileTableLensesOptions
+		}
+	},
+	bloodGroup: {
+		label: 'Blood Group',
+		type: 'choice',
+		choice: {
+			options: BloodGroupOptions
+		}
+	},
+	motherTongue: {
+		label: 'Mother Tongue',
+		type: 'choice',
+		choice: {
+			options: ProfileTableMotherTongueOptions
+		}
+	},
+	specialCases: {
+		label: 'Special Cases',
+		tagType: 'case',
+		type: 'tag-array'
+	},
+	describeMyself: {
+		label: 'I describe myself as',
+		tagType: 'description',
+		type: 'tag-array'
+	}
+};
+
 class ProfileTable extends React.Component<
 	IProfileTableProps & IProfileTableMapDispatchToProps & IProfileTableMapStateToProps
 > {
-	mappings = {
-		gender: {
-			label: 'Gender',
-			type: 'choice',
-			isNotEditable: true,
-			choice: {
-				options: GenderOptions
-			}
-		},
-		about: {
-			label: 'About',
-			type: 'about'
-		},
-		createdBy: {
-			label: 'Profile created by',
-			type: 'choice',
-			choice: {
-				options: CreatedByOptions
-			}
-		},
-		salutation: {
-			label: 'Salutation',
-			type: 'choice',
-			choice: {
-				options: SalutationOptions
-			}
-		},
-		fullName: {
-			label: 'Full Name',
-			type: 'string',
-			isPaidFeature: true
-		},
-		dob: {
-			label: 'Date of Birth',
-			type: 'date'
-		},
-		maritalStatus: {
-			label: 'Marital Status',
-			type: 'choice',
-			choice: {
-				options: MaritalStatusOptions
-			}
-		},
-		height: {
-			label: 'Height(in Feet)',
-			type: 'choice',
-			choice: {
-				options: ProfileTableHeightOptions
-			}
-		},
-		weight: {
-			label: 'Weight(in KG)',
-			type: 'number'
-		},
-		bodyType: {
-			label: 'Body Type',
-			type: 'choice',
-			choice: {
-				options: ProfileTableBodyTypeOptions
-			}
-		},
-		bodyComplexion: {
-			label: 'Body Complexion',
-			type: 'choice',
-			choice: {
-				options: BodyComplexionOptions
-			}
-		},
-		lenses: {
-			label: 'Spect / Lenses',
-			type: 'choice',
-			choice: {
-				options: ProfileTableLensesOptions
-			}
-		},
-		bloodGroup: {
-			label: 'Blood Group',
-			type: 'choice',
-			choice: {
-				options: BloodGroupOptions
-			}
-		},
-		motherTongue: {
-			label: 'Mother Tongue',
-			type: 'choice',
-			choice: {
-				options: ProfileTableMotherTongueOptions
-			}
-		},
-		specialCases: {
-			label: 'Special Cases',
-			tagType: 'case',
-			type: 'tag-array'
-		},
-		describeMyself: {
-			label: 'I describe myself as',
-			tagType: 'description',
-			type: 'tag-array'
-		}
-	};
-
 	render() {
 		const {
 			userProfile,
@@ -472,7 +472,7 @@ class ProfileTable extends React.Component<
 			<CollapsibleTable
 				title="Basic Information"
 				object={userProfile}
-				mapping={this.mappings}
+				mapping={ProfileMapping}
 				updateAction={updateUserProfile}
 				userProfileId={userProfileId}
 				editable={editable}

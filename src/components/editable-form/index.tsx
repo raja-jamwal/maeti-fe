@@ -24,9 +24,10 @@ interface IPROPS {
 	navObject: any;
 	mapping: any;
 	updateAction: (object: any) => any;
+	updateLabel?: string;
 }
 
-export function EditableForm({ navObject, mapping, updateAction }: IPROPS) {
+export function EditableForm({ navObject, mapping, updateAction, updateLabel }: IPROPS) {
 	const logger = getLogger(EditableForm);
 	const [showSubmissionFooter, setShowSubmissionFooter] = React.useState(true);
 	const [object, setObject] = React.useState(navObject);
@@ -372,7 +373,9 @@ export function EditableForm({ navObject, mapping, updateAction }: IPROPS) {
 			{showSubmissionFooter && (
 				<View style={styles.submissionFooter}>
 					<TouchableBtn onPress={() => updateAction(object)}>
-						<Text style={styles.submissionBtn}>Update Information</Text>
+						<Text style={styles.submissionBtn}>
+							{updateLabel || 'Update Information'}
+						</Text>
 					</TouchableBtn>
 				</View>
 			)}
