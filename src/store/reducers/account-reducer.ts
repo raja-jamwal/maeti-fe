@@ -12,6 +12,7 @@ import * as Permissions from 'expo-permissions';
 import { IRootState } from '../index';
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
+import { getConfig } from '../../config/config';
 
 export interface IAccountState extends ILocalAccount {}
 
@@ -143,6 +144,16 @@ export const savePushToken = function(id: number) {
 			.catch(err => {
 				logger.log('err happened while saving token ', err);
 			});
+	};
+};
+
+export const logAccount = function() {
+	const logger = getLogger(logAccount);
+	const config = getConfig();
+	return (_dispatch: Dispatch<any>, _getState: () => any) => {
+		const otaVersion = config.ota_version || 0;
+		logger.log('log account', otaVersion);
+		return ApiRequest(API.ACCOUNT.LOG, { ota: otaVersion });
 	};
 };
 
