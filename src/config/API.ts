@@ -104,6 +104,7 @@ export const API = {
 
 	ACCOUNT: {
 		// CREATE: `${config.server}/api/account.create`,
+		LOG: `${config.server}/api/account.log`,
 		GET: `${config.server}/api/account.get`,
 		GET_BY_TOKEN: `${config.server}/api/account.getByToken`,
 		SAVE: `${config.server}/api/account.save`,

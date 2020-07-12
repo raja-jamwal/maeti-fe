@@ -22,7 +22,7 @@ import { API } from '../config/API';
 import { simpleAlert } from '../components/alert';
 import { Account, PendingAccount } from '../store/reducers/account-defination';
 import { bindActionCreators } from 'redux';
-import { fetchAccount, fetchAccountByToken } from '../store/reducers/account-reducer';
+import { fetchAccount, fetchAccountByToken, logAccount } from '../store/reducers/account-reducer';
 import { NavigationInjectedProps } from 'react-navigation';
 import { getLogger } from '../utils/logger';
 import { connectRTM } from '../store/middleware/rtm-middleware';
@@ -47,6 +47,7 @@ import { markSmsSent } from '../utils/index';
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
 	fetchAccountByToken: (token: string) => any;
+	logAccount: () => any;
 	connectRTM: () => any;
 }
 
@@ -245,7 +246,12 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	}
 
 	async _tryAuth() {
-		const { fetchAccountByToken, navigation, connectRTM } = this.props;
+		const { fetchAccountByToken, navigation, connectRTM, logAccount } = this.props;
+		try {
+			logAccount();
+		} catch (err) {
+			this.logger.log(err);
+		}
 		try {
 			const accountRequest = await getAccountRequest();
 			if (!isEmpty(accountRequest)) {
@@ -846,6 +852,7 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch: any) {
 	return {
+		logAccount: bindActionCreators(logAccount, dispatch),
 		fetchAccountByToken: bindActionCreators(fetchAccountByToken, dispatch),
 		fetchAccount: bindActionCreators(fetchAccount, dispatch),
 		connectRTM: bindActionCreators(connectRTM, dispatch)
