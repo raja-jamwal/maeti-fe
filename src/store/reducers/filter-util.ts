@@ -1,9 +1,12 @@
 import { TypesOfFilter } from '../../components/search-filters';
 import { isEmpty, get, isArray } from 'lodash';
 import { Tag, UserProfile } from './account-defination';
+import { yearsToTs } from '../../utils';
 
 export const buildDefaultSearchFilter = (currentUserProfile: UserProfile) => {
-	return {
+	const userDob = currentUserProfile.dob || 0;
+
+	const filter: any = {
 		bool: {
 			must_not: [
 				{
@@ -19,6 +22,21 @@ export const buildDefaultSearchFilter = (currentUserProfile: UserProfile) => {
 			]
 		}
 	};
+
+	if (userDob) {
+		const yearsYoung = userDob - yearsToTs(5);
+		const yearsOld = userDob + yearsToTs(5);
+		filter['bool']['must'] = {
+			range: {
+				dob: {
+					gte: yearsYoung,
+					lte: yearsOld
+				}
+			}
+		};
+	}
+
+	return filter;
 };
 
 // probably memoize this function
