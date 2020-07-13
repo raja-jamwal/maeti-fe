@@ -43,6 +43,7 @@ import DateTimeIos from 'src/components/date-time-ios/date-time-ios';
 import { SafeAreaView } from 'react-native';
 import { TosModal } from 'src/components/tos-modal/tos-modal';
 import { markSmsSent } from '../utils/index';
+import { AuthHome } from '../components/auth-home';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
@@ -720,7 +721,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 	render() {
 		const { activeScreen, showEula, showPolicy } = this.state;
 		if (activeScreen === LOGIN_SCREENS.TOUR) {
-			return <AppTour onSkip={this.skipTourScreen} />;
+			return <AuthHome />;
+			// return <AppTour onSkip={this.skipTourScreen} />;
 		}
 
 		const year = new Date().getFullYear();

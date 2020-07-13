@@ -11,6 +11,9 @@ export default StyleSheet.create({
 	column: {
 		flexDirection: 'column'
 	},
+	columnReverse: {
+		flexDirection: 'column-reverse'
+	},
 	large: {
 		fontSize: 14
 	},

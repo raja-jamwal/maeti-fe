@@ -24,7 +24,7 @@ export default class Button extends React.PureComponent<IButtonProps> {
 			...styles.btnContainer,
 			...(style || {})
 		};
-		const labelSyle = Object.assign({}, styles.label, this.props.labelStyle || {});
+		const labelSyle = [{}, styles.label, this.props.labelStyle || {}];
 		return (
 			<View style={containerStyle}>
 				<Text style={labelSyle}>{label}</Text>
