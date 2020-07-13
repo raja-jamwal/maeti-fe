@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "70507161694-sflrpel0p93f782f6tcbm38a2r6tljkn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matrimony.datagrids.in",
+            "certificate_hash": "265c6c41336e23224a4888234d26e27024f94030"
+          }
+        },
+        {
           "client_id": "70507161694-214o0va0sn8o3lm9jf9i5bim6aa882s6.apps.googleusercontent.com",
           "client_type": 3
         }

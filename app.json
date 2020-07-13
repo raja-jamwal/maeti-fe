@@ -1,6 +1,7 @@
 {
 	"expo": {
 		"name": "maeti",
+		"scheme": "maeti",
 		"slug": "matrimony",
 		"privacy": "public",
 		"sdkVersion": "37.0.0",
@@ -18,18 +19,24 @@
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
+			"googleServicesFile": "./GoogleService-Info.plist",
 			"supportsTablet": true,
 			"bundleIdentifier": "in.datagrids.matrimony",
 			"infoPlist": {
 				"NSCameraUsageDescription": "Maeti requires access to Camera to add a profile picture to your profile",
 				"NSPhotoLibraryAddUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile",
 				"NSPhotoLibraryUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile"
+			},
+			"config": {
+				"googleSignIn": {
+					"reservedClientId": "com.googleusercontent.apps.70507161694-sdpevh75i0go4b7g82mg1d0jbl84dper"
+				}
 			}
 		},
 		"android": {
 			"package": "matrimony.datagrids.in",
 			"googleServicesFile": "./google-services.json",
-			"versionCode": 39
+			"versionCode": 40
 		},
 		"androidStatusBar": {
 			"backgroundColor": "#fff",
