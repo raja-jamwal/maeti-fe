@@ -4,11 +4,8 @@ import Screen from '../../constants/Layout';
 import GlobalStyle from 'src/styles/global';
 import Button from '../button/button';
 import { TosModal } from '../tos-modal/tos-modal';
-import * as AppAuth from 'expo-app-auth';
-import * as GoogleSignIn from 'expo-google-sign-in';
+import { attemptGoogleLogin, initAuth } from '../../utils/google-auth';
 import { simpleAlert } from '../alert/index';
-
-const { URLSchemes } = AppAuth;
 
 var advertImage = require('../../assets/login/advert.jpg');
 var up1 = require('../../assets/login/up1.png');
@@ -21,33 +18,15 @@ export function AuthHome() {
 	const toggleEula = () => setShowEula(!showEula);
 	const togglePolicy = () => setShowPolicy(!showPolicy);
 
-	const [user, setUser] = React.useState((null as any) as (GoogleSignIn.GoogleUser | null));
-
-	const syncUserWithStateAsync = async () => {
-		const googleUser = await GoogleSignIn.signInSilentlyAsync();
-		simpleAlert('user', JSON.stringify(googleUser));
-		setUser(googleUser);
-	};
-
-	const initAuth = async () => {
-		try {
-			await GoogleSignIn.initAsync();
-		} catch (err) {}
-	};
-
 	React.useEffect(() => {
 		initAuth();
 	}, []);
 
-	const attemptLogin = async () => {
+	const googleLogin = async () => {
 		try {
-			await GoogleSignIn.askForPlayServicesAsync();
-			const { type, user } = await GoogleSignIn.signInAsync();
-			if (type === 'success') {
-				syncUserWithStateAsync();
-			}
-		} catch ({ message }) {
-			simpleAlert('error', message);
+			await attemptGoogleLogin();
+		} catch (er) {
+			simpleAlert('Error', er);
 		}
 	};
 
@@ -126,7 +105,7 @@ export function AuthHome() {
 								<Button
 									style={styles.signupBtnContainer}
 									labelStyle={[styles.text, { fontSize: 16 }]}
-									onPress={attemptLogin}
+									onPress={googleLogin}
 									label="Sign up Free"
 								/>
 								<Text style={[styles.text, { marginBottom: 8 }]}>
