@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Modal, StyleSheet, TextInput, StatusBar, SafeAreaView } from 'react-native';
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
-import { Ionicons } from '@expo/vector-icons';
+import { ModalCloseButton } from '../modal-close-button';
 
 interface IAboutFieldProps {
 	value: string;
@@ -35,7 +35,13 @@ class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState>
 			<View>
 				<TouchableBtn onPress={() => this.toggleShowModal()}>
 					<View style={styles.labelContainer}>
-						<Text style={[styles.label, !value ? { color: Color.offWhite } : {}]}>
+						<Text
+							style={[
+								styles.label,
+								{ paddingTop: 4, paddingBottom: 4 },
+								!value ? { color: Color.offWhite } : {}
+							]}
+						>
 							{value || 'Write your story...'}
 						</Text>
 					</View>
@@ -57,7 +63,7 @@ class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState>
 								<Text style={styles.title}>About</Text>
 								<View style={{ flex: 1 }} />
 								<TouchableBtn onPress={() => this.toggleShowModal()}>
-									<Ionicons name="md-close" size={26} color={Color.offWhite} />
+									<ModalCloseButton />
 								</TouchableBtn>
 							</View>
 							<View style={styles.editorContainer}>

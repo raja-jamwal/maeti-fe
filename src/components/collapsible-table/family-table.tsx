@@ -37,151 +37,163 @@ const ParentAliveOptions = [
 	}
 ];
 
+export const FamilyMapping = {
+	fatherName: {
+		label: "Father's Name",
+		type: 'string'
+	},
+	father: {
+		label: 'Father',
+		type: 'choice',
+		choice: {
+			options: ParentAliveOptions
+		}
+	},
+	fatherOccupation: {
+		label: "Father's Occupation",
+		type: 'string'
+	},
+	fatherDesignation: {
+		label: "Father's Designation(Present/Last)",
+		type: 'string'
+	},
+	fatherNativePlace: {
+		label: "Father's Native Place",
+		type: 'string'
+	},
+	motherName: {
+		label: "Mother's Name",
+		type: 'string'
+	},
+	mother: {
+		label: 'Mother',
+		type: 'choice',
+		choice: {
+			options: ParentAliveOptions
+		}
+	},
+	motherOccupation: {
+		label: "Mothers's Occupation",
+		type: 'string'
+	},
+	motherDesignation: {
+		label: "Mothers's Designation(Present/Last)",
+		type: 'string'
+	},
+	motherMaternalSurname: {
+		label: "Mother's Maternal Surname",
+		type: 'string'
+	},
+	motherNativePlace: {
+		label: "Mother's Native Place",
+		type: 'string'
+	},
+	noOfBrothers: {
+		label: 'No. of Brother(s)',
+		type: 'number'
+	},
+	brothersMarried: {
+		label: 'Of which married',
+		type: 'number'
+	},
+	noOfSisters: {
+		label: 'No. of Sister(s)',
+		type: 'number'
+	},
+	sistersMarried: {
+		label: 'Of which married',
+		type: 'number'
+	},
+	aboutFamily: {
+		label: 'About Family',
+		type: 'string'
+	},
+	familyCountry: {
+		label: 'Family country',
+		type: 'country',
+		onUpdate: (object: any, value: any) => {
+			object['familyState'] = null;
+			object['familyCity'] = null;
+			return object;
+		}
+	},
+	familyState: {
+		label: 'Family state',
+		type: 'state',
+		props: (object: any) => {
+			let props = {};
+			if (object.familyCountry) {
+				props = Object.assign({}, props, {
+					countryId: object.familyCountry.id
+				});
+			}
+			return props;
+		},
+		shouldShow: (object: any) => {
+			if (object.familyCountry) {
+				return true;
+			}
+
+			return false;
+		}
+	},
+	familyCity: {
+		label: 'Family city',
+		type: 'city',
+		props: (object: any) => {
+			let props = {};
+			if (object.familyState) {
+				props = Object.assign({}, props, {
+					stateId: object.familyState.id
+				});
+			}
+			return props;
+		},
+		shouldShow: (object: any) => {
+			if (object.familyState) {
+				return true;
+			}
+
+			return false;
+		}
+	},
+	interCasteParents: {
+		label: 'Inter caste marriage of Parents?',
+		type: 'choice',
+		choice: {
+			options: [
+				{
+					label: 'Yes',
+					value: 'yes'
+				},
+				{
+					label: 'No',
+					value: 'no'
+				}
+			]
+		}
+	},
+	parentsLivingSeperately: {
+		label: 'Parents living separately?',
+		type: 'choice',
+		choice: {
+			options: [
+				{
+					label: 'Yes',
+					value: 'yes'
+				},
+				{
+					label: 'No',
+					value: 'no'
+				}
+			]
+		}
+	}
+};
+
 class FamilyTable extends React.Component<
 	IFamilyTableProps & IFamilyTableMapStateToProps & IFamilyTableMapDispatchToProps
 > {
-	mapping = {
-		fatherName: {
-			label: "Father's Name",
-			type: 'string'
-		},
-		father: {
-			label: 'Father',
-			type: 'choice',
-			choice: {
-				options: ParentAliveOptions
-			}
-		},
-		fatherOccupation: {
-			label: "Father's Occupation",
-			type: 'string'
-		},
-		fatherDesignation: {
-			label: "Father's Designation(Present/Last)",
-			type: 'string'
-		},
-		fatherNativePlace: {
-			label: "Father's Native Place",
-			type: 'string'
-		},
-		motherName: {
-			label: "Mother's Name",
-			type: 'string'
-		},
-		mother: {
-			label: 'Mother',
-			type: 'choice',
-			choice: {
-				options: ParentAliveOptions
-			}
-		},
-		motherOccupation: {
-			label: "Mothers's Occupation",
-			type: 'string'
-		},
-		motherDesignation: {
-			label: "Mothers's Designation(Present/Last)",
-			type: 'string'
-		},
-		motherMaternalSurname: {
-			label: "Mother's Maternal Surname",
-			type: 'string'
-		},
-		motherNativePlace: {
-			label: "Mother's Native Place",
-			type: 'string'
-		},
-		noOfBrothers: {
-			label: 'No. of Brother(s)',
-			type: 'number'
-		},
-		brothersMarried: {
-			label: 'Of which married',
-			type: 'number'
-		},
-		noOfSisters: {
-			label: 'No. of Sister(s)',
-			type: 'number'
-		},
-		sistersMarried: {
-			label: 'Of which married',
-			type: 'number'
-		},
-		aboutFamily: {
-			label: 'About Family',
-			type: 'string'
-		},
-		familyCountry: {
-			label: 'Family country',
-			type: 'country',
-			onUpdate: (object: any, value: any) => {
-				object['familyState'] = null;
-				object['familyCity'] = null;
-				return object;
-			}
-		},
-		familyState: {
-			label: 'Family state',
-			type: 'state',
-			props: (object: any) => {
-				let props = {};
-				if (object.familyCountry) {
-					props = Object.assign({}, props, {
-						countryId: object.familyCountry.id
-					});
-				}
-				return props;
-			},
-			shouldShow: (object: any) => this.shouldShowWorkState(object)
-		},
-		familyCity: {
-			label: 'Family city',
-			type: 'city',
-			props: (object: any) => {
-				let props = {};
-				if (object.familyState) {
-					props = Object.assign({}, props, {
-						stateId: object.familyState.id
-					});
-				}
-				return props;
-			},
-			shouldShow: (object: any) => this.shouldShowWorkCity(object)
-		},
-		interCasteParents: {
-			label: 'Inter caste marriage of Parents?',
-			type: 'choice',
-			choice: {
-				options: [
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					}
-				]
-			}
-		},
-		parentsLivingSeperately: {
-			label: 'Parents living separately?',
-			type: 'choice',
-			choice: {
-				options: [
-					{
-						label: 'Yes',
-						value: 'yes'
-					},
-					{
-						label: 'No',
-						value: 'no'
-					}
-				]
-			}
-		}
-	};
-
 	otherInfoMapping = {
 		familyValues: {
 			label: 'Family values',
@@ -240,21 +252,6 @@ class FamilyTable extends React.Component<
 		}
 	};
 
-	shouldShowWorkState = function(object: any) {
-		if (object.familyCountry) {
-			return true;
-		}
-
-		return false;
-	};
-	shouldShowWorkCity = function(object: any) {
-		if (object.familyState) {
-			return true;
-		}
-
-		return false;
-	};
-
 	render() {
 		const {
 			family,
@@ -269,7 +266,7 @@ class FamilyTable extends React.Component<
 				<CollapsibleTable
 					title="Family Information"
 					object={family}
-					mapping={this.mapping}
+					mapping={FamilyMapping}
 					updateAction={updateFamily}
 					userProfileId={userProfileId}
 					editable={editable}

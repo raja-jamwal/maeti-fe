@@ -110,12 +110,12 @@ export interface Education extends DAO {
 export interface Profession extends DAO {
 	occupation: string;
 	workingField: string;
-	lengthOfEmployment: number;
+	lengthOfEmployment: number | null;
 	company: string;
 	designation: string;
 	currency: string;
-	monthlyIncome: number;
-	annualIncome: number;
+	monthlyIncome: number | null;
+	annualIncome: number | null;
 	loans: Array<Tag>;
 	otherLoans: string;
 	workCountry: Country | null;

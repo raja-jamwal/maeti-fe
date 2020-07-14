@@ -22,11 +22,11 @@ interface IProfileTableMapDispatchToProps {
 
 export const GenderOptions = [
 	{
-		label: 'Male',
+		label: 'Looking for Bride',
 		value: 'male'
 	},
 	{
-		label: 'Female',
+		label: 'Looking for Groom',
 		value: 'female'
 	}
 ];
@@ -187,153 +187,183 @@ export const SalutationOptions = [
 		value: 'mrs'
 	}
 ];
+export const ProfileTableWeightOptions = [
+	{
+		label: 'Below 40Kg',
+		value: 40
+	},
+	{
+		label: '40Kgs - 50Kgs',
+		value: 45
+	},
+	{
+		label: '50Kgs - 60Kgs',
+		value: 55
+	},
+	{
+		label: '60Kgs - 70Kgs',
+		value: 65
+	},
+	{
+		label: '70Kgs - 80Kgs',
+		value: 75
+	},
+	{
+		label: '80Kgs - 90Kgs',
+		value: 85
+	},
+	{
+		label: 'Greater than 90Kgs',
+		value: 90
+	}
+];
 export const ProfileTableHeightOptions = [
 	{
-		label: 'Below 4.1',
+		label: 'Below 4.1 ft.',
 		value: 123
 	},
 	{
-		label: '4.1',
+		label: '4.1 ft.',
 		value: 124
 	},
 	{
-		label: '4.2',
+		label: '4.2 ft.',
 		value: 127
 	},
 	{
-		label: '4.3',
+		label: '4.3 ft.',
 		value: 130
 	},
 	{
-		label: '4.4',
+		label: '4.4 ft.',
 		value: 132
 	},
 	{
-		label: '4.5',
+		label: '4.5 ft.',
 		value: 135
 	},
 	{
-		label: '4.6',
+		label: '4.6 ft.',
 		value: 137
 	},
 	{
-		label: '4.7',
+		label: '4.7 ft.',
 		value: 140
 	},
 	{
-		label: '4.8',
+		label: '4.8 ft.',
 		value: 142
 	},
 	{
-		label: '4.9',
+		label: '4.9 ft.',
 		value: 145
 	},
 	{
-		label: '4.10',
+		label: '4.10 ft.',
 		value: 147
 	},
 	{
-		label: '4.11',
+		label: '4.11 ft.',
 		value: 150
 	},
 	{
-		label: '5.0',
+		label: '5.0 ft.',
 		value: 152
 	},
 	{
-		label: '5.1',
+		label: '5.1 ft.',
 		value: 155
 	},
 	{
-		label: '5.2',
+		label: '5.2 ft.',
 		value: 158
 	},
 	{
-		label: '5.3',
+		label: '5.3 ft.',
 		value: 160
 	},
 	{
-		label: '5.4',
+		label: '5.4 ft.',
 		value: 163
 	},
 	{
-		label: '5.5',
+		label: '5.5 ft.',
 		value: 165
 	},
 	{
-		label: '5.6',
+		label: '5.6 ft.',
 		value: 168
 	},
 	{
-		label: '5.7',
+		label: '5.7 ft.',
 		value: 170
 	},
 	{
-		label: '5.8',
+		label: '5.8 ft.',
 		value: 173
 	},
 	{
-		label: '5.9',
+		label: '5.9 ft.',
 		value: 175
 	},
 	{
-		label: '5.10',
+		label: '5.10 ft.',
 		value: 178
 	},
 	{
-		label: '5.11',
+		label: '5.11 ft.',
 		value: 180
 	},
 	{
-		label: '6.0',
+		label: '6.0 ft.',
 		value: 183
 	},
 	{
-		label: '6.1',
+		label: '6.1 ft.',
 		value: 185
 	},
 	{
-		label: '6.2',
+		label: '6.2 ft.',
 		value: 188
 	},
 	{
-		label: '6.3',
+		label: '6.3 ft.',
 		value: 191
 	},
 	{
-		label: '6.4',
+		label: '6.4 ft.',
 		value: 193
 	},
 	{
-		label: '6.5',
+		label: '6.5 ft.',
 		value: 196
 	},
 	{
-		label: '6.6',
+		label: '6.6 ft.',
 		value: 198
 	},
 	{
-		label: '6.7',
+		label: '6.7 ft.',
 		value: 201
 	},
 	{
-		label: '6.8',
+		label: '6.8 ft.',
 		value: 203
 	},
 	{
-		label: '6.9',
+		label: '6.9 ft.',
 		value: 206
 	},
 	{
-		label: '6.10',
+		label: '6.10 ft.',
 		value: 209
 	},
 	{
-		label: '6.11',
+		label: '6.11 ft.',
 		value: 211
 	},
 	{
-		label: '7 or Above',
+		label: '7 ft. or Above',
 		value: 213
 	}
 ];
@@ -358,16 +388,12 @@ export const ProfileTableBodyTypeOptions = [
 
 export const ProfileMapping = {
 	gender: {
-		label: 'Gender',
+		label: 'Looking for',
 		type: 'choice',
 		isNotEditable: true,
 		choice: {
 			options: GenderOptions
 		}
-	},
-	about: {
-		label: 'About',
-		type: 'about'
 	},
 	createdBy: {
 		label: 'Profile created by',
@@ -384,13 +410,9 @@ export const ProfileMapping = {
 		}
 	},
 	fullName: {
-		label: 'Full Name',
+		label: 'Full Name (Groom/Bride)',
 		type: 'string',
 		isPaidFeature: true
-	},
-	dob: {
-		label: 'Date of Birth',
-		type: 'date'
 	},
 	maritalStatus: {
 		label: 'Marital Status',
@@ -399,16 +421,27 @@ export const ProfileMapping = {
 			options: MaritalStatusOptions
 		}
 	},
+	about: {
+		label: 'About (Groom/Bride)',
+		type: 'about'
+	},
+	dob: {
+		label: 'Date of Birth',
+		type: 'date'
+	},
 	height: {
-		label: 'Height(in Feet)',
+		label: 'Height',
 		type: 'choice',
 		choice: {
 			options: ProfileTableHeightOptions
 		}
 	},
 	weight: {
-		label: 'Weight(in KG)',
-		type: 'number'
+		label: 'Weight',
+		type: 'choice',
+		choice: {
+			options: ProfileTableWeightOptions
+		}
 	},
 	bodyType: {
 		label: 'Body Type',
@@ -451,7 +484,7 @@ export const ProfileMapping = {
 		type: 'tag-array'
 	},
 	describeMyself: {
-		label: 'I describe myself as',
+		label: 'Described as',
 		tagType: 'description',
 		type: 'tag-array'
 	}

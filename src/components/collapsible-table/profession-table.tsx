@@ -142,210 +142,228 @@ export const ProfessionTableWorkingFieldOptions = [
 		value: 'scientist'
 	}
 ];
+
+export const ProfessionTableLengthOfEmploymentOptions = [
+	{
+		label: 'Less than a year',
+		value: 11
+	},
+	{
+		label: '1 Year - 2 Years',
+		value: 18
+	},
+	{
+		label: '2 Year - 5 Years',
+		value: 48
+	},
+	{
+		label: 'More than 5 Years',
+		value: 49
+	}
+];
+
+export const ProfessionMapping = {
+	occupation: {
+		label: 'Occupation',
+		type: 'choice',
+		choice: {
+			options: ProfessionTableOccupationOptions
+		}
+	},
+	// workingField: {
+	// 	label: 'Working Field',
+	// 	type: 'choice',
+	// 	choice: {
+	// 		options: ProfessionTableWorkingFieldOptions
+	// 	}
+	// },
+	lengthOfEmployment: {
+		label: 'Length of Employment',
+		type: 'choice',
+		choice: {
+			options: ProfessionTableLengthOfEmploymentOptions
+		}
+	},
+	company: {
+		label: 'Company / Organisation name',
+		type: 'string'
+	},
+	designation: {
+		label: 'Designation',
+		type: 'string'
+	},
+	// currency: {
+	// 	label: 'Currency',
+	// 	type: 'choice',
+	// 	choice: {
+	// 		options: [
+	// 			{
+	// 				label: 'Rupees',
+	// 				value: 'rupees'
+	// 			},
+	// 			{
+	// 				label: 'US Dollar',
+	// 				value: 'us_dollar'
+	// 			},
+	// 			{
+	// 				label: 'Euro',
+	// 				value: 'euro'
+	// 			},
+	// 			{
+	// 				label: 'Swiss Franc',
+	// 				value: 'swiss_franc'
+	// 			},
+	// 			{
+	// 				label: 'Australian Dollar',
+	// 				value: 'aus_dollar'
+	// 			},
+	// 			{
+	// 				label: 'Canadian Dollar',
+	// 				value: 'can_dollar'
+	// 			},
+	// 			{
+	// 				label: 'Emirati Dirham',
+	// 				value: 'dirham'
+	// 			},
+	// 			{
+	// 				label: 'Chinese Yuan Renminbi',
+	// 				value: 'yuan'
+	// 			},
+	// 			{
+	// 				label: 'Malaysian Ringgit',
+	// 				value: 'ringgit'
+	// 			},
+	// 			{
+	// 				label: 'New Zealand Dollar',
+	// 				value: 'new_zealand_dollar'
+	// 			},
+	// 			{
+	// 				label: 'British Pound',
+	// 				value: 'pound'
+	// 			},
+	// 			{
+	// 				label: 'Singapore Dollar',
+	// 				value: 'singa_dollar'
+	// 			},
+	// 			{
+	// 				label: 'Yen',
+	// 				value: 'yen'
+	// 			},
+	// 			{
+	// 				label: 'OMR',
+	// 				value: 'omr'
+	// 			},
+	// 			{
+	// 				label: 'Dinar',
+	// 				value: 'dinar'
+	// 			},
+	// 			{
+	// 				label: 'Krona',
+	// 				value: 'krona'
+	// 			},
+	// 			{
+	// 				label: 'Hongkong dollar',
+	// 				value: 'hong_dollar'
+	// 			},
+	// 			{
+	// 				label: 'Brazillan real',
+	// 				value: 'real'
+	// 			},
+	// 			{
+	// 				label: 'Saudi riyal',
+	// 				value: 'riyal'
+	// 			},
+	// 			{
+	// 				label: 'Peso',
+	// 				value: 'peso'
+	// 			},
+	// 			{
+	// 				label: 'Rand',
+	// 				value: 'rand'
+	// 			},
+	// 			{
+	// 				label: 'Qatari Rial',
+	// 				value: 'rial'
+	// 			},
+	// 			{
+	// 				label: 'Polish Zloty',
+	// 				value: 'zloty'
+	// 			},
+	// 			{
+	// 				label: 'MOP',
+	// 				value: 'mop'
+	// 			}
+	// 		]
+	// 	}
+	// },
+	// monthlyIncome: {
+	// 	label: 'Monthly Income',
+	// 	type: 'number'
+	// },
+	annualIncome: {
+		label: 'Annual Income',
+		type: 'number'
+	},
+	loans: {
+		label: 'Loans / Financial Liabilities',
+		tagType: 'loan',
+		type: 'tag-array'
+	},
+	otherLoans: {
+		label: 'Other loans',
+		type: 'string'
+	},
+	workCountry: {
+		label: 'Work Country',
+		type: 'country',
+		onUpdate: (object: any, _value: any) => {
+			object['workState'] = null;
+			object['workCity'] = null;
+			return object;
+		}
+	},
+	workState: {
+		label: 'Work State',
+		type: 'state',
+		props: (object: any) => {
+			let props = {};
+			if (object.workCountry) {
+				props = Object.assign({}, props, {
+					countryId: object.workCountry.id
+				});
+			}
+			return props;
+		},
+		shouldShow: (object: any) => {
+			if (object.workCountry) {
+				return true;
+			}
+			return false;
+		}
+	},
+	workCity: {
+		label: 'Work City',
+		type: 'city',
+		props: (object: any) => {
+			let props = {};
+			if (object.workState) {
+				props = Object.assign({}, props, {
+					stateId: object.workState.id
+				});
+			}
+			return props;
+		},
+		shouldShow: (object: any) => {
+			if (object.workState) {
+				return true;
+			}
+			return false;
+		}
+	}
+};
 class ProfessionTable extends React.Component<
 	IProfessionTableProps & IProfessionTableMapDispatchToProps & IProfessionTableMapStateToProps
 > {
-	mappings = {
-		occupation: {
-			label: 'Occupation',
-			type: 'choice',
-			choice: {
-				options: ProfessionTableOccupationOptions
-			}
-		},
-		workingField: {
-			label: 'Working Field',
-			type: 'choice',
-			choice: {
-				options: ProfessionTableWorkingFieldOptions
-			}
-		},
-		lengthOfEmployment: {
-			label: 'Length of Employment(in Month)',
-			type: 'number'
-		},
-		company: {
-			label: 'Company / Organisation name',
-			type: 'string'
-		},
-		designation: {
-			label: 'Designation',
-			type: 'string'
-		},
-		currency: {
-			label: 'Currency',
-			type: 'choice',
-			choice: {
-				options: [
-					{
-						label: 'Rupees',
-						value: 'rupees'
-					},
-					{
-						label: 'US Dollar',
-						value: 'us_dollar'
-					},
-					{
-						label: 'Euro',
-						value: 'euro'
-					},
-					{
-						label: 'Swiss Franc',
-						value: 'swiss_franc'
-					},
-					{
-						label: 'Australian Dollar',
-						value: 'aus_dollar'
-					},
-					{
-						label: 'Canadian Dollar',
-						value: 'can_dollar'
-					},
-					{
-						label: 'Emirati Dirham',
-						value: 'dirham'
-					},
-					{
-						label: 'Chinese Yuan Renminbi',
-						value: 'yuan'
-					},
-					{
-						label: 'Malaysian Ringgit',
-						value: 'ringgit'
-					},
-					{
-						label: 'New Zealand Dollar',
-						value: 'new_zealand_dollar'
-					},
-					{
-						label: 'British Pound',
-						value: 'pound'
-					},
-					{
-						label: 'Singapore Dollar',
-						value: 'singa_dollar'
-					},
-					{
-						label: 'Yen',
-						value: 'yen'
-					},
-					{
-						label: 'OMR',
-						value: 'omr'
-					},
-					{
-						label: 'Dinar',
-						value: 'dinar'
-					},
-					{
-						label: 'Krona',
-						value: 'krona'
-					},
-					{
-						label: 'Hongkong dollar',
-						value: 'hong_dollar'
-					},
-					{
-						label: 'Brazillan real',
-						value: 'real'
-					},
-					{
-						label: 'Saudi riyal',
-						value: 'riyal'
-					},
-					{
-						label: 'Peso',
-						value: 'peso'
-					},
-					{
-						label: 'Rand',
-						value: 'rand'
-					},
-					{
-						label: 'Qatari Rial',
-						value: 'rial'
-					},
-					{
-						label: 'Polish Zloty',
-						value: 'zloty'
-					},
-					{
-						label: 'MOP',
-						value: 'mop'
-					}
-				]
-			}
-		},
-		monthlyIncome: {
-			label: 'Monthly Income',
-			type: 'number'
-		},
-		annualIncome: {
-			label: 'Annual Income',
-			type: 'number'
-		},
-		loans: {
-			label: 'Loans / Financial Liabilities',
-			tagType: 'loan',
-			type: 'tag-array'
-		},
-		otherLoans: {
-			label: 'Other loans',
-			type: 'string'
-		},
-		workCountry: {
-			label: 'Work Country',
-			type: 'country',
-			onUpdate: (object: any, _value: any) => {
-				object['workState'] = null;
-				object['workCity'] = null;
-				return object;
-			}
-		},
-		workState: {
-			label: 'Work State',
-			type: 'state',
-			props: (object: any) => {
-				let props = {};
-				if (object.workCountry) {
-					props = Object.assign({}, props, {
-						countryId: object.workCountry.id
-					});
-				}
-				return props;
-			},
-			shouldShow: (object: any) => this.shouldShowWorkState(object)
-		},
-		workCity: {
-			label: 'Work City',
-			type: 'city',
-			props: (object: any) => {
-				let props = {};
-				if (object.workState) {
-					props = Object.assign({}, props, {
-						stateId: object.workState.id
-					});
-				}
-				return props;
-			},
-			shouldShow: (object: any) => this.shouldShowWorkCity(object)
-		}
-	};
-
-	shouldShowWorkState = function(object: any) {
-		if (object.workCountry) {
-			return true;
-		}
-
-		return false;
-	};
-	shouldShowWorkCity = function(object: any) {
-		if (object.workState) {
-			return true;
-		}
-
-		return false;
-	};
 	render() {
 		const { profession, userProfileId, updateProfession, editable } = this.props;
 		if (!profession) return null;
@@ -353,7 +371,7 @@ class ProfessionTable extends React.Component<
 			<CollapsibleTable
 				title="Professional Information"
 				object={profession}
-				mapping={this.mappings}
+				mapping={ProfessionMapping}
 				updateAction={updateProfession}
 				userProfileId={userProfileId}
 				editable={editable}

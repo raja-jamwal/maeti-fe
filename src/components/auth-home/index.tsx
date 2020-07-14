@@ -4,31 +4,42 @@ import Screen from '../../constants/Layout';
 import GlobalStyle from 'src/styles/global';
 import Button from '../button/button';
 import { TosModal } from '../tos-modal/tos-modal';
-import { attemptGoogleLogin, initAuth } from '../../utils/google-auth';
-import { simpleAlert } from '../alert/index';
+// import { attemptGoogleLogin, initAuth } from '../../utils/google-auth';
+// import { simpleAlert } from '../alert/index';
+import { noop } from 'lodash';
 
 var advertImage = require('../../assets/login/advert.jpg');
 var up1 = require('../../assets/login/up1.png');
 var up2 = require('../../assets/login/up2.png');
 var up3 = require('../../assets/login/up3.png');
 
-export function AuthHome() {
+interface IAuthHomeProps {
+	onSignUpPress: () => any;
+	onLoginPress: () => any;
+}
+
+const defaultAuthHomeProps: IAuthHomeProps = {
+	onSignUpPress: noop,
+	onLoginPress: noop
+};
+
+export function AuthHome({ onSignUpPress, onLoginPress }: IAuthHomeProps = defaultAuthHomeProps) {
 	const [showEula, setShowEula] = React.useState(false);
 	const [showPolicy, setShowPolicy] = React.useState(false);
 	const toggleEula = () => setShowEula(!showEula);
 	const togglePolicy = () => setShowPolicy(!showPolicy);
 
-	React.useEffect(() => {
-		initAuth();
-	}, []);
+	// React.useEffect(() => {
+	// 	initAuth();
+	// }, []);
 
-	const googleLogin = async () => {
-		try {
-			await attemptGoogleLogin();
-		} catch (er) {
-			simpleAlert('Error', er);
-		}
-	};
+	// const googleLogin = async () => {
+	// 	try {
+	// 		await attemptGoogleLogin();
+	// 	} catch (er) {
+	// 		simpleAlert('Error', er);
+	// 	}
+	// };
 
 	return (
 		<View style={[GlobalStyle.expand, styles.bg]}>
@@ -50,7 +61,7 @@ export function AuthHome() {
 								style={styles.btnContainer}
 								labelStyle={styles.text}
 								label="Login"
-								onPress={() => null}
+								onPress={onLoginPress}
 							/>
 						</View>
 						<View style={{ padding: 20 }}>
@@ -105,7 +116,7 @@ export function AuthHome() {
 								<Button
 									style={styles.signupBtnContainer}
 									labelStyle={[styles.text, { fontSize: 16 }]}
-									onPress={googleLogin}
+									onPress={onSignUpPress}
 									label="Sign up Free"
 								/>
 								<Text style={[styles.text, { marginBottom: 8 }]}>

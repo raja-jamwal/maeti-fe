@@ -17,7 +17,7 @@ class ModelRepository {
 			lastLogin: new Date().getTime(), // check what is the last login duiring init
 
 			gender: 'male',
-			about: 'about',
+			about: '',
 			createdBy: '',
 			salutation: '',
 			fullName: '',
@@ -55,12 +55,12 @@ class ModelRepository {
 			profession: {
 				occupation: '',
 				workingField: '',
-				lengthOfEmployment: 1,
+				lengthOfEmployment: null,
 				company: '',
 				designation: '',
 				currency: '',
-				monthlyIncome: 1,
-				annualIncome: 1,
+				monthlyIncome: null,
+				annualIncome: null,
 				loans: [],
 				otherLoans: '',
 				workCountry: null,

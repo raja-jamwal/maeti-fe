@@ -3,21 +3,83 @@ import { View } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { EditableForm } from '../editable-form';
 import GlobalStyle from 'src/styles/global';
-import { findIndex, nth } from 'lodash';
 import { getLogger } from '../../utils/logger';
 import { modelRepository } from '../../utils/model-repository';
 import { ProfileMapping } from '../../components/collapsible-table/profile-table';
+import { EducationMapping } from '../collapsible-table/education-table';
+import { ProfessionMapping } from '../collapsible-table/profession-table';
+import { HoroscopeMapping } from '../collapsible-table/horoscope-table';
+import { findIndex, nth, pick, keys, pickBy, includes } from 'lodash';
+import { FamilyMapping } from '../collapsible-table/family-table';
+
+const selectFields = (mapping: any, fields: any[]) => {
+	const labels = fields.map(field => field.label);
+	const whiteListedKeys = keys(pickBy(mapping, field => includes(labels, field.label)));
+	return pick(mapping, whiteListedKeys);
+};
 
 const FORM = {
 	basic: {
 		title: 'Basic Details',
 		object: modelRepository.userProfile,
-		mapping: ProfileMapping
+		mapping: selectFields(
+			Object.assign({}, ProfileMapping, {
+				gender: { ...ProfileMapping.gender, isNotEditable: false }
+			}),
+			[
+				ProfileMapping.gender,
+				ProfileMapping.createdBy,
+				ProfileMapping.salutation,
+				ProfileMapping.fullName,
+				ProfileMapping.maritalStatus,
+				ProfileMapping.about,
+				ProfileMapping.dob,
+				ProfileMapping.height,
+				ProfileMapping.weight,
+				ProfileMapping.bodyType,
+				ProfileMapping.bodyComplexion,
+				ProfileMapping.lenses
+			]
+		)
 	},
-	another: {
-		title: 'Another Basic Details',
-		object: {},
-		mapping: {}
+	education: {
+		title: 'Education Information',
+		object: modelRepository.userProfile.education,
+		mapping: EducationMapping
+	},
+	profession: {
+		title: 'Profession Information',
+		object: modelRepository.userProfile.profession,
+		mapping: ProfessionMapping
+	},
+	horoscope: {
+		title: 'Horoscope Information',
+		object: modelRepository.userProfile.horoscope,
+		mapping: selectFields(HoroscopeMapping, [
+			HoroscopeMapping.caste,
+			HoroscopeMapping.subCaste,
+			HoroscopeMapping.birthPlace,
+			HoroscopeMapping.birthTime,
+			HoroscopeMapping.rashi
+		])
+	},
+	family: {
+		title: 'Family  Information',
+		object: modelRepository.userProfile.family,
+		mapping: selectFields(FamilyMapping, [
+			FamilyMapping.fatherName,
+			FamilyMapping.father,
+			FamilyMapping.fatherOccupation,
+			FamilyMapping.fatherNativePlace,
+			FamilyMapping.motherName,
+			FamilyMapping.mother,
+			FamilyMapping.motherOccupation,
+			FamilyMapping.familyCountry,
+			FamilyMapping.familyState,
+			FamilyMapping.familyCity,
+			FamilyMapping.interCasteParents,
+			FamilyMapping.parentsLivingSeperately
+		])
 	}
 };
 

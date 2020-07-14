@@ -54,6 +54,7 @@ interface IAuthDispatchProps {
 
 enum LOGIN_SCREENS {
 	TOUR,
+	AUTH_HOME,
 	LOGIN_SIGNUP,
 	SIGNUP,
 	VERIFY,
@@ -240,6 +241,9 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 
 		this.toggleEula = this.toggleEula.bind(this);
 		this.togglePolicy = this.togglePolicy.bind(this);
+
+		// bind more
+		this.onSignUpPress = this.onSignUpPress.bind(this);
 	}
 
 	async componentDidMount() {
@@ -279,7 +283,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 				this.changeScreen(LOGIN_SCREENS.ERROR);
 			}
 		} else {
-			this.changeScreen(LOGIN_SCREENS.TOUR);
+			this.changeScreen(LOGIN_SCREENS.AUTH_HOME);
 		}
 	}
 
@@ -720,19 +724,20 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		);
 	}
 
-	render() {
-		const { activeScreen, showEula, showPolicy } = this.state;
-		if (activeScreen === LOGIN_SCREENS.TOUR) {
-			return <AuthHome />;
-			// return <AppTour onSkip={this.skipTourScreen} />;
-		}
+	onSignUpPress() {
+		const { navigation } = this.props;
+		navigation.navigate('Register');
+	}
 
-		const year = new Date().getFullYear();
+	render() {
+		const { activeScreen } = this.state;
+		if (activeScreen === LOGIN_SCREENS.AUTH_HOME) {
+			return <AuthHome onSignUpPress={this.onSignUpPress} onLoginPress={noop} />;
+		}
 
 		return (
 			<SafeAreaView style={GlobalStyle.expand}>
 				<StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
-
 				<KeyboardAvoidingView
 					behavior={IS_IOS ? 'padding' : 'height'}
 					style={styles.container}
@@ -749,26 +754,6 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 					{activeScreen === LOGIN_SCREENS.PLANS && this.renderPlans()}
 					{activeScreen === LOGIN_SCREENS.ERROR && this.renderError()}
 				</KeyboardAvoidingView>
-				{!!activeScreen && activeScreen !== LOGIN_SCREENS.ERROR && (
-					<View style={[GlobalStyle.alignCenter, GlobalStyle.justifyCenter]}>
-						<Text style={styles.tos}>By signing in or registering. I agree to</Text>
-						<View style={GlobalStyle.row}>
-							<TouchableOpacity onPress={this.toggleEula}>
-								<Text style={styles.tos}>Terms of Use</Text>
-							</TouchableOpacity>
-							<Text style={styles.tos}>&nbsp;|&nbsp;</Text>
-							<TouchableOpacity onPress={this.togglePolicy}>
-								<Text style={styles.tos}>Privacy Policy</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-				)}
-				<TosModal showModal={showEula} isEula={true} toggleShowModal={this.toggleEula} />
-				<TosModal
-					showModal={showPolicy}
-					isEula={false}
-					toggleShowModal={this.togglePolicy}
-				/>
 			</SafeAreaView>
 		);
 	}
