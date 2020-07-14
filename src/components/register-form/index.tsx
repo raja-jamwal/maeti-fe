@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { EditableForm } from '../editable-form';
 import GlobalStyle from 'src/styles/global';
@@ -103,23 +103,27 @@ export function RegisterForm({ navigation }: NavigationInjectedProps) {
 		// setTimeout(() => navigation.setParams({ title: title }), 1 * 1000);
 		// navigation.setParams({ title:  });
 	}, []);
-	const update = () => {
+	const update = (updatedObject: any) => {
 		const currentPageIndex = findIndex(FORM_PAGES, a => a === formPage);
+		const pageKey = FORM_PAGES[currentPageIndex];
+		(FORM as any)[pageKey].object = updatedObject;
 		const nextPage = nth(FORM_PAGES, currentPageIndex + 1);
-		if (!nextPage) return;
+		if (!nextPage) {
+			return navigation.push('UploadPhotoScreen');
+		}
 		navigation.push('FormScreen', {
 			formPage: nextPage
 		});
 	};
 	return (
-		<View style={GlobalStyle.expand}>
+		<SafeAreaView style={GlobalStyle.expand}>
 			<EditableForm
 				navObject={object}
 				mapping={mapping}
 				updateAction={update}
 				updateLabel="Continue"
 			/>
-		</View>
+		</SafeAreaView>
 	);
 }
 

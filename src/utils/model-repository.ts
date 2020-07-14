@@ -1,9 +1,19 @@
 import { UserProfile, DAO } from '../store/reducers/account-defination';
 
+/**
+ * Repository for new account creation
+ */
 class ModelRepository {
 	public userProfile: UserProfile;
+	public userProfilePhoto: string | null;
+
+	setProfilePhoto(url: string) {
+		this.userProfilePhoto = url;
+		return this;
+	}
 
 	constructor() {
+		this.userProfilePhoto = null;
 		const ts = new Date().getTime();
 		const baseDao: DAO = {
 			id: 0, // id should be optional
