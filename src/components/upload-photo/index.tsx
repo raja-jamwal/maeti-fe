@@ -18,7 +18,7 @@ const groomOrBridge = () => {
 	return modelRepository.userProfile.gender === 'male' ? "groom's" : "bride's";
 };
 
-export function UploadPhoto() {
+export function UploadPhoto({ navigation }) {
 	const [isUploading, setIsUploading] = React.useState(false);
 	const [uploadedPhoto, setUploadedPhoto] = React.useState((!!modelRepository.userProfilePhoto
 		? modelRepository.userProfilePhoto
@@ -80,7 +80,7 @@ export function UploadPhoto() {
 			</View>
 			{uploadedPhoto && (
 				<View style={styles.submissionFooter}>
-					<TouchableBtn onPress={() => null}>
+					<TouchableBtn onPress={() => navigation.push('Verification')}>
 						<Text style={styles.submissionBtn}>Continue</Text>
 					</TouchableBtn>
 				</View>

@@ -11,8 +11,10 @@ import { IMessageState, messageReducer } from './reducers/message-reducer';
 import { exploreReducer, IExploreState } from './reducers/explore-reducer';
 import { filterReducer, IFilterState } from './reducers/filter-reducer';
 import rtmMiddleware from './middleware/rtm';
+import { IOtpState, otpReducer } from './reducers/otp-reducer';
 
 export interface IRootState {
+	otp: IOtpState;
 	account: IAccountState;
 	explore: IExploreState;
 	userProfiles: IUserProfileState;
@@ -26,6 +28,7 @@ export interface IRootState {
 }
 
 const rootReducer = combineReducers<IRootState>({
+	otp: otpReducer,
 	account: accountReducer,
 	explore: exploreReducer,
 	userProfiles: userProfileReducer,
