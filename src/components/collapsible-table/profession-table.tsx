@@ -18,6 +18,45 @@ interface IProfessionTableMapDispatchToProps {
 	updateProfession: () => any;
 }
 
+export const ProfessionTableIncomeOptions = [
+	{
+		label: 'Less than 3 Lakhs',
+		value: 299999
+	},
+	{
+		label: '3 Lakhs - 5 Lakhs',
+		value: 450000
+	},
+	{
+		label: '5 Lakhs - 10 Lakhs',
+		value: 750000
+	},
+	{
+		label: '10 Lakhs - 15 Lakhs',
+		value: 1350000
+	},
+	{
+		label: '15 Lakhs - 25 Lakhs',
+		value: 2000000
+	},
+	{
+		label: '25 Lakhs - 35 Lakhs',
+		value: 3000000
+	},
+	{
+		label: '35 Lakhs - 50 Lakhs',
+		value: 4000000
+	},
+	{
+		label: '50 Lakhs - 1 Crore',
+		value: 7500000
+	},
+	{
+		label: 'More than 1 Crore',
+		value: 10000000
+	}
+];
+
 export const ProfessionTableOccupationOptions = [
 	{
 		label: 'Business',
@@ -302,7 +341,10 @@ export const ProfessionMapping = {
 	// },
 	annualIncome: {
 		label: 'Annual Income',
-		type: 'number'
+		type: 'choice',
+		choice: {
+			options: ProfessionTableIncomeOptions
+		}
 	},
 	loans: {
 		label: 'Loans / Financial Liabilities',

@@ -43,7 +43,7 @@ export const FamilyMapping = {
 		type: 'string'
 	},
 	father: {
-		label: 'Father',
+		label: 'Father (Alive/Expired)',
 		type: 'choice',
 		choice: {
 			options: ParentAliveOptions
@@ -66,7 +66,7 @@ export const FamilyMapping = {
 		type: 'string'
 	},
 	mother: {
-		label: 'Mother',
+		label: 'Mother (Alive/Expired)',
 		type: 'choice',
 		choice: {
 			options: ParentAliveOptions

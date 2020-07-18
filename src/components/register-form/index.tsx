@@ -9,8 +9,9 @@ import { ProfileMapping } from '../../components/collapsible-table/profile-table
 import { EducationMapping } from '../collapsible-table/education-table';
 import { ProfessionMapping } from '../collapsible-table/profession-table';
 import { HoroscopeMapping } from '../collapsible-table/horoscope-table';
-import { findIndex, nth, pick, keys, pickBy, includes, get, set } from 'lodash';
+import { findIndex, nth, pick, keys, pickBy, includes, get, set, isEmpty, findKey } from 'lodash';
 import { FamilyMapping } from '../collapsible-table/family-table';
+import { simpleAlert } from '../alert/index';
 
 const selectFields = (mapping: any, fields: any[]) => {
 	const labels = fields.map(field => field.label);
@@ -69,41 +70,102 @@ const familyMapping = selectFields(FamilyMapping, [
 	FamilyMapping.parentsLivingSeperately
 ]);
 
+const validationCallback = (requiredMapping: any) => {
+	const requiredMappingKeys = Object.keys(requiredMapping);
+	return (updatedObject: any) => {
+		const firstInvalidField = findKey(updatedObject, (value, fieldKey) => {
+			// shim for 'fullName'
+			if (fieldKey === 'fullName') {
+				const nameSplitBySpace = (value || '').split(' ');
+				if (nameSplitBySpace.length < 2) {
+					return true;
+				}
+			}
+
+			return includes(requiredMappingKeys, fieldKey) && !(!!value || !isEmpty(value));
+		});
+		if (!!firstInvalidField) {
+			const field = requiredMapping[firstInvalidField];
+			simpleAlert(`${field.label}`, `Please provide '${field.label}'`);
+			return false;
+		}
+		return true;
+	};
+};
+
 const FORM = {
 	basic: {
 		title: 'Basic Details',
 		key: 'userProfile',
 		object: modelRepository.userProfile,
 		mapping: basicMapping,
-		updateCallback: updateObjectCallback(basicMapping)
+		updateCallback: updateObjectCallback(basicMapping),
+		validation: validationCallback(basicMapping)
 	},
 	education: {
 		title: 'Education Information',
 		key: 'userProfile.education',
 		object: modelRepository.userProfile.education,
 		mapping: EducationMapping,
-		updateCallback: updateObjectCallback(EducationMapping)
+		updateCallback: updateObjectCallback(EducationMapping),
+		validation: validationCallback(
+			selectFields(EducationMapping, [
+				EducationMapping.mediumOfPrimaryEducation,
+				EducationMapping.highestEducationLevel,
+				EducationMapping.educationField,
+				EducationMapping.university
+			])
+		)
 	},
 	profession: {
 		title: 'Profession Information',
 		key: 'userProfile.profession',
 		object: modelRepository.userProfile.profession,
 		mapping: ProfessionMapping,
-		updateCallback: updateObjectCallback(ProfessionMapping)
+		updateCallback: updateObjectCallback(ProfessionMapping),
+		validation: validationCallback(
+			selectFields(ProfessionMapping, [
+				ProfessionMapping.occupation,
+				ProfessionMapping.lengthOfEmployment,
+				ProfessionMapping.annualIncome
+				// ProfessionMapping.workCountry,
+				// ProfessionMapping.workState,
+				// ProfessionMapping.workCity
+			])
+		)
 	},
 	horoscope: {
 		title: 'Horoscope Information',
 		key: 'userProfile.horoscope',
 		object: modelRepository.userProfile.horoscope,
 		mapping: horoscopeMapping,
-		updateCallback: updateObjectCallback(horoscopeMapping)
+		updateCallback: updateObjectCallback(horoscopeMapping),
+		validation: validationCallback(
+			selectFields(horoscopeMapping, [
+				// HoroscopeMapping.caste,
+				// HoroscopeMapping.subCaste,
+				HoroscopeMapping.birthPlace,
+				HoroscopeMapping.birthTime,
+				HoroscopeMapping.rashi
+			])
+		)
 	},
 	family: {
 		title: 'Family  Information',
 		key: 'userProfile.family',
 		object: modelRepository.userProfile.family,
 		mapping: familyMapping,
-		updateCallback: updateObjectCallback(familyMapping)
+		updateCallback: updateObjectCallback(familyMapping),
+		validation: validationCallback(
+			selectFields(familyMapping, [
+				FamilyMapping.fatherName,
+				FamilyMapping.father,
+				FamilyMapping.motherName,
+				FamilyMapping.mother,
+				FamilyMapping.interCasteParents,
+				FamilyMapping.parentsLivingSeperately
+			])
+		)
 	}
 };
 
@@ -127,6 +189,11 @@ export const RegisterForm = ({ navigation }: NavigationInjectedProps) => {
 		const currentPageIndex = findIndex(FORM_PAGES, a => a === formPage);
 		const pageKey = FORM_PAGES[currentPageIndex];
 		const key = (FORM as any)[pageKey].key;
+		const validationCallback = (FORM as any)[pageKey].validation;
+		if (validationCallback) {
+			const isValid = validationCallback(updatedObject);
+			if (!isValid) return;
+		}
 		const updateCallback = (FORM as any)[pageKey].updateCallback;
 		const existingValue = get(modelRepository, key);
 		if (updateCallback) {

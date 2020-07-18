@@ -82,7 +82,7 @@ class ModelRepository {
 				caste: [],
 				subCaste: [],
 				birthPlace: '',
-				birthTime: 1,
+				birthTime: 0,
 				rashi: '',
 				nakshatra: '',
 				charan: '',

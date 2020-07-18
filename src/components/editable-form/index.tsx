@@ -313,7 +313,7 @@ export function EditableForm({ navObject, mapping, updateAction, updateLabel }: 
 								}}
 								placeholder={{
 									label: choiceFieldLabel,
-									value: choiceFieldLabel,
+									value: null,
 									color: Color.offWhite
 								}}
 								placeholderTextColor={Color.offWhite}
