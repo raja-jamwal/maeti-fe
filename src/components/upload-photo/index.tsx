@@ -43,6 +43,19 @@ export function UploadPhoto({ navigation }) {
 		  }
 		: defaultPrimaryPhoto;
 
+	const goToReviewScreen = () => {
+		navigation.dispatch(
+			StackActions.reset({
+				index: 0,
+				actions: [
+					NavigationActions.navigate({
+						routeName: 'StayTunedScreen'
+					})
+				]
+			})
+		);
+	};
+
 	return (
 		<SafeAreaView style={GlobalStyles.expand}>
 			<TouchableOpacity onPress={startPhotoUpload}>
@@ -84,25 +97,32 @@ export function UploadPhoto({ navigation }) {
 				<View style={styles.submissionFooter}>
 					<TouchableBtn
 						onPress={() => {
-							navigation.push('Verification', {
-								onVerification: (otpState: IOtpState) => {
-									return new Promise((resolve, reject) => {
-										console.log('modelRepository ', modelRepository);
-										setTimeout(resolve, 5 * 1000);
-										navigation.dispatch(
-											StackActions.reset({
-												index: 0,
-												actions: [
-													NavigationActions.navigate({
-														routeName: 'StayTunedScreen'
-													})
-												]
-											})
+							if (!modelRepository.phoneNumber) {
+								navigation.push('Verification', {
+									onVerification: (otpState: IOtpState) => {
+										modelRepository.setPhoneNumber(
+											`${otpState.callingCode}-${otpState.number}`
 										);
-										// navigation.navigate('StayTunedScreen');
-									});
-								}
-							});
+										return new Promise((resolve, reject) => {
+											setTimeout(resolve, 5 * 1000);
+
+											// get the expo token
+											// log it to modelRepository
+
+											// save the model Repository in localCache
+											// call a new mayBe create account API call
+											// <-> pendingAccount returns Id
+
+											// update modelRepository with a id
+											// modelReposiotry: save : delete
+
+											goToReviewScreen();
+										});
+									}
+								});
+							} else {
+								goToReviewScreen();
+							}
 						}}
 					>
 						<Text style={styles.submissionBtn}>Continue</Text>

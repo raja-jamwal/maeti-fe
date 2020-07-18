@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { View, Text, Image, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import GlobalStyle from 'src/styles/global';
+import Button from '../button/button';
+import { StackActions, NavigationActions } from 'react-navigation';
 const stayTunedImage = require('../../assets/login/stay-tuned.png');
 
-export function StayTuned() {
+export function StayTuned({ navigation }) {
 	const openPhoneNumber = () => {
 		Linking.openURL(`https://wa.me/917387778673`);
 	};
@@ -26,6 +28,24 @@ export function StayTuned() {
 						<Text style={styles.underline}>+91-73877-78673</Text>
 					</TouchableOpacity>
 				</View>
+			</View>
+			<View style={{ marginTop: 8 }}>
+				<Button
+					onPress={() => {
+						navigation.dispatch(
+							StackActions.reset({
+								index: 0,
+								actions: [
+									NavigationActions.navigate({
+										routeName: 'FormScreen'
+									})
+								]
+							})
+						);
+					}}
+					isPrimary={true}
+					label={'Update Your Details'}
+				/>
 			</View>
 		</View>
 	);

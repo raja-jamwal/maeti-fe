@@ -6,14 +6,21 @@ import { UserProfile, DAO } from '../store/reducers/account-defination';
 class ModelRepository {
 	public userProfile: UserProfile;
 	public userProfilePhoto: string | null;
+	public phoneNumber: string | null;
 
 	setProfilePhoto(url: string) {
 		this.userProfilePhoto = url;
 		return this;
 	}
 
+	setPhoneNumber(phoneNumber: string) {
+		this.phoneNumber = phoneNumber;
+		return this;
+	}
+
 	constructor() {
 		this.userProfilePhoto = null;
+		this.phoneNumber = null;
 		const ts = new Date().getTime();
 		const baseDao: DAO = {
 			id: 0, // id should be optional
@@ -26,7 +33,7 @@ class ModelRepository {
 			responseTime: 0,
 			lastLogin: new Date().getTime(), // check what is the last login duiring init
 
-			gender: 'male',
+			gender: '',
 			about: '',
 			createdBy: '',
 			salutation: '',
