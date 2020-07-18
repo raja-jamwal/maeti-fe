@@ -8,6 +8,8 @@ import TouchableBtn from '../touchable-btn/touchable-btn';
 import { pickPhotoFromGallery } from '../../utils/image-upload-service';
 import { Throbber } from '../throbber/throbber';
 import { modelRepository } from '../../utils/model-repository';
+import { IOtpState } from '../../store/reducers/otp-reducer';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
@@ -80,7 +82,29 @@ export function UploadPhoto({ navigation }) {
 			</View>
 			{uploadedPhoto && (
 				<View style={styles.submissionFooter}>
-					<TouchableBtn onPress={() => navigation.push('Verification')}>
+					<TouchableBtn
+						onPress={() => {
+							navigation.push('Verification', {
+								onVerification: (otpState: IOtpState) => {
+									return new Promise((resolve, reject) => {
+										console.log('modelRepository ', modelRepository);
+										setTimeout(resolve, 5 * 1000);
+										navigation.dispatch(
+											StackActions.reset({
+												index: 0,
+												actions: [
+													NavigationActions.navigate({
+														routeName: 'StayTunedScreen'
+													})
+												]
+											})
+										);
+										// navigation.navigate('StayTunedScreen');
+									});
+								}
+							});
+						}}
+					>
 						<Text style={styles.submissionBtn}>Continue</Text>
 					</TouchableBtn>
 				</View>

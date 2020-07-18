@@ -16,6 +16,7 @@ import { IRootState } from '../../store/index';
 import { Dispatch, bindActionCreators } from 'redux';
 import { NavigationInjectedProps } from 'react-navigation';
 import { any } from 'prop-types';
+import { Throbber } from '../throbber/throbber';
 
 function SlowAppear({ children }: any) {
 	const [secondsLeft, setSecondsLeft] = React.useState(2 * 60);
@@ -83,6 +84,7 @@ function SmsEmailVerificationInner({
 	const [cca, setCca] = React.useState(otpState.cca);
 	const [callingCode, setCallingCode] = React.useState(otpState.callingCode);
 	const [number, setNumber] = React.useState(otpState.number);
+	const [onVerificationCalled, setOnVerificationCalled] = React.useState(false);
 	const otp = otpState.otp;
 
 	const getOtp = (): number => {
@@ -92,7 +94,6 @@ function SmsEmailVerificationInner({
 			stringDigits.push(!!text ? text : '');
 		});
 		const stringValue = stringDigits.join('');
-		console.log(stringValue);
 		return parseInt(stringValue);
 	};
 
@@ -151,10 +152,20 @@ function SmsEmailVerificationInner({
 		}
 	};
 
-	const verifyFunc = () => {
+	const verifyFunc = async () => {
 		if (!otp) simpleAlert('Error', 'Unable to process');
 		if (otp === getOtp()) {
 			// call the top level function maybe
+			const onVerification = navigation.getParam('onVerification', null);
+			if (!onVerification) return;
+			setOnVerificationCalled(true);
+			try {
+				const a = await onVerification(otpState);
+			} catch (er) {
+				logger.log(er);
+			} finally {
+				setOnVerificationCalled(false);
+			}
 			return;
 		}
 
@@ -194,7 +205,7 @@ function SmsEmailVerificationInner({
 					<Button label="Verify" onPress={sendVerificationSMS} />
 				</View>
 			)}
-			{!!otp && (
+			{!!otp && !onVerificationCalled && (
 				<View>
 					<Text style={{ textAlign: 'center' }}>
 						Provide the OTP sent to +{callingCode}-{number} to confirm your identity
@@ -238,6 +249,7 @@ function SmsEmailVerificationInner({
 					/>
 				</View>
 			)}
+			{!!otp && onVerificationCalled && <Throbber size="large" />}
 		</View>
 	);
 }
