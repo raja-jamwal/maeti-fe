@@ -10,7 +10,7 @@ export const SignUpStack = createStackNavigator(
 		FormScreen: RegisterForm,
 		UploadPhotoScreen: UploadPhoto,
 		Verification: SmsEmailVerification,
-		StayTunedScreen: StayTuned
+		UnderReviewScreen: StayTuned
 	},
 	{ defaultNavigationOptions }
 );

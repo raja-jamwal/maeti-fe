@@ -15,7 +15,6 @@ import { IOtpState, defaultOtpState, setOtpState, setOtp } from '../../store/red
 import { IRootState } from '../../store/index';
 import { Dispatch, bindActionCreators } from 'redux';
 import { NavigationInjectedProps } from 'react-navigation';
-import { any } from 'prop-types';
 import { Throbber } from '../throbber/throbber';
 
 function SlowAppear({ children }: any) {

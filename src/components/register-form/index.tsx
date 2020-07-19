@@ -73,6 +73,7 @@ const familyMapping = selectFields(FamilyMapping, [
 const validationCallback = (requiredMapping: any) => {
 	const requiredMappingKeys = Object.keys(requiredMapping);
 	return (updatedObject: any) => {
+		return true;
 		const firstInvalidField = findKey(updatedObject, (value, fieldKey) => {
 			// shim for 'fullName'
 			if (fieldKey === 'fullName') {
@@ -185,6 +186,7 @@ export const RegisterForm = ({ navigation }: NavigationInjectedProps) => {
 	const logger = getLogger(RegisterForm);
 	const formPage = navigation.getParam('formPage', null) || FORM_PAGES[0];
 	let { object, mapping } = getObjectAndMapping(formPage ? formPage : FORM_PAGES[0]);
+
 	const update = (updatedObject: any) => {
 		const currentPageIndex = findIndex(FORM_PAGES, a => a === formPage);
 		const pageKey = FORM_PAGES[currentPageIndex];

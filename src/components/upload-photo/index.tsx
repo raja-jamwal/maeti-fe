@@ -10,6 +10,14 @@ import { Throbber } from '../throbber/throbber';
 import { modelRepository } from '../../utils/model-repository';
 import { IOtpState } from '../../store/reducers/otp-reducer';
 import { NavigationActions, StackActions } from 'react-navigation';
+import * as Permissions from 'expo-permissions';
+import { getLogger } from '../../utils/logger';
+import { Notifications, Updates } from 'expo';
+import { ApiRequest } from '../../utils';
+import { API } from '../../config/API';
+import { simpleAlert } from '../alert/index';
+import { markFormUpdate } from '../../utils/index';
+import { get } from 'lodash';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
@@ -21,7 +29,9 @@ const groomOrBridge = () => {
 };
 
 export function UploadPhoto({ navigation }) {
+	const logger = getLogger(UploadPhoto);
 	const [isUploading, setIsUploading] = React.useState(false);
+	const [isCreatingAccount, setIsCreatingAccount] = React.useState(false);
 	const [uploadedPhoto, setUploadedPhoto] = React.useState((!!modelRepository.userProfilePhoto
 		? modelRepository.userProfilePhoto
 		: null) as (string | null));
@@ -49,7 +59,7 @@ export function UploadPhoto({ navigation }) {
 				index: 0,
 				actions: [
 					NavigationActions.navigate({
-						routeName: 'StayTunedScreen'
+						routeName: 'UnderReviewScreen'
 					})
 				]
 			})
@@ -95,38 +105,105 @@ export function UploadPhoto({ navigation }) {
 			</View>
 			{uploadedPhoto && (
 				<View style={styles.submissionFooter}>
-					<TouchableBtn
-						onPress={() => {
-							if (!modelRepository.phoneNumber) {
-								navigation.push('Verification', {
-									onVerification: (otpState: IOtpState) => {
-										modelRepository.setPhoneNumber(
-											`${otpState.callingCode}-${otpState.number}`
-										);
-										return new Promise((resolve, reject) => {
-											setTimeout(resolve, 5 * 1000);
+					{!isCreatingAccount && (
+						<TouchableBtn
+							onPress={async () => {
+								const createPendingRequest = () => {
+									return new Promise(async (resolve, reject) => {
+										setIsCreatingAccount(true);
+										// mark the form as updated
+										await markFormUpdate();
+										// get the expo token
+										const {
+											status: existingStatus
+										} = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+										logger.log('existingStatus ', existingStatus);
 
-											// get the expo token
-											// log it to modelRepository
+										let finalStatus = existingStatus;
 
-											// save the model Repository in localCache
+										// only ask if permissions have not already been determined, because
+										// iOS won't necessarily prompt the user a second time.
+										if (existingStatus !== 'granted') {
+											// Android remote notification permissions are granted during the app
+											// install, so this will only ask on iOS
+											const { status } = await Permissions.askAsync(
+												Permissions.NOTIFICATIONS
+											);
+											finalStatus = status;
+										}
+
+										let token = null;
+										try {
+											// Get the token that uniquely identifies this device
+											token = await Notifications.getExpoPushTokenAsync();
+											logger.log('push token ', token);
+											modelRepository.setExpoToken(token);
+										} catch (err) {
+											logger.log('unable to get push token ', err);
+										}
+
+										try {
 											// call a new mayBe create account API call
+											const payload = {
+												phoneNumber: modelRepository.phoneNumber,
+												photoUrl: modelRepository.userProfilePhoto,
+												pushToken: modelRepository.expoToken,
+												userProfileString: JSON.stringify(
+													modelRepository.userProfile
+												)
+											};
+											// console.log(payload);
+											const response = (await ApiRequest(
+												API.PENDING_ACCOUNT.CREATE,
+												payload
+											)) as any;
+											console.log(response.id);
 											// <-> pendingAccount returns Id
-
 											// update modelRepository with a id
-											// modelReposiotry: save : delete
-
+											modelRepository.setId(response.id);
+											// save the model Repository in localCache
+											modelRepository.save();
+											resolve(modelRepository);
 											goToReviewScreen();
-										});
-									}
-								});
-							} else {
-								goToReviewScreen();
-							}
-						}}
-					>
-						<Text style={styles.submissionBtn}>Continue</Text>
-					</TouchableBtn>
+										} catch (er) {
+											logger.log(er);
+											const statusCode = get(er, 'status');
+											if (statusCode === 404) {
+												simpleAlert(
+													'Existing account',
+													'Please sign-in with your number',
+													async () => {
+														modelRepository.delete();
+														await Updates.reloadFromCache();
+													}
+												);
+											} else {
+												simpleAlert('Error', 'Unable to process');
+											}
+											reject();
+										}
+										setIsCreatingAccount(false);
+									});
+								};
+								if (!modelRepository.phoneNumber) {
+									navigation.push('Verification', {
+										onVerification: (otpState: IOtpState) => {
+											modelRepository.setPhoneNumber(
+												`${otpState.callingCode}-${otpState.number}`
+											);
+											return createPendingRequest();
+										}
+									});
+								} else {
+									await createPendingRequest();
+									goToReviewScreen();
+								}
+							}}
+						>
+							<Text style={styles.submissionBtn}>Continue</Text>
+						</TouchableBtn>
+					)}
+					{!!isCreatingAccount && <Throbber size="large" />}
 				</View>
 			)}
 		</SafeAreaView>

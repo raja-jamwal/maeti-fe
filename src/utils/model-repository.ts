@@ -1,12 +1,25 @@
 import { UserProfile, DAO } from '../store/reducers/account-defination';
+import {
+	setAccountRequestFromPendingAccount,
+	removeAccountRequest,
+	getAccountRequest
+} from './account-request';
 
 /**
  * Repository for new account creation
  */
-class ModelRepository {
+export class ModelRepository {
 	public userProfile: UserProfile;
 	public userProfilePhoto: string | null;
 	public phoneNumber: string | null;
+	public createdOn: number | null;
+	public expoToken: string | null;
+	public id: string | null;
+
+	setId(id: string) {
+		this.id = id;
+		return this;
+	}
 
 	setProfilePhoto(url: string) {
 		this.userProfilePhoto = url;
@@ -18,12 +31,20 @@ class ModelRepository {
 		return this;
 	}
 
+	setExpoToken(token: string) {
+		this.expoToken = token;
+		return this;
+	}
+
 	constructor() {
+		this.id = null;
+		this.expoToken = null;
+		this.createdOn = null;
 		this.userProfilePhoto = null;
 		this.phoneNumber = null;
 		const ts = new Date().getTime();
 		const baseDao: DAO = {
-			id: 0, // id should be optional
+			// id: 0, // id should be optional
 			createdOn: ts,
 			updatedOn: ts,
 			deletedOn: ts
@@ -129,7 +150,7 @@ class ModelRepository {
 			contactInformation: {
 				phoneNumber: '',
 				address: '',
-				pin_code: '',
+				pinCode: '',
 				residentialCity: '',
 				mobileNumber1: '',
 				mobileNumber1Of: '',
@@ -145,7 +166,7 @@ class ModelRepository {
 				...baseDao
 			},
 			userReference: {
-				relativeMame: '',
+				relativeName: '',
 				relationWithMember: '',
 				contactNumber: '',
 				address: '',
@@ -163,19 +184,19 @@ class ModelRepository {
 				motherDesignation: '',
 				motherMaternalSurname: '',
 				motherNativePlace: '',
-				noOfBrothers: 1,
-				brothersMarried: 1,
-				noOfSisters: 1,
-				sistersMarried: 1,
-				aboutFamily: 'about family',
+				noOfBrothers: null,
+				brothersMarried: null,
+				noOfSisters: null,
+				sistersMarried: null,
+				aboutFamily: '',
 				familyCountry: null,
 				familyState: null,
 				familyCity: null,
 				interCasteParents: false,
 				parentsLivingSeperately: false,
 				familyOtherInformation: {
-					familyValues: '',
-					familyFinancialBackground: '',
+					familyValues: [],
+					familyFinancialBackground: [],
 					familyAnnualIncome: '',
 					home: '',
 					homeType: [],
@@ -183,7 +204,7 @@ class ModelRepository {
 					realEstate: [],
 					vehicle: false,
 					vehicleType: [],
-					loans: [],
+					loan: [],
 					otherLoans: '',
 					familyMedicalHistory: '',
 					...baseDao
@@ -223,6 +244,20 @@ class ModelRepository {
 			photo: [],
 			...baseDao
 		};
+	}
+
+	async save() {
+		this.createdOn = new Date().getTime();
+		setAccountRequestFromPendingAccount(this);
+		return getAccountRequest();
+	}
+
+	delete() {
+		removeAccountRequest();
+	}
+
+	load(model: ModelRepository) {
+		Object.assign(this, model);
 	}
 }
 
