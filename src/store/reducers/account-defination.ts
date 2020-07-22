@@ -26,7 +26,7 @@ export interface DAO {
 	id?: number;
 	createdOn: number;
 	updatedOn: number;
-	deletedOn: number;
+	deletedOn?: number;
 }
 
 export interface Account extends DAO {

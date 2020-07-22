@@ -46,8 +46,7 @@ export class ModelRepository {
 		const baseDao: DAO = {
 			// id: 0, // id should be optional
 			createdOn: ts,
-			updatedOn: ts,
-			deletedOn: ts
+			updatedOn: ts
 		};
 		this.userProfile = {
 			responseRate: 0,
