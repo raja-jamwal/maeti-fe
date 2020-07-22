@@ -131,8 +131,7 @@ function SmsEmailVerificationInner({
 						phoneNumber
 					})
 						.then((response: any) => {
-							// TODO: uncomment this
-							// markSmsSent();
+							markSmsSent();
 							logger.log('OTP', response);
 							setOtp(response.code);
 							setOtpState({

@@ -30,11 +30,17 @@ export const StayTuned = withNavigationFocus(({ navigation }) => {
 			await fetchAccountByPendingRequestId(modelRepository.id);
 		} catch (er) {
 			if (showAlert) {
-				simpleAlert(
-					'Pending approval',
-					"Your profile is waiting for approval, please allow 1 business day. Once approved you'll receive account confirmation notification from us."
-				);
+				const message = er.message || '';
+				if (message === 'declined') {
+					simpleAlert('Contact support', 'Please contact support for assistance.');
+				} else {
+					simpleAlert(
+						'Pending approval',
+						"Your profile is waiting for approval, please allow 1 business day. Once approved you'll receive account confirmation notification from us."
+					);
+				}
 			}
+
 			logger.log(er);
 		} finally {
 			setCheckingStatus(false);
