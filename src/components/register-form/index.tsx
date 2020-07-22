@@ -73,7 +73,7 @@ const familyMapping = selectFields(FamilyMapping, [
 const validationCallback = (requiredMapping: any) => {
 	const requiredMappingKeys = Object.keys(requiredMapping);
 	return (updatedObject: any) => {
-		return true;
+		// return true;
 		const firstInvalidField = findKey(updatedObject, (value, fieldKey) => {
 			// shim for 'fullName'
 			if (fieldKey === 'fullName') {
