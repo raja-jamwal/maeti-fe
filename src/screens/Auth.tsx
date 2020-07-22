@@ -11,7 +11,7 @@ import GlobalStyle from '../styles/global';
 import { connect } from 'react-redux';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import { IS_IOS } from '../utils';
+import { IS_IOS, ApiRequest } from '../utils';
 import { simpleAlert } from '../components/alert';
 import { bindActionCreators } from 'redux';
 import { fetchAccount, fetchAccountByToken, logAccount } from '../store/reducers/account-reducer';
@@ -25,11 +25,16 @@ import { getAccountRequest } from '../utils/account-request';
 import { SafeAreaView } from 'react-native';
 import { AuthHome } from '../components/auth-home';
 import { modelRepository, setModelRepository } from '../utils/model-repository';
+import { fetchTags } from '../store/reducers/tag-reducer';
+import { Account } from '../store/reducers/account-defination';
+import { API } from '../config/API';
+import { IOtpState } from '../store/reducers/otp-reducer';
 
 interface IAuthDispatchProps {
 	fetchAccount: (id: string) => any;
 	fetchAccountByToken: (token: string) => any;
 	logAccount: () => any;
+	fetchTags: () => any;
 	connectRTM: () => any;
 }
 
@@ -57,10 +62,12 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		this._forceLogin = this._forceLogin.bind(this);
 		this.changeScreen = this.changeScreen.bind(this);
 		this.onSignUpPress = this.onSignUpPress.bind(this);
+		this.onLoginPress = this.onLoginPress.bind(this);
 	}
 
 	async componentDidMount() {
 		// modelRepository.delete();
+		this.props.fetchTags();
 		await this._tryAuth();
 	}
 
@@ -246,10 +253,34 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 		navigation.navigate('Register');
 	}
 
+	onLoginPress() {
+		const { navigation } = this.props;
+
+		navigation.navigate('LoginVerification', {
+			onVerification: (otpState: IOtpState) => {
+				return new Promise(async (resolve, reject) => {
+					try {
+						const account: Account = (await ApiRequest(API.AUTH.SIGNIN, {
+							phoneNumber: `${otpState.callingCode}-${otpState.number}`,
+							otpCode: otpState.otp
+						})) as Account;
+						await AsyncStorage.setItem('token', `${account.token}`);
+						await this._tryAuth();
+						resolve('done');
+					} catch (er) {
+						this.logger.log('account login error ', er);
+						simpleAlert('Error', `Unable to log-in`);
+						resolve('');
+					}
+				});
+			}
+		});
+	}
+
 	render() {
 		const { activeScreen } = this.state;
 		if (activeScreen === LOGIN_SCREENS.AUTH_HOME) {
-			return <AuthHome onSignUpPress={this.onSignUpPress} onLoginPress={noop} />;
+			return <AuthHome onSignUpPress={this.onSignUpPress} onLoginPress={this.onLoginPress} />;
 		}
 
 		return (
@@ -349,6 +380,7 @@ const styles = StyleSheet.create({
 function mapDispatchToProps(dispatch: any) {
 	return {
 		logAccount: bindActionCreators(logAccount, dispatch),
+		fetchTags: bindActionCreators(fetchTags, dispatch),
 		fetchAccountByToken: bindActionCreators(fetchAccountByToken, dispatch),
 		fetchAccount: bindActionCreators(fetchAccount, dispatch),
 		connectRTM: bindActionCreators(connectRTM, dispatch)

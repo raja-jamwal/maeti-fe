@@ -16,6 +16,7 @@ import { IRootState } from '../../store/index';
 import { Dispatch, bindActionCreators } from 'redux';
 import { NavigationInjectedProps } from 'react-navigation';
 import { Throbber } from '../throbber/throbber';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 function SlowAppear({ children }: any) {
 	const [secondsLeft, setSecondsLeft] = React.useState(2 * 60);
@@ -172,7 +173,7 @@ function SmsEmailVerificationInner({
 	};
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			{!otp && (
 				<View>
 					<Text style={{ textAlign: 'center' }}>
@@ -249,7 +250,7 @@ function SmsEmailVerificationInner({
 				</View>
 			)}
 			{!!otp && onVerificationCalled && <Throbber size="large" />}
-		</View>
+		</SafeAreaView>
 	);
 }
 

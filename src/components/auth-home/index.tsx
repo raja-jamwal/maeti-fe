@@ -29,18 +29,6 @@ export function AuthHome({ onSignUpPress, onLoginPress }: IAuthHomeProps = defau
 	const toggleEula = () => setShowEula(!showEula);
 	const togglePolicy = () => setShowPolicy(!showPolicy);
 
-	// React.useEffect(() => {
-	// 	initAuth();
-	// }, []);
-
-	// const googleLogin = async () => {
-	// 	try {
-	// 		await attemptGoogleLogin();
-	// 	} catch (er) {
-	// 		simpleAlert('Error', er);
-	// 	}
-	// };
-
 	return (
 		<View style={[GlobalStyle.expand, styles.bg]}>
 			<StatusBar hidden={true} />

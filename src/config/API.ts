@@ -53,7 +53,12 @@ export const API = {
 		SAVE: `${config.server}/api/preference.save`
 	},
 
+	// @depreceated
 	TAGS: `${config.server}/api/tags`,
+
+	TAG: {
+		FIND_ALL: `${config.server}/api/tags.findAll`
+	},
 
 	FAVOURITE: {
 		GET: `${config.server}/api/favourite.get`,
