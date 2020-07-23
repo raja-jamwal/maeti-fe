@@ -53,7 +53,12 @@ export const API = {
 		SAVE: `${config.server}/api/preference.save`
 	},
 
+	// @depreceated
 	TAGS: `${config.server}/api/tags`,
+
+	TAG: {
+		FIND_ALL: `${config.server}/api/tags.findAll`
+	},
 
 	FAVOURITE: {
 		GET: `${config.server}/api/favourite.get`,
@@ -104,11 +109,16 @@ export const API = {
 
 	ACCOUNT: {
 		// CREATE: `${config.server}/api/account.create`,
+		GET_BY_PENDING_REQUEST_ID: `${config.server}/api/account.getByPendingRequestId`,
 		LOG: `${config.server}/api/account.log`,
 		GET: `${config.server}/api/account.get`,
 		GET_BY_TOKEN: `${config.server}/api/account.getByToken`,
 		SAVE: `${config.server}/api/account.save`,
 		MAYBE_CREATE: `${config.server}/api/account.maybe.create`
+	},
+
+	PENDING_ACCOUNT: {
+		CREATE: `${config.server}/api/account.maybe.create.v1`
 	},
 
 	PHOTO: {

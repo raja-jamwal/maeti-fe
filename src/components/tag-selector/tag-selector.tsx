@@ -1,14 +1,5 @@
 import * as React from 'react';
-import {
-	View,
-	Text,
-	Modal,
-	StyleSheet,
-	TouchableNativeFeedback,
-	ScrollView,
-	StatusBar,
-	SafeAreaView
-} from 'react-native';
+import { View, Text, Modal, StyleSheet, ScrollView, StatusBar, SafeAreaView } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import { IRootState } from '../../store/index';
 import { connect } from 'react-redux';
@@ -16,6 +7,7 @@ import { Tag } from '../../store/reducers/account-defination';
 import { find, isEmpty, keys, map } from 'lodash';
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import { ModalCloseButton } from '../modal-close-button';
 import { Ionicons } from '@expo/vector-icons';
 
 interface ITagSelectorProps {
@@ -127,15 +119,17 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 											this.toggleShowModal();
 										}}
 									>
-										<Ionicons
-											name="md-close"
-											size={26}
-											color={Color.offWhite}
+										<View
 											style={{
-												paddingLeft: 10,
-												paddingRight: 10
+												padding: 12
 											}}
-										/>
+										>
+											<Ionicons
+												name="md-close"
+												size={35}
+												color={Color.offWhite}
+											/>
+										</View>
 									</TouchableBtn>
 								</View>
 								<ScrollView>

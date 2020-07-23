@@ -26,28 +26,7 @@ import {
 	MaterialTopTabBar
 } from 'react-navigation-tabs'; // investigate these import
 
-const defaultNavigationOptions = {
-	headerStyle: {
-		backgroundColor: 'white',
-		...Platform.select({
-			ios: {
-				height: 100
-			},
-			android: {
-				height: 50
-			}
-		})
-	},
-	headerTintColor: Colors.offWhite,
-	headerTitleStyle: {
-		fontWeight: 'normal',
-		fontSize: 16
-	},
-	labelStyle: {
-		fontSize: 8
-	},
-	cardStyle: { backgroundColor: 'white' }
-};
+import { defaultNavigationOptions } from './common';
 
 const ExploreStack = createStackNavigator(
 	{

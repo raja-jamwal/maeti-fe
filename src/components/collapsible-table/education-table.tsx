@@ -119,45 +119,45 @@ export const EducationTableHighestEducationLevel = [
 	}
 ];
 
+export const EducationMapping = {
+	mediumOfPrimaryEducation: {
+		label: 'Medium of Primary Education',
+		type: 'choice',
+		choice: {
+			options: EducationTableMediumOfPrimaryEducationOptions
+		}
+	},
+	highestEducationLevel: {
+		label: 'Highest Education Level',
+		type: 'choice',
+		choice: {
+			options: EducationTableHighestEducationLevel
+		}
+	},
+	educationField: {
+		label: 'Education Field',
+		type: 'choice',
+		choice: {
+			options: EducationTableEducationFieldOptions
+		}
+	},
+	education: {
+		label: 'Education',
+		type: 'string'
+	},
+	additionalEducation: {
+		label: 'Additional Education',
+		type: 'string'
+	},
+	university: {
+		label: 'University / College',
+		type: 'string'
+	}
+};
+
 class EducationTable extends React.Component<
 	IEducationTableProps & IEducationTableMapDispatchToProps & IEducationTableMapStateToProps
 > {
-	mappings = {
-		mediumOfPrimaryEducation: {
-			label: 'Medium of Primary Education',
-			type: 'choice',
-			choice: {
-				options: EducationTableMediumOfPrimaryEducationOptions
-			}
-		},
-		highestEducationLevel: {
-			label: 'Highest Education Level',
-			type: 'choice',
-			choice: {
-				options: EducationTableHighestEducationLevel
-			}
-		},
-		educationField: {
-			label: 'Education Field',
-			type: 'choice',
-			choice: {
-				options: EducationTableEducationFieldOptions
-			}
-		},
-		education: {
-			label: 'Education',
-			type: 'string'
-		},
-		additionalEducation: {
-			label: 'Additional Education',
-			type: 'string'
-		},
-		university: {
-			label: 'University / College',
-			type: 'string'
-		}
-	};
-
 	render() {
 		const { education, userProfileId, updateEducation, editable } = this.props;
 		if (!education) return null;
@@ -165,7 +165,7 @@ class EducationTable extends React.Component<
 			<CollapsibleTable
 				title="Education Information"
 				object={education}
-				mapping={this.mappings}
+				mapping={EducationMapping}
 				updateAction={updateEducation}
 				userProfileId={userProfileId}
 				editable={editable}

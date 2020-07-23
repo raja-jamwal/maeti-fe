@@ -10,6 +10,7 @@ const secondsInYear = 60 * 60 * 24 * 365;
 const LAKH_RUPEE = 100000;
 const CRORE_RUPEE = 100 * LAKH_RUPEE;
 const TOTAL_SMS_LIMIT_IN_DAY = 4;
+const TOTAL_FORM_UPDATE_ALLOWED = 4;
 
 /**
  * return the age from the timestamp
@@ -32,6 +33,8 @@ const humanizeCurrency = function(value: number, prefix: string) {
 export const logoutAccount = async () => {
 	await AsyncStorage.removeItem('cea');
 	await AsyncStorage.removeItem('token');
+	await AsyncStorage.removeItem('form_update_count');
+	await AsyncStorage.removeItem('new_pending_account');
 	await Updates.reloadFromCache();
 };
 
@@ -79,10 +82,30 @@ export const markSmsSent = async () => {
 };
 
 export const isSmsAllowed = async () => {
+	const logger = getLogger(isSmsAllowed);
 	const sms = await getSmsCountToday();
-	console.log('sms', sms);
+	logger.log('sms', sms);
 	if (sms.count >= TOTAL_SMS_LIMIT_IN_DAY) return false;
 	return true;
+};
+
+export const getFormUpdateCount = async () => {
+	const countString = (await AsyncStorage.getItem('form_update_count')) || '0';
+	return parseInt(countString);
+};
+
+export const markFormUpdate = async () => {
+	const currentCount = (await getFormUpdateCount()) + 1;
+	AsyncStorage.setItem('form_update_count', `${currentCount}`);
+};
+
+/**
+ * return total number of allowed form updates for the device
+ */
+export const isFormUpdateAllowed = async () => {
+	const count = await getFormUpdateCount();
+	if (count > TOTAL_FORM_UPDATE_ALLOWED) return 0;
+	return TOTAL_FORM_UPDATE_ALLOWED - count;
 };
 
 export const getSmsCountToday = async () => {

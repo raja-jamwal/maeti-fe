@@ -9,6 +9,7 @@ import { includes, head } from 'lodash';
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { Ionicons } from '@expo/vector-icons';
+import { ModalCloseButton } from '../modal-close-button';
 
 export enum WORLD_OPTION {
 	COUNTRY = 'country',
@@ -44,7 +45,7 @@ function Item({ id, name, onSelect }) {
 	return (
 		<TouchableBtn onPress={() => onSelect({ id, name })}>
 			<View style={styles.item}>
-				<Text>{name}</Text>
+				<Text style={styles.label}>{name}</Text>
 			</View>
 		</TouchableBtn>
 	);
@@ -202,11 +203,16 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 						marginRight: 16
 					}}
 				>
-					{/*<Text style={styles.title}>{title || 'No Title'}</Text>*/}
 					<Text style={styles.title}>Select {screen}</Text>
 					<View style={{ flex: 1 }} />
 					<TouchableBtn onPress={() => toggleShowModal()}>
-						<Ionicons name="md-close" size={26} color={Color.offWhite} />
+						<View
+							style={{
+								padding: 12
+							}}
+						>
+							<Ionicons name="md-close" size={35} color={Color.offWhite} />
+						</View>
 					</TouchableBtn>
 				</View>
 				{!loading && (
@@ -214,7 +220,7 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 						<TextInput
 							onChangeText={text => this.setState({ filterText: text })}
 							value={filterText}
-							// style={styles.fieldText}
+							style={{ fontSize: 18 }}
 						/>
 					</View>
 				)}
@@ -272,7 +278,7 @@ class WorldSelectorField extends React.Component<
 						this.toggleShowModal();
 					}}
 				>
-					<View style={styles.container}>
+					<SafeAreaView>
 						<WorldSelector
 							options={options}
 							onSelect={selection => {
@@ -283,7 +289,7 @@ class WorldSelectorField extends React.Component<
 							countryId={countryId}
 							stateId={stateId}
 						/>
-					</View>
+					</SafeAreaView>
 				</Modal>
 			</View>
 		);
@@ -291,10 +297,6 @@ class WorldSelectorField extends React.Component<
 }
 
 const styles = StyleSheet.create({
-	container: {
-		// flex: 1,
-		// backgroundColor: Color.white
-	},
 	textField: {
 		borderColor: Color.borderColor,
 		borderWidth: 1,

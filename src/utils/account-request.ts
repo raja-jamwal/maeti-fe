@@ -1,26 +1,25 @@
 import { AsyncStorage } from 'react-native';
 import { isEmpty } from 'lodash';
-import { AccountRequest, PendingAccount } from '../store/reducers/account-defination';
 
 enum ACCOUNT_STORAGE {
-	PENDING_ACCOUNT = 'pending_account'
+	PENDING_ACCOUNT = 'new_pending_account'
 }
 
-export function getAccountRequest(): Promise<AccountRequest> {
+export function getAccountRequest(intialObject: any): Promise<any> {
 	return AsyncStorage.getItem(ACCOUNT_STORAGE.PENDING_ACCOUNT).then((encodedAccount: any) => {
 		if (isEmpty(encodedAccount)) {
 			throw new Error('no pending account');
 		}
 		try {
 			const pendingAccount = JSON.parse(encodedAccount);
-			return pendingAccount as AccountRequest;
+			return Object.assign(intialObject, pendingAccount);
 		} catch (er) {}
 		throw new Error('no pending account');
 	});
 }
 
-export function setAccountRequestFromPendingAccount(pendingAccount: PendingAccount) {
-	return AsyncStorage.setItem(ACCOUNT_STORAGE.PENDING_ACCOUNT, pendingAccount.request);
+export function setAccountRequestFromPendingAccount(pendingAccount: any) {
+	return AsyncStorage.setItem(ACCOUNT_STORAGE.PENDING_ACCOUNT, JSON.stringify(pendingAccount));
 }
 
 export function removeAccountRequest() {

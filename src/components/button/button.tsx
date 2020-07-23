@@ -15,16 +15,20 @@ interface IButtonProps {
 	onPress: () => any;
 	style?: any;
 	labelStyle?: any;
+	isPrimary?: boolean;
 }
 
 export default class Button extends React.PureComponent<IButtonProps> {
 	renderBtnView() {
-		const { label, style } = this.props;
+		const { label, style, isPrimary } = this.props;
 		const containerStyle = {
-			...styles.btnContainer,
+			...(isPrimary ? styles.primaryBtnContainer : styles.btnContainer),
 			...(style || {})
 		};
-		const labelSyle = Object.assign({}, styles.label, this.props.labelStyle || {});
+		const labelSyle = [
+			isPrimary ? styles.primaryLabel : styles.label,
+			this.props.labelStyle || {}
+		];
 		return (
 			<View style={containerStyle}>
 				<Text style={labelSyle}>{label}</Text>
@@ -75,7 +79,18 @@ const styles = StyleSheet.create({
 			}
 		})
 	},
+	primaryBtnContainer: {
+		backgroundColor: Color.primaryDarkColor
+	},
 	label: {
 		color: Color.offWhite
+	},
+	primaryLabel: {
+		padding: 6,
+		textAlign: 'center',
+		color: 'white',
+		margin: 4,
+		borderRadius: 4,
+		fontSize: 16
 	}
 });

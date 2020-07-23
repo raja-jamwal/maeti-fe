@@ -8,8 +8,14 @@ export default StyleSheet.create({
 	row: {
 		flexDirection: 'row'
 	},
+	rowReverse: {
+		flexDirection: 'row-reverse'
+	},
 	column: {
 		flexDirection: 'column'
+	},
+	columnReverse: {
+		flexDirection: 'column-reverse'
 	},
 	large: {
 		fontSize: 14
@@ -30,6 +36,9 @@ export default StyleSheet.create({
 	},
 	rightPaddedValue: {
 		paddingRight: 5
+	},
+	padding: {
+		padding: 16
 	},
 	paddedRight: {
 		paddingRight: 5
