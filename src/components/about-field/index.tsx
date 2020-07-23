@@ -3,6 +3,7 @@ import { View, Text, Modal, StyleSheet, TextInput, StatusBar, SafeAreaView } fro
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { ModalCloseButton } from '../modal-close-button';
+import { Ionicons } from '@expo/vector-icons';
 
 interface IAboutFieldProps {
 	value: string;
@@ -63,7 +64,17 @@ class AboutField extends React.PureComponent<IAboutFieldProps, IAboutFieldState>
 								<Text style={styles.title}>About</Text>
 								<View style={{ flex: 1 }} />
 								<TouchableBtn onPress={() => this.toggleShowModal()}>
-									<ModalCloseButton />
+									<View
+										style={{
+											padding: 12
+										}}
+									>
+										<Ionicons
+											name="md-close"
+											size={35}
+											color={Color.offWhite}
+										/>
+									</View>
 								</TouchableBtn>
 							</View>
 							<View style={styles.editorContainer}>

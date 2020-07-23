@@ -8,6 +8,7 @@ import { find, isEmpty, keys, map } from 'lodash';
 import Color from '../../constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { ModalCloseButton } from '../modal-close-button';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ITagSelectorProps {
 	tags: Array<Tag>;
@@ -118,7 +119,17 @@ class TagSelector extends React.Component<ITagSelectorProps, ITagSelectorState> 
 											this.toggleShowModal();
 										}}
 									>
-										<ModalCloseButton />
+										<View
+											style={{
+												padding: 12
+											}}
+										>
+											<Ionicons
+												name="md-close"
+												size={35}
+												color={Color.offWhite}
+											/>
+										</View>
 									</TouchableBtn>
 								</View>
 								<ScrollView>

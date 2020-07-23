@@ -17,6 +17,7 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { NavigationInjectedProps } from 'react-navigation';
 import { Throbber } from '../throbber/throbber';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CustomHeader } from '../custom-header/custom-header';
 
 function SlowAppear({ children }: any) {
 	const [secondsLeft, setSecondsLeft] = React.useState(2 * 60);
@@ -80,6 +81,7 @@ function SmsEmailVerificationInner({
 			ref: null
 		}
 	};
+	const isRegister = navigation.getParam('isRegister', true);
 	const logger = getLogger(SmsEmailVerification);
 	const [cca, setCca] = React.useState(otpState.cca);
 	const [callingCode, setCallingCode] = React.useState(otpState.callingCode);
@@ -173,6 +175,11 @@ function SmsEmailVerificationInner({
 
 	return (
 		<SafeAreaView style={styles.container}>
+			{!isRegister && (
+				<View style={[GlobalStyle.rowReverse, GlobalStyle.padding]}>
+					<CustomHeader btnLabel="Sign up Free?" title={''} />
+				</View>
+			)}
 			{!otp && (
 				<View>
 					<Text style={{ textAlign: 'center' }}>
@@ -303,6 +310,7 @@ export const SmsEmailVerification = connect(
 
 SmsEmailVerification['navigationOptions'] = ({ navigation }: any) => {
 	return {
+		headerTitle: () => <CustomHeader btnLabel="Login?" title="Verification" />,
 		title: 'Verification'
 	};
 };

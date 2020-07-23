@@ -5,14 +5,14 @@ import { View } from 'react-native';
 
 export function ModalCloseButton() {
 	return (
-		<View
-			style={{
-				padding: 8,
-				paddingLeft: 12,
-				paddingRight: 12
-			}}
-		>
-			<Ionicons name="md-close" size={30} color={Color.offWhite} />
-		</View>
+		// <View
+		// 	style={{
+		// 		padding: 8,
+		// 		paddingLeft: 12,
+		// 		paddingRight: 12
+		// 	}}
+		// >
+		<Ionicons name="md-close" size={30} color={Color.offWhite} />
+		// </View>
 	);
 }

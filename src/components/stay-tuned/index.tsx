@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { AppState, View, Text, Image, StyleSheet, Linking, TouchableOpacity } from 'react-native';
+import {
+	AppState,
+	View,
+	Text,
+	Image,
+	StyleSheet,
+	Linking,
+	TouchableOpacity,
+	ScrollView
+} from 'react-native';
 import GlobalStyle from 'src/styles/global';
 import Button from '../button/button';
 import { StackActions, NavigationActions, withNavigationFocus } from 'react-navigation';
@@ -78,50 +87,54 @@ export const StayTuned = withNavigationFocus(({ navigation }) => {
 	};
 
 	return (
-		<View style={styles.container}>
-			<View style={[GlobalStyle.row, GlobalStyle.justifyCenter]}>
-				<Image source={stayTunedImage} resizeMode="contain" style={{ maxWidth: 300 }} />
-			</View>
-			<Text style={[styles.bold, styles.text]}>Account Under Review</Text>
-			<Text style={styles.text}>
-				Your account request is under review. Once your account is approved, you'll recieve
-				account confirmation notification from us. Accounts are usually verified in 1
-				business day.
-			</Text>
-			{/*
+		<ScrollView>
+			<View style={styles.container}>
+				<View style={[GlobalStyle.row, GlobalStyle.justifyCenter]}>
+					<Image source={stayTunedImage} resizeMode="contain" style={{ maxWidth: 300 }} />
+				</View>
+				<Text style={[styles.bold, styles.text]}>Account Under Review</Text>
+				<Text style={styles.text}>
+					Your account request is under review. Once your account is approved, you'll
+					recieve account confirmation notification from us. Accounts are usually verified
+					in 1 business day.
+				</Text>
+				{/*
                 Make this appear after a while, ie after 2 hours
                 */}
-			{updatesAllowed <= 2 && (
-				<View>
-					<Text style={styles.text}>Please call or WhatsApp us at for assistance on</Text>
-					<View style={[GlobalStyle.row, GlobalStyle.justifyCenter]}>
-						<TouchableOpacity onPress={openPhoneNumber}>
-							<Text style={styles.underline}>+91-73877-78673</Text>
-						</TouchableOpacity>
-					</View>
-				</View>
-			)}
-			<View style={{ marginTop: 8 }}>
-				{!isCheckingStatus && (
-					<Button
-						onPress={checkAccountStatusFunc}
-						isPrimary={true}
-						label={'Check account status'}
-					/>
-				)}
-				{isCheckingStatus && <Throbber size="large" />}
-				{!!updatesAllowed && (
+				{updatesAllowed <= 2 && (
 					<View>
-						<Text style={{ textAlign: 'center', margin: 8 }}>Or</Text>
-						<Button
-							onPress={updateDetailFunc}
-							isPrimary={true}
-							label={'Update Your Details'}
-						/>
+						<Text style={styles.text}>
+							Please call or WhatsApp us at for assistance on
+						</Text>
+						<View style={[GlobalStyle.row, GlobalStyle.justifyCenter]}>
+							<TouchableOpacity onPress={openPhoneNumber}>
+								<Text style={styles.underline}>+91-73877-78673</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				)}
+				<View style={{ marginTop: 8 }}>
+					{!isCheckingStatus && (
+						<Button
+							onPress={checkAccountStatusFunc}
+							isPrimary={true}
+							label={'Check account status'}
+						/>
+					)}
+					{isCheckingStatus && <Throbber size="large" />}
+					{!!updatesAllowed && (
+						<View>
+							<Text style={{ textAlign: 'center', margin: 8 }}>Or</Text>
+							<Button
+								onPress={updateDetailFunc}
+								isPrimary={true}
+								label={'Update Your Details'}
+							/>
+						</View>
+					)}
+				</View>
 			</View>
-		</View>
+		</ScrollView>
 	);
 });
 

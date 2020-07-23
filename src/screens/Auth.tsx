@@ -20,11 +20,11 @@ import { getLogger } from '../utils/logger';
 import { connectRTM } from '../store/middleware/rtm-middleware';
 import Button from '../components/button/button';
 import * as Permissions from 'expo-permissions';
-import { isEmpty, noop } from 'lodash';
+import { isEmpty } from 'lodash';
 import { getAccountRequest } from '../utils/account-request';
 import { SafeAreaView } from 'react-native';
 import { AuthHome } from '../components/auth-home';
-import { modelRepository, setModelRepository } from '../utils/model-repository';
+import { modelRepository, ModelRepository } from '../utils/model-repository';
 import { fetchTags } from '../store/reducers/tag-reducer';
 import { Account } from '../store/reducers/account-defination';
 import { API } from '../config/API';
@@ -79,7 +79,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 			this.logger.log(err);
 		}
 		try {
-			const accountRequest = await getAccountRequest();
+			const accountRequest = await getAccountRequest(new ModelRepository());
 			if (!isEmpty(accountRequest)) {
 				modelRepository.load(accountRequest);
 				this.logger.log('account request not empty ', accountRequest.id);
@@ -180,7 +180,8 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
 						resolve('');
 					}
 				});
-			}
+			},
+			isRegister: false
 		});
 	}
 

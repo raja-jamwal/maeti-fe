@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View, InteractionManager } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
 import { EditableForm } from '../editable-form';
 import GlobalStyle from 'src/styles/global';
@@ -12,6 +12,9 @@ import { HoroscopeMapping } from '../collapsible-table/horoscope-table';
 import { findIndex, nth, pick, keys, pickBy, includes, get, set, isEmpty, findKey } from 'lodash';
 import { FamilyMapping } from '../collapsible-table/family-table';
 import { simpleAlert } from '../alert/index';
+import { CustomHeader } from '../custom-header/custom-header';
+import { Throbber } from '../throbber/throbber';
+import { isNumber } from 'lodash';
 
 const selectFields = (mapping: any, fields: any[]) => {
 	const labels = fields.map(field => field.label);
@@ -70,6 +73,13 @@ const familyMapping = selectFields(FamilyMapping, [
 	FamilyMapping.parentsLivingSeperately
 ]);
 
+const isEmptyCheck = (value: any) => {
+	if (isNumber(value)) {
+		return value === 0;
+	}
+	return isEmpty(value);
+};
+
 const validationCallback = (requiredMapping: any) => {
 	const requiredMappingKeys = Object.keys(requiredMapping);
 	return (updatedObject: any) => {
@@ -83,7 +93,7 @@ const validationCallback = (requiredMapping: any) => {
 				}
 			}
 
-			return includes(requiredMappingKeys, fieldKey) && !(!!value || !isEmpty(value));
+			return includes(requiredMappingKeys, fieldKey) && isEmptyCheck(value);
 		});
 		if (!!firstInvalidField) {
 			const field = requiredMapping[firstInvalidField];
@@ -96,7 +106,7 @@ const validationCallback = (requiredMapping: any) => {
 
 const FORM = {
 	basic: {
-		title: 'Basic Details',
+		title: 'Basic',
 		key: 'userProfile',
 		object: modelRepository.userProfile,
 		mapping: basicMapping,
@@ -104,7 +114,7 @@ const FORM = {
 		validation: validationCallback(basicMapping)
 	},
 	education: {
-		title: 'Education Information',
+		title: 'Education',
 		key: 'userProfile.education',
 		object: modelRepository.userProfile.education,
 		mapping: EducationMapping,
@@ -119,7 +129,7 @@ const FORM = {
 		)
 	},
 	profession: {
-		title: 'Profession Information',
+		title: 'Profession',
 		key: 'userProfile.profession',
 		object: modelRepository.userProfile.profession,
 		mapping: ProfessionMapping,
@@ -128,23 +138,23 @@ const FORM = {
 			selectFields(ProfessionMapping, [
 				ProfessionMapping.occupation,
 				ProfessionMapping.lengthOfEmployment,
-				ProfessionMapping.annualIncome
-				// ProfessionMapping.workCountry,
-				// ProfessionMapping.workState,
-				// ProfessionMapping.workCity
+				ProfessionMapping.annualIncome,
+				ProfessionMapping.workCountry,
+				ProfessionMapping.workState,
+				ProfessionMapping.workCity
 			])
 		)
 	},
 	horoscope: {
-		title: 'Horoscope Information',
+		title: 'Horoscope',
 		key: 'userProfile.horoscope',
 		object: modelRepository.userProfile.horoscope,
 		mapping: horoscopeMapping,
 		updateCallback: updateObjectCallback(horoscopeMapping),
 		validation: validationCallback(
 			selectFields(horoscopeMapping, [
-				// HoroscopeMapping.caste,
-				// HoroscopeMapping.subCaste,
+				HoroscopeMapping.caste,
+				HoroscopeMapping.subCaste,
 				HoroscopeMapping.birthPlace,
 				HoroscopeMapping.birthTime,
 				HoroscopeMapping.rashi
@@ -152,7 +162,7 @@ const FORM = {
 		)
 	},
 	family: {
-		title: 'Family  Information',
+		title: 'Family',
 		key: 'userProfile.family',
 		object: modelRepository.userProfile.family,
 		mapping: familyMapping,
@@ -184,9 +194,16 @@ const getObjectAndMapping = (page: string) => {
 
 export const RegisterForm = ({ navigation }: NavigationInjectedProps) => {
 	const logger = getLogger(RegisterForm);
+	const [isReadyForRender, setIsReadyForRender] = React.useState(false);
+
+	React.useEffect(() => {
+		InteractionManager.runAfterInteractions(() => {
+			setIsReadyForRender(true);
+		});
+	}, []);
+
 	const formPage = navigation.getParam('formPage', null) || FORM_PAGES[0];
 	let { object, mapping } = getObjectAndMapping(formPage ? formPage : FORM_PAGES[0]);
-
 	const update = (updatedObject: any) => {
 		const currentPageIndex = findIndex(FORM_PAGES, a => a === formPage);
 		const pageKey = FORM_PAGES[currentPageIndex];
@@ -219,12 +236,19 @@ export const RegisterForm = ({ navigation }: NavigationInjectedProps) => {
 	};
 	return (
 		<SafeAreaView style={GlobalStyle.expand}>
-			<EditableForm
-				navObject={object}
-				mapping={mapping}
-				updateAction={update}
-				updateLabel="Save"
-			/>
+			{!isReadyForRender && (
+				<View style={{ margin: 20 }}>
+					<Throbber size="large" />
+				</View>
+			)}
+			{isReadyForRender && (
+				<EditableForm
+					navObject={object}
+					mapping={mapping}
+					updateAction={update}
+					updateLabel="Save"
+				/>
+			)}
 		</SafeAreaView>
 	);
 };
@@ -233,6 +257,7 @@ RegisterForm['navigationOptions'] = ({ navigation }: any) => {
 	const formPage = navigation.getParam('formPage', null) || FORM_PAGES[0];
 	const { title } = getObjectAndMapping(formPage ? formPage : FORM_PAGES[0]);
 	return {
+		headerTitle: () => <CustomHeader title={title} btnLabel={'Login?'} />,
 		title
 	};
 };

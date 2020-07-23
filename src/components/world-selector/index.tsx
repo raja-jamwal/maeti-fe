@@ -203,11 +203,16 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 						marginRight: 16
 					}}
 				>
-					{/*<Text style={styles.title}>{title || 'No Title'}</Text>*/}
 					<Text style={styles.title}>Select {screen}</Text>
 					<View style={{ flex: 1 }} />
 					<TouchableBtn onPress={() => toggleShowModal()}>
-						<ModalCloseButton />
+						<View
+							style={{
+								padding: 12
+							}}
+						>
+							<Ionicons name="md-close" size={35} color={Color.offWhite} />
+						</View>
 					</TouchableBtn>
 				</View>
 				{!loading && (

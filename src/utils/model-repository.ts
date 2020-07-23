@@ -248,7 +248,7 @@ export class ModelRepository {
 	async save() {
 		this.createdOn = new Date().getTime();
 		setAccountRequestFromPendingAccount(this);
-		return getAccountRequest();
+		return getAccountRequest(new ModelRepository()) as Promise<ModelRepository>;
 	}
 
 	delete() {

@@ -19,6 +19,7 @@ import AboutField from '../about-field';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import DateTimeIos from '../date-time-ios/date-time-ios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { find } from 'lodash';
 
 interface IPROPS {
 	navObject: any;
@@ -144,6 +145,12 @@ export function EditableForm({ navObject, mapping, updateAction, updateLabel }: 
 		);
 	};
 
+	const renderChoiceField = (options: any, value: string) => {
+		const option = find(options, { value }) as any;
+		if (!option) return '';
+		return option.label;
+	};
+
 	const renderFields = () => {
 		const fields = Object.keys(mapping).map(field => {
 			const fieldDefinition = mapping[field];
@@ -217,7 +224,12 @@ export function EditableForm({ navObject, mapping, updateAction, updateLabel }: 
 				return (
 					<View key={field}>
 						<Value style={styles.fieldLabel}>{fieldDefinition.label}</Value>
-						<Value style={styles.fieldLabel}>{renderString}</Value>
+						{isChoiceField && (
+							<Value style={styles.fieldLabel}>
+								{renderChoiceField(choiceOptions, renderString)}
+							</Value>
+						)}
+						{!isChoiceField && <Value style={styles.fieldLabel}>{renderString}</Value>}
 					</View>
 				);
 			}
