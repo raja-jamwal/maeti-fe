@@ -4,6 +4,7 @@ import { AsyncStorage } from 'react-native';
 import { Updates } from 'expo';
 import { simpleAlert } from '../components/alert/index';
 import { getLogger } from './logger';
+import { CacheManager } from 'react-native-expo-image-cache';
 
 const moment = require('moment');
 const secondsInYear = 60 * 60 * 24 * 365;
@@ -35,6 +36,7 @@ export const logoutAccount = async () => {
 	await AsyncStorage.removeItem('token');
 	await AsyncStorage.removeItem('form_update_count');
 	await AsyncStorage.removeItem('new_pending_account');
+	await CacheManager.clearCache();
 	await Updates.reloadFromCache();
 };
 

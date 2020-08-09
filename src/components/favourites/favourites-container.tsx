@@ -19,6 +19,7 @@ import { getCurrentUserProfileId, isAccountPaid } from '../../store/reducers/acc
 import Color from '../../constants/Colors';
 import { Value } from '../text';
 import EmptyResult from '../empty-result/empty-result';
+import GlobalStyle from 'src/styles/global';
 
 interface IFavouriteContainerMapStateToProps {
 	userProfileId?: number;
@@ -113,22 +114,19 @@ class FavouritesContainer extends React.Component<IFavouriteContainerProps> {
 	render() {
 		const { fetching, isAccountPaid } = this.props;
 		const profiles = this.getFavouriteProfiles();
-		const style = styles.emptyContainer;
 		return (
-			<View style={style}>
-				{!this.isEmpty() && (
+			<View style={GlobalStyle.expand}>
+				<View style={GlobalStyle.expand}>
 					<VirtualProfileList
-						fetching={fetching}
+						fetching={!!fetching}
 						profileIdExtractor={this.profileIdExtractor}
 						profileNameExtractor={this.profileNameExtractor}
 						data={profiles}
-						// headerComponent={this.totalCount()}
 						handleMore={this._handleMore}
 						handleRefresh={() => this.handleRefresh()}
 						isAccountPaid={isAccountPaid}
 					/>
-				)}
-				{this.isEmpty() && !fetching && this.noFavourites()}
+				</View>
 			</View>
 		);
 	}
@@ -155,7 +153,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: IRootState) => {
 	const userProfileId = getCurrentUserProfileId(state);
 	const favouriteProfiles = getFavouriteProfiles(state);
-	const fetching = getFavouriteFetching(state);
+	// const fetching = getFavouriteFetching(state);
+	const fetching = state.favourites.fetching;
 	const totalFavourites = getTotalElements(state);
 	return {
 		userProfileId,

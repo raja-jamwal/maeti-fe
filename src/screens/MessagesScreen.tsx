@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import UserChannel from '../components/user-channel/index';
-import { isEmpty } from 'lodash';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { IRootState } from '../store/index';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -12,7 +11,6 @@ import { getCurrentUserProfileId } from '../store/reducers/self-profile-reducer'
 import { toArray, sortBy } from 'lodash';
 import Color from '../constants/Colors';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
-import EmptyResult from '../components/empty-result/empty-result';
 
 interface IMessageScreenMapStateToProps {
 	channels: Array<Channel>;
@@ -75,6 +73,8 @@ class MessagesScreen extends React.PureComponent<
 	}
 
 	renderChannel(channel: Channel) {
+		const isLatestMessageEmpty = !channel.latestMessage;
+		if (isLatestMessageEmpty) return null;
 		return (
 			<TouchableBtn
 				onPress={() => this.openChatView(channel.channelIdentity.id)}
@@ -106,29 +106,17 @@ class MessagesScreen extends React.PureComponent<
 
 	render() {
 		const { fetching } = this.props;
-		const { isFetchingMore } = this.state;
-		const loaderClasses = isFetchingMore
-			? [styles.loading, styles.loaderBottom]
-			: [styles.loading, styles.loaderTop];
-		const isEmptyInbox = isEmpty(this.getChannels());
 		return (
 			<View style={styles.container}>
-				{!isEmptyInbox && (
-					<FlatList
-						keyExtractor={this.keyExtractor}
-						data={this.getChannels()}
-						renderItem={({ item }) => this.renderChannel(item)}
-						onEndReached={this._handleMore}
-						onEndReachedThreshold={100}
-						refreshing={fetching}
-						onRefresh={() => this._handleRefresh()}
-					/>
-				)}
-				{isEmptyInbox && !fetching && (
-					<View style={styles.emptyInbox}>
-						<EmptyResult text="You don't have any conversation" />
-					</View>
-				)}
+				<FlatList
+					keyExtractor={this.keyExtractor}
+					data={this.getChannels()}
+					renderItem={({ item }) => this.renderChannel(item)}
+					onEndReached={this._handleMore}
+					onEndReachedThreshold={100}
+					refreshing={fetching}
+					onRefresh={() => this._handleRefresh()}
+				/>
 			</View>
 		);
 	}
@@ -137,8 +125,7 @@ class MessagesScreen extends React.PureComponent<
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		flexDirection: 'column',
-		marginTop: 8
+		flexDirection: 'column'
 	},
 	inboxEmoji: {
 		fontSize: 25,

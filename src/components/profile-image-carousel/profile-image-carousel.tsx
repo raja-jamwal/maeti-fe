@@ -5,6 +5,7 @@ import Layout from 'src/constants/Layout.js';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { getLogger } from '../../utils/logger';
 import { IS_IOS } from '../../utils';
+import { FastImage } from '../fast-image/fast-image';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
@@ -82,15 +83,7 @@ export default class ProfileImageCarousel extends React.PureComponent<IProps, IS
 		return (
 			<View>
 				<TouchableHighlight onPress={() => onPress && onPress()}>
-					<Image
-						loadingIndicatorSource={defaultPrimaryPhoto}
-						progressiveRenderingEnabled={true}
-						source={image}
-						style={[
-							styles.profileImage,
-							{ width: Layout.window.width, height: Layout.window.height / 2 }
-						]}
-					/>
+					<FastImage url={image.uri} thumbUrl="" />
 				</TouchableHighlight>
 			</View>
 		);
