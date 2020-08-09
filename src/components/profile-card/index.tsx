@@ -24,6 +24,7 @@ import TouchableBtn from '../touchable-btn/touchable-btn';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { simplePrompt } from '../alert/index';
 import { encodeProfileId } from '../../utils/profile-id-encoder';
+import { ProfessionTableIncomeOptions } from '../collapsible-table/profession-table';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
@@ -72,6 +73,13 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		const heightOption = find(ProfileTableHeightOptions, { value: height }) as any;
 		if (!heightOption) return '0';
 		return heightOption.label;
+	}
+
+	getAnnualIncome(income: number): string {
+		if (!income) return '0';
+		const incomeOption = find(ProfessionTableIncomeOptions, { value: income }) as any;
+		if (!incomeOption) return humanizeCurrency(income || 0, '₹');
+		return incomeOption.label;
 	}
 
 	reportProfile() {
@@ -181,7 +189,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 								/>
 							</TouchableBtn>
 						)}
-						<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
+						{/* <View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 							<Ionicons
 								style={styles.profileActionIcon}
 								name="md-star-outline"
@@ -189,8 +197,12 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 								color={Colors.offWhite}
 							/>
 							<Value>Premium Profile</Value>
-						</View>
+						</View> */}
 						{/*<Text style={styles.premiumProfileText}>Premium Profile</Text>*/}
+						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
+							{userProfileName || 'unknown name'} - U
+							{this.userMagazineId(userProfile.id)}
+						</Text>
 						<View style={GlobalStyles.expand} />
 						{/* {!isSelfProfile && showCarousel && (
 							<TouchableOpacity onPress={() => this.reportProfile()}>
@@ -208,12 +220,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 							</TouchableBtn>
 						)}
 					</View>
-					<View>
-						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
-							{userProfileName || 'unknown name'} - U
-							{this.userMagazineId(userProfile.id)}
-						</Text>
-					</View>
+
 					<View style={[GlobalStyles.row, GlobalStyles.alignCenter]}>
 						{!!userProfile.dob && (
 							<Value>Age {calculateAge(userProfile.dob || 0)}</Value>
@@ -238,7 +245,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						)}
 						{!!profession.annualIncome && (
 							<Value>
-								{humanizeCurrency(profession.annualIncome || 0, '₹')}
+								{this.getAnnualIncome(profession.annualIncome)}
 								/Year
 							</Value>
 						)}

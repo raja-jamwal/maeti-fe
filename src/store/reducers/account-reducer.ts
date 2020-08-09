@@ -7,12 +7,14 @@ import { addProfile } from './user-profile-reducer';
 import { fetchTags } from './tag-reducer';
 import { addSelfProfile } from './self-profile-reducer';
 import { ApiRequest, getCurrentUnixEpoch } from '../../utils/index';
-import { Notifications } from 'expo';
+import { Notifications, Updates } from 'expo';
 import * as Permissions from 'expo-permissions';
 import { IRootState } from '../index';
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
 import { getConfig } from '../../config/config';
+import { AsyncStorage } from 'react-native';
+import { modelRepository } from '../../utils/model-repository';
 
 export interface IAccountState extends ILocalAccount {}
 
@@ -155,6 +157,18 @@ export const logAccount = function() {
 		logger.log('log account', otaVersion);
 		return ApiRequest(API.ACCOUNT.LOG, { ota: otaVersion });
 	};
+};
+
+export const fetchAccountByPendingRequestId = async function(id: string) {
+	if (!id) return;
+	const account = (await ApiRequest(API.ACCOUNT.GET_BY_PENDING_REQUEST_ID, { id })) as Account;
+	if (!account || !account.token) {
+		throw new Error('no_account');
+	}
+	const token = account.token;
+	await AsyncStorage.setItem('token', token);
+	modelRepository.delete();
+	await Updates.reloadFromCache();
 };
 
 export const fetchAccountByToken = function(token: string, skipPushingToken?: boolean) {

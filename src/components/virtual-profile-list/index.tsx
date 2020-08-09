@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import ConnectedProfileCard from '../profile-card/connected-profile';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { MASKED_PROFILE_NAME } from '../../constants/index';
+import GlobalStyle from 'src/styles/global';
 interface IVirtualProfileListProps {
 	fetching?: boolean;
 	profileIdExtractor: (item: any) => number;
@@ -56,16 +57,13 @@ class VirtualProfileList extends React.PureComponent<
 
 	render() {
 		const { fetching, profileIdExtractor, data, headerComponent, handleRefresh } = this.props;
-		const loaderClasses = [styles.loading, styles.loaderTop];
-
 		console.log('re-render flat-list');
-
 		return (
-			<View>
+			<View style={GlobalStyle.expand}>
 				<FlatList
 					keyExtractor={item => profileIdExtractor(item).toString()}
 					data={data}
-					// initialNumToRender={5}
+					initialNumToRender={5}
 					ListHeaderComponent={headerComponent || null}
 					renderItem={({ item }) => this.renderProfileCard(item)}
 					onEndReached={this._handleMore}
@@ -73,11 +71,6 @@ class VirtualProfileList extends React.PureComponent<
 					refreshing={fetching}
 					onRefresh={handleRefresh}
 				/>
-				{/*{!!fetching && (
-					<View style={loaderClasses}>
-						<Throbber />
-					</View>
-				)}*/}
 			</View>
 		);
 	}

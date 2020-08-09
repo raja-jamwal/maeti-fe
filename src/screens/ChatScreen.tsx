@@ -8,7 +8,7 @@ import { Channel, Message, UserProfile } from '../store/reducers/account-definat
 import { fetchMessages, postMessage } from '../store/reducers/message-reducer';
 import { getToUserProfileInChannel } from '../store/reducers/channel-reducer';
 import { toArray, map, keys, sortBy, head, isEmpty } from 'lodash';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, Keyboard } from 'react-native';
 import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
 import { getLogger } from '../utils/logger';
@@ -55,6 +55,7 @@ interface IChatScreenMapDispatchToProps {
 interface IChatScreenState {
 	channelId?: number;
 	messages: IMessage[];
+	shouldShowProfileSummary: boolean;
 }
 
 type IChatScreenProps = NavigationInjectedProps &
@@ -71,10 +72,12 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
-			messages: [] as IMessage[]
+			messages: [] as IMessage[],
+			shouldShowProfileSummary: true
 		};
 		this._hasMore = this._hasMore.bind(this);
 		this.onPressAvatar = this.onPressAvatar.bind(this);
+		this.toggleShouldShowProfileSummary = this.toggleShouldShowProfileSummary.bind(this);
 	}
 
 	mayBeLoadMessage() {
@@ -99,6 +102,21 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 				)
 			});
 		}
+	}
+	toggleShouldShowProfileSummary() {
+		this.setState({
+			shouldShowProfileSummary: !this.state.shouldShowProfileSummary
+		});
+		this.logger.log('setProfileSummary', this.state.shouldShowProfileSummary);
+	}
+
+	componentDidMount() {
+		Keyboard.addListener('keyboardDidShow', this.toggleShouldShowProfileSummary);
+		Keyboard.addListener('keyboardDidHide', this.toggleShouldShowProfileSummary);
+	}
+	componentWillUnmount() {
+		Keyboard.removeListener('keyboardDidShow', this.toggleShouldShowProfileSummary);
+		Keyboard.removeListener('keyboardDidHide', this.toggleShouldShowProfileSummary);
 	}
 
 	componentWillMount() {
@@ -169,10 +187,11 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 
 	render() {
 		const { currentUserProfile, fetching, isLastPage, toUserProfile } = this.props;
+		const { shouldShowProfileSummary } = this.state;
 		if (!currentUserProfile) return;
 		return (
 			<SafeAreaView style={{ flexDirection: 'column', flex: 1 }}>
-				<ProfileSummary userProfile={toUserProfile} />
+				{!!shouldShowProfileSummary && <ProfileSummary userProfile={toUserProfile} />}
 				<GiftedChat
 					messages={this.state.messages}
 					onSend={messages => this.onSend(messages)}

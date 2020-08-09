@@ -23,12 +23,10 @@ export interface Country extends WorldEntity {
 }
 
 export interface DAO {
-	// TODO: need to revisit this sometime
-	// all DAOs don't have id field
-	id: number;
+	id?: number;
 	createdOn: number;
 	updatedOn: number;
-	deletedOn: number;
+	deletedOn?: number;
 }
 
 export interface Account extends DAO {
@@ -110,17 +108,17 @@ export interface Education extends DAO {
 export interface Profession extends DAO {
 	occupation: string;
 	workingField: string;
-	lengthOfEmployment: number;
+	lengthOfEmployment: number | null;
 	company: string;
 	designation: string;
 	currency: string;
-	monthlyIncome: number;
-	annualIncome: number;
+	monthlyIncome: number | null;
+	annualIncome: number | null;
 	loans: Array<Tag>;
 	otherLoans: string;
-	workCountry: Country;
-	workState: Region;
-	workCity: City;
+	workCountry: Country | null;
+	workState: Region | null;
+	workCity: City | null;
 }
 
 export interface Horoscope extends DAO {
@@ -167,7 +165,7 @@ export interface OtherDetails extends DAO {
 export interface ContactInformation extends DAO {
 	phoneNumber: string;
 	address: string;
-	pin_code: string;
+	pinCode: string;
 	residentialCity: string;
 	mobileNumber1: string;
 	mobileNumber1Of: string;
@@ -183,7 +181,7 @@ export interface ContactInformation extends DAO {
 }
 
 export interface UserReference extends DAO {
-	relativeMame: string;
+	relativeName: string;
 	relationWithMember: string;
 	contactNumber: string;
 	address: string;
@@ -201,22 +199,22 @@ export interface Family extends DAO {
 	motherDesignation: string;
 	motherMaternalSurname: string;
 	motherNativePlace: string;
-	noOfBrothers: number;
-	brothersMarried: number;
-	noOfSisters: number;
-	sistersMarried: number;
+	noOfBrothers: number | null;
+	brothersMarried: number | null;
+	noOfSisters: number | null;
+	sistersMarried: number | null;
 	aboutFamily: string;
-	familyCountry: Country;
-	familyState: Region;
-	familyCity: City;
+	familyCountry: Country | null;
+	familyState: Region | null;
+	familyCity: City | null;
 	interCasteParents: boolean;
 	parentsLivingSeperately: boolean;
 	familyOtherInformation: FamilyOtherInformation;
 }
 
 export interface FamilyOtherInformation extends DAO {
-	familyValues: string;
-	familyFinancialBackground: string;
+	familyValues: Array<Tag>;
+	familyFinancialBackground: Array<Tag>;
 	familyAnnualIncome: string;
 	home: string;
 	homeType: Array<Tag>;
@@ -224,7 +222,7 @@ export interface FamilyOtherInformation extends DAO {
 	realEstate: Array<Tag>;
 	vehicle: boolean;
 	vehicleType: Array<Tag>;
-	loans: Array<Tag>;
+	loan: Array<Tag>;
 	otherLoans: string;
 	familyMedicalHistory: string;
 }
@@ -240,12 +238,12 @@ export interface Preference extends DAO {
 	mediumOfEducation: string;
 	workingPartner: string;
 	occupation: string;
-	workCountry: Country;
-	workState: Region;
-	workCity: City;
-	parentCountry: Country;
-	parentState: Region;
-	parentCity: City;
+	workCountry: Country | null;
+	workState: Region | null;
+	workCity: City | null;
+	parentCountry: Country | null;
+	parentState: Region | null;
+	parentCity: City | null;
 	diet: string;
 	smoke: string;
 	drink: string;

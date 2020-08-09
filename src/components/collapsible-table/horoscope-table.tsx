@@ -20,74 +20,74 @@ interface IHoroscopeTableMapDispatchToProps {
 	updateHoroscope: () => any;
 }
 
+export const HoroscopeMapping = {
+	caste: {
+		label: 'Caste',
+		tagType: 'caste',
+		type: 'tag-array'
+	},
+	subCaste: {
+		label: 'Sub Caste',
+		tagType: 'sub_caste',
+		type: 'tag-array'
+	},
+	birthPlace: {
+		label: 'Birth Place',
+		type: 'string'
+	},
+	birthTime: {
+		label: 'Birth Time',
+		type: 'date-time'
+	},
+	rashi: {
+		label: 'Rashi',
+		type: 'string'
+	},
+	nakshatra: {
+		label: 'Nakshatra',
+		type: 'string'
+	},
+	charan: {
+		label: 'Charan',
+		type: 'string'
+	},
+	gan: {
+		label: 'Gan',
+		type: 'string'
+	},
+	nadi: {
+		label: 'Nadi',
+		type: 'string'
+	},
+	mangal: {
+		label: 'Mangal',
+		type: 'string'
+	},
+	gotra: {
+		label: 'Gotra',
+		type: 'string'
+	},
+	wantToSeePatrika: {
+		label: 'Want to see patrika',
+		type: 'choice',
+		choice: {
+			options: [
+				{
+					label: 'Yes',
+					value: true
+				},
+				{
+					label: 'No',
+					value: false
+				}
+			]
+		}
+	}
+};
+
 class HoroscopeTable extends React.Component<
 	IHoroscopeTableProps & IHoroscopeTableMapDispatchToProps & IHoroscopeTableMapStateToProps
 > {
-	mappings = {
-		caste: {
-			label: 'Caste',
-			tagType: 'caste',
-			type: 'tag-array'
-		},
-		subCaste: {
-			label: 'Sub Caste',
-			tagType: 'sub_caste',
-			type: 'tag-array'
-		},
-		birthPlace: {
-			label: 'Birth Place',
-			type: 'string'
-		},
-		birthTime: {
-			label: 'Birth Time',
-			type: 'date-time'
-		},
-		rashi: {
-			label: 'Rashi',
-			type: 'string'
-		},
-		nakshatra: {
-			label: 'Nakshatra',
-			type: 'string'
-		},
-		charan: {
-			label: 'Charan',
-			type: 'string'
-		},
-		gan: {
-			label: 'Gan',
-			type: 'string'
-		},
-		nadi: {
-			label: 'Nadi',
-			type: 'string'
-		},
-		mangal: {
-			label: 'Mangal',
-			type: 'string'
-		},
-		gotra: {
-			label: 'Gotra',
-			type: 'string'
-		},
-		wantToSeePatrika: {
-			label: 'Want to see patrika',
-			type: 'choice',
-			choice: {
-				options: [
-					{
-						label: 'Yes',
-						value: true
-					},
-					{
-						label: 'No',
-						value: false
-					}
-				]
-			}
-		}
-	};
-
 	render() {
 		const { horoscope, userProfileId, updateHoroscope, editable } = this.props;
 		if (!horoscope) return null;
@@ -95,7 +95,7 @@ class HoroscopeTable extends React.Component<
 			<CollapsibleTable
 				title="Horoscope and Religious information"
 				object={horoscope}
-				mapping={this.mappings}
+				mapping={HoroscopeMapping}
 				updateAction={updateHoroscope}
 				userProfileId={userProfileId}
 				editable={editable}

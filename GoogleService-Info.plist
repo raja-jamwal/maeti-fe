@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>70507161694-sdpevh75i0go4b7g82mg1d0jbl84dper.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.70507161694-sdpevh75i0go4b7g82mg1d0jbl84dper</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>70507161694-sflrpel0p93f782f6tcbm38a2r6tljkn.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDmHI_cpBqqBr_BZ9UBTPLUF-aDNqvAJKI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>70507161694</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>in.datagrids.matrimony</string>
+	<key>PROJECT_ID</key>
+	<string>matrimony-datagrids</string>
+	<key>STORAGE_BUCKET</key>
+	<string>matrimony-datagrids.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:70507161694:ios:c6fcac9f83a463f0782ccf</string>
+	<key>DATABASE_URL</key>
+	<string>https://matrimony-datagrids.firebaseio.com</string>
+</dict>
+</plist>
