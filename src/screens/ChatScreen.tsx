@@ -77,6 +77,7 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		};
 		this._hasMore = this._hasMore.bind(this);
 		this.onPressAvatar = this.onPressAvatar.bind(this);
+		this.toggleShouldShowProfileSummary = this.toggleShouldShowProfileSummary.bind(this);
 	}
 
 	mayBeLoadMessage() {
@@ -102,24 +103,20 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 			});
 		}
 	}
+	toggleShouldShowProfileSummary() {
+		this.setState({
+			shouldShowProfileSummary: !this.state.shouldShowProfileSummary
+		});
+		console.log('ProfileSummary_set', this.state.shouldShowProfileSummary);
+	}
 
 	componentDidMount() {
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-			this.setState({
-				shouldShowProfileSummary: false
-			});
-			console.log('ProfileSummary_set_false');
-		});
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-			this.setState({
-				shouldShowProfileSummary: true
-			});
-			console.log('ProfileSummary_set_true');
-		});
+		Keyboard.addListener('keyboardDidShow', this.toggleShouldShowProfileSummary);
+		Keyboard.addListener('keyboardDidHide', this.toggleShouldShowProfileSummary);
 	}
 	componentWillUnmount() {
-		this.keyboardDidShowListener.remove();
-		this.keyboardDidHideListener.remove();
+		Keyboard.removeListener('keyboardDidShow', this.toggleShouldShowProfileSummary);
+		Keyboard.removeListener('keyboardDidHide', this.toggleShouldShowProfileSummary);
 	}
 
 	componentWillMount() {
@@ -190,12 +187,11 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 
 	render() {
 		const { currentUserProfile, fetching, isLastPage, toUserProfile } = this.props;
+		const { shouldShowProfileSummary } = this.state;
 		if (!currentUserProfile) return;
 		return (
 			<SafeAreaView style={{ flexDirection: 'column', flex: 1 }}>
-				{this.state.shouldShowProfileSummary && (
-					<ProfileSummary userProfile={toUserProfile} />
-				)}
+				{!!shouldShowProfileSummary && <ProfileSummary userProfile={toUserProfile} />}
 				<GiftedChat
 					messages={this.state.messages}
 					onSend={messages => this.onSend(messages)}
