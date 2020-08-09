@@ -23,13 +23,13 @@ const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 		return {};
 	}
 
-	const fallbackUserProfile = accountData.userProfile;
-
 	const userProfile =
 		(ownProps.userProfileId &&
 			state.userProfiles &&
 			state.userProfiles[ownProps.userProfileId]) ||
-		fallbackUserProfile;
+		null;
+
+	if (!userProfile) return {};
 
 	const currentProfileId = getCurrentUserProfileId(state);
 

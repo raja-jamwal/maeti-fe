@@ -1,5 +1,5 @@
 {
-	"server": "http://matri.prod.datagrids.in",
+	"server": "http://be.matri.datagrids.in:8080",
 	"sentry_dsn": "https://eadb3b19ac5e49fa822d16d3d050aaa0@sentry.io/1832459",
-	"ota_version": 17
+	"ota_version": 18
 }

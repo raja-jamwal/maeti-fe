@@ -2,10 +2,9 @@ import * as React from 'react';
 import { Image, CacheManager } from 'react-native-expo-image-cache';
 import Layout from 'src/constants/Layout.js';
 import { StyleSheet } from 'react-native';
-import { getLogger } from '../../utils/logger';
+const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
 export function FastImage({ url, thumbUrl } = { url: '', thumbUrl: '' }) {
-	const logger = getLogger(FastImage);
 	const [imageUrl, setImageUrl] = React.useState(url);
 	React.useEffect(() => {
 		CacheManager.get(url, {})
@@ -16,8 +15,14 @@ export function FastImage({ url, thumbUrl } = { url: '', thumbUrl: '' }) {
 				}
 			});
 	}, []);
-	logger.log('url', url);
-	logger.log('imageUrl', imageUrl);
+	// we'll use it later
+	const additionalParams: any = {};
+	if (thumbUrl) {
+		additionalParams.preview = {
+			uri: defaultPrimaryPhoto.uri,
+			...{ width: Layout.window.width, height: Layout.window.height / 2 }
+		};
+	}
 	return (
 		<Image
 			style={[
@@ -25,14 +30,14 @@ export function FastImage({ url, thumbUrl } = { url: '', thumbUrl: '' }) {
 				{ width: Layout.window.width, height: Layout.window.height / 2 }
 			]}
 			uri={imageUrl}
+			tint="dark"
+			{...additionalParams}
 		/>
 	);
 }
 
 const styles = StyleSheet.create({
 	profileImage: {
-		width: 100,
-		height: 200,
 		resizeMode: 'cover'
 	}
 });
