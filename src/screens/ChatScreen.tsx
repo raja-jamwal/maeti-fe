@@ -107,7 +107,7 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		this.setState({
 			shouldShowProfileSummary: !this.state.shouldShowProfileSummary
 		});
-		console.log('ProfileSummary_set', this.state.shouldShowProfileSummary);
+		this.logger.log('setProfileSummary', this.state.shouldShowProfileSummary);
 	}
 
 	componentDidMount() {
