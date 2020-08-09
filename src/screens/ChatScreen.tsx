@@ -8,7 +8,7 @@ import { Channel, Message, UserProfile } from '../store/reducers/account-definat
 import { fetchMessages, postMessage } from '../store/reducers/message-reducer';
 import { getToUserProfileInChannel } from '../store/reducers/channel-reducer';
 import { toArray, map, keys, sortBy, head, isEmpty } from 'lodash';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, Keyboard } from 'react-native';
 import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
 import { getLogger } from '../utils/logger';
@@ -55,6 +55,7 @@ interface IChatScreenMapDispatchToProps {
 interface IChatScreenState {
 	channelId?: number;
 	messages: IMessage[];
+	shouldShowProfileSummary: boolean;
 }
 
 type IChatScreenProps = NavigationInjectedProps &
@@ -71,7 +72,8 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
-			messages: [] as IMessage[]
+			messages: [] as IMessage[],
+			shouldShowProfileSummary: true
 		};
 		this._hasMore = this._hasMore.bind(this);
 		this.onPressAvatar = this.onPressAvatar.bind(this);
@@ -99,6 +101,25 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 				)
 			});
 		}
+	}
+
+	componentDidMount() {
+		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			this.setState({
+				shouldShowProfileSummary: false
+			});
+			console.log('ProfileSummary_set_false');
+		});
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+			this.setState({
+				shouldShowProfileSummary: true
+			});
+			console.log('ProfileSummary_set_true');
+		});
+	}
+	componentWillUnmount() {
+		this.keyboardDidShowListener.remove();
+		this.keyboardDidHideListener.remove();
 	}
 
 	componentWillMount() {
@@ -172,7 +193,9 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		if (!currentUserProfile) return;
 		return (
 			<SafeAreaView style={{ flexDirection: 'column', flex: 1 }}>
-				<ProfileSummary userProfile={toUserProfile} />
+				{this.state.shouldShowProfileSummary && (
+					<ProfileSummary userProfile={toUserProfile} />
+				)}
 				<GiftedChat
 					messages={this.state.messages}
 					onSend={messages => this.onSend(messages)}
