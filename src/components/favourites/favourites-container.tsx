@@ -153,8 +153,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: IRootState) => {
 	const userProfileId = getCurrentUserProfileId(state);
 	const favouriteProfiles = getFavouriteProfiles(state);
-	// const fetching = getFavouriteFetching(state);
-	const fetching = state.favourites.fetching;
+	const fetching = getFavouriteFetching(state);
 	const totalFavourites = getTotalElements(state);
 	return {
 		userProfileId,
