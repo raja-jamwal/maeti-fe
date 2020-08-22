@@ -53,9 +53,11 @@ export const ProfileSummary = withNavigation(
 			ApiRequest(API.PAID_CONTACT.GET, {
 				fromUserProfileId: currentUserProfileId,
 				toUserProfileId: userProfile.id
-			}).then((response: any) => {
-				setPaidContact(response.contact || '');
-			});
+			})
+				.then((response: any) => {
+					setPaidContact(response.contact || '');
+				})
+				.catch(_er => {});
 		}, []);
 		return (
 			<View style={styles.container}>

@@ -13,6 +13,7 @@ import Colors from '../constants/Colors';
 import { getSelfUserProfile } from '../store/reducers/self-profile-reducer';
 import { getLogger } from '../utils/logger';
 import { ProfileSummary } from '../components/profile-summary';
+import { IS_IOS } from '../utils';
 
 const messageToChatMessage = (message: Message): IChatMessage => {
 	return {
@@ -191,7 +192,7 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		if (!currentUserProfile) return;
 		return (
 			<SafeAreaView style={{ flexDirection: 'column', flex: 1 }}>
-				{!!shouldShowProfileSummary && (
+				{(!!shouldShowProfileSummary || IS_IOS) && (
 					<ProfileSummary
 						userProfile={toUserProfile}
 						currentUserProfileId={currentUserProfile.id}
