@@ -17,6 +17,7 @@ import { addSentInterest } from '../../store/reducers/interest-reducer';
 import { Value } from '../text';
 import ConnectedPurchaseButton from '../purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import { simpleAlert } from '../alert/index';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
@@ -71,7 +72,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 
 	async updateInterestState() {
 		const { currentUserProfileId, userProfileId } = this.props;
-		return; // open messaging for everyone for limited while
+		// return; // open messaging for everyone for limited while
 		this.setState({
 			fetchingInterest: true
 		});
@@ -262,22 +263,29 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 
 		// fetch channel from API
 		try {
-			channel = await ApiRequest(API.CHANNEL.GET, {
+			channel = (await ApiRequest(API.CHANNEL.GET, {
 				fromUserId: currentUserProfileId,
 				toUserId: userProfileId
-			});
+			})) as Channel;
 		} catch (er) {
 			this.logger.log('No channel exists for these 2 users');
 		}
 
 		if (!channel) {
 			try {
-				channel = await ApiRequest(API.CHANNEL.SAVE, {
+				channel = (await ApiRequest(API.CHANNEL.SAVE, {
 					fromUserId: currentUserProfileId,
 					toUserId: userProfileId
-				});
+				})) as Channel;
 			} catch (er) {
+				this.logger.log(er);
 				this.logger.log('Unable to create channel for the users');
+				if (er.message === 'invalid_balance') {
+					simpleAlert(
+						'Out of contacts balance',
+						"You've exhausted all your contacts, Please renew your account to view more contacts"
+					);
+				}
 			}
 		}
 
@@ -298,14 +306,13 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 		return (
 			<View style={styles.row}>
 				{interestState === InterestStates.SHOW_INTEREST && (
-					<ConnectedPurchaseButton label="Verify account to send Interest">
-						<TouchableBtn style={{ flex: 1 }} onPress={() => this.showInterest()}>
-							<View style={styles.btnContainer}>
-								<Ionicons name="md-flash" size={20} color="white" />
-								<Text style={styles.text}>Show Interest</Text>
-							</View>
-						</TouchableBtn>
-					</ConnectedPurchaseButton>
+					<TouchableBtn style={{ flex: 1 }} onPress={() => this.showInterest()}>
+						<View style={styles.btnContainer}>
+							<Ionicons name="md-flash" size={20} color="white" />
+							<Text style={styles.text}>Show Interest</Text>
+							<Text style={styles.freeLabel}>FREE</Text>
+						</View>
+					</TouchableBtn>
 				)}
 				{interestState !== InterestStates.SHOW_INTEREST &&
 					interestState !== InterestStates.NONE && (
@@ -331,17 +338,28 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 						<View style={styles.btnContainer}>
 							<Ionicons name="md-chatboxes" size={20} color="white" />
 							<Text style={styles.text}>Message</Text>
+							<Text style={styles.freeLabel}>FREE</Text>
 						</View>
 					</TouchableBtn>
 				)}
-				{/* open messaing for all */}
-				{interestState === InterestStates.NONE && (
-					<TouchableBtn style={{ flex: 1 }} onPress={() => this.startMessaging()}>
-						<View style={styles.btnContainer}>
-							<Ionicons name="md-chatboxes" size={20} color="white" />
-							<Text style={styles.text}>Message</Text>
-						</View>
-					</TouchableBtn>
+				{/* show if you're are still at show interest or at pending state */}
+				{(interestState === InterestStates.SHOW_INTEREST ||
+					interestState === InterestStates.SENT_PENDING) && (
+					<ConnectedPurchaseButton label="View Contact">
+						<TouchableBtn
+							style={{ flex: 1 }}
+							onPress={() => {
+								// confirm with user first
+								//
+								this.startMessaging();
+							}}
+						>
+							<View style={styles.btnContainer}>
+								<Ionicons name="md-chatboxes" size={20} color="white" />
+								<Text style={styles.text}>View Contact</Text>
+							</View>
+						</TouchableBtn>
+					</ConnectedPurchaseButton>
 				)}
 			</View>
 		);
@@ -434,6 +452,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	freeLabel: {
+		color: 'white',
+		padding: 2,
+		fontSize: 8,
+		fontWeight: 'bold'
 	}
 });
 

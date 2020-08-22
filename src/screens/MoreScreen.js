@@ -99,6 +99,7 @@ class MoreScreen extends React.Component {
 		const payment = account.payment;
 		const isPaid = payment.selectedPackage === 'paid';
 		const otaVersion = getConfig().ota_version || 0;
+		const supportNumber = getConfig().support_number || '';
 		return (
 			<ScrollView style={styles.container}>
 				<SettingTitle label={'Payments'} />
@@ -154,7 +155,7 @@ class MoreScreen extends React.Component {
 					<SettingDivider />
 					<SettingRow label="Support" value="support@datagrids.in" />
 					<SettingDivider />
-					<SettingRow label="Phone Support" value="+91-73877-78673" />
+					<SettingRow label="Phone Support" value={supportNumber} />
 					{isCeMode && <SettingRow label="CE mode" value="activated" />}
 				</SettingBlock>
 

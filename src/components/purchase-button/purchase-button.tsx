@@ -40,16 +40,19 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 			<TouchableBtn style={{ flex: 1 }} onPress={() => this.toggleStartPayment()}>
 				<View style={styles.contactActionBtn}>
 					<Text style={styles.btnLabel}>{label}</Text>
-					{false && (
+					<Text style={styles.paidLabel}>PAID</Text>
+					{true && (
 						<ConnectedPaymentModal
 							show={showPayment}
 							requestClose={() => this.toggleStartPayment()}
 						/>
 					)}
-					<ConnectedVerificationModal
-						show={showPayment}
-						requestClose={() => this.toggleStartPayment()}
-					/>
+					{false && (
+						<ConnectedVerificationModal
+							show={showPayment}
+							requestClose={() => this.toggleStartPayment()}
+						/>
+					)}
 				</View>
 			</TouchableBtn>
 		);
@@ -75,6 +78,12 @@ const styles = StyleSheet.create({
 	btnLabel: {
 		color: 'white',
 		padding: 2
+	},
+	paidLabel: {
+		color: 'white',
+		padding: 2,
+		fontSize: 8,
+		fontWeight: 'bold'
 	}
 });
 
