@@ -18,7 +18,6 @@ interface IPROPS {
 
 export const ProfileSummary = withNavigation(
 	({ userProfile, navigation, currentUserProfileId }: IPROPS & NavigationInjectedProps) => {
-		console.log('ProfileSummary ', currentUserProfileId);
 		if (!userProfile || !currentUserProfileId) return null;
 		const userProfileImage =
 			(!isEmpty(userProfile.photo) && head(userProfile.photo).url) || undefined;
