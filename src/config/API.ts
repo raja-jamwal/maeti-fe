@@ -159,5 +159,9 @@ export const API = {
 		REPORT: `${config.server}/api/block.report`,
 		LIST: `${config.server}/api/block.list`,
 		UNBLOCK: `${config.server}/api/unblock`
+	},
+
+	PAID_CONTACT: {
+		GET: `${config.server}/api/paid.contact.get`
 	}
 };

@@ -191,7 +191,12 @@ class ChatScreen extends React.Component<IChatScreenProps, IChatScreenState> {
 		if (!currentUserProfile) return;
 		return (
 			<SafeAreaView style={{ flexDirection: 'column', flex: 1 }}>
-				{!!shouldShowProfileSummary && <ProfileSummary userProfile={toUserProfile} />}
+				{!!shouldShowProfileSummary && (
+					<ProfileSummary
+						userProfile={toUserProfile}
+						currentUserProfileId={currentUserProfile.id}
+					/>
+				)}
 				<GiftedChat
 					messages={this.state.messages}
 					onSend={messages => this.onSend(messages)}

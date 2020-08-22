@@ -1,21 +1,25 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Linking } from 'react-native';
 import { UserProfile } from '../../store/reducers/account-defination';
 import GlobalStyle from '../../styles/global';
 import { Avatar } from '../avatar';
 import { Value } from '../text';
 import { isEmpty, head, get } from 'lodash';
-import { calculateAge, humanizeCurrency, formatDate } from '../../utils';
+import { calculateAge, humanizeCurrency, formatDate, ApiRequest } from '../../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import { API } from '../../config/API';
+import { Ionicons } from '@expo/vector-icons';
 
 interface IPROPS {
 	userProfile: UserProfile;
+	currentUserProfileId?: number;
 }
 
 export const ProfileSummary = withNavigation(
-	({ userProfile, navigation }: IPROPS & NavigationInjectedProps) => {
-		if (!userProfile) return null;
+	({ userProfile, navigation, currentUserProfileId }: IPROPS & NavigationInjectedProps) => {
+		console.log('ProfileSummary ', currentUserProfileId);
+		if (!userProfile || !currentUserProfileId) return null;
 		const userProfileImage =
 			(!isEmpty(userProfile.photo) && head(userProfile.photo).url) || undefined;
 		const userProfileName = userProfile.fullName || 'unknown name';
@@ -32,12 +36,28 @@ export const ProfileSummary = withNavigation(
 			.map(o => o && o.name)
 			.filter(o => !!o)
 			.join(', ');
+
 		const openProfile = () => {
 			navigation.push('ProfileScreen', {
 				userProfileId: userProfile.id,
 				profileName: userProfileName
 			});
 		};
+
+		const callNumber = (phoneNumber: string) => {
+			Linking.openURL(`tel:${phoneNumber}`);
+		};
+
+		const [paidContact, setPaidContact] = React.useState('');
+
+		React.useEffect(() => {
+			ApiRequest(API.PAID_CONTACT.GET, {
+				fromUserProfileId: currentUserProfileId,
+				toUserProfileId: userProfile.id
+			}).then((response: any) => {
+				setPaidContact(response.contact || '');
+			});
+		}, []);
 		return (
 			<View style={styles.container}>
 				<View style={GlobalStyle.row}>
@@ -91,10 +111,28 @@ export const ProfileSummary = withNavigation(
 								<Value>- {formatDate(userProfile.lastLogin / 1000)}</Value>
 							</View>
 						)}
-						<View>
-							<Value style={[GlobalStyle.bold]}>Make sure you trust the person</Value>
-							<Value style={[GlobalStyle.bold]}>Before sharing your contact</Value>
-						</View>
+						{!!paidContact && (
+							<TouchableOpacity onPress={() => callNumber(paidContact)}>
+								<View style={GlobalStyle.row}>
+									<Ionicons
+										name="md-call"
+										size={16}
+										style={{ paddingRight: 8 }}
+									/>
+									<Text>+{paidContact}</Text>
+								</View>
+							</TouchableOpacity>
+						)}
+						{!paidContact && (
+							<View>
+								<Value style={[GlobalStyle.bold]}>
+									Make sure you trust the person
+								</Value>
+								<Value style={[GlobalStyle.bold]}>
+									Before sharing your contact
+								</Value>
+							</View>
+						)}
 					</View>
 				</View>
 			</View>
