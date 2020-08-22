@@ -13,7 +13,11 @@ import {
 import { WebView } from 'react-native-webview';
 import { getRazor } from '../../utils/payment-wrapper';
 import { connect } from 'react-redux';
-import { fetchAccount, getAccount } from '../../store/reducers/account-reducer';
+import {
+	fetchAccount,
+	getAccount,
+	fetchAccountByToken
+} from '../../store/reducers/account-reducer';
 import { Account, Order } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store';
 import { getLogger } from '../../utils/logger';
@@ -30,6 +34,8 @@ import { noop, includes, get } from 'lodash';
 import { getConfig } from '../../config/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { simpleAlert } from '../alert/index';
+import { readToken } from '../../utils/index';
+import { Throbber } from '../throbber/throbber';
 
 const icon = require('src/assets/images/icon.png');
 
@@ -51,7 +57,7 @@ interface IPaymentModalState {
 }
 
 interface IPaymentModalMapDispatch {
-	fetchAccount: (id: string, skipPushingToken: boolean) => any;
+	fetchAccountByToken: (token: string, skipPushingToken: boolean) => any;
 }
 
 type IPaymentModalProps = IPaymentModalMapStateToProps &
@@ -165,7 +171,8 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 	];
 
 	async handleNavigationChange(e: any) {
-		const { fetchAccount, account } = this.props;
+		if (!!e.loading) return;
+		const { fetchAccountByToken, account } = this.props;
 		const { pgOrderId } = this.state;
 
 		this.logger.log(e.url);
@@ -174,15 +181,17 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 
 		if (
 			!e.url.startsWith('data:text/html') &&
-			e.url.includes('order.success') &&
+			e.url.includes('order.done') &&
 			!this.orderProcessing
 		) {
 			this.logger.log('try to mark as paid');
 			this.orderProcessing = true;
 			try {
-				const updatedAccount = (await fetchAccount(account.id as any, true)) as Account;
-				const planPackage = get(updatedAccount, 'payment.selectedPackage', '');
-				if (!planPackage.contains('paid')) {
+				const token = await readToken();
+				if (!token) return;
+				const updatedAccount = (await fetchAccountByToken(token, true)) as Account;
+				const planPackage = updatedAccount.payment.selectedPackage;
+				if (planPackage != 'paid') {
 					return simpleAlert('Error', 'Unable to process your payment', () => {
 						this.orderProcessing = false;
 						this.requestClose();
@@ -396,6 +405,8 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 								onMessage={e => console.log(e)}
 								javaScriptEnabled={true}
 								style={{ flex: 1 }}
+								startInLoadingState={true}
+								renderLoading={() => <Throbber size="large" />}
 								onNavigationStateChange={e => this.handleNavigationChange(e)}
 							/>
 						)}
@@ -437,7 +448,8 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
-		fetchAccount: bindActionCreators(fetchAccount, dispatch)
+		fetchAccountByToken: bindActionCreators(fetchAccountByToken, dispatch)
+		// fetchAccount: bindActionCreators(fetchAccount, dispatch)
 	};
 };
 
