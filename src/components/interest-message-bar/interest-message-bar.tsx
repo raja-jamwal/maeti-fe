@@ -5,9 +5,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { IRootState } from '../../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+import { getCurrentUserProfileId, fetchAccountByToken } from '../../store/reducers/account-reducer';
 import { API } from '../../config/API';
-import { ApiRequest, formatDuration } from '../../utils';
+import { ApiRequest, formatDuration, readToken } from '../../utils';
 import { getLogger } from '../../utils/logger';
 import { Channel, Interest } from '../../store/reducers/account-defination';
 import { Throbber } from '../throbber/throbber';
@@ -17,13 +17,15 @@ import { addSentInterest } from '../../store/reducers/interest-reducer';
 import { Value } from '../text';
 import ConnectedPurchaseButton from '../purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
-import { simpleAlert } from '../alert/index';
+import { simpleAlert, simplePrompt } from '../alert/index';
+import ConnectedPaymentModal from '../payment-modal/payment-modal';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
 }
 
 interface IMapDispatchToProps {
+	fetchAccountByToken: (token: string, skipToken: boolean) => any;
 	addChannel: (channel: Channel) => any;
 	addSentInterest: (interest: Interest) => any;
 }
@@ -54,6 +56,7 @@ interface IState {
 	interestState: InterestStates;
 	sentInterest: Interest | null;
 	incomingInterest: Interest | null;
+	showPaymentModal: boolean;
 }
 
 class InterestMessageBar extends React.Component<IInterestMessageBarProps, IState> {
@@ -66,7 +69,8 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 			fetchingChannel: false,
 			interestState: InterestStates.NONE,
 			sentInterest: null,
-			incomingInterest: null
+			incomingInterest: null,
+			showPaymentModal: false
 		};
 	}
 
@@ -277,13 +281,29 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 					fromUserId: currentUserProfileId,
 					toUserId: userProfileId
 				})) as Channel;
+				const token = await readToken();
+				if (token) {
+					fetchAccountByToken(token);
+				}
 			} catch (er) {
 				this.logger.log(er);
 				this.logger.log('Unable to create channel for the users');
 				if (er.message === 'invalid_balance') {
-					simpleAlert(
-						'Out of contacts balance',
-						"You've exhausted all your contacts, Please renew your account to view more contacts"
+					simplePrompt(
+						'Out of contact balance',
+						"You've exhausted all your contacts. Do you want to add more contact balance to your account?",
+						() => {
+							this.setState({ showPaymentModal: true });
+						}
+					);
+				}
+				if (er.message === 'account_expired') {
+					simplePrompt(
+						'Account expired',
+						'Your account is expired. Do you want to purchase a paid plan?',
+						() => {
+							this.setState({ showPaymentModal: true });
+						}
 					);
 				}
 			}
@@ -301,7 +321,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 	}
 
 	renderActions() {
-		const { interestState, fetchingInterest } = this.state;
+		const { interestState, fetchingInterest, showPaymentModal } = this.state;
 		if (fetchingInterest) return null;
 		return (
 			<View style={styles.row}>
@@ -361,6 +381,10 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 						</TouchableBtn>
 					</ConnectedPurchaseButton>
 				)}
+				<ConnectedPaymentModal
+					show={showPaymentModal}
+					requestClose={() => this.setState({ showPaymentModal: false })}
+				/>
 			</View>
 		);
 	}
@@ -469,6 +493,7 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
+		fetchAccountByToken: bindActionCreators(fetchAccountByToken, dispatch),
 		addChannel: bindActionCreators(addChannel, dispatch),
 		addSentInterest: bindActionCreators(addSentInterest, dispatch)
 	};

@@ -28,7 +28,7 @@ const AccountSummary = ({ payment, isAccountPaid }: IAccountSummaryProps) => {
 	const CIRCLE_SIZE = 70;
 	const ARC_WIDTH = 3;
 	const expiryPct = ((expiryTs - currentTs) / (expiryTs - registrationTs)) * 100;
-	const contactBalance = isAccountPaid ? payment.contactBalance || 0 : 0;
+	const contactBalance = payment.contactBalance || 0;
 	const shouldShowPurchaseBtn = !isAccountPaid || contactBalance === 0;
 	return (
 		<View style={[styles.container]}>

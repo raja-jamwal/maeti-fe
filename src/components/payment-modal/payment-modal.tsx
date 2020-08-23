@@ -59,9 +59,10 @@ type IPaymentModalProps = IPaymentModalMapStateToProps &
 	IPaymentModalPassedProps;
 
 function PlanOption(
-	{ numberOfContacts, duration, fullValue, value, onSelect, isSelected }: any = {
+	{ numberOfContacts, duration, fullValue, value, onSelect, isSelected, isPopular }: any = {
 		onSelect: noop,
-		isSelected: false
+		isSelected: false,
+		isPopular: false
 	}
 ) {
 	return (
@@ -77,9 +78,29 @@ function PlanOption(
 					<View style={GlobalStyle.expand}>
 						<View style={GlobalStyle.row}>
 							<Text style={{ fontSize: 16, fontWeight: 'bold' }}>{duration} for</Text>
-							<Text style={{ fontSize: 16, fontWeight: 'bold', paddingLeft: 8 }}>
+							<Text
+								style={{
+									fontSize: 16,
+									fontWeight: 'bold',
+									paddingLeft: 8,
+									textDecorationLine: 'line-through'
+								}}
+							>
 								₹{fullValue}
 							</Text>
+							{!!isPopular && (
+								<View
+									style={{
+										backgroundColor: Colors.primaryDarkColor,
+										borderRadius: 4,
+										marginLeft: 4
+									}}
+								>
+									<Text style={{ color: 'white', fontSize: 8, padding: 4 }}>
+										POPULAR
+									</Text>
+								</View>
+							)}
 						</View>
 						<View>
 							<Text style={GlobalStyle.bold}>
@@ -87,7 +108,7 @@ function PlanOption(
 							</Text>
 							<Text style={{ color: Colors.offWhite }}>Unlimited Messaging</Text>
 							<Text style={{ color: Colors.offWhite }}>
-								Send and Receive Unlimited Interests
+								Send and Receive Unlimited Interests and many more features
 							</Text>
 						</View>
 					</View>
@@ -291,10 +312,10 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 									>
 										<Image
 											source={icon}
-											resizeMode="contain"
+											resizeMode="cover"
 											style={{
 												height: 100,
-												margin: 16,
+												marginTop: 16,
 												marginRight: -30,
 												alignSelf: 'center'
 											}}
@@ -309,7 +330,6 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 									{
 										flex: 1,
 										flexDirection: 'column-reverse'
-										// backgroundColor: 'pink'
 									},
 									GlobalStyle.padding
 								]}
@@ -360,6 +380,7 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 									duration="1 Year"
 									fullValue="6,500"
 									value="1399"
+									isPopular={true}
 									isSelected={yearlySelected}
 									onSelect={() => this.onPlanSelect(PLANS.YEARLY)()}
 								/>
