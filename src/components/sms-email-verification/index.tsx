@@ -215,11 +215,6 @@ function SmsEmailVerificationInner({
 						/>
 					</View>
 					<Button label="Verify" onPress={sendVerificationSMS} />
-					<Button
-						onPress={openSupport}
-						label="Contact Support For Help"
-						style={{ marginTop: 16 }}
-					/>
 				</View>
 			)}
 			{!!otp && !onVerificationCalled && (
@@ -267,6 +262,13 @@ function SmsEmailVerificationInner({
 				</View>
 			)}
 			{!!otp && onVerificationCalled && <Throbber size="large" />}
+			{!onVerificationCalled && (
+				<Button
+					onPress={openSupport}
+					label="Contact Support For Help"
+					style={{ marginTop: 16 }}
+				/>
+			)}
 		</SafeAreaView>
 	);
 }
