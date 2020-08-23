@@ -99,6 +99,7 @@ class MoreScreen extends React.Component {
 		const payment = account.payment;
 		const isPaid = payment.selectedPackage === 'paid';
 		const otaVersion = getConfig().ota_version || 0;
+		const supportNumber = getConfig().support_number || '';
 		return (
 			<ScrollView style={styles.container}>
 				<SettingTitle label={'Payments'} />
@@ -106,9 +107,8 @@ class MoreScreen extends React.Component {
 					<SettingRow label="Plan" value={isPaid ? 'Paid' : 'Free'} />
 					{!isPaid && (
 						<SettingPara>
-							You are currently on promotional free account, you will get unlimited
-							full account access for 3 months after verification. You can verify your
-							account for free.
+							You are currently on free account, Please purchase a plan to enjoy full
+							features.
 						</SettingPara>
 					)}
 				</SettingBlock>
@@ -154,7 +154,7 @@ class MoreScreen extends React.Component {
 					<SettingDivider />
 					<SettingRow label="Support" value="support@datagrids.in" />
 					<SettingDivider />
-					<SettingRow label="Phone Support" value="+91-73877-78673" />
+					<SettingRow label="Phone Support" value={supportNumber} />
 					{isCeMode && <SettingRow label="CE mode" value="activated" />}
 				</SettingBlock>
 

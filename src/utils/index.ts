@@ -69,7 +69,7 @@ const memomizedTokenRead = () => {
 	};
 };
 
-const readToken = memomizedTokenRead();
+export const readToken = memomizedTokenRead();
 
 export const markSmsSent = async () => {
 	const record = await getSmsCountToday();

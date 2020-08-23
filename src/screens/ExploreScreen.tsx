@@ -42,6 +42,7 @@ import ConnectedPurchaseButton from '../components/purchase-button/purchase-butt
 import { isAccountPaid } from '../store/reducers/account-reducer';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
 import { MASKED_PROFILE_NAME } from '../constants';
+import AccountSummary from '../components/account-summary/account-summary';
 
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
@@ -166,6 +167,10 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 		const { userProfiles, fetching, selectedScreen, isPaidScreen, isAccountPaid } = this.props;
 		const items: any = [
 			{
+				type: 'account-summary',
+				key: 'account-summary'
+			},
+			{
 				type: 'filter-tab',
 				key: 'filter-tab'
 			},
@@ -230,6 +235,8 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 
 	renderItem(item: any) {
 		switch (item.type) {
+			case 'account-summary':
+				return <AccountSummary />;
 			case 'filter-tab':
 				return <TabbedFilters />;
 			case 'user-profile':
@@ -241,7 +248,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 			case 'empty-result':
 				return <EmptyResult />;
 			case 'purchase-button':
-				return <ConnectedPurchaseButton label="Premium feature Verify account" />;
+				return <ConnectedPurchaseButton label="Premium Feature, Purchase a Plan" />;
 			default:
 				return null;
 		}

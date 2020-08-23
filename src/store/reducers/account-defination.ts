@@ -42,6 +42,7 @@ export interface Payment extends DAO {
 	registrationDate: number;
 	expiryDate: number;
 	receiptNumber: string;
+	contactBalance: number;
 }
 
 export interface Verification extends DAO {
