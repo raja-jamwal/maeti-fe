@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Linking } from 'react-native';
 import Button from '../button/button';
 import { map, isNumber, forEach, noop } from 'lodash';
 import { TextInput } from 'react-native-gesture-handler';
@@ -18,6 +18,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { Throbber } from '../throbber/throbber';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CustomHeader } from '../custom-header/custom-header';
+import { getConfig } from '../../config/config';
 
 function SlowAppear({ children }: any) {
 	const [secondsLeft, setSecondsLeft] = React.useState(2 * 60);
@@ -173,6 +174,11 @@ function SmsEmailVerificationInner({
 		simpleAlert('Incorrect OTP', 'Make sure you provide correct OTP');
 	};
 
+	const openSupport = () => {
+		const contactUrl = getConfig().whatsapp_link;
+		Linking.openURL(contactUrl);
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			{!isRegister && (
@@ -209,6 +215,11 @@ function SmsEmailVerificationInner({
 						/>
 					</View>
 					<Button label="Verify" onPress={sendVerificationSMS} />
+					<Button
+						onPress={openSupport}
+						label="Contact Support For Help"
+						style={{ marginTop: 16 }}
+					/>
 				</View>
 			)}
 			{!!otp && !onVerificationCalled && (
