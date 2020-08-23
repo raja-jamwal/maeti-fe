@@ -107,9 +107,8 @@ class MoreScreen extends React.Component {
 					<SettingRow label="Plan" value={isPaid ? 'Paid' : 'Free'} />
 					{!isPaid && (
 						<SettingPara>
-							You are currently on promotional free account, you will get unlimited
-							full account access for 3 months after verification. You can verify your
-							account for free.
+							You are currently on free account, Please purchase a plan to enjoy full
+							features.
 						</SettingPara>
 					)}
 				</SettingBlock>

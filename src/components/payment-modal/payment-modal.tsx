@@ -5,7 +5,6 @@ import {
 	Modal,
 	StyleSheet,
 	Image,
-	ScrollView,
 	StatusBar,
 	SafeAreaView,
 	Linking
@@ -13,15 +12,10 @@ import {
 import { WebView } from 'react-native-webview';
 import { getRazor } from '../../utils/payment-wrapper';
 import { connect } from 'react-redux';
-import {
-	fetchAccount,
-	getAccount,
-	fetchAccountByToken
-} from '../../store/reducers/account-reducer';
+import { getAccount, fetchAccountByToken } from '../../store/reducers/account-reducer';
 import { Account, Order } from '../../store/reducers/account-defination';
 import { IRootState } from '../../store';
 import { getLogger } from '../../utils/logger';
-import Layout from 'src/constants/Layout';
 import Colors from 'src/constants/Colors';
 import Button from '../button/button';
 import { ApiRequest } from '../../utils';
@@ -30,7 +24,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { Ionicons } from '@expo/vector-icons';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import GlobalStyle from 'src/styles/global';
-import { noop, includes, get } from 'lodash';
+import { noop } from 'lodash';
 import { getConfig } from '../../config/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { simpleAlert } from '../alert/index';
