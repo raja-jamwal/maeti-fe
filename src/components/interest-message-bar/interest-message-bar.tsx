@@ -5,9 +5,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { IRootState } from '../../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+import { getCurrentUserProfileId, fetchAccountByToken } from '../../store/reducers/account-reducer';
 import { API } from '../../config/API';
-import { ApiRequest, formatDuration } from '../../utils';
+import { ApiRequest, formatDuration, readToken } from '../../utils';
 import { getLogger } from '../../utils/logger';
 import { Channel, Interest } from '../../store/reducers/account-defination';
 import { Throbber } from '../throbber/throbber';
@@ -17,12 +17,15 @@ import { addSentInterest } from '../../store/reducers/interest-reducer';
 import { Value } from '../text';
 import ConnectedPurchaseButton from '../purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
+import { simpleAlert, simplePrompt } from '../alert/index';
+import ConnectedPaymentModal from '../payment-modal/payment-modal';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
 }
 
 interface IMapDispatchToProps {
+	fetchAccountByToken: (token: string, skipToken: boolean) => any;
 	addChannel: (channel: Channel) => any;
 	addSentInterest: (interest: Interest) => any;
 }
@@ -53,6 +56,7 @@ interface IState {
 	interestState: InterestStates;
 	sentInterest: Interest | null;
 	incomingInterest: Interest | null;
+	showPaymentModal: boolean;
 }
 
 class InterestMessageBar extends React.Component<IInterestMessageBarProps, IState> {
@@ -65,13 +69,14 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 			fetchingChannel: false,
 			interestState: InterestStates.NONE,
 			sentInterest: null,
-			incomingInterest: null
+			incomingInterest: null,
+			showPaymentModal: false
 		};
 	}
 
 	async updateInterestState() {
 		const { currentUserProfileId, userProfileId } = this.props;
-		return; // open messaging for everyone for limited while
+		// return; // open messaging for everyone for limited while
 		this.setState({
 			fetchingInterest: true
 		});
@@ -252,7 +257,13 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 	}
 
 	async startMessaging() {
-		const { currentUserProfileId, userProfileId, addChannel, navigation } = this.props;
+		const {
+			currentUserProfileId,
+			userProfileId,
+			addChannel,
+			navigation,
+			fetchAccountByToken
+		} = this.props;
 
 		this.setState({
 			fetchingChannel: true
@@ -262,22 +273,45 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 
 		// fetch channel from API
 		try {
-			channel = await ApiRequest(API.CHANNEL.GET, {
+			channel = (await ApiRequest(API.CHANNEL.GET, {
 				fromUserId: currentUserProfileId,
 				toUserId: userProfileId
-			});
+			})) as Channel;
 		} catch (er) {
 			this.logger.log('No channel exists for these 2 users');
 		}
 
 		if (!channel) {
 			try {
-				channel = await ApiRequest(API.CHANNEL.SAVE, {
+				channel = (await ApiRequest(API.CHANNEL.SAVE, {
 					fromUserId: currentUserProfileId,
 					toUserId: userProfileId
-				});
+				})) as Channel;
+				const token = await readToken();
+				if (token) {
+					fetchAccountByToken(token, true);
+				}
 			} catch (er) {
+				this.logger.log(er);
 				this.logger.log('Unable to create channel for the users');
+				if (er.message === 'invalid_balance') {
+					simplePrompt(
+						'Out of contact balance',
+						"You've exhausted all your contacts. Do you want to add more contact balance to your account?",
+						() => {
+							this.setState({ showPaymentModal: true });
+						}
+					);
+				}
+				if (er.message === 'account_expired') {
+					simplePrompt(
+						'Account expired',
+						'Your account is expired. Do you want to purchase a paid plan?',
+						() => {
+							this.setState({ showPaymentModal: true });
+						}
+					);
+				}
 			}
 		}
 
@@ -293,19 +327,18 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 	}
 
 	renderActions() {
-		const { interestState, fetchingInterest } = this.state;
+		const { interestState, fetchingInterest, showPaymentModal } = this.state;
 		if (fetchingInterest) return null;
 		return (
 			<View style={styles.row}>
 				{interestState === InterestStates.SHOW_INTEREST && (
-					<ConnectedPurchaseButton label="Verify account to send Interest">
-						<TouchableBtn style={{ flex: 1 }} onPress={() => this.showInterest()}>
-							<View style={styles.btnContainer}>
-								<Ionicons name="md-flash" size={20} color="white" />
-								<Text style={styles.text}>Show Interest</Text>
-							</View>
-						</TouchableBtn>
-					</ConnectedPurchaseButton>
+					<TouchableBtn style={{ flex: 1 }} onPress={() => this.showInterest()}>
+						<View style={styles.btnContainer}>
+							<Ionicons name="md-flash" size={20} color="white" />
+							<Text style={styles.text}>Show Interest</Text>
+							<Text style={styles.freeLabel}>FREE</Text>
+						</View>
+					</TouchableBtn>
 				)}
 				{interestState !== InterestStates.SHOW_INTEREST &&
 					interestState !== InterestStates.NONE && (
@@ -331,18 +364,33 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 						<View style={styles.btnContainer}>
 							<Ionicons name="md-chatboxes" size={20} color="white" />
 							<Text style={styles.text}>Message</Text>
+							<Text style={styles.freeLabel}>FREE</Text>
 						</View>
 					</TouchableBtn>
 				)}
-				{/* open messaing for all */}
-				{interestState === InterestStates.NONE && (
-					<TouchableBtn style={{ flex: 1 }} onPress={() => this.startMessaging()}>
-						<View style={styles.btnContainer}>
-							<Ionicons name="md-chatboxes" size={20} color="white" />
-							<Text style={styles.text}>Message</Text>
-						</View>
-					</TouchableBtn>
+				{/* show if you're are still at show interest or at pending state */}
+				{(interestState === InterestStates.SHOW_INTEREST ||
+					interestState === InterestStates.SENT_PENDING) && (
+					<ConnectedPurchaseButton label="View Contact">
+						<TouchableBtn
+							style={{ flex: 1 }}
+							onPress={() => {
+								// confirm with user first
+								//
+								this.startMessaging();
+							}}
+						>
+							<View style={styles.btnContainer}>
+								<Ionicons name="md-chatboxes" size={20} color="white" />
+								<Text style={styles.text}>View Contact</Text>
+							</View>
+						</TouchableBtn>
+					</ConnectedPurchaseButton>
 				)}
+				<ConnectedPaymentModal
+					show={showPaymentModal}
+					requestClose={() => this.setState({ showPaymentModal: false })}
+				/>
 			</View>
 		);
 	}
@@ -434,6 +482,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	freeLabel: {
+		color: 'white',
+		padding: 2,
+		fontSize: 8,
+		fontWeight: 'bold'
 	}
 });
 
@@ -445,6 +499,7 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
+		fetchAccountByToken: bindActionCreators(fetchAccountByToken, dispatch),
 		addChannel: bindActionCreators(addChannel, dispatch),
 		addSentInterest: bindActionCreators(addSentInterest, dispatch)
 	};

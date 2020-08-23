@@ -70,7 +70,8 @@ class TabbedFilters extends React.PureComponent<any> {
 
 const styles = StyleSheet.create({
 	headline: {
-		padding: 20
+		padding: 20,
+		paddingTop: 4
 	},
 	tile: {
 		flexDirection: 'column',

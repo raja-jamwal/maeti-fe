@@ -1,5 +1,10 @@
 {
 	"server": "http://be.matri.datagrids.in:8080",
 	"sentry_dsn": "https://eadb3b19ac5e49fa822d16d3d050aaa0@sentry.io/1832459",
-	"ota_version": 18
+	"ota_version": 19,
+	"support_number": "+91-73877-78673",
+	"whatsapp_link": "https://wa.me/917387778673",
+	"yearly_plan_value": 1399,
+	"biyearly_plan_value": 849,
+	"razor_key": "rzp_test_3umS10hV3WYmQm"
 }
