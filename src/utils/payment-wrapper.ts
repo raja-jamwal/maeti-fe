@@ -24,8 +24,8 @@ const html =
 	'">\n' +
 	'        <input type="hidden" name="order_id" value="orderId">\n' +
 	'        <input type="hidden" name="name" value="Maeti">\n' +
-	'        <input type="hidden" name="description" value="Sidhyun jo Sindhyun sa">\n' +
-	'        <input type="hidden" name="image" value="https://s3.ap-south-1.amazonaws.com/matrimony.datagrids.in/icon.png">\n' +
+	'        <input type="hidden" name="description" value="Sidhyun Lae Sindhi Rishta">\n' +
+	'        <input type="hidden" name="image" value="https://s3.ap-south-1.amazonaws.com/matrimony.datagrids.in/icon_1.png">\n' +
 	'        <input type="hidden" name="prefill[name]" value="fullName">\n' +
 	'        <input type="hidden" name="prefill[email]" value="developer@datagrids.in">\n' +
 	'        <input type="hidden" name="prefill[contact]" value="phoneNumber">\n' +

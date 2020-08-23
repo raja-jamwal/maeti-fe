@@ -7,7 +7,7 @@ import { Payment } from '../../store/reducers/account-defination';
 import GlobalStyle from 'src/styles/global';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Colors from 'src/constants/Colors';
-import { isAccountPaid } from '../../store/reducers/account-reducer';
+import { isAccountPaid, getPayment } from '../../store/reducers/account-reducer';
 import Button from '../button/button';
 import ConnectedPaymentModal from '../payment-modal/payment-modal';
 const moment = require('moment');
@@ -195,7 +195,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect((state: IRootState) => ({
-	payment: state.account.payment,
+const wN = connect((state: IRootState) => ({
+	payment: getPayment(state),
 	isAccountPaid: isAccountPaid(state)
 }))(AccountSummary);
+
+export default wN;

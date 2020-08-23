@@ -257,7 +257,13 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 	}
 
 	async startMessaging() {
-		const { currentUserProfileId, userProfileId, addChannel, navigation } = this.props;
+		const {
+			currentUserProfileId,
+			userProfileId,
+			addChannel,
+			navigation,
+			fetchAccountByToken
+		} = this.props;
 
 		this.setState({
 			fetchingChannel: true
@@ -283,7 +289,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				})) as Channel;
 				const token = await readToken();
 				if (token) {
-					fetchAccountByToken(token);
+					fetchAccountByToken(token, true);
 				}
 			} catch (er) {
 				this.logger.log(er);
