@@ -1,5 +1,5 @@
 // import * as AccountFixture from '../../fixtures/account.json';
-import { Account as ILocalAccount, Account, Payment } from './account-defination';
+import { Account as ILocalAccount, Account, Payment, UserProfile } from './account-defination';
 import { createAction, handleActions } from 'redux-actions';
 import { Dispatch } from 'redux';
 import { API } from '../../config/API';
@@ -15,6 +15,7 @@ import { getLogger } from '../../utils/logger';
 import { getConfig } from '../../config/config';
 import { AsyncStorage } from 'react-native';
 import { modelRepository } from '../../utils/model-repository';
+import * as Crypto from 'expo-crypto';
 
 export interface IAccountState extends ILocalAccount {}
 
@@ -171,6 +172,58 @@ export const fetchAccountByPendingRequestId = async function(id: string) {
 	await Updates.reloadFromCache();
 };
 
+const postPixelData = async function(number: string, userProfile: UserProfile) {
+	const pixelToken = getConfig()['pixel_token'];
+	const pixelId = getConfig()['pixel_id'];
+	const logger = getLogger(postPixelData);
+	if (!pixelToken || !pixelId) {
+		logger.log('no pixel token or pixel Id, skipping');
+		return;
+	}
+	const [firstName, lastName] = (userProfile.fullName || '').split(' ');
+	const FB_URL = `https://graph.facebook.com/v8.0/${pixelId}/events`;
+	logger.log('sending out the event');
+	return fetch(FB_URL, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			data: [
+				{
+					event_name: 'ViewContent',
+					event_time: Math.floor(new Date().getTime() / 1000),
+					user_data: {
+						fn: await Crypto.digestStringAsync(
+							Crypto.CryptoDigestAlgorithm.SHA256,
+							firstName || ''
+						),
+						ln: await Crypto.digestStringAsync(
+							Crypto.CryptoDigestAlgorithm.SHA256,
+							lastName || ''
+						),
+						ph: await Crypto.digestStringAsync(
+							Crypto.CryptoDigestAlgorithm.SHA256,
+							number
+						)
+					},
+					custom_data: {
+						content_name: userProfile.fullName
+					}
+				}
+			],
+			access_token: pixelToken
+		})
+	})
+		.then(res => {
+			return res.json();
+		})
+		.then(b => logger.log(b))
+		.catch(er => {
+			logger.log(er);
+		});
+};
+
 export const fetchAccountByToken = function(token: string, skipPushingToken?: boolean) {
 	const logger = getLogger(fetchAccountByToken);
 	return (dispatch: Dispatch<any>, getState: () => any) => {
@@ -189,6 +242,7 @@ export const fetchAccountByToken = function(token: string, skipPushingToken?: bo
 				dispatch(addSelfProfile(profile));
 				dispatch(addProfile(profile));
 				logger.log('addProfile dispatched');
+				postPixelData((account.id as any) as string, profile);
 				if (!skipPushingToken) {
 					dispatch(savePushToken(profile.id));
 					dispatch(fetchTags());
