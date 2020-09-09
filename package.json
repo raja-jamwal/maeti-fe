@@ -31,6 +31,7 @@
 		"expo-asset": "~8.1.4",
 		"expo-blur": "~8.1.0",
 		"expo-constants": "~9.0.0",
+		"expo-crypto": "~8.1.0",
 		"expo-font": "~8.1.0",
 		"expo-google-sign-in": "~8.1.0",
 		"expo-image-picker": "~8.1.0",

@@ -1,10 +1,12 @@
 {
 	"server": "http://be.matri.datagrids.in:8080",
 	"sentry_dsn": "https://eadb3b19ac5e49fa822d16d3d050aaa0@sentry.io/1832459",
-	"ota_version": 19,
+	"ota_version": 20,
 	"support_number": "+91-73877-78673",
 	"whatsapp_link": "https://wa.me/917387778673",
 	"yearly_plan_value": 1399,
 	"biyearly_plan_value": 849,
-	"razor_key": "rzp_test_3umS10hV3WYmQm"
+	"razor_key": "rzp_test_3umS10hV3WYmQm",
+	"pixel_token": "EAAvvYO0X2pYBAGgSBVxFCCgDRDABBHhHpxXJYdj2QLP9GdhFkIrm6J29DZASKXAAZCogUX0Dino0z84V8F6553pWBTCuWxpymGCFhNpPHjnPJ2hZAO9iPTXZCvZA7pvaF2fHJQG1KMJTclZAminfQfQtLoRVT9PbmaLIrOkc7fxasZBVQlJpYgy",
+	"pixel_id": "321811865562650"
 }

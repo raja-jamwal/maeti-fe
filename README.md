@@ -132,6 +132,8 @@ expo push:android:upload --api-key <your-token-here>
 -   `expo build:android -t app-bundle --release-channel staging`
 -   `expo build:android -t app-bundle --release-channel prod`
 
+-   `expo build:ios --release-channel staging`
+
 ## Publish JS updates
 
 -   `expo publish --release-channel <staging|prod>`
