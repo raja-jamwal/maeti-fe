@@ -43,6 +43,7 @@ import { isAccountPaid } from '../store/reducers/account-reducer';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
 import { MASKED_PROFILE_NAME } from '../constants';
 import AccountSummary from '../components/account-summary/account-summary';
+import ConnectedAdMob from '../components/admob/admob';
 
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
@@ -276,6 +277,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 		return (
 			<View>
 				<StatusBar backgroundColor="white" barStyle="dark-content" />
+				<ConnectedAdMob />
 				<FlatList
 					keyExtractor={(item: any) => item.key}
 					data={this.getItems()}

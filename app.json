@@ -37,7 +37,10 @@
 		"android": {
 			"package": "matrimony.datagrids.in",
 			"googleServicesFile": "./google-services.json",
-			"versionCode": 47
+			"versionCode": 49,
+			"config": {
+				"googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
+			}
 		},
 		"androidStatusBar": {
 			"backgroundColor": "#fff",

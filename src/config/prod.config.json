@@ -1,4 +1,7 @@
 {
 	"server": "http://matri.prod.datagrids.in",
-	"razor_key": "rzp_live_wyCGZEkfGYPRV9"
+	"razor_key": "rzp_live_wyCGZEkfGYPRV9",
+	"admob": {
+		"banner_id": "ca-app-pub-4345419882274439/2410766721"
+	}
 }

@@ -25,17 +25,23 @@ export const simpleAlert = (
 	return Alert.alert(title, message, btns, { cancelable: true });
 };
 
-export const simplePrompt = (title: string, message: string, onPress?: () => void) => {
+export const simplePrompt = (
+	title: string,
+	message: string,
+	onPress?: () => void,
+	okBtnLabel?: string,
+	cancelBtnLabel?: string
+) => {
 	return Alert.alert(
 		title,
 		message,
 		[
 			{
-				text: 'Cancel',
+				text: cancelBtnLabel || 'Cancel',
 				onPress: () => null
 			},
 			{
-				text: 'OK',
+				text: okBtnLabel || 'OK',
 				onPress: () => {
 					if (onPress) {
 						return onPress();
