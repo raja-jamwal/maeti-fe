@@ -10,7 +10,7 @@ import * as React from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
 import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
-import { calculateAge, humanizeCurrency } from '../../utils/index';
+import { calculateAge, humanizeCurrency, MILLIS_IN_A_DAY } from '../../utils/index';
 import { isEmpty, head, get } from 'lodash';
 import { UserProfile } from '../../store/reducers/account-defination';
 import { Ionicons } from '@expo/vector-icons';
@@ -154,6 +154,11 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			return null;
 		})();
 
+		// if the last login is within last 2 days, then we consider
+		// this as recently active
+		const isRecentlyActive =
+			new Date().getTime() - (userProfile.lastLogin || 0) < MILLIS_IN_A_DAY * 2;
+
 		return (
 			<View style={styles.profileCard}>
 				<View style={styles.profileImageContainer}>
@@ -178,7 +183,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 					)}
 				</View>
 				<View style={styles.profileSummaryContainer}>
-					<View style={[GlobalStyles.row, GlobalStyles.expand]}>
+					<View style={[GlobalStyles.row, GlobalStyles.expand, GlobalStyles.alignCenter]}>
 						{!isSelfProfile && (
 							<TouchableBtn onPress={this.setUserProfileFavourite}>
 								<Ionicons
@@ -209,6 +214,27 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 								<Text style={styles.report}>REPORT</Text>
 							</TouchableOpacity>
 						)} */}
+						{!isSelfProfile && isRecentlyActive && (
+							<View
+								style={[
+									GlobalStyles.row,
+									GlobalStyles.justifyCenter,
+									GlobalStyles.alignCenter
+								]}
+							>
+								<Value>Recently Active</Value>
+								<Text
+									style={{
+										color: 'green',
+										fontSize: 8,
+										paddingLeft: 4,
+										paddingRight: 4
+									}}
+								>
+									⬤
+								</Text>
+							</View>
+						)}
 						{!isSelfProfile && showCarousel && (
 							<TouchableOpacity onPress={() => this.blockProfile()}>
 								<Text style={styles.report}>BLOCK</Text>
@@ -289,9 +315,9 @@ const styles = StyleSheet.create({
 		resizeMode: 'cover'
 	},
 	profileSummaryContainer: {
-		padding: 10,
-		paddingTop: 15,
-		paddingBottom: 15
+		padding: 8,
+		paddingTop: 8,
+		paddingBottom: 16
 	},
 	describeSelfContainer: {
 		flexWrap: 'wrap'

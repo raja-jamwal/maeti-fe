@@ -27,6 +27,7 @@
 		"@types/reselect": "^2.2.0",
 		"@types/sockjs-client": "^1.1.1",
 		"expo": "^37.0.0",
+		"expo-ads-admob": "~8.1.0",
 		"expo-app-auth": "~9.0.0",
 		"expo-asset": "~8.1.4",
 		"expo-blur": "~8.1.0",
