@@ -277,7 +277,6 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 		return (
 			<View>
 				<StatusBar backgroundColor="white" barStyle="dark-content" />
-				{/* <ConnectedAdMob /> */}
 				<FlatList
 					keyExtractor={(item: any) => item.key}
 					data={this.getItems()}

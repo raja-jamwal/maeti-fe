@@ -37,7 +37,7 @@
 		"android": {
 			"package": "matrimony.datagrids.in",
 			"googleServicesFile": "./google-services.json",
-			"versionCode": 50,
+			"versionCode": 51,
 			"config": {
 				"googleMobileAdsAppId": "ca-app-pub-4345419882274439~7116298491"
 			}

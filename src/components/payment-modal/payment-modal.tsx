@@ -272,7 +272,6 @@ class PaymentModal extends React.PureComponent<IPaymentModalProps, IPaymentModal
 			return null;
 		}
 		const supportNumber = getConfig().support_number || '';
-		this.logger.log('starting payment session');
 		const statusBarColor = !showRazor ? Colors.white : Colors.primaryDarkColor;
 		return (
 			<View>
