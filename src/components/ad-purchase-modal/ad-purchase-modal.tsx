@@ -51,6 +51,7 @@ export function AdPurchaseModal(
 	AdMobRewarded.addEventListener('rewardedVideoDidFailToLoad', () => {
 		logger.log('reward video fail to load');
 		setIsAdError(true);
+		setIsLoading(false);
 	});
 
 	AdMobRewarded.addEventListener('rewardedVideoDidClose', () => {
@@ -59,6 +60,7 @@ export function AdPurchaseModal(
 			// automatically close the window with a reward token
 			// setShowContinue(true);
 			setIsAdError(true);
+			setIsLoading(false);
 		}
 	});
 
