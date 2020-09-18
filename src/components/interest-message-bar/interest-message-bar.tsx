@@ -19,6 +19,8 @@ import ConnectedPurchaseButton from '../purchase-button/purchase-button';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { simpleAlert, simplePrompt } from '../alert/index';
 import ConnectedPaymentModal from '../payment-modal/payment-modal';
+import { noop } from 'lodash';
+import { AdPurchaseCloseStatus } from '../ad-purchase-modal/ad-purchase-modal';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
@@ -76,7 +78,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 
 	async updateInterestState() {
 		const { currentUserProfileId, userProfileId } = this.props;
-		// return; // open messaging for everyone for limited while
+		return; // open messaging for everyone for limited while
 		this.setState({
 			fetchingInterest: true
 		});
@@ -256,7 +258,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 		})();
 	}
 
-	async startMessaging() {
+	async startMessaging(isRewarded?: boolean) {
 		const {
 			currentUserProfileId,
 			userProfileId,
@@ -283,10 +285,12 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 
 		if (!channel) {
 			try {
-				channel = (await ApiRequest(API.CHANNEL.SAVE, {
+				const payload = {
 					fromUserId: currentUserProfileId,
-					toUserId: userProfileId
-				})) as Channel;
+					toUserId: userProfileId,
+					isRewarded: !!isRewarded
+				};
+				channel = (await ApiRequest(API.CHANNEL.SAVE, payload)) as Channel;
 				const token = await readToken();
 				if (token) {
 					fetchAccountByToken(token, true);
@@ -370,14 +374,21 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				)}
 				{/* show if you're are still at show interest or at pending state */}
 				{(interestState === InterestStates.SHOW_INTEREST ||
-					interestState === InterestStates.SENT_PENDING) && (
-					<ConnectedPurchaseButton label="View Contact">
+					interestState === InterestStates.SENT_PENDING ||
+					interestState === InterestStates.NONE) && (
+					<ConnectedPurchaseButton
+						label="Connect"
+						onAllowBehindAd={(status: AdPurchaseCloseStatus) => {
+							if (status === AdPurchaseCloseStatus.REWARDED) {
+								this.startMessaging(true);
+							}
+						}}
+						contactBalanceAware={true}
+					>
 						<TouchableBtn
 							style={{ flex: 1 }}
 							onPress={() => {
-								// confirm with user first
-								//
-								this.startMessaging();
+								this.startMessaging(false);
 							}}
 						>
 							<View style={styles.btnContainer}>
