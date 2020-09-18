@@ -5,7 +5,6 @@ import TouchableBtn from 'src/components/touchable-btn/touchable-btn';
 
 import { Ionicons } from '@expo/vector-icons';
 import { noop } from 'lodash';
-//import { SlackPostMessage } from 'src/utils/slack';
 import { Throbber } from '../throbber/throbber';
 import Button from '../button/button';
 import { getLogger } from '../../utils/logger';

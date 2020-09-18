@@ -121,7 +121,8 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		if (isProfileBlocked) return null;
 		if (isProfileDeleted) return null;
 		const { education, profession, family } = { ...userProfile };
-		const userProfileName = isAccountPaid || isSelfProfile ? userProfile.fullName : 'xxxxxxx';
+		// const userProfileName = isAccountPaid || isSelfProfile ? userProfile.fullName : 'xxxxxxx';
+		const userProfileName = userProfile.fullName;
 		const professionLocation = ['workCity', 'workState', 'workCountry']
 			.map(e => get(profession, e))
 			.map(o => o && o.name)
