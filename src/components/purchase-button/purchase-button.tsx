@@ -40,7 +40,7 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 	async maybeShowAd() {
 		const { onAllowBehindAd } = this.props;
 		// limited on android now
-		if (onAllowBehindAd && IS_ANDROID) {
+		if (onAllowBehindAd) {
 			this.setState({
 				showAdPurchaseModal: true
 			});

@@ -12,6 +12,7 @@ import GlobalStyle from 'src/styles/global';
 import { Value } from '../text';
 import { getConfig } from '../../config/config';
 import { AdMobRewarded } from 'expo-ads-admob';
+import { IS_ANDROID } from '../../utils';
 
 export enum AdPurchaseCloseStatus {
 	CLOSE,
@@ -27,7 +28,8 @@ export function AdPurchaseModal(
 ) {
 	const logger = getLogger(AdPurchaseModal);
 	const { whatsapp_link, support_number, admob } = getConfig();
-	const { reward_id: rewardAdId } = admob;
+	const { android, ios } = admob;
+	const rewardAdId = IS_ANDROID ? android.reward_id : ios.reward_id;
 
 	if (!rewardAdId) {
 		logger.log('There is no reward id');
