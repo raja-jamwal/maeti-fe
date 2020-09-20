@@ -7,7 +7,7 @@
 		"sdkVersion": "37.0.0",
 		"platforms": ["ios", "android"],
 		"primaryColor": "#fff",
-		"version": "0.47.0",
+		"version": "0.51.0",
 		"orientation": "portrait",
 		"icon": "./src/assets/images/icon.png",
 		"splash": {
@@ -29,6 +29,7 @@
 				"NSPhotoLibraryUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile"
 			},
 			"config": {
+				"googleMobileAdsAppId": "ca-app-pub-4345419882274439~2027623340",
 				"googleSignIn": {
 					"reservedClientId": "com.googleusercontent.apps.70507161694-sdpevh75i0go4b7g82mg1d0jbl84dper"
 				}

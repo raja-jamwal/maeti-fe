@@ -1,7 +1,7 @@
 {
 	"server": "http://be.matri.datagrids.in:8080",
 	"sentry_dsn": "https://eadb3b19ac5e49fa822d16d3d050aaa0@sentry.io/1832459",
-	"ota_version": 25,
+	"ota_version": 27,
 	"support_number": "+91-73877-78673",
 	"whatsapp_link": "https://wa.me/917387778673",
 	"yearly_plan_value": 1399,
@@ -10,7 +10,12 @@
 	"pixel_token": "EAAvvYO0X2pYBAGgSBVxFCCgDRDABBHhHpxXJYdj2QLP9GdhFkIrm6J29DZASKXAAZCogUX0Dino0z84V8F6553pWBTCuWxpymGCFhNpPHjnPJ2hZAO9iPTXZCvZA7pvaF2fHJQG1KMJTclZAminfQfQtLoRVT9PbmaLIrOkc7fxasZBVQlJpYgy",
 	"pixel_id": "321811865562650",
 	"admob": {
-		"banner_id": "ca-app-pub-3940256099942544/6300978111",
-		"reward_id": "ca-app-pub-3940256099942544/5224354917"
+		"android": {
+			"banner_id": "ca-app-pub-3940256099942544/6300978111",
+			"reward_id": "ca-app-pub-3940256099942544/5224354917"
+		},
+		"ios": {
+			"reward_id": "ca-app-pub-3940256099942544/5224354917"
+		}
 	}
 }

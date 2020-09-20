@@ -412,7 +412,7 @@ export const ProfileMapping = {
 	fullName: {
 		label: 'Full Name (Groom/Bride)',
 		type: 'string',
-		isPaidFeature: true
+		isPaidFeature: false
 	},
 	maritalStatus: {
 		label: 'Marital Status',

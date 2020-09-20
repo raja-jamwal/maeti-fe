@@ -2,7 +2,12 @@
 	"server": "http://matri.prod.datagrids.in",
 	"razor_key": "rzp_live_wyCGZEkfGYPRV9",
 	"admob": {
-		"banner_id": "ca-app-pub-4345419882274439/2410766721",
-		"reward_id": "ca-app-pub-4345419882274439/4526111409"
+		"android": {
+			"banner_id": "ca-app-pub-4345419882274439/2410766721",
+			"reward_id": "ca-app-pub-4345419882274439/4526111409"
+		},
+		"ios": {
+			"reward_id": "ca-app-pub-4345419882274439/4103988311"
+		}
 	}
 }
