@@ -43,6 +43,9 @@ export function AdPurchaseModal(
 			// Display a rewarded ad
 			await AdMobRewarded.setAdUnitID(rewardAdId);
 		})();
+		return () => {
+			AdMobRewarded.removeAllListeners();
+		};
 	}, []);
 
 	AdMobRewarded.addEventListener('rewardedVideoDidRewardUser', _so => {
