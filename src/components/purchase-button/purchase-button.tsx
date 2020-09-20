@@ -79,7 +79,7 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 			<TouchableBtn style={{ flex: 1 }} onPress={() => this.maybeShowAd()}>
 				<View style={styles.contactActionBtn}>
 					<Text style={styles.btnLabel}>{label}</Text>
-					<Text style={styles.paidLabel}>PAID</Text>
+					{/* <Text style={styles.paidLabel}>PAID</Text> */}
 					<ConnectedPaymentModal
 						show={showPayment}
 						requestClose={() => this.toggleStartPayment()}

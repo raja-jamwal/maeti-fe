@@ -377,7 +377,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 					interestState === InterestStates.SENT_PENDING ||
 					interestState === InterestStates.NONE) && (
 					<ConnectedPurchaseButton
-						label="Connect"
+						label="Message"
 						onAllowBehindAd={(status: AdPurchaseCloseStatus) => {
 							if (status === AdPurchaseCloseStatus.REWARDED) {
 								this.startMessaging(true);
@@ -393,7 +393,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 						>
 							<View style={styles.btnContainer}>
 								<Ionicons name="md-chatboxes" size={20} color="white" />
-								<Text style={styles.text}>View Contact</Text>
+								<Text style={styles.text}>View Contact and Message</Text>
 							</View>
 						</TouchableBtn>
 					</ConnectedPurchaseButton>
