@@ -28,7 +28,7 @@ class UserChannel extends React.Component<IUserChannelProps> {
 			latestMessage.fromUser &&
 			latestMessage.fromUser.id !== currentProfileId;
 		return (
-			<View style={[GlobalStyles.row, GlobalStyles.alignCenter, styles.container]}>
+			<View style={[GlobalStyles.row, styles.container]}>
 				<View style={GlobalStyles.paddedRight}>
 					<Avatar userProfileImage={userProfileImage} />
 				</View>
