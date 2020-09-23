@@ -4,10 +4,13 @@
 	"admob": {
 		"android": {
 			"banner_id": "ca-app-pub-4345419882274439/2410766721",
-			"reward_id": "ca-app-pub-4345419882274439/4526111409"
+			"reward_id": "ca-app-pub-4345419882274439/4526111409",
+			"interstitial_id": "ca-app-pub-4345419882274439/3713547013"
 		},
 		"ios": {
-			"reward_id": "ca-app-pub-4345419882274439/4103988311"
+			"banner_id": "ca-app-pub-4345419882274439/4559724828",
+			"reward_id": "ca-app-pub-4345419882274439/4103988311",
+			"interstitial_id": "ca-app-pub-4345419882274439/1251035206"
 		}
 	}
 }
