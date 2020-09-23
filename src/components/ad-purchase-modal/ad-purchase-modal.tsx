@@ -11,8 +11,9 @@ import { getLogger } from '../../utils/logger';
 import GlobalStyle from 'src/styles/global';
 import { Value } from '../text';
 import { getConfig } from '../../config/config';
-import { AdMobRewarded } from 'expo-ads-admob';
+import { AdMobRewarded, AdMobInterstitial, AdMobBanner } from 'expo-ads-admob';
 import { IS_ANDROID } from '../../utils';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export enum AdPurchaseCloseStatus {
 	CLOSE,
@@ -30,6 +31,11 @@ export function AdPurchaseModal(
 	const { whatsapp_link, support_number, admob } = getConfig();
 	const { android, ios } = admob;
 	const rewardAdId = IS_ANDROID ? android.reward_id : ios.reward_id;
+	const interstitialId = IS_ANDROID ? android.interstitial_id : ios.interstitial_id;
+	const bannerId = IS_ANDROID ? android.banner_id : ios.banner_id;
+
+	// show reward video 50% times
+	const showRewardAd = Math.random() < 0.5;
 
 	if (!rewardAdId) {
 		logger.log('There is no reward id');
@@ -42,9 +48,11 @@ export function AdPurchaseModal(
 		(async () => {
 			// Display a rewarded ad
 			await AdMobRewarded.setAdUnitID(rewardAdId);
+			await AdMobInterstitial.setAdUnitID(interstitialId);
 		})();
 		return () => {
 			AdMobRewarded.removeAllListeners();
+			AdMobInterstitial.removeAllListeners();
 		};
 	}, []);
 
@@ -69,13 +77,30 @@ export function AdPurchaseModal(
 		}
 	});
 
+	AdMobInterstitial.addEventListener('interstitialDidOpen', () => setIsRewarded(true));
+	AdMobInterstitial.addEventListener('interstitialDidFailToLoad', () => {
+		setIsAdError(true);
+		setIsLoading(false);
+	});
+	AdMobInterstitial.addEventListener('interstitialDidClose', () => {
+		if (!isRewarded) {
+			setIsAdError(true);
+			setIsLoading(false);
+		}
+	});
+
 	const attemptToStartAd = async () => {
 		setIsAdError(false);
 		setIsRewarded(false);
 		setIsLoading(true);
 		try {
-			await AdMobRewarded.requestAdAsync();
-			await AdMobRewarded.showAdAsync();
+			if (showRewardAd) {
+				await AdMobRewarded.requestAdAsync();
+				await AdMobRewarded.showAdAsync();
+			} else {
+				await AdMobInterstitial.requestAdAsync();
+				await AdMobInterstitial.showAdAsync();
+			}
 		} catch (er) {
 			logger.log(er);
 		} finally {
@@ -170,7 +195,24 @@ export function AdPurchaseModal(
 							/>
 						</View>
 					)}
-					<View style={GlobalStyle.expand} />
+					<ScrollView style={[GlobalStyle.expand]}>
+						<View
+							style={[
+								GlobalStyle.expand,
+								GlobalStyle.column,
+								GlobalStyle.justifyCenter,
+								GlobalStyle.alignCenter
+							]}
+						>
+							<AdMobBanner
+								bannerSize="mediumRectangle"
+								adUnitID={bannerId}
+								onDidFailToReceiveAdWithError={noop}
+							/>
+						</View>
+					</ScrollView>
+
+					{/* <View style={GlobalStyle.expand} /> */}
 					<View style={GlobalStyle.padding}>
 						<TouchableBtn onPress={openSupport}>
 							<Value style={{ textAlign: 'center' }}>
