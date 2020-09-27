@@ -40,8 +40,9 @@ export const isAccountPaid = createSelector(
 	payment => {
 		if (!payment) return false;
 		const isPaid = payment.selectedPackage === 'paid';
+		const contactBalance = payment.contactBalance || 0;
 		const isExpired = getCurrentUnixEpoch() > payment.expiryDate;
-		return isPaid && !isExpired;
+		return isPaid && !isExpired && contactBalance > 0;
 	}
 );
 export const getCurrentUserProfileId = createSelector(

@@ -62,7 +62,14 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 	}
 
 	render() {
-		const { label, children, isAccountPaid, contactBalanceAware, payment } = this.props;
+		const {
+			label,
+			children,
+			isAccountPaid,
+			contactBalanceAware,
+			payment,
+			onAllowBehindAd
+		} = this.props;
 		const { showPayment, showAdPurchaseModal } = this.state;
 		const isContactBalanceZero = payment && payment.contactBalance === 0;
 		if (isAccountPaid) {
@@ -79,16 +86,20 @@ class PurchaseButton extends React.PureComponent<IPurchaseButtonProps, IPurchase
 			<TouchableBtn style={{ flex: 1 }} onPress={() => this.maybeShowAd()}>
 				<View style={styles.contactActionBtn}>
 					<Text style={styles.btnLabel}>{label}</Text>
-					{/* <Text style={styles.paidLabel}>PAID</Text> */}
+					<Text style={styles.paidLabel}>PAID</Text>
 					<ConnectedPaymentModal
 						show={showPayment}
 						requestClose={() => this.toggleStartPayment()}
 					/>
-					<AdPurchaseModal
-						show={showAdPurchaseModal}
-						requestClose={async reason => await this.handleAdPurchaseModalClose(reason)}
-						startPayment={() => this.toggleStartPayment()}
-					/>
+					{!!onAllowBehindAd && (
+						<AdPurchaseModal
+							show={showAdPurchaseModal}
+							requestClose={async reason =>
+								await this.handleAdPurchaseModalClose(reason)
+							}
+							startPayment={() => this.toggleStartPayment()}
+						/>
+					)}
 				</View>
 			</TouchableBtn>
 		);
