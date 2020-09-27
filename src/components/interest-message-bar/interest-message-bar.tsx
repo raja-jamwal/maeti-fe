@@ -78,7 +78,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 
 	async updateInterestState() {
 		const { currentUserProfileId, userProfileId } = this.props;
-		return; // open messaging for everyone for limited while
+		// return; // open messaging for everyone for limited while
 		this.setState({
 			fetchingInterest: true
 		});
@@ -374,16 +374,15 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				)}
 				{/* show if you're are still at show interest or at pending state */}
 				{(interestState === InterestStates.SHOW_INTEREST ||
-					interestState === InterestStates.SENT_PENDING ||
-					interestState === InterestStates.NONE) && (
+					interestState === InterestStates.SENT_PENDING) && (
 					<ConnectedPurchaseButton
 						label="Message"
-						onAllowBehindAd={(status: AdPurchaseCloseStatus) => {
-							if (status === AdPurchaseCloseStatus.REWARDED) {
-								this.startMessaging(true);
-							}
-						}}
-						contactBalanceAware={true}
+						// onAllowBehindAd={(status: AdPurchaseCloseStatus) => {
+						// 	if (status === AdPurchaseCloseStatus.REWARDED) {
+						// 		this.startMessaging(true);
+						// 	}
+						// }}
+						// contactBalanceAware={true}
 					>
 						<TouchableBtn
 							style={{ flex: 1 }}
@@ -393,7 +392,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 						>
 							<View style={styles.btnContainer}>
 								<Ionicons name="md-chatboxes" size={20} color="white" />
-								<Text style={styles.text}>View Contact and Message</Text>
+								<Text style={styles.text}>Ph. No./Message</Text>
 							</View>
 						</TouchableBtn>
 					</ConnectedPurchaseButton>

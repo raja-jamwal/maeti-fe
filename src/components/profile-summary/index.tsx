@@ -120,7 +120,13 @@ export const ProfileSummary = withNavigation(
 										size={16}
 										style={{ paddingRight: 8 }}
 									/>
-									<Text>+{paidContact}</Text>
+									<Text
+										style={{
+											fontWeight: 'bold'
+										}}
+									>
+										+{paidContact}
+									</Text>
 								</View>
 							</TouchableOpacity>
 						)}
