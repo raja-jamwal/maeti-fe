@@ -22,11 +22,11 @@ interface IProfileTableMapDispatchToProps {
 
 export const GenderOptions = [
 	{
-		label: 'Looking for Bride',
+		label: 'Looking for Bride (हम दुल्हन की तलाश कर रहे हैं)',
 		value: 'male'
 	},
 	{
-		label: 'Looking for Groom',
+		label: 'Looking for Groom (हम दूल्हे की तलाश कर रहे हैं)',
 		value: 'female'
 	}
 ];
@@ -388,7 +388,7 @@ export const ProfileTableBodyTypeOptions = [
 
 export const ProfileMapping = {
 	gender: {
-		label: 'Looking for',
+		label: 'Looking for (की तलाश कर रहे हैं)',
 		type: 'choice',
 		isNotEditable: true,
 		choice: {
@@ -410,7 +410,7 @@ export const ProfileMapping = {
 		}
 	},
 	fullName: {
-		label: 'Full Name (Groom/Bride)',
+		label: 'Full Name (Groom/Bride) - पूरा नाम (वर / वधू)',
 		type: 'string',
 		isPaidFeature: true
 	},
@@ -422,7 +422,7 @@ export const ProfileMapping = {
 		}
 	},
 	about: {
-		label: 'About (Groom/Bride)',
+		label: 'About (Groom/Bride) - दूल्हे / दुल्हन के बारे में',
 		type: 'about'
 	},
 	dob: {
