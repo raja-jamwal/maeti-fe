@@ -154,6 +154,17 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			return null;
 		})();
 
+		if (!isSelfProfile) {
+			// profile without photo not discoverable
+			if (!primaryUserProfilePhoto) {
+				return null;
+			}
+			// profile without name not discoverable
+			if (!userProfile.fullName) {
+				return null;
+			}
+		}
+
 		// if the last login is within last 2 days, then we consider
 		// this as recently active
 		const isRecentlyActive =
