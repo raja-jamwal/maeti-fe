@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateHoroscope } from '../../store/reducers/user-profile-reducer';
 import { Action } from 'redux-actions';
-
+import { View } from 'react-native';
+import { HoroscopeView } from '../horoscope-view/horoscope-view';
 interface IHoroscopeTableProps {
 	userProfileId: number;
 	editable: boolean;
@@ -43,30 +44,30 @@ export const HoroscopeMapping = {
 		label: 'Rashi',
 		type: 'string'
 	},
-	nakshatra: {
-		label: 'Nakshatra',
-		type: 'string'
-	},
-	charan: {
-		label: 'Charan',
-		type: 'string'
-	},
-	gan: {
-		label: 'Gan',
-		type: 'string'
-	},
-	nadi: {
-		label: 'Nadi',
-		type: 'string'
-	},
-	mangal: {
-		label: 'Mangal',
-		type: 'string'
-	},
-	gotra: {
-		label: 'Gotra',
-		type: 'string'
-	},
+	// nakshatra: {
+	// 	label: 'Nakshatra',
+	// 	type: 'string'
+	// },
+	// charan: {
+	// 	label: 'Charan',
+	// 	type: 'string'
+	// },
+	// gan: {
+	// 	label: 'Gan',
+	// 	type: 'string'
+	// },
+	// nadi: {
+	// 	label: 'Nadi',
+	// 	type: 'string'
+	// },
+	// mangal: {
+	// 	label: 'Mangal',
+	// 	type: 'string'
+	// },
+	// gotra: {
+	// 	label: 'Gotra',
+	// 	type: 'string'
+	// },
 	wantToSeePatrika: {
 		label: 'Want to see patrika',
 		type: 'choice',
@@ -92,14 +93,17 @@ class HoroscopeTable extends React.Component<
 		const { horoscope, userProfileId, updateHoroscope, editable } = this.props;
 		if (!horoscope) return null;
 		return (
-			<CollapsibleTable
-				title="Horoscope and Religious information"
-				object={horoscope}
-				mapping={HoroscopeMapping}
-				updateAction={updateHoroscope}
-				userProfileId={userProfileId}
-				editable={editable}
-			/>
+			<View>
+				<CollapsibleTable
+					title="Horoscope and Religious information"
+					object={horoscope}
+					mapping={HoroscopeMapping}
+					updateAction={updateHoroscope}
+					userProfileId={userProfileId}
+					editable={editable}
+				/>
+				<HoroscopeView />
+			</View>
 		);
 	}
 }

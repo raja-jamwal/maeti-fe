@@ -54,8 +54,8 @@ const horoscopeMapping = selectFields(HoroscopeMapping, [
 	HoroscopeMapping.caste,
 	HoroscopeMapping.subCaste,
 	HoroscopeMapping.birthPlace,
-	HoroscopeMapping.birthTime,
-	HoroscopeMapping.rashi
+	HoroscopeMapping.birthTime
+	// HoroscopeMapping.rashi
 ]);
 
 const familyMapping = selectFields(FamilyMapping, [
