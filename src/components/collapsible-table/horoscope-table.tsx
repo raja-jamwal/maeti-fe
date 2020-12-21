@@ -68,6 +68,25 @@ export const HoroscopeMapping = {
 	// 	label: 'Gotra',
 	// 	type: 'string'
 	// },
+	birthCity: {
+		label: 'Birth City',
+		type: 'city'
+		// props: (object: any) => {
+		// 	let props = {};
+		// 	if (object.workState) {
+		// 		props = Object.assign({}, props, {
+		// 			stateId: object.workState.id
+		// 		});
+		// 	}
+		// 	return props;
+		// },
+		// shouldShow: (object: any) => {
+		// 	if (object.workState) {
+		// 		return true;
+		// 	}
+		// 	return false;
+		// }
+	},
 	wantToSeePatrika: {
 		label: 'Want to see patrika',
 		type: 'choice',
