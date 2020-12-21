@@ -32,60 +32,13 @@ export const HoroscopeMapping = {
 		tagType: 'sub_caste',
 		type: 'tag-array'
 	},
-	birthPlace: {
-		label: 'Birth Place',
-		type: 'string'
-	},
 	birthTime: {
 		label: 'Birth Time',
 		type: 'date-time'
 	},
-	rashi: {
-		label: 'Rashi',
-		type: 'string'
-	},
-	// nakshatra: {
-	// 	label: 'Nakshatra',
-	// 	type: 'string'
-	// },
-	// charan: {
-	// 	label: 'Charan',
-	// 	type: 'string'
-	// },
-	// gan: {
-	// 	label: 'Gan',
-	// 	type: 'string'
-	// },
-	// nadi: {
-	// 	label: 'Nadi',
-	// 	type: 'string'
-	// },
-	// mangal: {
-	// 	label: 'Mangal',
-	// 	type: 'string'
-	// },
-	// gotra: {
-	// 	label: 'Gotra',
-	// 	type: 'string'
-	// },
 	birthCity: {
 		label: 'Birth City',
-		type: 'city'
-		// props: (object: any) => {
-		// 	let props = {};
-		// 	if (object.workState) {
-		// 		props = Object.assign({}, props, {
-		// 			stateId: object.workState.id
-		// 		});
-		// 	}
-		// 	return props;
-		// },
-		// shouldShow: (object: any) => {
-		// 	if (object.workState) {
-		// 		return true;
-		// 	}
-		// 	return false;
-		// }
+		type: 'city-only'
 	},
 	wantToSeePatrika: {
 		label: 'Want to see patrika',

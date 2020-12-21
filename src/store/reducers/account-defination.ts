@@ -134,6 +134,7 @@ export interface Horoscope extends DAO {
 	nadi: string;
 	mangal: string;
 	gotra: string;
+	birthCity: City | null;
 	wantToSeePatrika: boolean;
 }
 

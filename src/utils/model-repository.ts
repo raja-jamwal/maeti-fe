@@ -117,6 +117,7 @@ export class ModelRepository {
 				nadi: '',
 				mangal: '',
 				gotra: '',
+				birthCity: null,
 				wantToSeePatrika: false,
 				...baseDao
 			},
