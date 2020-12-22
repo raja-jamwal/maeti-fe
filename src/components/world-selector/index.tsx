@@ -161,9 +161,9 @@ class WorldSelector extends React.Component<IWorldSelectorProps, IWorldSelectorS
 	}
 
 	getData() {
-		const { countries, regions, cities, filterText } = this.state;
+		const { countries, regions, cities, filterText, screen } = this.state;
 
-		const selectedScreen = head(this.props.options);
+		const selectedScreen = screen; // head(this.props.options);
 		if (!selectedScreen) return [];
 		if (selectedScreen === 'city') {
 			return this.maybeFilter(cities, filterText);

@@ -1,323 +1,322 @@
 {
-  "accountId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+	"accountId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
 
-  "responseRate": 0.78,
-  "responseTime": 24,
-  "lastLogin": 1548179981,
+	"responseRate": 0.78,
+	"responseTime": 24,
+	"lastLogin": 1548179981,
 
-  "payment": {
-      "package": "basic",
-      "registrationDate": 1548179981,
-      "expiryDate": 1548179981,
-      "receiptNumber": "blah-payment-gateway-ref-id"
-   },
+	"payment": {
+		"package": "basic",
+		"registrationDate": 1548179981,
+		"expiryDate": 1548179981,
+		"receiptNumber": "blah-payment-gateway-ref-id"
+	},
 
-  "verification": {
-    "address":  true,
-    "identity": true,
-    "income": true
-  },
+	"verification": {
+		"address": true,
+		"identity": true,
+		"income": true
+	},
 
-  "profile": {
-    "gender": "female",
-    "about": "I have graduated in Software Engineering and currently working with an MNC in Pune. I am a family oriented individual. I am blessed to be a part of a happy loving family with liberal values,integrity and freedom to make choices in life. I am simple, loving and a spiritual individual with a unique personality blend of being introvert and extrovert. I am known for being Extremely patient in critical circumstances, humble ,soft spoken and generous to every individual I cross my path. Future Aspirations:Alligning my career aspirations I wish to grow in personally. I have a Simple living with high aspirations to fly and reach heights personally and professionally along with my partner. I enjoy reading books in spare time. Forgot to mention that I am a big time Foodie. I am looking for someone who can match my wavelength and opens the horizons of the way I think,be thoughtful and uplift me numerously. I wish to make a happy loving and a caring family of my own with my partner and his family and expect the same in return",
-    "createdBy": "mother",
-    "salutation": "Miss",
-    "fullName": "Aishwarya Milind Raskar",
-    "dob": 1264357557,
-    "maritalStatus": "never married",
-    "height": 5.7,
-    "weight": 60,
-    "bodyType": "fair",
-    "bodyComplexion": "fair",
-    "bloodGroup": "A+ve",
-    "motherTongue": "marathi",
-    "specialCases": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Mental Health",
-        "tagType": "case"
-      }
-    ],
-    "describeMyself": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Simple",
-        "tagType": "description"
-      },
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934382",
-        "value": "Hard working",
-        "tagType": "description"
-      },
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934383",
-        "value": "Hard working",
-        "tagType": "description"
-      },
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934384",
-        "value": "Hard working",
-        "tagType": "description"
-      },
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934385",
-        "value": "Hard working",
-        "tagType": "description"
-      }
-    ]
-  },
+	"profile": {
+		"gender": "female",
+		"about": "I have graduated in Software Engineering and currently working with an MNC in Pune. I am a family oriented individual. I am blessed to be a part of a happy loving family with liberal values,integrity and freedom to make choices in life. I am simple, loving and a spiritual individual with a unique personality blend of being introvert and extrovert. I am known for being Extremely patient in critical circumstances, humble ,soft spoken and generous to every individual I cross my path. Future Aspirations:Alligning my career aspirations I wish to grow in personally. I have a Simple living with high aspirations to fly and reach heights personally and professionally along with my partner. I enjoy reading books in spare time. Forgot to mention that I am a big time Foodie. I am looking for someone who can match my wavelength and opens the horizons of the way I think,be thoughtful and uplift me numerously. I wish to make a happy loving and a caring family of my own with my partner and his family and expect the same in return",
+		"createdBy": "mother",
+		"salutation": "Miss",
+		"fullName": "Aishwarya Milind Raskar",
+		"dob": 1264357557,
+		"maritalStatus": "never married",
+		"height": 5.7,
+		"weight": 60,
+		"bodyType": "fair",
+		"bodyComplexion": "fair",
+		"bloodGroup": "A+ve",
+		"motherTongue": "marathi",
+		"specialCases": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Mental Health",
+				"tagType": "case"
+			}
+		],
+		"describeMyself": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Simple",
+				"tagType": "description"
+			},
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934382",
+				"value": "Hard working",
+				"tagType": "description"
+			},
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934383",
+				"value": "Hard working",
+				"tagType": "description"
+			},
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934384",
+				"value": "Hard working",
+				"tagType": "description"
+			},
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934385",
+				"value": "Hard working",
+				"tagType": "description"
+			}
+		]
+	},
 
-  "education": {
-    "mediumOfPrimaryEducation": "English",
-    "highestEducationLevel": "Graduate",
-    "educationField": "Engineering",
-    "education": "B.E in Computer Science from Pune University",
-    "additionalEducation": "none",
-    "university": "FIT"
-  },
+	"education": {
+		"mediumOfPrimaryEducation": "English",
+		"highestEducationLevel": "Graduate",
+		"educationField": "Engineering",
+		"education": "B.E in Computer Science from Pune University",
+		"additionalEducation": "none",
+		"university": "FIT"
+	},
 
-  "profession": {
-    "occupation": "employee",
-    "workingField": "MNC",
-    "lengthOfEmployment": 3,
-    "company": "MediaAgility",
-    "designation": "Test Engineer",
-    "currency": "Rupees",
-    "monthlyIncome": 42000,
-    "annualIncome": 504000,
-    "loans": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Car Loan",
-        "tagType": "loan"
-      }
-    ],
-    "otherLoans": "other loan",
-    "workCity": "Pune, India"
-  },
+	"profession": {
+		"occupation": "employee",
+		"workingField": "MNC",
+		"lengthOfEmployment": 3,
+		"company": "MediaAgility",
+		"designation": "Test Engineer",
+		"currency": "Rupees",
+		"monthlyIncome": 42000,
+		"annualIncome": 504000,
+		"loans": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Car Loan",
+				"tagType": "loan"
+			}
+		],
+		"otherLoans": "other loan",
+		"workCity": "Pune, India"
+	},
 
-  "horoscope": {
-    "caste": "Mali",
-    "subCaste": "Fulmali",
-    "birthPlace": "Mumbai",
-    "birthTime": 1548179981,
-    "rashi": "vrushabh",
-    "nakshatra": "rohini",
-    "charan": "",
-    "gan": "",
-    "nadi": "",
-    "mangal": "",
-    "gotra": "",
-    "wantToSeePatrika": true
-  },
+	"horoscope": {
+		"caste": "Mali",
+		"subCaste": "Fulmali",
+		"birthPlace": "Mumbai",
+		"birthTime": 1548179981,
+		"rashi": "vrushabh",
+		"nakshatra": "rohini",
+		"charan": "",
+		"gan": "",
+		"nadi": "",
+		"mangal": "",
+		"gotra": "",
+		"wantToSeePatrika": true
+	},
 
-  "investments": {
-    "home": "no",
-    "realEstate": "Bungalow",
-    "vehicle": "no",
-    "investments": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Mutual Fund",
-        "tagType": "investment"
-      }
-    ]
-  },
+	"investments": {
+		"home": "no",
+		"realEstate": "Bungalow",
+		"vehicle": "no",
+		"investments": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Mutual Fund",
+				"tagType": "investment"
+			}
+		]
+	},
 
-  "lifestyle": {
-    "diet": "Non-Veg Occasionally",
-    "smoking": "no",
-    "drinking": "occasionally",
-    "hoteling": "occasionally",
-    "partying": "no",
-    "socialNetworking": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Facebook",
-        "tagType": "social"
-      }
-    ],
-    "priorities": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Family",
-        "tagType": "priority"
-      }
-    ],
-    "hobbies": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Reading",
-        "tagType": "hobby"
-      }
-    ],
-    "sports": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Swimming",
-        "tagType": "sport"
-      }
-    ]
-  },
+	"lifestyle": {
+		"diet": "Non-Veg Occasionally",
+		"smoking": "no",
+		"drinking": "occasionally",
+		"hoteling": "occasionally",
+		"partying": "no",
+		"socialNetworking": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Facebook",
+				"tagType": "social"
+			}
+		],
+		"priorities": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Family",
+				"tagType": "priority"
+			}
+		],
+		"hobbies": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Reading",
+				"tagType": "hobby"
+			}
+		],
+		"sports": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Swimming",
+				"tagType": "sport"
+			}
+		]
+	},
 
-  "otherDetails": {
-    "medicalHistory": "some note here",
-    "currentMedications": "some note here",
-    "passport": false,
-    "visaDetails": "info here"
-  },
+	"otherDetails": {
+		"medicalHistory": "some note here",
+		"currentMedications": "some note here",
+		"passport": false,
+		"visaDetails": "info here"
+	},
 
-  "contactInformation": {
-    "address": "Thorat heights,bhusari colony,paud road,kothrud",
-    "pinCode": "411038",
-    "residentialCity": "Pune, India",
-    "mobileNumber1": "9823",
-    "mobileNumberOf1": "Self",
-    "mobileNumber2": "9158",
-    "mobileNumberOf2": "Self",
-    "landlineNumber": "123",
-    "emailId": "raskar.aish@gmail.com",
-    "emailIdOf": "self",
-    "alternateEmailId": "",
-    "alternateEmailIdOf": "",
-    "facebookLink": "",
-    "linkedinLink": ""
-  },
+	"contactInformation": {
+		"address": "Thorat heights,bhusari colony,paud road,kothrud",
+		"pinCode": "411038",
+		"residentialCity": "Pune, India",
+		"mobileNumber1": "9823",
+		"mobileNumberOf1": "Self",
+		"mobileNumber2": "9158",
+		"mobileNumberOf2": "Self",
+		"landlineNumber": "123",
+		"emailId": "raskar.aish@gmail.com",
+		"emailIdOf": "self",
+		"alternateEmailId": "",
+		"alternateEmailIdOf": "",
+		"facebookLink": "",
+		"linkedinLink": ""
+	},
 
-  "references": {
-    "relativeName": "Rupraj Chavan",
-    "relationWithMember": "mama",
-    "contactNumber": "999",
-    "address": "Pune"
-  },
+	"references": {
+		"relativeName": "Rupraj Chavan",
+		"relationWithMember": "mama",
+		"contactNumber": "999",
+		"address": "Pune"
+	},
 
-  "family": {
-    "fatherName": "Milind Raskar",
-    "father": "Alive",
-    "fatherOccupation": "business",
-    "fatherDesignation": "",
-    "fatherNativePlace": "Malsiras",
-    "motherName": "Jyotsna Milind",
-    "mother": "Alive",
-    "motherOccupation": "Home Maker",
-    "motherDesignation": "",
-    "motherMaternalSurname": "Rankhambe",
-    "motherNativePlace": "Nasik, India",
-    "noOfBrothers": 2,
-    "brothersMarried": 2,
-    "noOfSisters": 2,
-    "sistersMarried": 2,
-    "aboutFamily": "about the family",
-    "familyLocation": "Pune, India",
-    "interCasteParents": true,
-    "parentsLivingSeperately": true,
+	"family": {
+		"fatherName": "Milind Raskar",
+		"father": "Alive",
+		"fatherOccupation": "business",
+		"fatherDesignation": "",
+		"fatherNativePlace": "Malsiras",
+		"motherName": "Jyotsna Milind",
+		"mother": "Alive",
+		"motherOccupation": "Home Maker",
+		"motherDesignation": "",
+		"motherMaternalSurname": "Rankhambe",
+		"motherNativePlace": "Nasik, India",
+		"noOfBrothers": 2,
+		"brothersMarried": 2,
+		"noOfSisters": 2,
+		"sistersMarried": 2,
+		"aboutFamily": "about the family",
+		"familyLocation": "Pune, India",
+		"interCasteParents": true,
+		"parentsLivingSeperately": true,
 
-    "otherInformation": {
-      "familyValues": "moderate",
-      "familyFinancialBackground": "middle class",
-      "familyAnnualIncome": "5 Lac to 10 Lac",
-      "home": "rent",
-      "homeType": [
-        {
-          "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-          "value": "2 BHK",
-          "tagType": "home"
-        }
-      ],
-      "otherHomeType": [
-        {
-          "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-          "value": "2 BHK",
-          "tagType": "home"
-        }
-      ],
-      "realEstate": [
-        {
-          "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-          "value": "Bungalow",
-          "tagType": "estate"
-        }
-      ],
-      "vehicle": true,
-      "vehicleType": [
-        {
-          "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-          "value": "2 Wheeler",
-          "tagType": "wheeler"
-        }
-      ],
-      "loans": [],
-      "otherLoans": "",
-      "familyMedialHistory": ""
-    }
-  },
+		"otherInformation": {
+			"familyValues": "moderate",
+			"familyFinancialBackground": "middle class",
+			"familyAnnualIncome": "5 Lac to 10 Lac",
+			"home": "rent",
+			"homeType": [
+				{
+					"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+					"value": "2 BHK",
+					"tagType": "home"
+				}
+			],
+			"otherHomeType": [
+				{
+					"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+					"value": "2 BHK",
+					"tagType": "home"
+				}
+			],
+			"realEstate": [
+				{
+					"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+					"value": "Bungalow",
+					"tagType": "estate"
+				}
+			],
+			"vehicle": true,
+			"vehicleType": [
+				{
+					"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+					"value": "2 Wheeler",
+					"tagType": "wheeler"
+				}
+			],
+			"loans": [],
+			"otherLoans": "",
+			"familyMedialHistory": ""
+		}
+	},
 
-  "preference": {
-    "maritalStatus": "never married",
-    "caste": {
-      "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-      "value": "Agarwal",
-      "tagType": "caste"
-    },
-    "subCaste": {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Agri",
-        "tagType": "subcaste"
-    },
-    "differenceHeight": "any",
-    "differenceAge": "any",
-    "educationLevel": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Graduate",
-        "tagType": "education"
-      }
-    ],
-    "education": "",
-    "mediumOfEducation": "English",
-    "workingPartner": "any",
-    "occupation": "any",
-    "workCountry": "",
-    "workState": "",
-    "workCity": "",
-    "parentCounty": "",
-    "parentCity": "",
-    "diet": "any",
-    "smoke": "no",
-    "drink": "no",
-    "hoteling": "any",
-    "partying": "any",
-    "cooking": "any",
-    "familyFinancialBackground": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Middle Class",
-        "tagType": "familyClass"
-      }
-    ],
-    "familyValues": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Middle Class",
-        "tagType": "familyValue"
-      }
-    ],
-    "specialCase": [
-      {
-        "tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
-        "value": "Mental",
-        "tagType": "case"
-      }
-    ],
-    "otherExpectations": "",
-    "hideProfileFrom": ""
-  },
+	"preference": {
+		"maritalStatus": "never married",
+		"caste": {
+			"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+			"value": "Agarwal",
+			"tagType": "caste"
+		},
+		"subCaste": {
+			"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+			"value": "Agri",
+			"tagType": "subcaste"
+		},
+		"differenceHeight": "any",
+		"differenceAge": "any",
+		"educationLevel": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Graduate",
+				"tagType": "education"
+			}
+		],
+		"education": "",
+		"mediumOfEducation": "English",
+		"workingPartner": "any",
+		"occupation": "any",
+		"workCountry": "",
+		"workState": "",
+		"workCity": "",
+		"parentCounty": "",
+		"parentCity": "",
+		"diet": "any",
+		"smoke": "no",
+		"drink": "no",
+		"hoteling": "any",
+		"partying": "any",
+		"cooking": "any",
+		"familyFinancialBackground": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Middle Class",
+				"tagType": "familyClass"
+			}
+		],
+		"familyValues": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Middle Class",
+				"tagType": "familyValue"
+			}
+		],
+		"specialCase": [
+			{
+				"tagId": "c0bb90b3-d4ac-4007-b48c-3a70db934381",
+				"value": "Mental",
+				"tagType": "case"
+			}
+		],
+		"otherExpectations": "",
+		"hideProfileFrom": ""
+	},
 
-  "photos": [
-    {
-      "url": "https://www.google.com"
-    }
-  ]
-
+	"photos": [
+		{
+			"url": "https://www.google.com"
+		}
+	]
 }
