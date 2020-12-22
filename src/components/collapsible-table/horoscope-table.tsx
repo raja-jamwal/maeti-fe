@@ -74,7 +74,7 @@ class HoroscopeTable extends React.Component<
 					userProfileId={userProfileId}
 					editable={editable}
 				/>
-				<HoroscopeView />
+				{false && <HoroscopeView />}
 			</View>
 		);
 	}
