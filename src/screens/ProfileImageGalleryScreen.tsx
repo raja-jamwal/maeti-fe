@@ -96,11 +96,18 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 		this.logger.log(result);
 
 		if (!result.cancelled) {
-			this.props.uploadPhoto({
-				uri: result.uri,
-				name: 'image.jpg',
-				type: 'image/jpeg'
-			});
+			this.props
+				.uploadPhoto({
+					uri: result.uri,
+					name: 'image.jpg',
+					type: 'image/jpeg'
+				})
+				.catch(_er =>
+					simpleAlert(
+						'Error',
+						'Unable to upload this image. Try uploading another image.'
+					)
+				);
 		}
 	};
 
@@ -183,7 +190,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 				<View style={styles.addBtnContainer}>
 					<TouchableBtn onPress={this._pickImage}>
 						<View style={styles.addIconContainer}>
-							<Ionicons name="md-add" size={30} color="white" />
+							<Ionicons name="add" size={30} color="white" />
 						</View>
 					</TouchableBtn>
 				</View>
@@ -235,9 +242,9 @@ const styles = StyleSheet.create({
 		zIndex: 1
 	},
 	addIconContainer: {
-		margin: 10,
-		marginLeft: 15,
-		marginRight: 15
+		margin: 10
+		// marginLeft: 15,
+		// marginRight: 15
 	},
 	progressContainer: {
 		position: 'absolute',

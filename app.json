@@ -1,64 +1,68 @@
 {
-	"expo": {
-		"name": "maeti",
-		"scheme": "maeti",
-		"slug": "matrimony",
-		"privacy": "public",
-		"sdkVersion": "39.0.0",
-		"platforms": ["ios", "android"],
-		"primaryColor": "#fff",
-		"version": "0.53.0",
-		"orientation": "portrait",
-		"icon": "./src/assets/images/icon.png",
-		"splash": {
-			"backgroundColor": "#fff",
-			"image": "./src/assets/images/splash.png"
-		},
-		"updates": {
-			"fallbackToCacheTimeout": 0
-		},
-		"assetBundlePatterns": ["**/*"],
-		"ios": {
-			"googleServicesFile": "./GoogleService-Info.plist",
-			"supportsTablet": true,
-			"icon": "./src/assets/images/icon_ios.png",
-			"bundleIdentifier": "in.datagrids.matrimony",
-			"infoPlist": {
-				"NSCameraUsageDescription": "Maeti requires access to Camera to add a profile picture to your profile",
-				"NSPhotoLibraryAddUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile",
-				"NSPhotoLibraryUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile"
-			},
-			"config": {
-				"googleMobileAdsAppId": "ca-app-pub-4345419882274439~2027623340",
-				"googleSignIn": {
-					"reservedClientId": "com.googleusercontent.apps.70507161694-sdpevh75i0go4b7g82mg1d0jbl84dper"
-				}
-			}
-		},
-		"android": {
-			"package": "matrimony.datagrids.in",
-			"googleServicesFile": "./google-services.json",
-			"versionCode": 53,
-			"config": {
-				"googleMobileAdsAppId": "ca-app-pub-4345419882274439~7116298491"
-			}
-		},
-		"androidStatusBar": {
-			"backgroundColor": "#fff",
-			"barStyle": "light-content"
-		},
-		"description": "",
-		"hooks": {
-			"postPublish": [
-				{
-					"file": "sentry-expo/upload-sourcemaps",
-					"config": {
-						"organization": "datagrids",
-						"project": "matrimony",
-						"authToken": "480ed1777edc4717870ee791a4baf5c7c516826acc95452dbeb5db9b63a92a27"
-					}
-				}
-			]
-		}
-	}
+  "expo": {
+    "name": "maeti",
+    "scheme": "maeti",
+    "slug": "matrimony",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "primaryColor": "#fff",
+    "version": "0.53.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/icon.png",
+    "splash": {
+      "backgroundColor": "#fff",
+      "image": "./src/assets/images/splash.png"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "supportsTablet": true,
+      "icon": "./src/assets/images/icon_ios.png",
+      "bundleIdentifier": "in.datagrids.matrimony",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Maeti requires access to Camera to add a profile picture to your profile",
+        "NSPhotoLibraryAddUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile",
+        "NSPhotoLibraryUsageDescription": "Maeti requires access to Photo Library to add profile picture to your profile"
+      },
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-4345419882274439~2027623340",
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.70507161694-sdpevh75i0go4b7g82mg1d0jbl84dper"
+        }
+      }
+    },
+    "android": {
+      "package": "matrimony.datagrids.in",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 53,
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-4345419882274439~7116298491"
+      }
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#fff",
+      "barStyle": "light-content"
+    },
+    "description": "",
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "datagrids",
+            "project": "matrimony",
+            "authToken": "480ed1777edc4717870ee791a4baf5c7c516826acc95452dbeb5db9b63a92a27"
+          }
+        }
+      ]
+    }
+  }
 }
