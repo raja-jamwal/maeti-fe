@@ -187,6 +187,7 @@ export function EditableForm({ navObject, mapping, updateAction, updateLabel }: 
 			const isCountryField = type === 'country';
 			const isStateField = type === 'state';
 			const isCityField = type === 'city';
+			const isCityOnlyField = type === 'city-only';
 			const isTagArray = type === 'tag-array';
 			const tagType = isTagArray && fieldDefinition.tagType;
 
@@ -212,6 +213,7 @@ export function EditableForm({ navObject, mapping, updateAction, updateLabel }: 
 				case 'country':
 				case 'state':
 				case 'city':
+				case 'city-only':
 					renderWorldValue = (value && value.name) || '';
 					break;
 				default:
@@ -361,6 +363,19 @@ export function EditableForm({ navObject, mapping, updateAction, updateLabel }: 
 					{isCityField && (
 						<WorldSelectorField
 							options={[WORLD_OPTION.CITY]}
+							onSelect={selection => {
+								if (!selection || !selection.city) {
+									return;
+								}
+								updateFieldValue(field, selection.city);
+							}}
+							value={renderWorldValue}
+							{...additionalProps}
+						/>
+					)}
+					{isCityOnlyField && (
+						<WorldSelectorField
+							options={[WORLD_OPTION.COUNTRY, WORLD_OPTION.STATE, WORLD_OPTION.CITY]}
 							onSelect={selection => {
 								if (!selection || !selection.city) {
 									return;
