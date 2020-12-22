@@ -93,7 +93,7 @@ const ExploreScreenHeader = (props: any) => {
 					<Ionicons
 						style={styles.navBarIcon}
 						color={Colors.offWhite}
-						name="md-funnel"
+						name="filter"
 						size={26}
 					/>
 				</TouchableBtn>

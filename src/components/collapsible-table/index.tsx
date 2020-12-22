@@ -57,7 +57,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 	render() {
 		const { title, object, mapping, editable, isAccountPaid } = this.props;
 		const { expanded } = this.state;
-		const caretIconName = expanded ? 'md-arrow-dropup' : 'md-arrow-dropdown';
+		const caretIconName = expanded ? 'chevron-up' : 'chevron-down';
 		return (
 			<View>
 				<View style={[GlobalStyles.row, GlobalStyles.expand]}>
@@ -75,7 +75,7 @@ class CollapsibleTable extends React.Component<ICollapsibleTableProps, ICollapsi
 							{!!editable && (
 								<TouchableBtn onPress={this.editTable}>
 									<Ionicons
-										name="md-create"
+										name="pencil"
 										size={20}
 										style={styles.headerIcon}
 										color={Colors.primaryDarkColor}

@@ -58,7 +58,7 @@ const MessagesStack = createStackNavigator(
 
 MessagesStack.navigationOptions = ({ navigation }) => ({
 	tabBarLabel: 'Messages',
-	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-chatboxes" />,
+	tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="chatbubbles" />,
 	tabBarVisible: navigation.state.index === 0
 });
 

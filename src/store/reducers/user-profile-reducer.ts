@@ -190,6 +190,7 @@ export const uploadPhoto = function(file: any) {
 			.catch(err => {
 				logger.log('err ', err);
 				dispatch(setSelfProfileUpdating(false));
+				throw err;
 			});
 	};
 };
