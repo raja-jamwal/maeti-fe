@@ -7,7 +7,7 @@
 		"sdkVersion": "37.0.0",
 		"platforms": ["ios", "android"],
 		"primaryColor": "#fff",
-		"version": "0.52.0",
+		"version": "0.53.0",
 		"orientation": "portrait",
 		"icon": "./src/assets/images/icon.png",
 		"splash": {
@@ -38,7 +38,7 @@
 		"android": {
 			"package": "matrimony.datagrids.in",
 			"googleServicesFile": "./google-services.json",
-			"versionCode": 52,
+			"versionCode": 53,
 			"config": {
 				"googleMobileAdsAppId": "ca-app-pub-4345419882274439~7116298491"
 			}
