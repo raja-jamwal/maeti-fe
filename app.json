@@ -4,7 +4,7 @@
 		"scheme": "maeti",
 		"slug": "matrimony",
 		"privacy": "public",
-		"sdkVersion": "37.0.0",
+		"sdkVersion": "39.0.0",
 		"platforms": ["ios", "android"],
 		"primaryColor": "#fff",
 		"version": "0.53.0",

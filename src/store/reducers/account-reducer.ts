@@ -7,7 +7,8 @@ import { addProfile } from './user-profile-reducer';
 import { fetchTags } from './tag-reducer';
 import { addSelfProfile } from './self-profile-reducer';
 import { ApiRequest, getCurrentUnixEpoch } from '../../utils/index';
-import { Notifications, Updates } from 'expo';
+import { Notifications } from 'expo';
+import * as Updates from 'expo-updates';
 import * as Permissions from 'expo-permissions';
 import { IRootState } from '../index';
 import { createSelector } from 'reselect';
@@ -170,7 +171,7 @@ export const fetchAccountByPendingRequestId = async function(id: string) {
 	const token = account.token;
 	await AsyncStorage.setItem('token', token);
 	modelRepository.delete();
-	await Updates.reloadFromCache();
+	await Updates.reloadAsync();
 };
 
 const postPixelData = async function(number: string, userProfile: UserProfile) {

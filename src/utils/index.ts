@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import { isEmpty, forOwn } from 'lodash';
 import { AsyncStorage } from 'react-native';
-import { Updates } from 'expo';
+import * as Updates from 'expo-updates';
 import { simpleAlert } from '../components/alert/index';
 import { getLogger } from './logger';
 import { CacheManager } from 'react-native-expo-image-cache';
@@ -10,7 +10,7 @@ const moment = require('moment');
 const secondsInYear = 60 * 60 * 24 * 365;
 const LAKH_RUPEE = 100000;
 const CRORE_RUPEE = 100 * LAKH_RUPEE;
-const TOTAL_SMS_LIMIT_IN_DAY = 4;
+const TOTAL_SMS_LIMIT_IN_DAY = 40;
 const TOTAL_FORM_UPDATE_ALLOWED = 4;
 export const MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24; // 60 seconds * 60 * minutes * 24 hours * 1000ms
 
@@ -38,7 +38,7 @@ export const logoutAccount = async () => {
 	await AsyncStorage.removeItem('form_update_count');
 	await AsyncStorage.removeItem('new_pending_account');
 	await CacheManager.clearCache();
-	await Updates.reloadFromCache();
+	await Updates.reloadAsync();
 };
 
 const memomizedCERead = () => {
