@@ -244,7 +244,7 @@ export const fetchAccountByToken = function(token: string, skipPushingToken?: bo
 				dispatch(addSelfProfile(profile));
 				dispatch(addProfile(profile));
 				logger.log('addProfile dispatched');
-				postPixelData((account.id as any) as string, profile);
+				// postPixelData((account.id as any) as string, profile);
 				if (!skipPushingToken) {
 					dispatch(savePushToken(profile.id));
 					dispatch(fetchTags());

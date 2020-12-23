@@ -22,6 +22,7 @@ import ConnectedPurchaseButton from 'src/components/purchase-button/purchase-but
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { getCeStatus } from '../../utils';
 import { isEmpty } from 'lodash';
+import HoroscopeView from '../horoscope-view/horoscope-view';
 
 interface IProfileInfoTabProps {
 	userProfileId: number;
@@ -155,6 +156,7 @@ export default class ProfileInfoTab extends React.Component<
 						<EducationTable userProfileId={userProfileId} editable={isEditable} />
 						<ProfessionTable userProfileId={userProfileId} editable={isEditable} />
 						<HoroscopeTable userProfileId={userProfileId} editable={isEditable} />
+						<HoroscopeView userProfileId={userProfileId} />
 						<InvestmentTable userProfileId={userProfileId} editable={isEditable} />
 						<LifestyleTable userProfileId={userProfileId} editable={isEditable} />
 

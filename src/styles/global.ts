@@ -40,6 +40,9 @@ export default StyleSheet.create({
 	padding: {
 		padding: 16
 	},
+	smallPadding: {
+		padding: 8
+	},
 	paddedRight: {
 		paddingRight: 5
 	},
