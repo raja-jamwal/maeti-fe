@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Modal, DatePickerIOS, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Modal, SafeAreaView } from 'react-native';
 import { formatDate, formatDateTime } from '../../utils';
 import Colors from 'src/constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { Ionicons } from '@expo/vector-icons';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 interface IDateTimeIosProps {
 	epoch: number;
 	dateOnly: boolean;
@@ -14,7 +14,6 @@ interface IDateTimeIosProps {
 
 interface IDateTimeIosState {
 	showModal: boolean;
-	showTimePicker: boolean;
 	date: Date;
 }
 
@@ -23,11 +22,9 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 		super(props);
 		this.state = {
 			showModal: false,
-			showTimePicker: false,
 			date: this.getDefaultDate(this.props.epoch || 0)
 		};
 		this.toggleModal = this.toggleModal.bind(this);
-		this.toggleTimePicker = this.toggleTimePicker.bind(this);
 	}
 
 	getDefaultDate(epoch: number) {
@@ -43,25 +40,34 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 	}
 
 	renderDateTimePicker() {
-		const { field, epoch, updateFieldValue, dateOnly } = this.props;
-		const { showTimePicker, date } = this.state;
+		const { field, updateFieldValue, dateOnly } = this.props;
+		const { date } = this.state;
 		return (
-			<DatePickerIOS
-				date={date}
-				mode={!showTimePicker ? 'date' : 'time'}
-				onDateChange={dateObj => {
-					const unixEpoch = Math.floor(dateObj.getTime() / 1000);
-					updateFieldValue(field, unixEpoch);
-				}}
-			/>
+			<View>
+				<DateTimePicker
+					value={date}
+					mode={'date'}
+					onChange={(_event, dateObj) => {
+						if (dateObj) {
+							const unixEpoch = Math.floor(dateObj.getTime() / 1000);
+							updateFieldValue(field, unixEpoch);
+						}
+					}}
+				/>
+				{!dateOnly && (
+					<DateTimePicker
+						value={date}
+						mode={'time'}
+						onChange={(_event, dateObj) => {
+							if (dateObj) {
+								const unixEpoch = Math.floor(dateObj.getTime() / 1000);
+								updateFieldValue(field, unixEpoch);
+							}
+						}}
+					/>
+				)}
+			</View>
 		);
-	}
-
-	toggleTimePicker() {
-		const { showTimePicker } = this.state;
-		this.setState({
-			showTimePicker: !showTimePicker
-		});
 	}
 
 	toggleModal() {
@@ -79,7 +85,7 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 
 	render() {
 		const { epoch, dateOnly } = this.props;
-		const { showModal, showTimePicker } = this.state;
+		const { showModal } = this.state;
 		return (
 			<View>
 				<TouchableBtn onPress={this.toggleModal}>
@@ -95,19 +101,15 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 								<Ionicons name="md-close" size={26} color={Colors.offWhite} />
 							</TouchableBtn>
 							<View style={{ flex: 1 }} />
-							{!dateOnly && (
-								<TouchableBtn onPress={this.toggleTimePicker}>
-									<View>
-										<Text
-											style={{
-												fontSize: 16
-											}}
-										>
-											Choose {!showTimePicker ? 'Time' : 'Date'}
-										</Text>
-									</View>
-								</TouchableBtn>
-							)}
+							<View>
+								<Text
+									style={{
+										fontSize: 16
+									}}
+								>
+									Choose {!dateOnly ? 'Date and Time' : 'Date'}
+								</Text>
+							</View>
 							<View style={{ flex: 1 }} />
 						</View>
 						<View />

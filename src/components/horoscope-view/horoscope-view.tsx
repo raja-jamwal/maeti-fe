@@ -15,6 +15,10 @@ import {
 } from '../../store/reducers/horoscope-reducer';
 import { Throbber } from '../throbber/throbber';
 import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+import { isObject } from 'lodash';
+import Collapsible from 'react-native-collapsible';
+import TouchableBtn from '../touchable-btn/touchable-btn';
+import { Ionicons } from '@expo/vector-icons';
 
 function PlanetHouse({
 	style,
@@ -50,6 +54,7 @@ interface IHoroscopeViewProps {
 	horoscopeForm: Horoscope;
 	fetchHoroscope: (userProfileId: number) => any;
 	isCurrentUserProfile: boolean;
+	isAdmin: boolean;
 }
 
 export function HoroscopeView({
@@ -57,10 +62,13 @@ export function HoroscopeView({
 	userProfile,
 	horoscope,
 	fetchHoroscope,
-	isCurrentUserProfile
+	isCurrentUserProfile,
+	isAdmin
 }: IHoroscopeViewProps) {
 	if (!userProfile) return null;
+	if (!isAdmin) return null;
 	const [isLoading, setIsLoading] = React.useState(false);
+	const [isExpanded, setIsExpanded] = React.useState(true);
 	React.useEffect(() => {
 		(async () => {
 			setIsLoading(true);
@@ -91,102 +99,158 @@ export function HoroscopeView({
 	const renderPlanet = (house: number) => {
 		if (!planetLocation[house]) return null;
 		return planetLocation[house].map((planet: string) => {
-			return <Text style={styles.planetNumber}>{planet}</Text>;
+			return (
+				<Text key={planet} style={styles.planetNumber}>
+					{planet}
+				</Text>
+			);
 		});
+	};
+
+	const renderHoroscope = (horoscope: any) => {
+		return (
+			<View style={styles.horoscopeData}>
+				{Object.keys(horoscope).map((key, i) => {
+					const value = horoscope[key];
+					if (isObject(value)) return null;
+					return (
+						<View style={GlobalStyle.row} key={i}>
+							<Value style={styles.tableKey}>{key}</Value>
+							<Value>:</Value>
+							<Value style={styles.tableValue}>{value}</Value>
+						</View>
+					);
+				})}
+			</View>
+		);
+	};
+
+	const caretIconName = isExpanded ? 'chevron-up' : 'chevron-down';
+	const toggleExpand = () => {
+		setIsExpanded(!isExpanded);
 	};
 
 	return (
 		<View style={styles.container}>
-			<Text style={[GlobalStyle.large, GlobalStyle.expand, styles.title]}>Kundali</Text>
-			{!!isBirthDataAvailable && isCurrentUserProfile && (
-				<Value>Add your birth place and time to see your kundali</Value>
-			)}
-			<View>
-				<View style={styles.row}>
-					<PlanetHouse number={8} style={{ ...styles.planetBoxSize }}>
-						{renderPlanet(8)}
-					</PlanetHouse>
-					<PlanetHouse
-						number={9}
-						style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
-					>
-						{renderPlanet(9)}
-					</PlanetHouse>
-					<PlanetHouse
-						number={10}
-						style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
-					>
-						{renderPlanet(10)}
-					</PlanetHouse>
-					<PlanetHouse
-						number={11}
-						style={{ ...styles.planetBoxSize, ...styles.planetHouseRightBorder }}
-					>
-						{renderPlanet(11)}
-					</PlanetHouse>
-				</View>
-				<View style={[styles.row, styles.expand]}>
-					<View style={{ width: 100 }}>
-						<PlanetHouse
-							number={7}
-							style={{ ...styles.planetBoxSize, ...styles.planetHouseRightBorder }}
-						>
-							{renderPlanet(7)}
-						</PlanetHouse>
-						<PlanetHouse
-							number={6}
-							style={{ ...styles.planetBoxSize, ...styles.planetHouseRightBorder }}
-						>
-							{renderPlanet(6)}
-						</PlanetHouse>
+			<View style={[GlobalStyle.row, GlobalStyle.expand]}>
+				<TouchableBtn style={GlobalStyle.expand} onPress={toggleExpand}>
+					<View style={[GlobalStyle.row, GlobalStyle.alignCenter, GlobalStyle.expand]}>
+						<Text style={[GlobalStyle.large, GlobalStyle.expand, styles.title]}>
+							Kundali
+						</Text>
+						<Ionicons
+							style={styles.headerIcon}
+							color={Colors.primaryDarkColor}
+							name={caretIconName}
+							size={20}
+						/>
 					</View>
-					<PlanetSpacer />
-					<View style={{ width: 100 }}>
-						<PlanetHouse
-							number={12}
-							style={{ ...styles.planetBoxSize, ...styles.planetHouseRightBorder }}
-						>
-							{renderPlanet(12)}
-						</PlanetHouse>
-						<PlanetHouse
-							number={1}
-							style={{ ...styles.planetBoxSize, ...styles.planetHouseRightBorder }}
-						>
-							{renderPlanet(1)}
-						</PlanetHouse>
-					</View>
-				</View>
-				<View style={styles.row}>
-					<PlanetHouse
-						number={5}
-						style={{ ...styles.planetBoxSize, ...styles.planetHouseBottomBorder }}
-					>
-						{renderPlanet(5)}
-					</PlanetHouse>
-					<PlanetHouse
-						number={4}
-						style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
-					>
-						{renderPlanet(4)}
-					</PlanetHouse>
-					<PlanetHouse
-						number={3}
-						style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
-					>
-						{renderPlanet(3)}
-					</PlanetHouse>
-					<PlanetHouse
-						number={2}
-						style={{
-							...styles.planetBoxSize,
-							...styles.planetHouseBottomBorder,
-							...styles.planetHouseRightBorder
-						}}
-					>
-						{renderPlanet(2)}
-					</PlanetHouse>
-				</View>
+				</TouchableBtn>
 			</View>
+			<Collapsible collapsed={!isExpanded}>
+				{!!isBirthDataAvailable && isCurrentUserProfile && (
+					<Value>Add your birth place and time to see your kundali</Value>
+				)}
+				<View>
+					<View style={styles.row}>
+						<PlanetHouse number={8} style={{ ...styles.planetBoxSize }}>
+							{renderPlanet(8)}
+						</PlanetHouse>
+						<PlanetHouse
+							number={9}
+							style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
+						>
+							{renderPlanet(9)}
+						</PlanetHouse>
+						<PlanetHouse
+							number={10}
+							style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
+						>
+							{renderPlanet(10)}
+						</PlanetHouse>
+						<PlanetHouse
+							number={11}
+							style={{ ...styles.planetBoxSize, ...styles.planetHouseRightBorder }}
+						>
+							{renderPlanet(11)}
+						</PlanetHouse>
+					</View>
+					<View style={[styles.row, styles.expand]}>
+						<View style={{ width: 100 }}>
+							<PlanetHouse
+								number={7}
+								style={{
+									...styles.planetBoxSize,
+									...styles.planetHouseRightBorder
+								}}
+							>
+								{renderPlanet(7)}
+							</PlanetHouse>
+							<PlanetHouse
+								number={6}
+								style={{
+									...styles.planetBoxSize,
+									...styles.planetHouseRightBorder
+								}}
+							>
+								{renderPlanet(6)}
+							</PlanetHouse>
+						</View>
+						<PlanetSpacer />
+						<View style={{ width: 100 }}>
+							<PlanetHouse
+								number={12}
+								style={{
+									...styles.planetBoxSize,
+									...styles.planetHouseRightBorder
+								}}
+							>
+								{renderPlanet(12)}
+							</PlanetHouse>
+							<PlanetHouse
+								number={1}
+								style={{
+									...styles.planetBoxSize,
+									...styles.planetHouseRightBorder
+								}}
+							>
+								{renderPlanet(1)}
+							</PlanetHouse>
+						</View>
+					</View>
+					<View style={styles.row}>
+						<PlanetHouse
+							number={5}
+							style={{ ...styles.planetBoxSize, ...styles.planetHouseBottomBorder }}
+						>
+							{renderPlanet(5)}
+						</PlanetHouse>
+						<PlanetHouse
+							number={4}
+							style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
+						>
+							{renderPlanet(4)}
+						</PlanetHouse>
+						<PlanetHouse
+							number={3}
+							style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
+						>
+							{renderPlanet(3)}
+						</PlanetHouse>
+						<PlanetHouse
+							number={2}
+							style={{
+								...styles.planetBoxSize,
+								...styles.planetHouseBottomBorder,
+								...styles.planetHouseRightBorder
+							}}
+						>
+							{renderPlanet(2)}
+						</PlanetHouse>
+					</View>
+				</View>
+				{!!horoscope && !!horoscope.horoscope && renderHoroscope(horoscope.horoscope)}
+			</Collapsible>
 		</View>
 	);
 }
@@ -194,11 +258,14 @@ export function HoroscopeView({
 const mapStateToProps = (state: IRootState, props: IHoroscopeViewProps) => {
 	const userProfile = getUserProfileForId(state, props.userProfileId);
 	const currentUserProfileId = getCurrentUserProfileId(state);
+	const currentUserProfile = getUserProfileForId(state, currentUserProfileId);
 	const isCurrentUserProfile = userProfile.id === currentUserProfileId;
+	const isAdmin = currentUserProfile.fullName === 'Zorawar Relwani';
 	return {
 		userProfile,
 		horoscope: getHoroscopeForProfileId(state, props.userProfileId),
-		isCurrentUserProfile
+		isCurrentUserProfile,
+		isAdmin
 	};
 };
 
@@ -222,6 +289,19 @@ const styles = StyleSheet.create({
 	},
 	expand: {
 		flex: 1
+	},
+	horoscopeData: {
+		marginTop: 8
+	},
+	tableKey: {
+		flex: 0.5,
+		textTransform: 'capitalize'
+	},
+	tableValue: {
+		flex: 0.5,
+		textTransform: 'capitalize',
+		fontWeight: '500',
+		color: Colors.black
 	},
 	title: {
 		paddingBottom: 10,
