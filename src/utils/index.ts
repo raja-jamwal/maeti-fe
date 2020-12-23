@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import { isEmpty, forOwn } from 'lodash';
 import { AsyncStorage } from 'react-native';
-import { Updates } from 'expo';
+import * as Updates from 'expo-updates';
 import { simpleAlert } from '../components/alert/index';
 import { getLogger } from './logger';
 import { CacheManager } from 'react-native-expo-image-cache';
@@ -38,7 +38,7 @@ export const logoutAccount = async () => {
 	await AsyncStorage.removeItem('form_update_count');
 	await AsyncStorage.removeItem('new_pending_account');
 	await CacheManager.clearCache();
-	await Updates.reloadFromCache();
+	await Updates.reloadAsync();
 };
 
 const memomizedCERead = () => {

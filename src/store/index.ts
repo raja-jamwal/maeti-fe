@@ -12,6 +12,7 @@ import { exploreReducer, IExploreState } from './reducers/explore-reducer';
 import { filterReducer, IFilterState } from './reducers/filter-reducer';
 import rtmMiddleware from './middleware/rtm';
 import { IOtpState, otpReducer } from './reducers/otp-reducer';
+import { IHoroscopeState, horoscopeReducer } from './reducers/horoscope-reducer';
 
 export interface IRootState {
 	otp: IOtpState;
@@ -25,6 +26,7 @@ export interface IRootState {
 	channels: IChannelState;
 	messages: IMessageState;
 	filter: IFilterState;
+	horoscopes: IHoroscopeState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -38,7 +40,8 @@ const rootReducer = combineReducers<IRootState>({
 	interests: interestReducer,
 	channels: channelReducer,
 	messages: messageReducer,
-	filter: filterReducer
+	filter: filterReducer,
+	horoscopes: horoscopeReducer
 });
 
 const store = createStore<IRootState, any, any, any>(

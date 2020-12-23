@@ -7,7 +7,6 @@ import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { updateHoroscope } from '../../store/reducers/user-profile-reducer';
 import { Action } from 'redux-actions';
 import { View } from 'react-native';
-import { HoroscopeView } from '../horoscope-view/horoscope-view';
 interface IHoroscopeTableProps {
 	userProfileId: number;
 	editable: boolean;
@@ -74,7 +73,6 @@ class HoroscopeTable extends React.Component<
 					userProfileId={userProfileId}
 					editable={editable}
 				/>
-				{false && <HoroscopeView />}
 			</View>
 		);
 	}

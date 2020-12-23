@@ -22,7 +22,8 @@ export const API = {
 	},
 
 	HOROSCOPE: {
-		SAVE: `${config.server}/api/horoscope.save`
+		SAVE: `${config.server}/api/horoscope.save`,
+		GET: `${config.server}/api/horoscope.get`
 	},
 
 	INVESTMENT: {

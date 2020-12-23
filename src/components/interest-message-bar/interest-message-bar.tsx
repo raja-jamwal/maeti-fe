@@ -338,7 +338,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 				{interestState === InterestStates.SHOW_INTEREST && (
 					<TouchableBtn style={{ flex: 1 }} onPress={() => this.showInterest()}>
 						<View style={styles.btnContainer}>
-							<Ionicons name="md-flash" size={20} color="white" />
+							<Ionicons name="flash" size={20} color="white" />
 							<Text style={styles.text}>Show Interest</Text>
 							<Text style={styles.freeLabel}>FREE</Text>
 						</View>
@@ -366,7 +366,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 					interestState === InterestStates.RECV_ACCEPTED) && (
 					<TouchableBtn onPress={() => this.startMessaging()}>
 						<View style={styles.btnContainer}>
-							<Ionicons name="md-chatboxes" size={20} color="white" />
+							<Ionicons name="chatbubbles" size={20} color="white" />
 							<Text style={styles.text}>Message</Text>
 							<Text style={styles.freeLabel}>FREE</Text>
 						</View>
@@ -391,7 +391,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 							}}
 						>
 							<View style={styles.btnContainer}>
-								<Ionicons name="md-chatboxes" size={20} color="white" />
+								<Ionicons name="chatbubbles" size={20} color="white" />
 								<Text style={styles.text}>Ph. No./Message</Text>
 							</View>
 						</TouchableBtn>

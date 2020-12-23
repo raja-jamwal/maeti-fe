@@ -113,6 +113,7 @@ export function EditableForm({ navObject, mapping, updateAction, updateLabel }: 
 				// unix epoch to ts
 				date = new Date(parseInt(renderString) * 1000);
 			}
+
 			return (
 				<DateTimeIos
 					epoch={date.getTime() / 1000}

@@ -132,7 +132,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			.map(o => o && o.name)
 			.filter(o => !!o)
 			.join(', ');
-		const heartIcon = userProfile.isFavourite ? 'md-heart' : 'md-heart-empty';
+		const heartIcon = userProfile.isFavourite ? 'heart' : 'heart-outline';
 		const heartColor = userProfile.isFavourite ? Colors.pink : Colors.black;
 		const primaryUserProfilePhoto = (() => {
 			if (isEmpty(userProfile.photo)) {

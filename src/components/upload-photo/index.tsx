@@ -12,7 +12,8 @@ import { IOtpState } from '../../store/reducers/otp-reducer';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Permissions from 'expo-permissions';
 import { getLogger } from '../../utils/logger';
-import { Notifications, Updates } from 'expo';
+import { Notifications } from 'expo';
+import * as Updates from 'expo-updates';
 import { ApiRequest } from '../../utils';
 import { API } from '../../config/API';
 import { simpleAlert } from '../alert/index';
@@ -174,7 +175,7 @@ export function UploadPhoto({ navigation }) {
 													'Please sign-in with your number',
 													async () => {
 														modelRepository.delete();
-														await Updates.reloadFromCache();
+														await Updates.reloadAsync();
 													}
 												);
 											} else {
