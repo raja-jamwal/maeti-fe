@@ -8,7 +8,8 @@ import { createSelector } from 'reselect';
 
 export interface IHoroscope {
 	horoscope: any;
-	planetLocation: any;
+	rasi: any;
+	navamsa: any;
 }
 
 export interface IHoroscopeState {
@@ -29,7 +30,8 @@ const defaultHoroscopeState: IHoroscopeState = {};
 interface IAddHoroscopePayload {
 	userProfileId: number;
 	horoscope: any;
-	planetLocation: any;
+	rasi: any;
+	navamsa: any;
 }
 
 const ADD_HOROSCOPE = 'ADD_HOROSCOPE';
@@ -42,9 +44,8 @@ export const fetchHoroscope = function(userProfileId: number) {
 			currentUserId: userProfileId
 		})
 			.then((response: any) => {
-				const { horoscope, planetLocation } = response;
-				console.log(response);
-				dispatch(addHoroscope({ userProfileId, horoscope, planetLocation }));
+				const { horoscope, rasi, navamsa } = response;
+				dispatch(addHoroscope({ userProfileId, horoscope, rasi, navamsa }));
 				return response;
 			})
 			.catch(er => {
@@ -61,7 +62,8 @@ export const horoscopeReducer = handleActions<IHoroscopeState>(
 				...state,
 				[horoscopePayload.userProfileId]: {
 					horoscope: horoscopePayload.horoscope,
-					planetLocation: horoscopePayload.planetLocation
+					rasi: horoscopePayload.rasi,
+					navamsa: horoscopePayload.navamsa
 				}
 			};
 		}
