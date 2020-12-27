@@ -5,6 +5,7 @@ import Colors from 'src/constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import GlobalStyle from 'src/styles/global';
 interface IDateTimeIosProps {
 	epoch: number;
 	dateOnly: boolean;
@@ -47,6 +48,7 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 				<DateTimePicker
 					value={date}
 					mode={'date'}
+					display="spinner"
 					onChange={(_event, dateObj) => {
 						if (dateObj) {
 							const unixEpoch = Math.floor(dateObj.getTime() / 1000);
@@ -58,6 +60,7 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 					<DateTimePicker
 						value={date}
 						mode={'time'}
+						display="spinner"
 						onChange={(_event, dateObj) => {
 							if (dateObj) {
 								const unixEpoch = Math.floor(dateObj.getTime() / 1000);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import Text, { Value } from '../text';
 import Colors from 'src/constants/Colors.js';
 import GlobalStyle from 'src/styles/global';
@@ -19,34 +19,10 @@ import { isObject } from 'lodash';
 import Collapsible from 'react-native-collapsible';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { Ionicons } from '@expo/vector-icons';
+import Layout from 'src/constants/Layout.js';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-function PlanetHouse({
-	style,
-	children,
-	number
-}: { style?: any; children?: any; number?: number } = {}) {
-	const planetStyle = [styles.planetHouse, style || {}];
-	return (
-		<View style={planetStyle}>
-			{children}
-			<Text
-				style={{
-					position: 'absolute',
-					fontSize: 8,
-					padding: 4,
-					color: Colors.tintColor
-				}}
-			>
-				{number}
-			</Text>
-		</View>
-	);
-}
-
-function PlanetSpacer() {
-	return <View style={styles.planetSpacer} />;
-}
-
+const kundaliImage = require('../../assets/images/kundali.png');
 interface IHoroscopeViewProps {
 	userProfileId: number;
 	userProfile?: UserProfile;
@@ -55,6 +31,233 @@ interface IHoroscopeViewProps {
 	fetchHoroscope: (userProfileId: number) => any;
 	isCurrentUserProfile: boolean;
 	isAdmin: boolean;
+}
+
+const planetsInHindi: any = {
+	Sun: 'सूर्य',
+	Moon: 'चंद्र',
+	Mars: 'मंगल',
+	Mercury: 'बुध',
+	Jupiter: 'बृहस्पति',
+	Venus: 'शुक्र',
+	Saturn: 'शनि',
+	Rahu: 'राहु',
+	Ketu: 'केतु',
+	Ascendant: ' ',
+	'Ra/Ke': 'Ra/Ke'
+};
+
+// @ts-ignore
+function KundaliHouse({ houseValue, housePosition, left, top }) {
+	const translatedNames = houseValue.map(value => planetsInHindi[value] || value);
+	return (
+		<View
+			style={[
+				GlobalStyle.column,
+				GlobalStyle.alignCenter,
+				{ position: 'absolute', left: left, top: top }
+			]}
+		>
+			{translatedNames.map(value => (
+				<Value
+					style={{
+						color: Colors.tintColor,
+						fontWeight: 'bold'
+					}}
+				>
+					{value}
+				</Value>
+			))}
+			<Value
+				style={{
+					color: Colors.tintColor,
+					margin: 4,
+					fontSize: 10
+				}}
+			>
+				{housePosition}
+			</Value>
+		</View>
+	);
+}
+
+function rasiChartToKundaliViewPos(chart: any) {
+	const result: any = {};
+	// find the asc position, lets say it is 5
+	const ascPos = chart['Ascendant'];
+	// no asc no chart
+	if (!ascPos) return result;
+	Object.keys(chart).forEach(planet => {
+		const pos = chart[planet];
+		const adjusted = pos - ascPos;
+		if (adjusted >= 0) {
+			result[planet] = adjusted;
+		} else {
+			result[planet] = 12 + adjusted;
+		}
+	});
+
+	return result;
+}
+
+function groupKeysByValue(chart: any) {
+	const result: any = {};
+	Object.keys(chart).forEach(key => {
+		const value = chart[key];
+		if (!!result[value]) {
+			result[value].push(key);
+		} else {
+			result[value] = [key];
+		}
+	});
+	return result;
+}
+
+function getPlanetLocationForHouseNumber(kundaliViewPositions: any, houseNumber: number) {
+	const grouped = groupKeysByValue(kundaliViewPositions);
+	return grouped[houseNumber] || [];
+}
+
+// @ts-ignore
+function KundaliView({ chartName, chartData } = { chartName: '', chartData: {} }) {
+	const containerDim = {
+		width: Layout.window.width - 20,
+		height: Layout.window.width
+	};
+	const ascPos = chartData && chartData['Ascendant'];
+	// no asc no chart
+	if (!ascPos) return null;
+
+	const planetLocations = rasiChartToKundaliViewPos(chartData);
+
+	const getRasiPositionInHouse = ascSumHousePosition => {
+		const mod = ascSumHousePosition % 12;
+		return mod === 0 ? 12 : mod;
+	};
+
+	return (
+		<View>
+			<View>
+				<Image
+					source={kundaliImage}
+					style={[
+						{
+							width: containerDim.width,
+							height: containerDim.height,
+							resizeMode: 'stretch'
+						}
+					]}
+				/>
+				<View style={{ position: 'absolute' }}>
+					<View
+						style={{
+							position: 'relative',
+							left: 0,
+							top: 0,
+							width: containerDim.width,
+							height: containerDim.height
+						}}
+					>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 0)}
+							housePosition={getRasiPositionInHouse(ascPos)}
+							left="47%"
+							top="10%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 1)}
+							housePosition={getRasiPositionInHouse(ascPos + 1)}
+							left="22%"
+							top="4%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 2)}
+							housePosition={getRasiPositionInHouse(ascPos + 2)}
+							left="2%"
+							top="10%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 3)}
+							housePosition={getRasiPositionInHouse(ascPos + 3)}
+							left="22%"
+							top="35%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 4)}
+							housePosition={getRasiPositionInHouse(ascPos + 4)}
+							left="2%"
+							top="65%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 5)}
+							housePosition={getRasiPositionInHouse(ascPos + 5)}
+							left="22%"
+							top="80%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 6)}
+							housePosition={getRasiPositionInHouse(ascPos + 6)}
+							left="47%"
+							top="65%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 7)}
+							housePosition={getRasiPositionInHouse(ascPos + 7)}
+							left="72%"
+							top="80%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 8)}
+							housePosition={getRasiPositionInHouse(ascPos + 8)}
+							left="90%"
+							top="65%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 9)}
+							housePosition={getRasiPositionInHouse(ascPos + 9)}
+							left="72%"
+							top="35%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 10)}
+							housePosition={getRasiPositionInHouse(ascPos + 10)}
+							left="90%"
+							top="12%"
+						/>
+						<KundaliHouse
+							houseValue={getPlanetLocationForHouseNumber(planetLocations, 11)}
+							housePosition={getRasiPositionInHouse(ascPos + 11)}
+							left="72%"
+							top="4%"
+						/>
+						<Value
+							style={{
+								position: 'absolute',
+								left: 5,
+								bottom: 5,
+								color: Colors.tintColor,
+								fontWeight: 'bold',
+								textTransform: 'capitalize'
+							}}
+						>
+							{chartName} Chart
+						</Value>
+						<Value
+							style={{
+								position: 'absolute',
+								right: 5,
+								bottom: 5,
+								color: Colors.tintColor,
+								fontWeight: 'bold'
+							}}
+						>
+							Generated by Maeti App © DataGrids™
+						</Value>
+					</View>
+				</View>
+			</View>
+		</View>
+	);
 }
 
 export function HoroscopeView({
@@ -69,6 +272,7 @@ export function HoroscopeView({
 	if (!isAdmin) return null;
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [isExpanded, setIsExpanded] = React.useState(true);
+	const [chartIndex, setChartIndex] = React.useState(0);
 	React.useEffect(() => {
 		(async () => {
 			setIsLoading(true);
@@ -83,29 +287,6 @@ export function HoroscopeView({
 
 	const isBirthDataAvailable =
 		userProfile.horoscope.birthPlace && userProfile.horoscope.birthTime;
-
-	// order by planet house
-	const planetLocation: any = {};
-	Object.keys((horoscope && horoscope.planetLocation) || {}).forEach(planet => {
-		const planetHouse = horoscope && horoscope.planetLocation[planet];
-		const shortCode = planet.substring(0, 2);
-		if (!!planetLocation[planetHouse]) {
-			planetLocation[planetHouse].push(shortCode);
-		} else {
-			planetLocation[planetHouse] = [shortCode];
-		}
-	});
-
-	const renderPlanet = (house: number) => {
-		if (!planetLocation[house]) return null;
-		return planetLocation[house].map((planet: string) => {
-			return (
-				<Text key={planet} style={styles.planetNumber}>
-					{planet}
-				</Text>
-			);
-		});
-	};
 
 	const renderHoroscope = (horoscope: any) => {
 		return (
@@ -130,6 +311,8 @@ export function HoroscopeView({
 		setIsExpanded(!isExpanded);
 	};
 
+	const chartTypes = ['rasi', 'navamsa'];
+	if (!horoscope) return null;
 	return (
 		<View style={styles.container}>
 			<View style={[GlobalStyle.row, GlobalStyle.expand]}>
@@ -152,102 +335,29 @@ export function HoroscopeView({
 					<Value>Add your birth place and time to see your kundali</Value>
 				)}
 				<View>
-					<View style={styles.row}>
-						<PlanetHouse number={8} style={{ ...styles.planetBoxSize }}>
-							{renderPlanet(8)}
-						</PlanetHouse>
-						<PlanetHouse
-							number={9}
-							style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
-						>
-							{renderPlanet(9)}
-						</PlanetHouse>
-						<PlanetHouse
-							number={10}
-							style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
-						>
-							{renderPlanet(10)}
-						</PlanetHouse>
-						<PlanetHouse
-							number={11}
-							style={{ ...styles.planetBoxSize, ...styles.planetHouseRightBorder }}
-						>
-							{renderPlanet(11)}
-						</PlanetHouse>
-					</View>
-					<View style={[styles.row, styles.expand]}>
-						<View style={{ width: 100 }}>
-							<PlanetHouse
-								number={7}
-								style={{
-									...styles.planetBoxSize,
-									...styles.planetHouseRightBorder
-								}}
-							>
-								{renderPlanet(7)}
-							</PlanetHouse>
-							<PlanetHouse
-								number={6}
-								style={{
-									...styles.planetBoxSize,
-									...styles.planetHouseRightBorder
-								}}
-							>
-								{renderPlanet(6)}
-							</PlanetHouse>
-						</View>
-						<PlanetSpacer />
-						<View style={{ width: 100 }}>
-							<PlanetHouse
-								number={12}
-								style={{
-									...styles.planetBoxSize,
-									...styles.planetHouseRightBorder
-								}}
-							>
-								{renderPlanet(12)}
-							</PlanetHouse>
-							<PlanetHouse
-								number={1}
-								style={{
-									...styles.planetBoxSize,
-									...styles.planetHouseRightBorder
-								}}
-							>
-								{renderPlanet(1)}
-							</PlanetHouse>
-						</View>
-					</View>
-					<View style={styles.row}>
-						<PlanetHouse
-							number={5}
-							style={{ ...styles.planetBoxSize, ...styles.planetHouseBottomBorder }}
-						>
-							{renderPlanet(5)}
-						</PlanetHouse>
-						<PlanetHouse
-							number={4}
-							style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
-						>
-							{renderPlanet(4)}
-						</PlanetHouse>
-						<PlanetHouse
-							number={3}
-							style={{ ...GlobalStyle.expand, ...styles.planetHouseBottomBorder }}
-						>
-							{renderPlanet(3)}
-						</PlanetHouse>
-						<PlanetHouse
-							number={2}
-							style={{
-								...styles.planetBoxSize,
-								...styles.planetHouseBottomBorder,
-								...styles.planetHouseRightBorder
-							}}
-						>
-							{renderPlanet(2)}
-						</PlanetHouse>
-					</View>
+					<Carousel
+						data={chartTypes}
+						renderItem={({ item: chartName }) => {
+							const chartData = horoscope[chartName];
+							if (!chartData) return null;
+							return <KundaliView chartData={chartData} chartName={chartName} />;
+						}}
+						itemWidth={Layout.window.width}
+						sliderWidth={Layout.window.width}
+						onSnapToItem={index => setChartIndex(index)}
+					/>
+					<Pagination
+						dotsLength={chartTypes.length}
+						activeDotIndex={chartIndex}
+						dotStyle={{
+							width: 5,
+							height: 5,
+							borderRadius: 5,
+							backgroundColor: Colors.tintColor
+						}}
+						inactiveDotOpacity={0.4}
+						inactiveDotScale={0.6}
+					/>
 				</View>
 				{!!horoscope && !!horoscope.horoscope && renderHoroscope(horoscope.horoscope)}
 			</Collapsible>
@@ -307,34 +417,5 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 		color: Colors.primaryDarkColor,
 		fontWeight: '500'
-	},
-	planetNumber: {
-		margin: 10,
-		color: Colors.tintColor,
-		fontWeight: '600'
-	},
-	planetHouse: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		borderColor: Colors.tintColor,
-		borderWidth: 1,
-		borderRightWidth: 0,
-		borderBottomWidth: 0
-	},
-	planetBoxSize: {
-		width: 100,
-		height: 80
-	},
-	planetHouseRightBorder: {
-		borderRightWidth: 1
-	},
-	planetHouseBottomBorder: {
-		borderBottomWidth: 1
-	},
-	planetSpacer: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center'
 	}
 });
