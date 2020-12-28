@@ -77,6 +77,7 @@ export interface UserProfile extends DAO {
 	bloodGroup: string;
 	motherTongue: string;
 	isFavourite: boolean;
+	totalKutasGained: number;
 	isBlocked: boolean;
 	pushToken: string;
 

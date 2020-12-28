@@ -7,7 +7,7 @@
 //
 
 import * as React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableHighlight, Platform } from 'react-native';
 import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency, MILLIS_IN_A_DAY } from '../../utils/index';
@@ -192,6 +192,21 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 							/>
 						</TouchableHighlight>
 					)}
+					<View style={styles.kutaContainer}>
+						<View
+							style={[
+								GlobalStyles.column,
+								GlobalStyles.alignCenter,
+								GlobalStyles.justifyCenter
+							]}
+						>
+							<Text style={{ color: Colors.white, fontSize: 16, fontWeight: 'bold' }}>
+								{userProfile.totalKutasGained}
+							</Text>
+							<Text style={styles.kutaLabel}>GUUNS</Text>
+							<Text style={styles.kutaLabel}>MATCH</Text>
+						</View>
+					</View>
 				</View>
 				<View style={styles.profileSummaryContainer}>
 					<View style={[GlobalStyles.row, GlobalStyles.expand, GlobalStyles.alignCenter]}>
@@ -329,6 +344,33 @@ const styles = StyleSheet.create({
 		padding: 8,
 		paddingTop: 8,
 		paddingBottom: 16
+	},
+	kutaContainer: {
+		position: 'absolute',
+		bottom: 20,
+		right: 0,
+		padding: 8,
+		backgroundColor: Colors.pink,
+		borderTopLeftRadius: 10,
+		borderBottomLeftRadius: 10,
+		...Platform.select({
+			ios: {
+				shadowOpacity: 0.1,
+				shadowRadius: 5,
+				shadowOffset: {
+					height: 0,
+					width: 0
+				}
+			},
+			android: {
+				elevation: 1
+			}
+		})
+	},
+	kutaLabel: {
+		fontSize: 8,
+		textTransform: 'uppercase',
+		color: Colors.white
 	},
 	describeSelfContainer: {
 		flexWrap: 'wrap'

@@ -134,10 +134,10 @@ export const buildLocationFilter = (userProfile: UserProfile) => {
 	 */
 
 	const fields = [
-		'profession.workCountry.id',
+		// 'profession.workCountry.id',
 		'profession.workState.id',
 		'profession.workCity.id',
-		'family.familyCountry.id',
+		// 'family.familyCountry.id',
 		'family.familyState.id',
 		'family.familyCity.id'
 	];
