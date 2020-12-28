@@ -192,21 +192,29 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 							/>
 						</TouchableHighlight>
 					)}
-					<View style={styles.kutaContainer}>
-						<View
-							style={[
-								GlobalStyles.column,
-								GlobalStyles.alignCenter,
-								GlobalStyles.justifyCenter
-							]}
-						>
-							<Text style={{ color: Colors.white, fontSize: 16, fontWeight: 'bold' }}>
-								{userProfile.totalKutasGained}
-							</Text>
-							<Text style={styles.kutaLabel}>GUUNS</Text>
-							<Text style={styles.kutaLabel}>MATCH</Text>
+					{false && (
+						<View style={styles.kutaContainer}>
+							<View
+								style={[
+									GlobalStyles.column,
+									GlobalStyles.alignCenter,
+									GlobalStyles.justifyCenter
+								]}
+							>
+								<Text
+									style={{
+										color: Colors.white,
+										fontSize: 16,
+										fontWeight: 'bold'
+									}}
+								>
+									{userProfile.totalKutasGained}
+								</Text>
+								<Text style={styles.kutaLabel}>GUUNS</Text>
+								<Text style={styles.kutaLabel}>MATCH</Text>
+							</View>
 						</View>
-					</View>
+					)}
 				</View>
 				<View style={styles.profileSummaryContainer}>
 					<View style={[GlobalStyles.row, GlobalStyles.expand, GlobalStyles.alignCenter]}>
