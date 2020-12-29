@@ -23,7 +23,8 @@ export const API = {
 
 	HOROSCOPE: {
 		SAVE: `${config.server}/api/horoscope.save`,
-		GET: `${config.server}/api/horoscope.get`
+		GET: `${config.server}/api/horoscope.get`,
+		MATCH: `${config.server}/api/horoscope.match`
 	},
 
 	INVESTMENT: {
