@@ -1,7 +1,7 @@
 {
 	"server": "http://be.dev.matri.datagrids.in:8080",
 	"sentry_dsn": "https://eadb3b19ac5e49fa822d16d3d050aaa0@sentry.io/1832459",
-	"ota_version": 37,
+	"ota_version": 38,
 	"support_number": "+91-73877-78673",
 	"whatsapp_link": "https://wa.me/917387778673",
 	"yearly_plan_value": 1399,
