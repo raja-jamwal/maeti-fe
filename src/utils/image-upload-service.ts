@@ -29,7 +29,7 @@ export async function pickPhotoFromGallery() {
 			const image = await ImagePicker.launchImageLibraryAsync({
 				mediaTypes: MediaTypeOptions.Images,
 				allowsEditing: true,
-				quality: 0.4,
+				quality: 0.3,
 				exif: false,
 				aspect: [4, 3]
 			});
