@@ -1,23 +1,15 @@
 import * as React from 'react';
-import {
-	DatePickerAndroid,
-	Keyboard,
-	StyleSheet,
-	TextInput,
-	TimePickerAndroid,
-	View
-} from 'react-native';
+import { Keyboard, StyleSheet, TextInput, View } from 'react-native';
 import GlobalStyles from '../../styles/global';
 import Text, { Value } from '../text';
 import TagSelector from '../tag-selector/tag-selector';
 import { getLogger } from '../../utils/logger';
-import { formatDate, IS_IOS } from '../../utils';
 import RNPickerSelect from 'react-native-picker-select';
 import { WORLD_OPTION, WorldSelectorField } from '../world-selector';
 import Color from '../../constants/Colors';
 import AboutField from '../about-field';
 import TouchableBtn from '../touchable-btn/touchable-btn';
-import DateTimeIos from '../date-time-ios/date-time-ios';
+import DateTime from '../date-time-ios/date-time-ios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { find } from 'lodash';
 
@@ -68,81 +60,23 @@ export function EditableForm({ navObject, mapping, updateAction, updateLabel }: 
 		}
 	};
 
-	const setDateField = async (field: string) => {
-		try {
-			const { action, year, month, day } = await DatePickerAndroid.open({
-				date: new Date(1993, 0, 1)
-			});
-			if (action !== DatePickerAndroid.dismissedAction) {
-				const date = new Date(year, month, day);
-				// epoch in seconds
-				const ts = Math.floor(date.getTime() / 1000);
-				updateFieldValue(field, ts);
-			}
-		} catch (err) {
-			logger.log(err);
-		}
-	};
-
-	const setDateTimeField = async (field: string) => {
-		try {
-			const { dateAction, year, month, day } = await DatePickerAndroid.open({
-				date: new Date(1993, 0, 1)
-			});
-			if (dateAction === DatePickerAndroid.dismissedAction) return;
-			const date = new Date(year, month, day);
-			const { timeAction, hour, minute } = await TimePickerAndroid.open({});
-			if (timeAction === TimePickerAndroid.dismissedAction) return;
-			date.setHours(hour, minute, 0);
-			// epoch in seconds
-			const ts = Math.floor(date.getTime() / 1000);
-			updateFieldValue(field, ts);
-		} catch (err) {
-			logger.log(err);
-		}
-	};
-
 	const renderDateTimePicker = (
 		field: string,
 		renderString: string,
 		dateOnly: boolean = true
 	) => {
-		if (IS_IOS) {
-			let date = new Date(1993, 0, 1);
-			if (!!renderString) {
-				// unix epoch to ts
-				date = new Date(parseInt(renderString) * 1000);
-			}
-
-			return (
-				<DateTimeIos
-					epoch={date.getTime() / 1000}
-					dateOnly={dateOnly}
-					field={field}
-					updateFieldValue={(field, epoch) => updateFieldValue(field, epoch)}
-				/>
-			);
+		let date = new Date(1993, 0, 1);
+		if (!!renderString) {
+			// unix epoch to ts
+			date = new Date(parseInt(renderString) * 1000);
 		}
 		return (
-			<TouchableBtn
-				onPress={async () => {
-					if (dateOnly) {
-						return await setDateField(field);
-					}
-					return await setDateTimeField(field);
-				}}
-			>
-				<View style={styles.labelContainer}>
-					{!renderString && (
-						<Text style={[styles.label, styles.placeholder]}>
-							{dateOnly ? 'Date' : 'Date and Time'}
-						</Text>
-					)}
-					{!!renderString && (
-						<Text style={styles.label}>{formatDate(parseInt(renderString))}</Text>
-					)}
-				</View>
-			</TouchableBtn>
+			<DateTime
+				epoch={date.getTime() / 1000}
+				dateOnly={dateOnly}
+				field={field}
+				updateFieldValue={(field, epoch) => updateFieldValue(field, epoch)}
+			/>
 		);
 	};
 

@@ -7,7 +7,7 @@
 //
 
 import * as React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableHighlight, Platform } from 'react-native';
 import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency, MILLIS_IN_A_DAY } from '../../utils/index';
@@ -25,16 +25,19 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { simplePrompt } from '../alert/index';
 import { encodeProfileId } from '../../utils/profile-id-encoder';
 import { ProfessionTableIncomeOptions } from '../collapsible-table/profession-table';
+import { Throbber } from '../throbber/throbber';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
 
 export interface IProfileProps {
 	userProfile: UserProfile;
+	currentUserProfile?: UserProfile;
 	isSelfProfile: boolean;
 	isAccountPaid: boolean;
 	hideSelfDescription: boolean;
 	setUserProfileFavourite: (userProfile: UserProfile, setFavourite: boolean) => void;
 	markProfileAsBlocked: (userProfile: UserProfile, shouldReport: boolean) => void;
+	fetchHoroscopeCompatibility: (userProfileId: number) => void;
 	onPhotoPress?: () => any;
 	showCarousel?: boolean;
 	isProfileBlocked?: boolean;
@@ -42,6 +45,33 @@ export interface IProfileProps {
 }
 
 type IProfileCardProps = NavigationInjectedProps & IProfileProps;
+
+//@ts-ignore
+function CalculateCompatibility({ fetchHoroscopeCompatibility, userProfileId }) {
+	const [isLoading, setIsLoading] = React.useState(false);
+
+	if (isLoading) return <Throbber size="small" />;
+
+	return (
+		<TouchableOpacity
+			onPress={async () => {
+				setIsLoading(true);
+				await fetchHoroscopeCompatibility(userProfileId);
+				setIsLoading(false);
+			}}
+		>
+			<Text
+				style={{
+					color: Colors.white,
+					textTransform: 'uppercase',
+					fontSize: 12
+				}}
+			>
+				Calculate Compatibility
+			</Text>
+		</TouchableOpacity>
+	);
+}
 
 class ProfileCard extends React.PureComponent<IProfileCardProps> {
 	constructor(props: IProfileCardProps) {
@@ -109,15 +139,18 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 	render() {
 		const {
 			userProfile,
+			currentUserProfile,
 			hideSelfDescription,
 			isSelfProfile,
 			isAccountPaid,
 			onPhotoPress,
 			showCarousel,
 			isProfileBlocked,
-			isProfileDeleted
+			isProfileDeleted,
+			fetchHoroscopeCompatibility
 		} = this.props;
 		if (isEmpty(userProfile)) return null;
+		if (!currentUserProfile) return null;
 		if (isProfileBlocked) return null;
 		if (isProfileDeleted) return null;
 		const { education, profession, family } = { ...userProfile };
@@ -170,6 +203,19 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		const isRecentlyActive =
 			new Date().getTime() - (userProfile.lastLogin || 0) < MILLIS_IN_A_DAY * 2;
 
+		const isCompatibilityPossible = () => {
+			if (
+				!currentUserProfile.horoscope.birthTime ||
+				!currentUserProfile.horoscope.birthCity
+			) {
+				return false;
+			}
+			if (userProfile.horoscope.birthCity && userProfile.horoscope.birthTime) {
+				return true;
+			}
+			return false;
+		};
+
 		return (
 			<View style={styles.profileCard}>
 				<View style={styles.profileImageContainer}>
@@ -191,6 +237,37 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 								]}
 							/>
 						</TouchableHighlight>
+					)}
+					{!isSelfProfile && isCompatibilityPossible() && (
+						<View style={styles.kutaContainer}>
+							{!!userProfile.totalKutasGained && (
+								<View
+									style={[
+										GlobalStyles.column,
+										GlobalStyles.alignCenter,
+										GlobalStyles.justifyCenter
+									]}
+								>
+									<Text
+										style={{
+											color: Colors.white,
+											fontSize: 20,
+											fontWeight: 'bold'
+										}}
+									>
+										{userProfile.totalKutasGained}
+									</Text>
+									<Text style={styles.kutaLabel}>GUUNS</Text>
+									<Text style={styles.kutaLabel}>MATCH</Text>
+								</View>
+							)}
+							{!userProfile.totalKutasGained && (
+								<CalculateCompatibility
+									fetchHoroscopeCompatibility={fetchHoroscopeCompatibility}
+									userProfileId={userProfile.id}
+								/>
+							)}
+						</View>
 					)}
 				</View>
 				<View style={styles.profileSummaryContainer}>
@@ -329,6 +406,33 @@ const styles = StyleSheet.create({
 		padding: 8,
 		paddingTop: 8,
 		paddingBottom: 16
+	},
+	kutaContainer: {
+		position: 'absolute',
+		bottom: 20,
+		right: 0,
+		padding: 8,
+		backgroundColor: Colors.pink,
+		borderTopLeftRadius: 10,
+		borderBottomLeftRadius: 10,
+		...Platform.select({
+			ios: {
+				shadowOpacity: 0.1,
+				shadowRadius: 5,
+				shadowOffset: {
+					height: 0,
+					width: 0
+				}
+			},
+			android: {
+				elevation: 1
+			}
+		})
+	},
+	kutaLabel: {
+		fontSize: 8,
+		textTransform: 'uppercase',
+		color: Colors.white
 	},
 	describeSelfContainer: {
 		flexWrap: 'wrap'

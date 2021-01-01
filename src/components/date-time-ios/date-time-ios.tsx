@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Modal, SafeAreaView } from 'react-native';
-import { formatDate, formatDateTime } from '../../utils';
+import { formatDate, formatDateTime, IS_ANDROID, IS_IOS } from '../../utils';
 import Colors from 'src/constants/Colors';
 import TouchableBtn from '../touchable-btn/touchable-btn';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import GlobalStyle from 'src/styles/global';
 interface IDateTimeIosProps {
 	epoch: number;
 	dateOnly: boolean;
@@ -15,17 +14,22 @@ interface IDateTimeIosProps {
 
 interface IDateTimeIosState {
 	showModal: boolean;
+	showAndroidDatePicker: boolean;
+	showAndroidTimePicker: boolean;
 	date: Date;
 }
 
-export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, IDateTimeIosState> {
+export default class DateTime extends React.PureComponent<IDateTimeIosProps, IDateTimeIosState> {
 	constructor(props: IDateTimeIosProps) {
 		super(props);
 		this.state = {
 			showModal: false,
+			showAndroidDatePicker: false,
+			showAndroidTimePicker: false,
 			date: this.getDefaultDate(this.props.epoch || 0)
 		};
 		this.toggleModal = this.toggleModal.bind(this);
+		this.openModal = this.openModal.bind(this);
 	}
 
 	getDefaultDate(epoch: number) {
@@ -40,7 +44,7 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 		});
 	}
 
-	renderDateTimePicker() {
+	renderDateTimePickerIos() {
 		const { field, updateFieldValue, dateOnly } = this.props;
 		const { date } = this.state;
 		return (
@@ -73,10 +77,61 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 		);
 	}
 
+	renderDateTimePickerAndroid() {
+		const { field, updateFieldValue, dateOnly } = this.props;
+		const { date, showAndroidDatePicker, showAndroidTimePicker } = this.state;
+		return (
+			<View>
+				{showAndroidDatePicker && (
+					<DateTimePicker
+						value={date}
+						mode={'date'}
+						display="spinner"
+						onChange={(_event, dateObj) => {
+							this.setState({ showAndroidDatePicker: false });
+							if (dateObj) {
+								const unixEpoch = Math.floor(dateObj.getTime() / 1000);
+								updateFieldValue(field, unixEpoch);
+							}
+							this.setState({ showAndroidTimePicker: !dateOnly });
+						}}
+					/>
+				)}
+				{showAndroidTimePicker && (
+					<DateTimePicker
+						value={date}
+						mode={'time'}
+						display="spinner"
+						onChange={(_event, dateObj) => {
+							this.setState({ showAndroidTimePicker: false });
+							if (dateObj) {
+								const unixEpoch = Math.floor(dateObj.getTime() / 1000);
+								updateFieldValue(field, unixEpoch);
+							}
+						}}
+					/>
+				)}
+			</View>
+		);
+	}
+
 	toggleModal() {
 		const { showModal } = this.state;
 		this.setState({
 			showModal: !showModal
+		});
+	}
+
+	openModal() {
+		if (IS_IOS) {
+			return this.setState({
+				showModal: true
+			});
+		}
+
+		// on android
+		this.setState({
+			showAndroidDatePicker: true
 		});
 	}
 
@@ -91,34 +146,37 @@ export default class DateTimeIos extends React.PureComponent<IDateTimeIosProps, 
 		const { showModal } = this.state;
 		return (
 			<View>
-				<TouchableBtn onPress={this.toggleModal}>
+				<TouchableBtn onPress={this.openModal}>
 					<View style={styles.labelContainer}>
 						{!epoch && <Text style={styles.label}>&nbsp;</Text>}
 						{!!epoch && <Text style={styles.label}>{this.formatDateTime()}</Text>}
 					</View>
 				</TouchableBtn>
-				<Modal visible={showModal} onRequestClose={this.toggleModal}>
-					<SafeAreaView>
-						<View style={styles.titleRow}>
-							<TouchableBtn onPress={this.toggleModal}>
-								<Ionicons name="md-close" size={26} color={Colors.offWhite} />
-							</TouchableBtn>
-							<View style={{ flex: 1 }} />
-							<View>
-								<Text
-									style={{
-										fontSize: 16
-									}}
-								>
-									Choose {!dateOnly ? 'Date and Time' : 'Date'}
-								</Text>
+				{IS_ANDROID && this.renderDateTimePickerAndroid()}
+				{IS_IOS && (
+					<Modal visible={showModal} onRequestClose={this.toggleModal}>
+						<SafeAreaView>
+							<View style={styles.titleRow}>
+								<TouchableBtn onPress={this.toggleModal}>
+									<Ionicons name="md-close" size={26} color={Colors.offWhite} />
+								</TouchableBtn>
+								<View style={{ flex: 1 }} />
+								<View>
+									<Text
+										style={{
+											fontSize: 16
+										}}
+									>
+										Choose {!dateOnly ? 'Date and Time' : 'Date'}
+									</Text>
+								</View>
+								<View style={{ flex: 1 }} />
 							</View>
-							<View style={{ flex: 1 }} />
-						</View>
-						<View />
-						{this.renderDateTimePicker()}
-					</SafeAreaView>
-				</Modal>
+							<View />
+							{this.renderDateTimePickerIos()}
+						</SafeAreaView>
+					</Modal>
+				)}
 			</View>
 		);
 	}

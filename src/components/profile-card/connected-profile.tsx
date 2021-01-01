@@ -6,10 +6,12 @@ import { getLogger } from '../../utils/logger';
 import { getCurrentUserProfileId, isAccountPaid } from '../../store/reducers/account-reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import { setUserProfileFavourite } from '../../store/reducers/favourite-reducer';
+import { getUserProfileForId } from '../../store/reducers/user-profile-reducer';
 import {
 	markProfileAsBlocked,
 	isProfileBlocked,
-	isProfileDeleted
+	isProfileDeleted,
+	fetchHoroscopeCompatibility
 } from '../../store/reducers/user-profile-reducer';
 
 const logger = getLogger('ConnectedProfile');
@@ -39,14 +41,16 @@ const mapStateToProps = (state: IRootState, ownProps: IProfileProps) => {
 		isSelfProfile,
 		isAccountPaid: isAccountPaid(state),
 		isProfileBlocked: isProfileBlocked(state, userProfile.id),
-		isProfileDeleted: isProfileDeleted(state, userProfile.id)
+		isProfileDeleted: isProfileDeleted(state, userProfile.id),
+		currentUserProfile: currentProfileId && getUserProfileForId(state, currentProfileId)
 	};
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 	return {
 		setUserProfileFavourite: bindActionCreators(setUserProfileFavourite, dispatch),
-		markProfileAsBlocked: bindActionCreators(markProfileAsBlocked, dispatch)
+		markProfileAsBlocked: bindActionCreators(markProfileAsBlocked, dispatch),
+		fetchHoroscopeCompatibility: bindActionCreators(fetchHoroscopeCompatibility, dispatch)
 	};
 };
 

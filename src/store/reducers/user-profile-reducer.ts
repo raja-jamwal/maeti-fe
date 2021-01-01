@@ -29,6 +29,8 @@ import {
 import { createSelector } from 'reselect';
 import { getLogger } from '../../utils/logger';
 import { isEmpty } from 'lodash';
+import { isAccountPaid } from './account-reducer';
+import { simpleAlert } from '../../components/alert/index';
 export interface IUserProfileState {
 	[id: number]: UserProfile;
 }
@@ -430,6 +432,38 @@ export const fetchUserProfiles = function() {
 			userProfiles.forEach(profile => {
 				dispatch(addProfile(profile));
 			});
+		});
+	};
+};
+
+export const fetchUserProfile = function(currentUserId: number, userProfileId: number) {
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		return ApiRequest(API.USER_PROFILE.GET, { currentUserId, userProfileId }).then(
+			userProfile => {
+				// console.log('fetch user profile answer', userProfile.totalKutasGained);
+				dispatch(addProfile(userProfile as UserProfile));
+				return userProfile;
+			}
+		);
+	};
+};
+
+export const fetchHoroscopeCompatibility = function(userProfileId: number) {
+	return (dispatch: Dispatch<any>, getState: () => IRootState) => {
+		const currentUserId = getSelfProfileId(getState());
+		if (!currentUserId) return null;
+		if (!isAccountPaid(getState())) {
+			return simpleAlert(
+				'Purchase plan',
+				'Kundali matching is available only on paid plans.'
+			);
+		}
+		return ApiRequest(API.HOROSCOPE.MATCH, {
+			currentUserId,
+			userProfileId
+		}).then(response => {
+			// refetch profile
+			return dispatch(fetchUserProfile(currentUserId, userProfileId));
 		});
 	};
 };

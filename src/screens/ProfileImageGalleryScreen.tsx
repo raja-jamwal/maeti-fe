@@ -89,7 +89,7 @@ class ProfileImageGalleryScreen extends React.Component<IProfileImageGalleryScre
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: MediaTypeOptions.Images,
 			allowsEditing: true,
-			quality: 0,
+			quality: 0.4,
 			exif: false,
 			aspect: [4, 3]
 		});

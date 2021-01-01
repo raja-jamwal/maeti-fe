@@ -269,7 +269,6 @@ export function HoroscopeView({
 	isAdmin
 }: IHoroscopeViewProps) {
 	if (!userProfile) return null;
-	if (!isAdmin) return null;
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [isExpanded, setIsExpanded] = React.useState(true);
 	const [chartIndex, setChartIndex] = React.useState(0);
