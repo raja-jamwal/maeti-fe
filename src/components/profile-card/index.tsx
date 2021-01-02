@@ -7,7 +7,15 @@
 //
 
 import * as React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableHighlight, Platform } from 'react-native';
+import {
+	View,
+	Image,
+	StyleSheet,
+	Share,
+	Dimensions,
+	TouchableHighlight,
+	Platform
+} from 'react-native';
 import Text, { Value } from '../text/index';
 import GlobalStyles from '../../styles/global';
 import { calculateAge, humanizeCurrency, MILLIS_IN_A_DAY } from '../../utils/index';
@@ -78,6 +86,8 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		super(props);
 		this.openProfileImageGallery = this.openProfileImageGallery.bind(this);
 		this.setUserProfileFavourite = this.setUserProfileFavourite.bind(this);
+		this.getPrimaryUserProfilePhoto = this.getPrimaryUserProfilePhoto.bind(this);
+		this.shareProfile = this.shareProfile.bind(this);
 	}
 
 	premiumProfileWidth() {
@@ -136,6 +146,34 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		return encodeProfileId(profileId);
 	}
 
+	getPrimaryUserProfilePhoto = () => {
+		const { userProfile, isSelfProfile } = this.props;
+		if (isEmpty(userProfile.photo)) {
+			return null;
+		}
+		let approvedPhotos = [];
+		// if it's a self profile we can show
+		// any photo as primary photo
+		if (isSelfProfile) {
+			approvedPhotos = userProfile.photo;
+		} else {
+			approvedPhotos = userProfile.photo.filter(p => !!p.isApproved);
+		}
+
+		if (!isEmpty(approvedPhotos)) {
+			return head(approvedPhotos);
+		}
+
+		return null;
+	};
+
+	shareProfile = () => {
+		Share.share({
+			message: `Maeti - Exclusive Sindhi Matrimony, Available on Android & iOS, https://maeti.com/m`,
+			title: 'Maeti - Exclusive Sindhi Matrimony'
+		});
+	};
+
 	render() {
 		const {
 			userProfile,
@@ -167,26 +205,7 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 			.join(', ');
 		const heartIcon = userProfile.isFavourite ? 'heart' : 'heart-outline';
 		const heartColor = userProfile.isFavourite ? Colors.pink : Colors.black;
-		const primaryUserProfilePhoto = (() => {
-			if (isEmpty(userProfile.photo)) {
-				return null;
-			}
-			let approvedPhotos = [];
-			// if it's a self profile we can show
-			// any photo as primary photo
-			if (isSelfProfile) {
-				approvedPhotos = userProfile.photo;
-			} else {
-				approvedPhotos = userProfile.photo.filter(p => !!p.isApproved);
-			}
-
-			if (!isEmpty(approvedPhotos)) {
-				return head(approvedPhotos);
-			}
-
-			return null;
-		})();
-
+		const primaryUserProfilePhoto = this.getPrimaryUserProfilePhoto();
 		if (!isSelfProfile) {
 			// profile without photo not discoverable
 			if (!primaryUserProfilePhoto) {
@@ -293,10 +312,18 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 						</View> */}
 						{/*<Text style={styles.premiumProfileText}>Premium Profile</Text>*/}
 						<Text style={[GlobalStyles.large, GlobalStyles.bold]}>
-							{userProfileName || 'unknown name'} - U
-							{this.userMagazineId(userProfile.id)}
+							{userProfileName || 'unknown name'}
 						</Text>
 						<View style={GlobalStyles.expand} />
+						{!isSelfProfile && (
+							<TouchableBtn onPress={this.shareProfile}>
+								<Ionicons
+									style={styles.profileActionIcon}
+									name="share-social-outline"
+									size={24}
+								/>
+							</TouchableBtn>
+						)}
 						{/* {!isSelfProfile && showCarousel && (
 							<TouchableOpacity onPress={() => this.reportProfile()}>
 								<Text style={styles.report}>REPORT</Text>
