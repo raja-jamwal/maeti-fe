@@ -5,7 +5,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { IRootState } from '../../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { getCurrentUserProfileId, fetchAccountByToken } from '../../store/reducers/account-reducer';
+import {
+	getCurrentUserProfileId,
+	fetchAccountByToken,
+	isAccountPaid
+} from '../../store/reducers/account-reducer';
 import { API } from '../../config/API';
 import { ApiRequest, formatDuration, readToken } from '../../utils';
 import { getLogger } from '../../utils/logger';
@@ -24,6 +28,7 @@ import { AdPurchaseCloseStatus } from '../ad-purchase-modal/ad-purchase-modal';
 
 interface IMapStateToProps {
 	currentUserProfileId?: number;
+	isPaidAccount: boolean;
 }
 
 interface IMapDispatchToProps {
@@ -332,6 +337,7 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 
 	renderActions() {
 		const { interestState, fetchingInterest, showPaymentModal } = this.state;
+		const { isPaidAccount } = this.props;
 		if (fetchingInterest) return null;
 		return (
 			<View style={styles.row}>
@@ -373,30 +379,31 @@ class InterestMessageBar extends React.Component<IInterestMessageBarProps, IStat
 					</TouchableBtn>
 				)}
 				{/* show if you're are still at show interest or at pending state */}
-				{(interestState === InterestStates.SHOW_INTEREST ||
-					interestState === InterestStates.SENT_PENDING) && (
-					<ConnectedPurchaseButton
-						label="Message"
-						// onAllowBehindAd={(status: AdPurchaseCloseStatus) => {
-						// 	if (status === AdPurchaseCloseStatus.REWARDED) {
-						// 		this.startMessaging(true);
-						// 	}
-						// }}
-						// contactBalanceAware={true}
-					>
-						<TouchableBtn
-							style={{ flex: 1 }}
-							onPress={() => {
-								this.startMessaging(false);
-							}}
+				{isPaidAccount &&
+					(interestState === InterestStates.SHOW_INTEREST ||
+						interestState === InterestStates.SENT_PENDING) && (
+						<ConnectedPurchaseButton
+							label="Message"
+							// onAllowBehindAd={(status: AdPurchaseCloseStatus) => {
+							// 	if (status === AdPurchaseCloseStatus.REWARDED) {
+							// 		this.startMessaging(true);
+							// 	}
+							// }}
+							// contactBalanceAware={true}
 						>
-							<View style={styles.btnContainer}>
-								<Ionicons name="chatbubbles" size={20} color="white" />
-								<Text style={styles.text}>Ph. No./Message</Text>
-							</View>
-						</TouchableBtn>
-					</ConnectedPurchaseButton>
-				)}
+							<TouchableBtn
+								style={{ flex: 1 }}
+								onPress={() => {
+									this.startMessaging(false);
+								}}
+							>
+								<View style={styles.btnContainer}>
+									<Ionicons name="chatbubbles" size={20} color="white" />
+									<Text style={styles.text}>Ph. No./Message</Text>
+								</View>
+							</TouchableBtn>
+						</ConnectedPurchaseButton>
+					)}
 				<ConnectedPaymentModal
 					show={showPaymentModal}
 					requestClose={() => this.setState({ showPaymentModal: false })}
@@ -503,7 +510,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: IRootState) => {
 	return {
-		currentUserProfileId: getCurrentUserProfileId(state)
+		currentUserProfileId: getCurrentUserProfileId(state),
+		isPaidAccount: isAccountPaid(state)
 	};
 };
 
