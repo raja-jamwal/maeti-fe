@@ -34,8 +34,10 @@ import { simplePrompt } from '../alert/index';
 import { encodeProfileId } from '../../utils/profile-id-encoder';
 import { ProfessionTableIncomeOptions } from '../collapsible-table/profession-table';
 import { Throbber } from '../throbber/throbber';
+import { isPaymentPaid } from '../../store/reducers/account-reducer';
 
 const defaultPrimaryPhoto = require('../../assets/images/placeholder.png');
+const diamondPng = require('../../assets/images/diamond.png');
 
 export interface IProfileProps {
 	userProfile: UserProfile;
@@ -174,6 +176,11 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 		});
 	};
 
+	isUserProfilePaid = () => {
+		const { userProfile } = this.props;
+		// isPaymentPaid(userProfile);
+	};
+
 	render() {
 		const {
 			userProfile,
@@ -256,6 +263,17 @@ class ProfileCard extends React.PureComponent<IProfileCardProps> {
 								]}
 							/>
 						</TouchableHighlight>
+					)}
+					{false && (
+						<View
+							style={[
+								{ position: 'absolute', bottom: 20, left: 8 },
+								GlobalStyles.row,
+								GlobalStyles.alignCenter
+							]}
+						>
+							<Image source={diamondPng} style={{ width: 35, height: 35 }} />
+						</View>
 					)}
 					{!isSelfProfile && isCompatibilityPossible() && (
 						<View style={styles.kutaContainer}>
