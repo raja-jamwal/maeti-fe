@@ -36,15 +36,17 @@ export const getPayment = createSelector(
 	account => account.payment
 );
 
+export const isPaymentPaid = (payment: Payment) => {
+	if (!payment) return false;
+	const isPaid = payment.selectedPackage === 'paid';
+	const contactBalance = payment.contactBalance || 0;
+	const isExpired = getCurrentUnixEpoch() > payment.expiryDate;
+	return isPaid && !isExpired && contactBalance > 0;
+};
+
 export const isAccountPaid = createSelector(
 	getPayment,
-	payment => {
-		if (!payment) return false;
-		const isPaid = payment.selectedPackage === 'paid';
-		const contactBalance = payment.contactBalance || 0;
-		const isExpired = getCurrentUnixEpoch() > payment.expiryDate;
-		return isPaid && !isExpired && contactBalance > 0;
-	}
+	payment => isPaymentPaid(payment)
 );
 export const getCurrentUserProfileId = createSelector(
 	getUserProfile,
