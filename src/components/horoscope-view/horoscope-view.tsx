@@ -14,7 +14,7 @@ import {
 	IHoroscope
 } from '../../store/reducers/horoscope-reducer';
 import { Throbber } from '../throbber/throbber';
-import { getCurrentUserProfileId } from '../../store/reducers/account-reducer';
+import { getCurrentUserProfileId, isAccountPaid } from '../../store/reducers/account-reducer';
 import { isObject } from 'lodash';
 import Collapsible from 'react-native-collapsible';
 import TouchableBtn from '../touchable-btn/touchable-btn';
@@ -31,6 +31,7 @@ interface IHoroscopeViewProps {
 	fetchHoroscope: (userProfileId: number) => any;
 	isCurrentUserProfile: boolean;
 	isAdmin: boolean;
+	isPaidAccount: boolean;
 }
 
 const planetsInHindi: any = {
@@ -266,7 +267,8 @@ export function HoroscopeView({
 	horoscope,
 	fetchHoroscope,
 	isCurrentUserProfile,
-	isAdmin
+	isAdmin,
+	isPaidAccount
 }: IHoroscopeViewProps) {
 	if (!userProfile) return null;
 	const [isLoading, setIsLoading] = React.useState(false);
@@ -283,6 +285,8 @@ export function HoroscopeView({
 	if (isLoading) {
 		return <Throbber size="small" />;
 	}
+
+	const shouldShowKundali = isPaidAccount && !isCurrentUserProfile;
 
 	const isBirthDataAvailable =
 		userProfile.horoscope.birthPlace && userProfile.horoscope.birthTime;
@@ -330,35 +334,44 @@ export function HoroscopeView({
 				</TouchableBtn>
 			</View>
 			<Collapsible collapsed={!isExpanded}>
+				{!shouldShowKundali && <Value>Only paid accounts can see Horoscope</Value>}
 				{!!isBirthDataAvailable && isCurrentUserProfile && (
 					<Value>Add your birth place and time to see your kundali</Value>
 				)}
-				<View>
-					<Carousel
-						data={chartTypes}
-						renderItem={({ item: chartName }) => {
-							const chartData = horoscope[chartName];
-							if (!chartData) return null;
-							return <KundaliView chartData={chartData} chartName={chartName} />;
-						}}
-						itemWidth={Layout.window.width}
-						sliderWidth={Layout.window.width}
-						onSnapToItem={index => setChartIndex(index)}
-					/>
-					<Pagination
-						dotsLength={chartTypes.length}
-						activeDotIndex={chartIndex}
-						dotStyle={{
-							width: 5,
-							height: 5,
-							borderRadius: 5,
-							backgroundColor: Colors.tintColor
-						}}
-						inactiveDotOpacity={0.4}
-						inactiveDotScale={0.6}
-					/>
-				</View>
-				{!!horoscope && !!horoscope.horoscope && renderHoroscope(horoscope.horoscope)}
+				{shouldShowKundali && (
+					<View>
+						<View>
+							<Carousel
+								data={chartTypes}
+								renderItem={({ item: chartName }) => {
+									const chartData = horoscope[chartName];
+									if (!chartData) return null;
+									return (
+										<KundaliView chartData={chartData} chartName={chartName} />
+									);
+								}}
+								itemWidth={Layout.window.width}
+								sliderWidth={Layout.window.width}
+								onSnapToItem={index => setChartIndex(index)}
+							/>
+							<Pagination
+								dotsLength={chartTypes.length}
+								activeDotIndex={chartIndex}
+								dotStyle={{
+									width: 5,
+									height: 5,
+									borderRadius: 5,
+									backgroundColor: Colors.tintColor
+								}}
+								inactiveDotOpacity={0.4}
+								inactiveDotScale={0.6}
+							/>
+						</View>
+						{!!horoscope &&
+							!!horoscope.horoscope &&
+							renderHoroscope(horoscope.horoscope)}
+					</View>
+				)}
 			</Collapsible>
 		</View>
 	);
@@ -370,11 +383,13 @@ const mapStateToProps = (state: IRootState, props: IHoroscopeViewProps) => {
 	const currentUserProfile = getUserProfileForId(state, currentUserProfileId);
 	const isCurrentUserProfile = userProfile.id === currentUserProfileId;
 	const isAdmin = currentUserProfile.fullName === 'Zorawar Relwani';
+	const isPaidAccount = isAccountPaid(state);
 	return {
 		userProfile,
 		horoscope: getHoroscopeForProfileId(state, props.userProfileId),
 		isCurrentUserProfile,
-		isAdmin
+		isAdmin,
+		isPaidAccount
 	};
 };
 
