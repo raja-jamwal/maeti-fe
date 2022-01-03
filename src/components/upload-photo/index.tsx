@@ -12,7 +12,7 @@ import { IOtpState } from '../../store/reducers/otp-reducer';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Permissions from 'expo-permissions';
 import { getLogger } from '../../utils/logger';
-import { Notifications } from 'expo';
+import * as Notifications from 'expo-notifications';
 import * as Updates from 'expo-updates';
 import { ApiRequest } from '../../utils';
 import { API } from '../../config/API';
@@ -29,7 +29,7 @@ const groomOrBridge = () => {
 	return modelRepository.userProfile.gender === 'male' ? "groom's" : "bride's";
 };
 
-export function UploadPhoto({ navigation }) {
+export function UploadPhoto({ navigation }: any) {
 	const logger = getLogger(UploadPhoto);
 	const [isUploading, setIsUploading] = React.useState(false);
 	const [isCreatingAccount, setIsCreatingAccount] = React.useState(false);
@@ -138,7 +138,7 @@ export function UploadPhoto({ navigation }) {
 											// Get the token that uniquely identifies this device
 											token = await Notifications.getExpoPushTokenAsync();
 											logger.log('push token ', token);
-											modelRepository.setExpoToken(token);
+											modelRepository.setExpoToken(token.data);
 										} catch (err) {
 											logger.log('unable to get push token ', err);
 										}

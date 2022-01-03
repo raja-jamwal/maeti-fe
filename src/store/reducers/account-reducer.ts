@@ -7,7 +7,7 @@ import { addProfile } from './user-profile-reducer';
 import { fetchTags } from './tag-reducer';
 import { addSelfProfile } from './self-profile-reducer';
 import { ApiRequest, getCurrentUnixEpoch } from '../../utils/index';
-import { Notifications } from 'expo';
+import * as Notifications from 'expo-notifications';
 import * as Updates from 'expo-updates';
 import * as Permissions from 'expo-permissions';
 import { IRootState } from '../index';
@@ -129,7 +129,7 @@ export const savePushToken = function(id: number) {
 		let token = null;
 		try {
 			// Get the token that uniquely identifies this device
-			token = await Notifications.getExpoPushTokenAsync();
+			token = (await Notifications.getExpoPushTokenAsync()).data;
 			logger.log('push token ', token);
 		} catch (err) {
 			logger.log('unable to get push token ', err);

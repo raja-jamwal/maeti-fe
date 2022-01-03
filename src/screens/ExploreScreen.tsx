@@ -4,13 +4,11 @@ import {
 	StyleSheet,
 	TextInput,
 	View,
-	TouchableNativeFeedback,
 	FlatList,
 	StatusBar,
-	TouchableOpacity,
 	SafeAreaView
 } from 'react-native';
-import { Notifications } from 'expo';
+import * as Notifications from 'expo-notifications';
 import Colors from '../constants/Colors';
 import GlobalStyles from '../styles/global';
 import ConnectedProfile from '../components/profile-card/connected-profile';
@@ -24,12 +22,10 @@ import { IRootState } from '../store';
 import { bindActionCreators, Dispatch } from 'redux';
 import {
 	clearSearchResultForScreen,
-	EXPLORE_SCREENS,
 	isPaidScreen,
-	mayBeFetchSearchResult,
-	setSearchResultForScreen
+	mayBeFetchSearchResult
 } from '../store/reducers/explore-reducer';
-import { toArray, sortBy, head, isEmpty, includes } from 'lodash';
+import { toArray, sortBy, head, isEmpty } from 'lodash';
 import { applyGlobalFilter, getSearchFilter } from '../store/reducers/filter-reducer';
 import { getLogger } from '../utils/logger';
 import {
@@ -43,7 +39,6 @@ import { isAccountPaid } from '../store/reducers/account-reducer';
 import TouchableBtn from '../components/touchable-btn/touchable-btn';
 import { MASKED_PROFILE_NAME } from '../constants';
 import AccountSummary from '../components/account-summary/account-summary';
-import ConnectedAdMob from '../components/admob/admob';
 
 const defaultPrimaryPhoto = require('../assets/images/placeholder.png');
 
@@ -151,7 +146,7 @@ class ExploreScreen extends React.PureComponent<NavigationInjectedProps & IExplo
 
 	static getDerivedStateFromProps(props, state) {
 		if (props.navigation) {
-			Notifications.addListener(handleNotification(props.navigation));
+			Notifications.addNotificationReceivedListener(handleNotification(props.navigation));
 		}
 		return null;
 	}
