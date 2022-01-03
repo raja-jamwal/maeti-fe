@@ -21,7 +21,7 @@ Sentry.init({
 	enableInExpoDevelopment: false,
 	debug: true
 });
-Sentry.setRelease(Constants.manifest.revisionId);
+Sentry.Native.setRelease(Constants.manifest.revisionId);
 
 /**
  * Polly-fill following for react-native JSC
