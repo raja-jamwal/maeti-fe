@@ -103,10 +103,7 @@ const mapDispatchToProps = function(dispatch) {
 	};
 };
 
-const ConnectedApp = connect(
-	null,
-	mapDispatchToProps
-)(App);
+const ConnectedApp = connect(null, mapDispatchToProps)(App);
 
 export default class AppContainer extends React.Component {
 	render() {
