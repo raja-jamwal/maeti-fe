@@ -1,3 +1,11 @@
+## Maeti
+
+<div style="display: flex; justify-content: space-between">
+  <img src="./docs/images/screen1.jpeg" alt="Image 1" style="width: 30%;">
+  <img src="./docs/images/screen2.jpeg" alt="Image 2" style="width: 30%;">
+  <img src="./docs/images/screen3.jpeg" alt="Image 3" style="width: 30%;">
+</div>
+
 # Requirements
 
 -   You need an android emulator while developing, use geny-motion.
