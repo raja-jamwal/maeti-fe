@@ -114,11 +114,7 @@ _Add steps for updating window's environment variables_
 
 # FCM server key
 
-Keeping note here
-
-```
-AIzaSyD8Ef7mfMg9kynLcNLR-LWM2KKdVYCOTLY
-```
+- Obtain FCM server key
 
 ```
 expo push:android:upload --api-key <your-token-here>
